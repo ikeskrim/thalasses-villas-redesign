@@ -1,0 +1,326 @@
+{
+ "id": "7798",
+ "slug": "thalasses-rituals",
+ "name": "Thalasses Rituals",
+ "pageType": "landing",
+ "bookable": false,
+ "legacyUrls": [
+  "/en/thalasses-rituals"
+ ],
+ "canonical": "https://thalasses.com/en/thalasses-rituals",
+ "meta": {
+  "title": "Thalasses Rituals, Rethymno, Greece",
+  "description": "Living unlimited!.Our brand new and truly astonishing Wedding Venue which features a unique pool of 150m2 with salt water!",
+  "keywords": "Thalasses Villas,Thalasses Rituals,Rethymno,Greece,House",
+  "ogImage": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/8b9e368b164eab6ade49d33722a0cbfa.jpg",
+  "ogUrl": "https://thalasses.com/en/thalasses-rituals",
+  "twitterCard": "summary"
+ },
+ "tagline": "Living unlimited!",
+ "shortDescription": "Our brand new and truly astonishing Wedding Venue which features a unique pool of 150m2 with salt water!",
+ "longDescription": null,
+ "attributes": [
+  "Luxury",
+  "Relaxing"
+ ],
+ "highlights": [
+  {
+   "text": "Luxury",
+   "source": "attributes"
+  },
+  {
+   "text": "Relaxing",
+   "source": "attributes"
+  }
+ ],
+ "specs": {
+  "bedrooms": 3,
+  "bathrooms": 3,
+  "maxGuests": 12,
+  "sizeSqm": 97,
+  "pools": 1,
+  "floors": null,
+  "view": null,
+  "distanceToBeach": null,
+  "checkIn": null,
+  "checkOut": null
+ },
+ "facilities": {
+  "ref": "content/facilities/index.json",
+  "totalFeatures": 55,
+  "shownOnLiveSite": 43,
+  "tabs": [
+   {
+    "tab": "Amenities",
+    "count": 43,
+    "displayedOnLiveSite": true
+   },
+   {
+    "tab": "Entertainment / Activities",
+    "count": 7,
+    "displayedOnLiveSite": false
+   },
+   {
+    "tab": "Safety / Security",
+    "count": 5,
+    "displayedOnLiveSite": false
+   }
+  ]
+ },
+ "services": [],
+ "rooms": [],
+ "gallery": {
+  "heroImage": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/8b9e368b164eab6ade49d33722a0cbfa.jpg",
+  "albums": [
+   {
+    "title": "Photo gallery",
+    "images": [
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/8b9e368b164eab6ade49d33722a0cbfa.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/80c913749f42cb063790d39c51f73da5.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/38c75ce560079fbbe3b22cbfb215a3c8.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/0f52f465c7c7b3a053080d5ce5e29f12.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/029de06b0346b4ccb2f42dfbc187f754.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/39ad5fbfea4d37c31e53452e78304369.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/44edf69d6a05165054fd3870f558b04b.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/15e66d5fa985ef70fab6d032ebb7ca11.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/3f912b5f49b230a22a68ed14c677d3a4.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/11c6fd5d7fda93f4dda7a836618b3b2b.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/47a8c24c6146041d08e9aaa8f89a3d28.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/b71d5181bf15b342f3dddfb7d5b46f81.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/5c687ef52cec94d2b637c7baf27837e2.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/d3798deefff67fb38177d42483f9f97f.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/b949a705ec6ff1579ca94ff3f556ba2c.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/e35640ebfbd1861538eb078b1c75a9a2.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/69978ac4f31b7bb1515c57cd50a73618.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/88c6dfd4bbac97b4babb865b1e7583e6.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/883e4dbfec5ba999725f67b6dc642261.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/2f98f73791ff6506a014a32051d71ed6.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/d2aff2ccb35e31dd2198a3258bc9392e.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/55c268cfc8b276d55955ced646a8195b.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/13ba81cb69bed6a720e6f30f2f21f085.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/7dd55a49c6dee7caf57d7b8cc6f6b385.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/bd26a568584d98852c4c8e6db87c2e9a.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/7c7d36932446b5e0962421dc70c17c03.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/cfb6ca799c87b88e4baddc17fc73c7e3.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/bd4695827f2617c78c372293274f737b.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/3d658e97a0d269f749c697d96e8e2a92.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/7a916ea1570d17798f9d329feb5cd4ac.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/fac1547c8153b91d3757c4dd15c9dd3e.jpg"
+    ]
+   }
+  ],
+  "featured": [
+   {
+    "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/8b9e368b164eab6ade49d33722a0cbfa.jpg",
+    "caption": null
+   },
+   {
+    "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/80c913749f42cb063790d39c51f73da5.jpg",
+    "caption": null
+   },
+   {
+    "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/38c75ce560079fbbe3b22cbfb215a3c8.jpg",
+    "caption": null
+   },
+   {
+    "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/0f52f465c7c7b3a053080d5ce5e29f12.jpg",
+    "caption": null
+   },
+   {
+    "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/029de06b0346b4ccb2f42dfbc187f754.jpg",
+    "caption": null
+   },
+   {
+    "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/39ad5fbfea4d37c31e53452e78304369.jpg",
+    "caption": null
+   },
+   {
+    "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/44edf69d6a05165054fd3870f558b04b.jpg",
+    "caption": null
+   },
+   {
+    "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/15e66d5fa985ef70fab6d032ebb7ca11.jpg",
+    "caption": null
+   },
+   {
+    "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/3f912b5f49b230a22a68ed14c677d3a4.jpg",
+    "caption": null
+   },
+   {
+    "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/11c6fd5d7fda93f4dda7a836618b3b2b.jpg",
+    "caption": null
+   },
+   {
+    "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/47a8c24c6146041d08e9aaa8f89a3d28.jpg",
+    "caption": null
+   },
+   {
+    "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/b71d5181bf15b342f3dddfb7d5b46f81.jpg",
+    "caption": null
+   },
+   {
+    "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/5c687ef52cec94d2b637c7baf27837e2.jpg",
+    "caption": null
+   },
+   {
+    "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/d3798deefff67fb38177d42483f9f97f.jpg",
+    "caption": null
+   },
+   {
+    "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/b949a705ec6ff1579ca94ff3f556ba2c.jpg",
+    "caption": null
+   },
+   {
+    "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/e35640ebfbd1861538eb078b1c75a9a2.jpg",
+    "caption": null
+   },
+   {
+    "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/69978ac4f31b7bb1515c57cd50a73618.jpg",
+    "caption": null
+   },
+   {
+    "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/88c6dfd4bbac97b4babb865b1e7583e6.jpg",
+    "caption": null
+   },
+   {
+    "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/883e4dbfec5ba999725f67b6dc642261.jpg",
+    "caption": null
+   },
+   {
+    "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/2f98f73791ff6506a014a32051d71ed6.jpg",
+    "caption": null
+   },
+   {
+    "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/d2aff2ccb35e31dd2198a3258bc9392e.jpg",
+    "caption": null
+   },
+   {
+    "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/55c268cfc8b276d55955ced646a8195b.jpg",
+    "caption": null
+   },
+   {
+    "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/13ba81cb69bed6a720e6f30f2f21f085.jpg",
+    "caption": null
+   },
+   {
+    "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/7dd55a49c6dee7caf57d7b8cc6f6b385.jpg",
+    "caption": null
+   },
+   {
+    "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/bd26a568584d98852c4c8e6db87c2e9a.jpg",
+    "caption": null
+   },
+   {
+    "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/7c7d36932446b5e0962421dc70c17c03.jpg",
+    "caption": null
+   },
+   {
+    "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/cfb6ca799c87b88e4baddc17fc73c7e3.jpg",
+    "caption": null
+   },
+   {
+    "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/bd4695827f2617c78c372293274f737b.jpg",
+    "caption": null
+   },
+   {
+    "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/3d658e97a0d269f749c697d96e8e2a92.jpg",
+    "caption": null
+   },
+   {
+    "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/7a916ea1570d17798f9d329feb5cd4ac.jpg",
+    "caption": null
+   },
+   {
+    "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/fac1547c8153b91d3757c4dd15c9dd3e.jpg",
+    "caption": null
+   }
+  ],
+  "allImages": [
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/8b9e368b164eab6ade49d33722a0cbfa.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/80c913749f42cb063790d39c51f73da5.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/38c75ce560079fbbe3b22cbfb215a3c8.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/0f52f465c7c7b3a053080d5ce5e29f12.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/029de06b0346b4ccb2f42dfbc187f754.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/39ad5fbfea4d37c31e53452e78304369.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/44edf69d6a05165054fd3870f558b04b.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/15e66d5fa985ef70fab6d032ebb7ca11.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/3f912b5f49b230a22a68ed14c677d3a4.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/11c6fd5d7fda93f4dda7a836618b3b2b.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/47a8c24c6146041d08e9aaa8f89a3d28.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/b71d5181bf15b342f3dddfb7d5b46f81.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/5c687ef52cec94d2b637c7baf27837e2.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/d3798deefff67fb38177d42483f9f97f.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/b949a705ec6ff1579ca94ff3f556ba2c.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/e35640ebfbd1861538eb078b1c75a9a2.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/69978ac4f31b7bb1515c57cd50a73618.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/88c6dfd4bbac97b4babb865b1e7583e6.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/883e4dbfec5ba999725f67b6dc642261.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/2f98f73791ff6506a014a32051d71ed6.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/d2aff2ccb35e31dd2198a3258bc9392e.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/55c268cfc8b276d55955ced646a8195b.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/13ba81cb69bed6a720e6f30f2f21f085.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/7dd55a49c6dee7caf57d7b8cc6f6b385.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/bd26a568584d98852c4c8e6db87c2e9a.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/7c7d36932446b5e0962421dc70c17c03.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/cfb6ca799c87b88e4baddc17fc73c7e3.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/bd4695827f2617c78c372293274f737b.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/3d658e97a0d269f749c697d96e8e2a92.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/7a916ea1570d17798f9d329feb5cd4ac.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/fac1547c8153b91d3757c4dd15c9dd3e.jpg"
+  ]
+ },
+ "video": {
+  "youtubeId": "7VWaiDAWPdY",
+  "embedUrl": "https://www.youtube.com/embed/7VWaiDAWPdY"
+ },
+ "map": {
+  "lat": 35.380146561951,
+  "lng": 24.57279329824,
+  "embedUrl": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3892.6033269125232!2d24.570251776248284!3d35.38012254645541!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x149ba0874180b07b%3A0x2a6aaafb22f0a209!2sThalasses!5e1!3m2!1sel!2sgr!4v1748938627062!5m2!1sel!2sgr",
+  "mapsLink": "https://www.google.com/maps/search/?api=1&query=35.380146561951,24.57279329824",
+  "address": "Pigianos Kampos area, Rethymno, 74100, Greece"
+ },
+ "booking": {
+  "hasWidget": false,
+  "engine": null,
+  "formAction": null,
+  "method": null,
+  "roomCode": null,
+  "hiddenFields": {},
+  "inputs": [],
+  "submitLabel": null,
+  "ctaLabel": "Photos",
+  "ctaHref": "#featured_gallery"
+ },
+ "policies": [],
+ "relatedExperiences": [],
+ "todos": [
+  "FACILITIES PROVENANCE - IMPORTANT: /en/thalasses-rituals loads bundles/frontend/theme_1/app/index-1.js, the SAME bundle as the homepage (/en/index). facilities.ref therefore points at content/facilities/index.json, not at a rituals-specific file. Furthermore content/facilities/index.json is IDENTICAL in content to content/facilities/pueblo.json (same 3 tabs, same 55 features, same 43 shown), so the amenity list this page renders is Villa Pueblo's. The page's own data-ng-init is fetchFacilities('7798','en'), i.e. property 7798, but no 7798 payload exists in any saved file. Confirm with the CMS which amenities really belong to Thalasses Rituals before reusing them.",
+  "facilities: of the 55 features in the payload only the 43 of tab 0 (\"Amenities\") are ever rendered, because the AngularJS controller does $scope.features = groups[0].group. Entertainment / Activities (7) and Safety / Security (5) are real data the current site never shows.",
+  "VERIFIED bookable=false / booking.hasWidget=false: raw/en__thalasses-rituals-1.html contains NO <form id=\"webHotelierForm\">. Its only forms are the empty <form> wrapper inside the (blank) description modal, the commented-out AngularJS contact form, the live Formspree contact form (action https://formspree.io/f/mrbkgjzw, method POST), the newsletter form (#frm_newsletter) and the AChecker validator form.",
+  "REAL CTA: the only page-level call to action is the hero button <a href=\"#featured_gallery\" class=\"btn btn-white ...\">Photos</a>, recorded as booking.ctaLabel / ctaHref. The only other buttons are \"Submit\" (Formspree contact form) and \"Subscribe!\" (newsletter). For a page positioned as a wedding venue there is NO wedding-enquiry form, no pricing, no event-capacity figure, no availability calendar and no wedding-specific contact CTA - only the generic site-wide contact form.",
+  "longDescription is null and that is the source state: the \"Read more\" modal (#modal_desc) exists but its body contains only the heading \"Thalasses Rituals\" and <br> tags. The entire editorial copy of this page is the single 103-character sentence in shortDescription. Do NOT duplicate shortDescription into longDescription.",
+  "pageType is recorded as \"landing\" - CONFIRM WITH THE CLIENT, the evidence is genuinely mixed. For \"landing\": one sentence of copy, no long description, no Spaces section, no services, no booking, no bedroom-modal data (loadBedroomsModal is called with 0), and no facilities payload of its own. For \"property\": the page is rendered by the theme_1 property template, is listed in the \"Our Villas\" nav and in the homepage villa grid alongside Thoi/Melia/Eeanthe/Persi, and carries accommodation stats and an Attributes strip. The copy calls it \"our brand new and truly astonishing Wedding Venue\" while the meta keywords say \"House\". Nothing on the page describes spa treatments or \"rituals\" despite the name.",
+  "The stat strip is NOT a source string. The five counters render as 3 / 12 / 1 / 3 / 97m<sup>2</sup> with labels Bedrooms, Sleeps up to, Pools, Baths, Indoor Area, and have been split into specs.bedrooms, specs.maxGuests, specs.pools, specs.bathrooms and specs.sizeSqm. The previous synthetic string \"3 Bedrooms | 12 Sleeps up to | 1 Pools | 3 Baths | 97m2 Indoor Area\" existed nowhere in the source and has been removed.",
+  "The stats markup carries data-value=\"200\" on every counter - that is a pages-animate attribute, not a value. The displayed numbers 3 / 12 / 1 / 3 / 97m2 are the real content.",
+  "The \"Bedrooms\" counter links to loadBedroomsModal('en',0) - the bedroom-count argument is 0, unlike Villa Pueblo which passes 3 and /property/2142 which passes 12. Verify whether \"3 Bedrooms\" is real data or a leftover from the template.",
+  "specs.sizeSqm = 97 is the \"Indoor Area\" counter. The 150m2 salt-water pool is stated only in the shortDescription prose, not as a structured field, so it is not in specs. Confirm a 97m2 indoor area is correct for a wedding venue.",
+  "specs.floors, specs.checkIn and specs.checkOut are null: none is stated anywhere on the page (these keys were missing entirely from the previous version of this file).",
+  "specs.view and specs.distanceToBeach are null: neither is stated anywhere on the page.",
+  "GALLERY URLS NORMALISED. All 31 lightbox anchors in the \"Photo gallery\" block point at crawler-rewritten relative paths of the form \"../loggia-cdn/lodgeContent/<hash>-1.jpg\". Every one has been normalised to the full-size absolute URL https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/<hash>.jpg by stripping the crawler's \"-1\" duplicate-filename suffix. The 32-character hashes are unchanged, and for the first 6 images the derived URLs are confirmed correct because the same 6 hashes also appear as absolute data-src values in the page. The previous version of this file left 25 of these as relative \"../loggia-cdn/...\" paths.",
+  "gallery.featured holds all 31 images of the on-page \"Photo gallery\" block. 25 of them carry a literal data-caption=\"\" (empty) and the first 6 - which are also the six hero slider slides - carry no data-caption attribute at all. No image has alt text: every one uses the hidden placeholder \"Featured Image\". All alt text and captions must be written for accessibility.",
+  "gallery.albums holds the single on-page gallery block, whose h2 is literally \"Photo gallery\". There is no /albums page for this URL (only /en/property/{id} pages have one), so the album title is the block heading, not a CMS album name.",
+  "services is empty: this page has no fancyServiceImages* anchors and no Services section. The six service cards exist only on the /en/property/{id} pages.",
+  "rooms is empty: this page has NO Spaces section at all (Villa Pueblo and /property/2142 each have four Spaces tiles). Its only page-specific blocks are hero slider, one-sentence description + video, photo gallery, Attributes + stats, and the AJAX facilities block.",
+  "map was MISSING from the previous version of this file. This page carries exactly the same Google Maps iframe embed and the same \"View on map\" link (35.380146561951, 24.57279329824) as the /en/property/{id} pages. map.address is the site-wide contact block (\"Thalasses Villas, Pigianos Kampos area, Rethymno, 74100, Greece\"); no venue-specific address or coordinates exist.",
+  "policies is empty - the source state, not an omission. No cancellation, deposit, minimum-stay, house-rule or event policy and no price appears on the page.",
+  "relatedExperiences is empty: the promoted-articles sections of the HTML are empty. Note content/experiences/ contains dream-weadding-on-the-beach (source spelling kept) which is the obvious editorial link for a wedding venue - it is NOT linked from this page today.",
+  "SOURCE TYPO (kept verbatim): meta.description / og:description / twitter:description read \"Living unlimited!.Our brand new...\" - a full stop directly after the exclamation mark with no space.",
+  "CASING INCONSISTENCY (kept verbatim): the tagline is \"Living unlimited!\" here, \"Living Unlimited!\" on /en/villa-pueblo and \"Living unlimited\" (no exclamation mark) on the /en/property/{id} pages.",
+  "ENCODING: no double-encoded sequences and no U+FFFD occur in this page's own copy (the page has almost no prose). The site-wide footer credit is double-encoded Greek and is handled in content/site.json, not here.",
+  "meta.ogImage NORMALISED: the source og:image / twitter:image is .../8b9e368b164eab6ade49d33722a0cbfa_thumb.jpg; the _thumb suffix has been stripped per the project normalisation rule.",
+  "canonical: the saved <link rel=\"canonical\"> was rewritten by the crawler to the local filename \"thalasses-rituals-1.html\". The value here is taken from og:url / twitter:url.",
+  "ID SPACE: the page body carries data-ng-init=\"page_id='172';property='7798'\" and fetchFacilities('7798','en'), so id is \"7798\". That is a different id space from the /en/property/{id} pages (200, 201, 202, 203, 2142). The page also contains a hard-coded loadFeatureGroupModal('en', group.group_id, '10655') - Villa Pueblo's id - which is a shared template default carried over with the index-1.js bundle, further evidence that the facilities data on this page is not its own.",
+  "map.address is COMPOSED, not a verbatim source string: no page prints \"Pigianos Kampos area, Rethymno, 74100, Greece\" as one line. It is assembled from the JSON-LD PostalAddress parts (streetAddress \"Pigianos Kampos area\", addressLocality \"Rethymno\", postalCode \"74100\", addressCountry \"Greece\"). site.json stores the same address as a 3-element addressLines array."
+ ]
+}

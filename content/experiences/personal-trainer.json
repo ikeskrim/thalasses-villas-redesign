@@ -1,0 +1,45 @@
+{
+ "slug": "personal-trainer",
+ "name": "Personal Trainer",
+ "legacyUrl": "https://thalasses.com/en/personal-trainer",
+ "canonical": "personal-trainer-1.html",
+ "meta": {
+  "title": "Personal Trainer",
+  "description": "Personal Trainer",
+  "keywords": "Thalasses Villas,Personal Trainer,Experiences,Rethymno,Greece,Properties chain",
+  "ogImage": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/4b0fcbfb168597e79076b3cac6ec1d1c.jpg",
+  "ogUrl": "https://thalasses.com/en/personal-trainer"
+ },
+ "sourceTaxonomy": "Experiences",
+ "categoryProposed": "Wellness",
+ "shortDescription": "Stay fit in your holidays! A personal trainer can be at your Villa with safety and privacy!",
+ "longDescription": "Stay fit in your holidays! A personal trainer can be at your Villa with safety and privacy!\n\nWe can also provide you with TRX equipment, Pilates ball or Vitamins.",
+ "highlights": [],
+ "wordCount": 29,
+ "needsContent": true,
+ "brokenCta": false,
+ "images": [
+  "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/4b0fcbfb168597e79076b3cac6ec1d1c.jpg"
+ ],
+ "heroImage": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/4b0fcbfb168597e79076b3cac6ec1d1c.jpg",
+ "gallery": {
+  "heroImage": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/4b0fcbfb168597e79076b3cac6ec1d1c.jpg",
+  "images": []
+ },
+ "externalLinks": [],
+ "cta": null,
+ "duration": null,
+ "price": null,
+ "todos": [
+  "META description is only the page title repeated (\"Personal Trainer\") — no genuine meta description exists in source.",
+  "No highlights, bullet list, inclusions or itinerary exist on the page; highlights left empty.",
+  "No gallery/album images on this page. The only page-specific image is the hero parallax background (data-pages-bg-image on the jumbotron section). og:image points to the _thumb.jpg variant of the same photo.",
+  "No page-specific CTA in the page's own content. The only \"Book now\" button belongs to the global booking bar (form action https://thalassesvillas.reserve-online.net/) and was treated as CMS chrome, so cta is null.",
+  "No external links in the page's own content.",
+  "No duration stated in source.",
+  "No price stated in source.",
+  "\"TRX equipment, Pilates ball or Vitamins\" are named but no quantities, brands, session lengths or booking lead time are stated.",
+  "categoryProposed is an editorial grouping added for the redesign; the live site has no categories — confirm with the client.",
+  "[TODO: needs content] — 29 words of body copy"
+ ]
+}

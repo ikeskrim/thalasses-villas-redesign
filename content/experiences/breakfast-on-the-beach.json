@@ -1,0 +1,50 @@
+{
+ "slug": "breakfast-on-the-beach",
+ "name": "Breakfast on the Beach",
+ "legacyUrl": "https://thalasses.com/en/breakfast-on-the-beach",
+ "canonical": "breakfast-on-the-beach-1.html",
+ "meta": {
+  "title": "Breakfast on the Beach",
+  "description": "Breakfast on the Beach",
+  "keywords": "Thalasses Villas,Breakfast on the Beach,Experiences,Rethymno,Greece,Properties chain",
+  "ogImage": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/e960a92792cd5952d275cd242fe8e99b.jpg",
+  "ogUrl": "https://thalasses.com/en/breakfast-on-the-beach"
+ },
+ "sourceTaxonomy": "Experiences",
+ "categoryProposed": "Taste",
+ "shortDescription": "Enjoy your breakfast on your private beach! In Thalasses Villas this can be arranged.",
+ "longDescription": "Enjoy your breakfast on your private beach! In Thalasses Villas this can be arranged.\n\nCheck out our latest Video here!",
+ "highlights": [],
+ "wordCount": 20,
+ "needsContent": true,
+ "brokenCta": false,
+ "images": [
+  "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/e960a92792cd5952d275cd242fe8e99b.jpg"
+ ],
+ "heroImage": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/e960a92792cd5952d275cd242fe8e99b.jpg",
+ "gallery": {
+  "heroImage": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/e960a92792cd5952d275cd242fe8e99b.jpg",
+  "images": []
+ },
+ "externalLinks": [
+  {
+   "label": "here",
+   "url": "https://www.youtube.com/watch?v=3MLPeDij0kU"
+  }
+ ],
+ "cta": null,
+ "duration": null,
+ "price": null,
+ "todos": [
+  "META description, og:description and twitter:description are all just the page title (\"Breakfast on the Beach\"); there is no unique SEO description in the source.",
+  "Body copy is only two sentences. Nothing is stated about what is served, at which beach, at what times, for how many people, or how a guest arranges it.",
+  "No highlights, bullets or structured list exist in the source, so highlights is empty.",
+  "The only link on the page uses the bare anchor text \"here\" (\"Check out our latest Video here!\"), which is poor link text for accessibility and SEO; it points to a YouTube video.",
+  "No photo gallery on this page — the only page-specific image is the hero/parallax background. The page's .imgs.txt lists only site chrome besides it (logo, gradient, W3C validator badges, and a commented-out newsletter background).",
+  "No duration stated anywhere in the source page; duration left null.",
+  "No price, rate or 'from' figure stated anywhere in the source page; price left null.",
+  "No page-specific call to action exists in the source. The only CTA on the page is the site-wide booking bar (\"Book now\" -> https://thalassesvillas.reserve-online.net/), which is global chrome, so cta is null.",
+  "categoryProposed is an editorial grouping added for the redesign; the live site has no categories — confirm with the client.",
+  "[TODO: needs content] — 20 words of body copy"
+ ]
+}

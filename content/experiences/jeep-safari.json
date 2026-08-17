@@ -1,0 +1,48 @@
+{
+ "slug": "jeep-safari",
+ "name": "Jeep safari",
+ "legacyUrl": "https://thalasses.com/en/jeep-safari",
+ "canonical": "jeep-safari-1.html",
+ "meta": {
+  "title": "Jeep safari",
+  "description": "Jeep safari",
+  "keywords": "Thalasses Villas,Jeep safari,Experiences,Rethymno,Greece,Properties chain",
+  "ogImage": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/0c4f054699fa4cd5f3592c934df7d5dc.jpg",
+  "ogUrl": "https://thalasses.com/en/jeep-safari"
+ },
+ "sourceTaxonomy": "Experiences",
+ "categoryProposed": "Land",
+ "shortDescription": "Take a tour to the hard-to-find places of Crete away from the crowds for spectacular views and the excitement of traveling off-road in the unique landscapes of Southern Crete – all in one day!",
+ "longDescription": null,
+ "highlights": [],
+ "wordCount": 33,
+ "needsContent": true,
+ "brokenCta": false,
+ "images": [
+  "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/0c4f054699fa4cd5f3592c934df7d5dc.jpg"
+ ],
+ "heroImage": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/0c4f054699fa4cd5f3592c934df7d5dc.jpg",
+ "gallery": {
+  "heroImage": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/0c4f054699fa4cd5f3592c934df7d5dc.jpg",
+  "images": []
+ },
+ "externalLinks": [],
+ "cta": null,
+ "duration": null,
+ "price": null,
+ "todos": [
+  "Encoding artifact in the crawled source: the dash renders as \"â\" in the extracted text. Raw bytes are C3 A2 C2 80 C2 93, i.e. a UTF-8 double-encoding of U+2013 EN DASH. Recorded here as \"–\" — confirm against the live CMS before publishing.",
+  "Inconsistent title casing in source, kept verbatim: \"Jeep safari\" (lowercase s) while sibling experience pages use Title Case (e.g. \"Quad Safari\").",
+  "The copy says \"all in one day!\" but no explicit duration value is stated, so duration remains null.",
+  "No long-form description exists on the page; the body copy is a single 33-word paragraph, so longDescription is null.",
+  "META description is only the page title repeated (\"Jeep safari\") — no genuine meta description exists in source.",
+  "No highlights, bullet list, itinerary stops or inclusions exist on the page; highlights left empty.",
+  "No gallery/album images on this page. The only page-specific image is the hero parallax background (data-pages-bg-image on the jumbotron section). og:image points to the _thumb.jpg variant of the same photo.",
+  "No page-specific CTA in the page's own content. The only \"Book now\" button belongs to the global booking bar (form action https://thalassesvillas.reserve-online.net/) and was treated as CMS chrome, so cta is null.",
+  "No external links in the page's own content.",
+  "No price stated in source.",
+  "No group size, vehicle type, guide, pickup point or named destinations stated for Jeep safari.",
+  "categoryProposed is an editorial grouping added for the redesign; the live site has no categories — confirm with the client.",
+  "[TODO: needs content] — 33 words of body copy"
+ ]
+}

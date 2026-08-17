@@ -1,0 +1,72 @@
+{
+ "200": [
+  {
+   "owner": "fetchFacilities",
+   "len": 201031,
+   "topKeys": [
+    "featured_features",
+    "groups"
+   ]
+  }
+ ],
+ "201": [
+  {
+   "owner": "fetchFacilities",
+   "len": 194259,
+   "topKeys": [
+    "featured_features",
+    "groups"
+   ]
+  }
+ ],
+ "202": [
+  {
+   "owner": "fetchFacilities",
+   "len": 198424,
+   "topKeys": [
+    "featured_features",
+    "groups"
+   ]
+  }
+ ],
+ "203": [
+  {
+   "owner": "fetchFacilities",
+   "len": 197182,
+   "topKeys": [
+    "featured_features",
+    "groups"
+   ]
+  }
+ ],
+ "2142": [
+  {
+   "owner": "fetchFacilities",
+   "len": 185619,
+   "topKeys": [
+    "featured_features",
+    "groups"
+   ]
+  }
+ ],
+ "pueblo": [
+  {
+   "owner": "fetchFacilities",
+   "len": 89666,
+   "topKeys": [
+    "featured_features",
+    "groups"
+   ]
+  }
+ ],
+ "index": [
+  {
+   "owner": "fetchFacilities",
+   "len": 89666,
+   "topKeys": [
+    "featured_features",
+    "groups"
+   ]
+  }
+ ]
+}

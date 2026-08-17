@@ -1,0 +1,12 @@
+# Authored on Windows, built on Linux. Normalise to LF in the repository so the
+# diff of a CSS or TSX file is the change and not the line endings.
+* text=auto eol=lf
+
+# Binaries — never touched, never diffed as text.
+*.jpg   binary
+*.jpeg  binary
+*.png   binary
+*.webp  binary
+*.woff2 binary
+*.mp4   binary
+*.pdf   binary

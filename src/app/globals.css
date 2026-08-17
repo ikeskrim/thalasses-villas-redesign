@@ -1,0 +1,338 @@
+@import "tailwindcss";
+@import "./sections.css";
+@import "./villa.css";
+@import "./elevation.css";
+@import "./patterns.css";
+@import "./atmosphere.css";
+
+/* ==========================================================================
+   THALASSES VILLAS — DESIGN TOKENS
+   Every value here is specified in DESIGN-PLAN.md. Components may only use
+   tokens; no ad-hoc colours, sizes or durations anywhere in the codebase.
+   ========================================================================== */
+
+@theme {
+  /* ---- Palette (DESIGN-PLAN §3) -----------------------------------------
+     Six tokens. There is no gold, ochre, brass or terracotta in this system,
+     and no token is added later. The accent slot is deleted by construction:
+     the interactive colour is --pelagos, which passes AA at every size and so
+     needs no lint rule to police it. Ratios verified with the WCAG 2.x
+     relative-luminance formula.                                             */
+  --color-limestone: #e8e9e3; /* page ground, ~80% of surface area          */
+  --color-basalt: #16262b; /* ink; ground for ledger + footer            */
+  --color-pelagos: #14535f; /* interactive + immersive; the datum rule    */
+  --color-phrygana: #545d4e; /* secondary text on light                    */
+  --color-preveli: #a4ccc9; /* secondary text/rules on DARK grounds only  */
+  --color-ammos: #e2dacb; /* SURFACE ONLY — never a text colour         */
+
+  /* ---- Typography (DESIGN-PLAN §4) -------------------------------------- */
+  --font-display: var(--font-marcellus), Georgia, "Times New Roman", serif;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+  /* Display — Marcellus 400, the only weight. Floor is 28px, enforced below. */
+  --text-c1: clamp(4rem, 12vw, 14rem);
+  --text-c2: clamp(2.75rem, 7vw, 7.5rem);
+  --text-c3: clamp(2rem, 3.4vw, 3.25rem);
+  --text-c4: clamp(1.75rem, 2.1vw, 2rem);
+
+  /* Inter — everything else. Nothing is set between 22px and 28px. */
+  --text-lede: clamp(1.125rem, 1.4vw, 1.375rem);
+  --text-body: 1.0625rem;
+  --text-small: 0.9375rem;
+  --text-caption: 0.8125rem;
+  --text-datum: 0.875rem;
+  --text-tail: 0.75rem;
+  --text-tail-lg: 0.8125rem;
+
+  /* ---- Spacing (8px base) ----------------------------------------------- */
+  --spacing-step-1: 0.25rem;
+  --spacing-step-2: 0.5rem;
+  --spacing-step-3: 0.75rem;
+  --spacing-step-4: 1rem;
+  --spacing-step-5: 1.5rem;
+  --spacing-step-6: 2rem;
+  --spacing-step-7: 3rem;
+  --spacing-step-8: 4.5rem;
+  --spacing-step-9: 6.5rem;
+  --spacing-step-10: 9.5rem;
+  --spacing-step-11: 13.75rem;
+
+  /* ---- Layout (DESIGN-PLAN §5.1) ---------------------------------------- */
+  --container-canon: 1560px;
+
+  /* ---- Motion (DESIGN-PLAN §8.1) ---------------------------------------- */
+  --ease-thalasses: cubic-bezier(0.16, 1, 0.3, 1);
+  --duration-clause: 1050ms;
+  --duration-hero: 1150ms;
+  --duration-micro: 500ms;
+  --duration-reduced: 250ms;
+}
+
+/* ---- Non-token custom properties ----------------------------------------- */
+:root {
+  /* The waterline. Every full-bleed photograph locks its horizon here. */
+  --datum: 56%;
+  --page-margin: clamp(1.25rem, 4.5vw, 6rem);
+  --gutter: 2rem;
+
+  /* Relational section rhythm (DESIGN-PLAN §5.3) */
+  --rhythm-prose-prose: clamp(6rem, 12vw, 13.75rem);
+  --rhythm-prose-photo: clamp(4.5rem, 9vw, 9.5rem);
+  --rhythm-photo-prose: clamp(3rem, 6.5vw, 6.5rem);
+  /* Photograph -> Photograph is 0. Always. There is no token for it. */
+}
+
+/* ==========================================================================
+   BASE
+   ========================================================================== */
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background-color: var(--color-limestone);
+  color: var(--color-basalt);
+  font-family: var(--font-sans);
+  font-size: var(--text-body);
+  line-height: 1.68;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+@media (max-width: 767px) {
+  body {
+    font-size: 1.03125rem; /* 16.5px */
+  }
+}
+
+/* Figures never reflow when a value swaps to a [CONFIRM] fallback. */
+.tabular {
+  font-variant-numeric: tabular-nums lining-nums;
+  font-weight: 500;
+}
+
+/* No state on this site is signalled by colour alone (DESIGN-PLAN §3.3). */
+:focus-visible {
+  outline: 2px solid var(--color-pelagos);
+  outline-offset: 2px;
+}
+
+.on-dark :focus-visible {
+  outline-color: var(--color-preveli);
+}
+
+/* ==========================================================================
+   TYPE PRIMITIVES
+   ========================================================================== */
+
+.display {
+  font-family: var(--font-display);
+  /* Marcellus has one weight and no italic. Hierarchy comes from scale,
+     space, case and tracking — the typeface physically cannot shout. */
+  font-weight: 400;
+  font-style: normal;
+}
+
+.c1 {
+  font-size: var(--text-c1);
+  line-height: 0.87;
+  letter-spacing: -0.022em;
+}
+.c2 {
+  font-size: var(--text-c2);
+  line-height: 0.92;
+  letter-spacing: -0.016em;
+}
+.c3 {
+  font-size: var(--text-c3);
+  line-height: 1;
+  letter-spacing: -0.01em;
+}
+.c4 {
+  font-size: var(--text-c4);
+  line-height: 1.08;
+  letter-spacing: -0.005em;
+}
+
+.lede {
+  font-size: var(--text-lede);
+  line-height: 1.45;
+  letter-spacing: -0.006em;
+  max-width: 46ch;
+}
+.prose-measure {
+  max-width: 62ch;
+}
+.small {
+  font-size: var(--text-small);
+  line-height: 1.62;
+}
+.caption {
+  font-size: var(--text-caption);
+  line-height: 1.5;
+  letter-spacing: 0.01em;
+}
+
+/* Micro-labels: four permitted uses, no fifth. 12px floor. */
+.micro {
+  font-family: var(--font-sans);
+  font-size: var(--text-tail);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-phrygana);
+}
+.on-dark .micro {
+  color: var(--color-preveli);
+}
+
+/* ==========================================================================
+   THE CLAUSE — the signature element (DESIGN-PLAN §2)
+   ========================================================================== */
+
+.clause {
+  display: flex;
+  align-items: baseline;
+  gap: 1ch;
+  flex-wrap: wrap;
+}
+
+/* The tail may overrun the grid at C1/C2. It is clipped by the SECTION,
+   never the document: scrollWidth must equal clientWidth at every breakpoint. */
+.clause-field {
+  overflow: hidden;
+}
+
+.clause-tail {
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: var(--text-tail);
+  line-height: 1;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--color-phrygana);
+}
+.on-dark .clause-tail {
+  color: var(--color-preveli);
+}
+.clause--c1 .clause-tail,
+.clause--c2 .clause-tail {
+  font-size: var(--text-tail-lg);
+}
+
+/* Per-character spans translate; letter-spacing is NEVER animated (no CLS). */
+.clause-char {
+  display: inline-block;
+  will-change: transform;
+}
+
+/* At 360 the tail drops below the gerund, aligned to its stem. */
+@media (max-width: 479px) {
+  .clause {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75em;
+  }
+}
+
+/* ==========================================================================
+   FIELD — full-bleed photography
+   ========================================================================== */
+
+.field {
+  position: relative;
+  width: 100%;
+}
+
+/* Unconditional scrim. Worst case (pure-white image) composites to #576366,
+   where --limestone is 5.08:1 — AA body. No per-image tuning required. */
+.field::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    rgb(22 38 43 / 0) 38%,
+    rgb(22 38 43 / 0.72) 100%
+  );
+}
+
+/* Display type sits only in the zone below 62% height. */
+.field-copy {
+  position: absolute;
+  inset-inline: var(--page-margin);
+  bottom: var(--spacing-step-7);
+  z-index: 1;
+}
+
+/* ==========================================================================
+   LAYOUT FIELDS (DESIGN-PLAN §5.1)
+   ========================================================================== */
+
+.canon {
+  max-width: var(--container-canon);
+  margin-inline: auto;
+  padding-inline: var(--page-margin);
+}
+
+.grid-canon {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: var(--gutter);
+}
+
+@media (max-width: 1023px) {
+  .grid-canon {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+}
+@media (max-width: 767px) {
+  .grid-canon {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* A clause and its prose never share columns (DESIGN-PLAN §5.2). */
+.field-clause {
+  grid-column: 1 / span 7;
+}
+.field-prose {
+  grid-column: 8 / span 5;
+}
+.field-plate {
+  grid-column: 7 / span 6;
+}
+.field-index {
+  grid-column: 1 / -1;
+}
+
+@media (max-width: 1023px) {
+  .field-clause,
+  .field-prose,
+  .field-plate,
+  .field-index {
+    grid-column: 1 / -1;
+  }
+}
+
+/* ==========================================================================
+   REDUCED MOTION — a second designed state, not a degradation
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: var(--duration-reduced) !important;
+    scroll-behavior: auto !important;
+  }
+  .clause-char {
+    transform: none !important;
+    will-change: auto;
+  }
+}

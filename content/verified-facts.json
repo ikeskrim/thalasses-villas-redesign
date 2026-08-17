@@ -1,0 +1,87 @@
+{
+ "_note": "Owner-confirmed facts cleared for use in copy, structured data and Unclosed Clause tails. Every entry here is a fact that can be checked, which is the requirement for the clause fact registry (DESIGN-PLAN 2.2).",
+ "source": "owner-confirmed 2026-08-06 (creteholidayhome.com stat strip + prose, corroborated by the WebHotelier availability engine)",
+ "estate": {
+  "villas": 4,
+  "bedrooms": 9,
+  "bathrooms": 6,
+  "sleepsInBeds": 18,
+  "privatePools": 4,
+  "sizeSqm": 240,
+  "distanceToBeach": "about 50 m",
+  "diningTableSeats": 18
+ },
+ "pools": {
+  "count": 4,
+  "note": "One private pool per villa.",
+  "heating": "Heatable on advance request — at least one week's notice, additional daily charge.",
+  "safety": "Pool alarm system for child safety."
+ },
+ "perVillaOutdoor": [
+  "Private pool",
+  "Hot tub",
+  "Barbecue station",
+  "Sitting area"
+ ],
+ "includedServices": [
+  "Cleaning every 3 days",
+  "Daily reception desk",
+  "Holiday Advisor and concierge"
+ ],
+ "grounds": [
+  "Private sunbeds at the water's edge",
+  "Playground",
+  "Vegetable garden, with the gardener's help"
+ ],
+ "distances": [
+  {
+   "name": "The beach",
+   "value": "0 m",
+   "note": "the villas stand about 50 m from the water"
+  },
+  {
+   "name": "Cafes",
+   "value": "650 m"
+  },
+  {
+   "name": "Supermarket",
+   "value": "950 m"
+  },
+  {
+   "name": "Pharmacy",
+   "value": "1.4 km"
+  },
+  {
+   "name": "Doctor",
+   "value": "3 km"
+  },
+  {
+   "name": "Sightseeing",
+   "value": "15 km"
+  },
+  {
+   "name": "Heraklion airport",
+   "value": "72.8 km"
+  },
+  {
+   "name": "Heraklion port",
+   "value": "73.5 km"
+  },
+  {
+   "name": "Chania airport",
+   "value": "77.4 km"
+  },
+  {
+   "name": "Chania port",
+   "value": "61.2 km"
+  }
+ ],
+ "beds": {
+  "twinConversion": "Single beds in the twin rooms convert to doubles on request."
+ },
+ "legal": {
+  "operatingLicence": "1041K91003163701",
+  "label": "Permission of legality",
+  "requirement": "Greek short-term-rental rules require the licence number to be displayed. It must appear in the footer of every page."
+ }
+}

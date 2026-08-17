@@ -1,0 +1,111 @@
+{
+ "slug": "exclusive-tour",
+ "name": "Exclusive Tour",
+ "legacyUrl": "https://thalasses.com/en/exclusive-tour",
+ "canonical": "exclusive-tour-1.html",
+ "meta": {
+  "title": "Exclusive Tour",
+  "description": "Exclusive Tour",
+  "keywords": "Thalasses Villas,Exclusive Tour,Experiences,Rethymno,Greece,Properties chain",
+  "ogImage": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/1c263ae8e7a7ec57c5735885379ef302.jpg",
+  "ogUrl": "https://thalasses.com/en/exclusive-tour"
+ },
+ "sourceTaxonomy": "Experiences",
+ "categoryProposed": "Land",
+ "shortDescription": "Would you like a personal private tour around the history, mythology and culture of Crete? Contact us for more informations.",
+ "longDescription": null,
+ "highlights": [],
+ "wordCount": 20,
+ "needsContent": true,
+ "brokenCta": true,
+ "images": [
+  "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/1c263ae8e7a7ec57c5735885379ef302.jpg",
+  "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/1c263ae8e7a7ec57c5735885379ef302.jpg",
+  "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/b34864e12e6bf5a7f650709cfa73ac2f.jpg",
+  "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/23408fe631ed4b65fe41095dc717413e.jpg",
+  "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/f1225e8e21c4fc5eb67756722bf01f2a.jpg",
+  "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/6daf78e90ace6b7ac0a75a4bb2705a64.jpg",
+  "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/8c640a3df462f2bd4f99c0fe4b529221.jpg",
+  "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/4493f076e7110b75adfa0c05344e920d.jpg",
+  "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/93091179304e5a54144fa74c83d2977f.jpg",
+  "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/4088b922635567e2a388c664796a8760.jpg",
+  "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/e69aab806ba435342e443ce4629ced84.jpg",
+  "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/b0222a22726bd95411f35ce7b9b49747.jpg",
+  "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/ed28359d803f3e23535628e9521b33de.jpg"
+ ],
+ "heroImage": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/1c263ae8e7a7ec57c5735885379ef302.jpg",
+ "gallery": {
+  "heroImage": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/1c263ae8e7a7ec57c5735885379ef302.jpg",
+  "images": [
+   {
+    "url": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/1c263ae8e7a7ec57c5735885379ef302.jpg",
+    "caption": null
+   },
+   {
+    "url": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/b34864e12e6bf5a7f650709cfa73ac2f.jpg",
+    "caption": null
+   },
+   {
+    "url": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/23408fe631ed4b65fe41095dc717413e.jpg",
+    "caption": null
+   },
+   {
+    "url": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/f1225e8e21c4fc5eb67756722bf01f2a.jpg",
+    "caption": null
+   },
+   {
+    "url": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/6daf78e90ace6b7ac0a75a4bb2705a64.jpg",
+    "caption": null
+   },
+   {
+    "url": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/8c640a3df462f2bd4f99c0fe4b529221.jpg",
+    "caption": null
+   },
+   {
+    "url": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/4493f076e7110b75adfa0c05344e920d.jpg",
+    "caption": null
+   },
+   {
+    "url": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/93091179304e5a54144fa74c83d2977f.jpg",
+    "caption": null
+   },
+   {
+    "url": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/4088b922635567e2a388c664796a8760.jpg",
+    "caption": null
+   },
+   {
+    "url": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/e69aab806ba435342e443ce4629ced84.jpg",
+    "caption": null
+   },
+   {
+    "url": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/b0222a22726bd95411f35ce7b9b49747.jpg",
+    "caption": null
+   },
+   {
+    "url": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/ed28359d803f3e23535628e9521b33de.jpg",
+    "caption": null
+   }
+  ]
+ },
+ "externalLinks": [],
+ "cta": null,
+ "duration": null,
+ "price": null,
+ "todos": [
+  "META description, og:description and twitter:description are all just the page title (\"Exclusive Tour\"); there is no unique SEO description in the source.",
+  "Typo in source: \"Contact us for more informations.\" — \"informations\" should be \"information\". Preserved verbatim.",
+  "\"Contact us for more informations.\" is plain text with no <a href> — it is not linked to a contact page, form, email or phone number.",
+  "The entire body copy is a single sentence (a rhetorical question plus a contact prompt). Nothing is stated about the itinerary, the sites visited, the guide, group size, transport or logistics — yet the page carries 12 gallery photographs.",
+  "None of the 12 gallery images have a caption in the source; their only alt text is the CMS placeholder \"Album Image #NNNNN\". Captions/alt text must be written before republishing.",
+  "Gallery image URLs in the source markup are the \"_thumb.jpg\" variants; only the hero/parallax background is available at full size. Full-resolution URLs for the gallery images are not present in the crawled source.",
+  "No highlights, bullets or structured list exist in the source, so highlights is empty.",
+  "No duration stated anywhere in the source page; duration left null.",
+  "No price, rate or 'from' figure stated anywhere in the source page; price left null.",
+  "No page-specific call to action exists in the source. The only CTA on the page is the site-wide booking bar (\"Book now\" -> https://thalassesvillas.reserve-online.net/), which is global chrome, so cta is null.",
+  "longDescription was previously set equal to shortDescription. The page has only one paragraph, so longDescription is now null, matching every other single-paragraph experience page.",
+  "brokenCta: \"Contact us for more informations.\" is a call to action with no anchor, no mailto and no form — a guest reading this page has no way to act on it.",
+  "Gallery source is fancyalbum_3782; all 12 anchors have a genuinely empty data-caption, so every gallery caption is null.",
+  "categoryProposed is an editorial grouping added for the redesign; the live site has no categories — confirm with the client.",
+  "[TODO: needs content] — 20 words of body copy"
+ ]
+}

@@ -1,0 +1,107 @@
+# =============================================================================
+#  THALASSES VILLAS — REDESIGN
+#  What is excluded and why is documented in EXCLUDED-MANIFEST.md.
+# =============================================================================
+
+# ---- Secrets. Nothing with a credential in it, ever. ------------------------
+# This repository is PUBLIC. No key, token, connection string or certificate
+# may ever be committed. The enquiry form's mail provider key, when it exists,
+# goes into Vercel environment variables — never into a file in this tree.
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+*.crt
+.vercel/
+.netlify/
+secrets.json
+credentials.json
+
+# ---- Dependencies -----------------------------------------------------------
+node_modules/
+.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/releases
+
+# ---- Build output -----------------------------------------------------------
+.next/
+out/
+build/
+dist/
+*.tsbuildinfo
+tsconfig.tsbuildinfo
+
+# ---- Test + QA artefacts (all regenerable) ----------------------------------
+# `qa/screens` is 217 MB of full-page screenshots at six breakpoints, rebuilt by
+# `npm run qa:screens`. `qa/walkthrough` and `qa/diagnose` are scratch.
+# The evidence that is REFERENCED by the deliverable docs is kept:
+#   qa/phase3, qa/acts, qa/curation, qa/font-ab.png
+qa/screens/
+qa/walkthrough/
+qa/diagnose/
+test-results/
+playwright-report/
+blob-report/
+.playwright/
+
+# ---- OS / editor ------------------------------------------------------------
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+*~
+.idea/
+.vscode/
+
+# =============================================================================
+#  PHOTOGRAPHY
+#  Only images the content inventory or the source actually references are
+#  tracked. Everything else in public/images is excluded, listed in
+#  EXCLUDED-MANIFEST.md, and recoverable from content/assets-manifest.json.
+# =============================================================================
+
+# ---- Ruled off the site by the owner ----------------------------------------
+# Stock photography, a branded third-party product shot, two public places and
+# one frame that is almost certainly a different property, plus two quarantined
+# frames awaiting provenance. `localImage()` already resolves each of these to
+# null, so they can never render — they have no reason to be in the repository
+# either. Reasons and provenance: content/excluded-images.json.
+public/images/_pool/bc870bf24a014973d25acd877b7cf856.jpg
+public/images/_pool/635d506527ac868f8d19826ccd2cd581.jpg
+public/images/_pool/d75844e8e4b2b9664d2eb3e2103373e5.jpg
+public/images/_pool/d46d74613184883ec42184d66d1eef0a.jpg
+public/images/_pool/fafea700c4a888003811c8139e89ec87.jpg
+public/images/_pool/4088b922635567e2a388c664796a8760.jpg
+public/images/_pool/9e80231c072456bb5f5b0de3f1943b64.jpg
+public/images/_pool/89b9b7d0649de8eaf9e70763e3b9c2f5.jpg
+public/images/_chh/Rituals-p-4.webp
+public/images/_chh/AMZ_7491.jpg
+
+# ---- The creteholidayhome scrape --------------------------------------------
+# 168 files pulled from the sister site during Phase 0. Sixteen of them are
+# referenced by the inventory or the source; the other 152 (38 MB) are not
+# referenced anywhere and are excluded. Ignore the directory contents, then
+# re-admit exactly the sixteen. (`_chh/*` and not `_chh/` — git will not
+# reconsider a negation inside an excluded directory.)
+public/images/_chh/*
+!public/images/_chh/AMZ_7470.jpg
+!public/images/_chh/AMZ_7471.jpg
+!public/images/_chh/AMZ_7521.jpg
+!public/images/_chh/AMZ_7655.jpg
+!public/images/_chh/AMZ_7845.jpg
+!public/images/_chh/AMZ_7855.jpg
+!public/images/_chh/AMZ_7860.jpg
+!public/images/_chh/AMZ_7867.jpg
+!public/images/_chh/Rituals-e-3-1.webp
+!public/images/_chh/Untitled-design-1.webp
+!public/images/_chh/Untitled-design.webp
+!public/images/_chh/Villa-Eeanthi-11_result.webp
+!public/images/_chh/Villa-Eeanthi-1_result.webp
+!public/images/_chh/Villa-Melia-16_result.webp
+!public/images/_chh/Villa-Melia-17_result.webp
+!public/images/_chh/Villa-Melia-22_result.webp

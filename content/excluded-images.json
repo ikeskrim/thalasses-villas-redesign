@@ -1,0 +1,114 @@
+[
+ {
+  "n": 60,
+  "status": "location-only",
+  "concern": "public-place",
+  "reason": "Fortezza gate, Rethymno — a real landmark. Tier B, Location section only.",
+  "store": "pool",
+  "file": "4088b922635567e2a388c664796a8760.jpg",
+  "path": "/images/_pool/4088b922635567e2a388c664796a8760.jpg",
+  "subject": "Venetian fortress gate at Rethymno Fortezza",
+  "duplicates": []
+ },
+ {
+  "n": 38,
+  "status": "quarantined",
+  "concern": "unsure",
+  "reason": "Public coastal path with a family; provenance unverified.",
+  "store": "chh",
+  "file": "AMZ_7491.jpg",
+  "path": "/images/_chh/AMZ_7491.jpg",
+  "subject": "Family walking a rocky coastal path",
+  "duplicates": []
+ },
+ {
+  "n": 65,
+  "status": "quarantined",
+  "concern": "unsure",
+  "reason": "Provenance unverified.",
+  "store": "pool",
+  "file": "9e80231c072456bb5f5b0de3f1943b64.jpg",
+  "path": "/images/_pool/9e80231c072456bb5f5b0de3f1943b64.jpg",
+  "subject": "Three people posing in commercial kitchen",
+  "duplicates": []
+ },
+ {
+  "n": 66,
+  "status": "quarantined",
+  "concern": "unsure",
+  "reason": "Provenance unverified.",
+  "store": "pool",
+  "file": "89b9b7d0649de8eaf9e70763e3b9c2f5.jpg",
+  "path": "/images/_pool/89b9b7d0649de8eaf9e70763e3b9c2f5.jpg",
+  "subject": "Blurred close-up of coffee machine and pods",
+  "duplicates": []
+ },
+ {
+  "n": 3,
+  "status": "removed",
+  "concern": "stock",
+  "reason": "Stock sports photography — cyclist on a mountain ridge.",
+  "store": "pool",
+  "file": "bc870bf24a014973d25acd877b7cf856.jpg",
+  "path": "/images/_pool/bc870bf24a014973d25acd877b7cf856.jpg",
+  "subject": "Lone cyclist on a mountain ridge",
+  "duplicates": []
+ },
+ {
+  "n": 6,
+  "status": "removed",
+  "concern": "public-place",
+  "reason": "Municipal umbrellas on a public bay — misrepresents the private beach.",
+  "store": "pool",
+  "file": "d46d74613184883ec42184d66d1eef0a.jpg",
+  "path": "/images/_pool/d46d74613184883ec42184d66d1eef0a.jpg",
+  "subject": "Bay of municipal umbrellas from above",
+  "duplicates": []
+ },
+ {
+  "n": 22,
+  "status": "removed",
+  "concern": "different-property",
+  "reason": "Infinity pool over mountains; Thalasses is ~50 m from the sea.",
+  "store": "pool",
+  "file": "fafea700c4a888003811c8139e89ec87.jpg",
+  "path": "/images/_pool/fafea700c4a888003811c8139e89ec87.jpg",
+  "subject": "Pool edge and towels above a valley",
+  "duplicates": []
+ },
+ {
+  "n": 40,
+  "status": "removed",
+  "concern": "stock",
+  "reason": "Stock sports photography — cyclist silhouetted on a road.",
+  "store": "pool",
+  "file": "635d506527ac868f8d19826ccd2cd581.jpg",
+  "path": "/images/_pool/635d506527ac868f8d19826ccd2cd581.jpg",
+  "subject": "Backlit cyclist on an empty road",
+  "duplicates": []
+ },
+ {
+  "n": 53,
+  "status": "removed",
+  "concern": "branded-stock",
+  "reason": "Mythos beer product shot; third-party branding.",
+  "store": "pool",
+  "file": "d75844e8e4b2b9664d2eb3e2103373e5.jpg",
+  "path": "/images/_pool/d75844e8e4b2b9664d2eb3e2103373e5.jpg",
+  "subject": "Mythos beer bottles in an ice bucket",
+  "duplicates": [
+   "pool/494c7f128f138c716063ba7f4c64d769.jpg"
+  ]
+ },
+ {
+  "n": 54,
+  "status": "removed",
+  "concern": "branded-stock",
+  "reason": "Mythos beer product shot; third-party branding.",
+  "store": "chh",
+  "file": "Rituals-p-4.webp",
+  "path": "/images/_chh/Rituals-p-4.webp",
+  "subject": "Mythos beer bottles in an ice bucket (duplicate)",
+  "duplicates": []
+ }
+]

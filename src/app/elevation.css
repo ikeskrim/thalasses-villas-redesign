@@ -1,0 +1,361 @@
+/* ==========================================================================
+   PHASE 2.5 — PREMIUM ELEVATION
+   Imagery-led composition, entrance choreography, ground transitions.
+   Tokens only.
+   ========================================================================== */
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---- Preloader ----------------------------------------------------------- */
+.preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: var(--color-basalt);
+  display: grid;
+  place-items: center;
+}
+.preloader-word {
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 5vw, 3.25rem);
+  letter-spacing: 0.34em;
+  color: var(--color-limestone);
+  padding-left: 0.34em;
+}
+.preloader-word span {
+  display: inline-block;
+}
+
+/* ---- Custom cursor (desktop pointer only) -------------------------------- */
+.cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 90;
+  pointer-events: none;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--color-limestone);
+  mix-blend-mode: difference;
+  transition: width 0.3s var(--ease-thalasses), height 0.3s var(--ease-thalasses);
+}
+.cursor--labelled {
+  width: 84px;
+  height: 84px;
+  background: var(--color-limestone);
+  mix-blend-mode: normal;
+  display: grid;
+  place-items: center;
+}
+.cursor-label {
+  font-family: var(--font-sans);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-basalt);
+}
+/* The native cursor stays available — this is an enhancement, not a replacement. */
+body.has-custom-cursor {
+  cursor: auto;
+}
+
+/* ---- Magnetic ------------------------------------------------------------ */
+.magnetic {
+  display: inline-block;
+}
+.magnetic-inner {
+  display: inline-block;
+  transition: transform 0.45s var(--ease-thalasses);
+  will-change: transform;
+}
+
+/* ---- Primary CTA --------------------------------------------------------- */
+.btn-primary {
+  display: inline-block;
+  padding: 20px 40px;
+  background: var(--color-basalt);
+  color: var(--color-limestone);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.btn-primary--light {
+  background: var(--color-limestone);
+  color: var(--color-basalt);
+}
+.btn-primary:focus-visible {
+  outline: 2px solid var(--color-pelagos);
+  outline-offset: 3px;
+}
+
+/* ==========================================================================
+   01 HERO — one line of desire, one proof, one booking affordance
+   ========================================================================== */
+
+.hero {
+  position: relative;
+  height: 100svh;
+  overflow: hidden;
+}
+.kenburns {
+  position: absolute;
+  inset: 0;
+  will-change: transform;
+}
+/* Unconditional scrim: at 0.72 over a pure-white frame the composite is
+   #576366, where --limestone is 5.08:1 — AA body, worst case. */
+.hero-scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgb(22 38 43 / 0.34) 0%,
+    rgb(22 38 43 / 0.1) 34%,
+    rgb(22 38 43 / 0.72) 100%
+  );
+}
+.hero-copy {
+  position: absolute;
+  inset-inline: 0;
+  bottom: calc(var(--ledger-clearance, 104px) + var(--spacing-step-6));
+  z-index: 2;
+  color: var(--color-limestone);
+}
+.hero-copy .clause-tail {
+  color: var(--color-preveli);
+}
+.hero-desire {
+  margin-top: var(--spacing-step-5);
+  font-size: var(--text-lede);
+  line-height: 1.4;
+  max-width: 30ch;
+  color: var(--color-limestone);
+}
+.hero-proof {
+  margin-top: var(--spacing-step-6);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-step-4);
+}
+.hero-proof-mark {
+  height: auto;
+  width: 132px;
+  filter: brightness(0) invert(1);
+  opacity: 0.86;
+}
+.hero-proof-text {
+  color: var(--color-preveli);
+}
+
+/* ==========================================================================
+   BEATS — imagery-led
+   ========================================================================== */
+
+.beat {
+  padding-block: var(--rhythm-prose-photo);
+}
+.beat--split {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  gap: clamp(2rem, 5vw, 5.5rem);
+  align-items: center;
+  padding-inline: 0 var(--page-margin);
+  max-width: 1800px;
+  margin-inline: auto;
+}
+.beat-media {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  min-height: 62svh;
+}
+.beat-copy {
+  padding-right: var(--page-margin);
+}
+.beat-copy .lede {
+  margin-top: var(--spacing-step-6);
+}
+.beat-cta {
+  margin-top: var(--spacing-step-7);
+}
+.beat--wide {
+  padding-inline: var(--page-margin);
+  max-width: var(--container-canon);
+  margin-inline: auto;
+}
+
+@media (max-width: 1023px) {
+  .beat--split {
+    grid-template-columns: minmax(0, 1fr);
+    padding-inline: 0;
+  }
+  .beat-media {
+    aspect-ratio: 3 / 2;
+    min-height: 0;
+  }
+  .beat-copy {
+    padding-inline: var(--page-margin);
+  }
+}
+
+/* ==========================================================================
+   05 THE PINNED BEAT — the estate
+   Ground transition: limestone -> pelagos and back, the one place it happens.
+   ========================================================================== */
+
+.pinned {
+  position: relative;
+  height: 260svh;
+  background: var(--color-pelagos);
+}
+.pinned-sticky {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  overflow: hidden;
+}
+.pinned-media {
+  position: absolute;
+  inset: 0;
+  will-change: transform;
+}
+.pinned-veil {
+  position: absolute;
+  inset: 0;
+  background: var(--color-pelagos);
+}
+.pinned-copy {
+  position: relative;
+  z-index: 2;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: var(--color-limestone);
+}
+.pinned-copy .clause-tail {
+  color: var(--color-preveli);
+}
+.pinned-lede {
+  margin-top: var(--spacing-step-6);
+  color: var(--color-preveli);
+}
+.pinned-figures {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--gutter);
+  margin-top: var(--spacing-step-7);
+  max-width: 46rem;
+}
+.pinned-cta {
+  margin-top: var(--spacing-step-7);
+}
+@media (max-width: 767px) {
+  .pinned {
+    height: 220svh;
+  }
+  .pinned-figures {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    row-gap: var(--spacing-step-5);
+  }
+}
+
+/* ==========================================================================
+   07 DRAG REGISTER
+   ========================================================================== */
+
+.drag-register {
+  list-style: none;
+  display: flex;
+  gap: var(--spacing-step-5);
+  margin-top: var(--spacing-step-8);
+  overflow-x: auto;
+  scroll-snap-type: x proximity;
+  padding-bottom: var(--spacing-step-5);
+  /* Native scroll on touch; pointer drag is layered on top for fine pointers. */
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+}
+.drag-register.is-dragging {
+  scroll-snap-type: none;
+  user-select: none;
+}
+.drag-card {
+  flex: 0 0 clamp(240px, 28vw, 360px);
+  scroll-snap-align: start;
+}
+.drag-card-figure {
+  position: relative;
+  aspect-ratio: 3 / 4;
+  background: var(--color-ammos);
+  overflow: hidden;
+}
+.drag-card-body {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--spacing-step-4);
+  width: 100%;
+  padding-block: var(--spacing-step-4);
+  background: none;
+  border: none;
+  text-align: left;
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+.drag-card-action {
+  flex: none;
+  color: var(--color-pelagos);
+}
+.drag-card-body:hover .drag-card-name,
+.drag-card-body:focus-visible .drag-card-name {
+  text-decoration: underline;
+  text-underline-offset: 0.22em;
+  text-decoration-thickness: 1.5px;
+}
+.drag-card-panel {
+  padding-bottom: var(--spacing-step-4);
+  color: var(--color-phrygana);
+}
+
+/* ==========================================================================
+   REDUCED MOTION — every enhancement above collapses
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .kenburns,
+  .pinned-media,
+  .magnetic-inner {
+    transform: none !important;
+    transition: none !important;
+    animation: none !important;
+  }
+  .cursor {
+    display: none !important;
+  }
+  .preloader {
+    display: none !important;
+  }
+}
+
+/* A card whose only photograph was ruled off the site. Typographic, on the
+   sand stock — deliberately reads as "awaiting a picture", not as broken. */
+.drag-card-figure--typographic {
+  background: var(--color-ammos);
+  display: grid;
+  place-items: center;
+  padding: var(--spacing-step-5);
+  text-align: center;
+  color: var(--color-phrygana);
+}

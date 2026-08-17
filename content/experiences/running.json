@@ -1,0 +1,48 @@
+{
+ "slug": "running",
+ "name": "Running",
+ "legacyUrl": "https://thalasses.com/en/running",
+ "canonical": "running-1.html",
+ "meta": {
+  "title": "Running",
+  "description": "Running",
+  "keywords": "Thalasses Villas,Running,Experiences,Rethymno,Greece,Properties chain",
+  "ogImage": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/c24c3cbb07a7d000732744102339fad6.jpg",
+  "ogUrl": "https://thalasses.com/en/running"
+ },
+ "sourceTaxonomy": "Experiences",
+ "categoryProposed": "Land",
+ "shortDescription": "Ask us for routs in Crete. Explore the enchanting paths and enjoy the unique landscapes of Crete!",
+ "longDescription": null,
+ "highlights": [],
+ "wordCount": 17,
+ "needsContent": true,
+ "brokenCta": false,
+ "images": [
+  "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/c24c3cbb07a7d000732744102339fad6.jpg"
+ ],
+ "heroImage": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/c24c3cbb07a7d000732744102339fad6.jpg",
+ "gallery": {
+  "heroImage": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/c24c3cbb07a7d000732744102339fad6.jpg",
+  "images": []
+ },
+ "externalLinks": [],
+ "cta": null,
+ "duration": null,
+ "price": null,
+ "todos": [
+  "Typo in source, kept verbatim: \"routs\" should read \"routes\".",
+  "Body copy is identical to the Hiking page except for the final punctuation (\"!\" here vs \".\" on Hiking). Duplicate copy across two experiences — needs distinct copy in the redesign, and the Land/Wellness grouping for Running is an editorial judgement call given the copy says nothing about training or fitness.",
+  "No long-form description exists on the page; the body copy is a single 17-word paragraph, so longDescription is null.",
+  "META description is only the page title repeated (\"Running\") — no genuine meta description exists in source.",
+  "No highlights, bullet list, route names, distances or elevation exist on the page; highlights left empty.",
+  "No gallery/album images on this page. The only page-specific image is the hero parallax background (data-pages-bg-image on the jumbotron section). og:image points to the _thumb.jpg variant of the same photo.",
+  "No page-specific CTA in the page's own content. The only \"Book now\" button belongs to the global booking bar (form action https://thalassesvillas.reserve-online.net/) and was treated as CMS chrome, so cta is null.",
+  "No external links in the page's own content.",
+  "No duration stated in source.",
+  "No price stated in source.",
+  "No relationship stated between Running and the separate Personal Trainer experience page — confirm whether they should be cross-linked.",
+  "categoryProposed is an editorial grouping added for the redesign; the live site has no categories — confirm with the client.",
+  "[TODO: needs content] — 17 words of body copy"
+ ]
+}

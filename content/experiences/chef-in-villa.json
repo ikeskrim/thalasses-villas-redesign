@@ -1,0 +1,110 @@
+{
+ "slug": "chef-in-villa",
+ "name": "Private Chef",
+ "legacyUrl": "https://thalasses.com/en/chef-in-villa",
+ "canonical": "chef-in-villa-1.html",
+ "meta": {
+  "title": "Private Chef",
+  "description": "Private Chef",
+  "keywords": "Thalasses Villas,Private Chef,Experiences,Rethymno,Greece,Properties chain",
+  "ogImage": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/04dccbf09dd7c516e55988fc4122b14d.jpg",
+  "ogUrl": "https://thalasses.com/en/chef-in-villa"
+ },
+ "sourceTaxonomy": "Experiences",
+ "categoryProposed": "Taste",
+ "shortDescription": "We provide Chef services in your own personal space, having an associate network of professional Chefs from the area, who will provide culinary delights both from the modern – traditional Cretan cuisine.",
+ "longDescription": null,
+ "highlights": [],
+ "wordCount": 31,
+ "needsContent": true,
+ "brokenCta": false,
+ "images": [
+  "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/04dccbf09dd7c516e55988fc4122b14d.jpg",
+  "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/04dccbf09dd7c516e55988fc4122b14d.jpg",
+  "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/3d475e914305447d2a611b01670e4932.jpg",
+  "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/d08b226f7bab811672c94f62a1f40af0.jpg",
+  "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/c9fb183d8864828cfec7491ff0608411.jpg",
+  "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/7cf8a9573f058e5e80e0b95b24546e92.jpg",
+  "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/51aa712dc35abb623bae1fe09a5e6c9b.jpg",
+  "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/87916b04afac710f995cc2c9e15e28da.jpg",
+  "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/0b61a517e2cabcafa0ded6e0d3e91417.jpg",
+  "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/db02a210bc206e0800c0c36a6d4e2c21.jpg",
+  "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/4f59b2a3177bff19c016f28409cd52f9.jpg",
+  "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/8322bdf321bcf269f30aa207850a9d3d.jpg",
+  "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/2ea5502d05be272166a94de3aaa5d3dd.jpg"
+ ],
+ "heroImage": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/04dccbf09dd7c516e55988fc4122b14d.jpg",
+ "gallery": {
+  "heroImage": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/04dccbf09dd7c516e55988fc4122b14d.jpg",
+  "images": [
+   {
+    "url": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/04dccbf09dd7c516e55988fc4122b14d.jpg",
+    "caption": null
+   },
+   {
+    "url": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/3d475e914305447d2a611b01670e4932.jpg",
+    "caption": null
+   },
+   {
+    "url": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/d08b226f7bab811672c94f62a1f40af0.jpg",
+    "caption": null
+   },
+   {
+    "url": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/c9fb183d8864828cfec7491ff0608411.jpg",
+    "caption": null
+   },
+   {
+    "url": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/7cf8a9573f058e5e80e0b95b24546e92.jpg",
+    "caption": null
+   },
+   {
+    "url": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/51aa712dc35abb623bae1fe09a5e6c9b.jpg",
+    "caption": null
+   },
+   {
+    "url": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/87916b04afac710f995cc2c9e15e28da.jpg",
+    "caption": null
+   },
+   {
+    "url": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/0b61a517e2cabcafa0ded6e0d3e91417.jpg",
+    "caption": null
+   },
+   {
+    "url": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/db02a210bc206e0800c0c36a6d4e2c21.jpg",
+    "caption": null
+   },
+   {
+    "url": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/4f59b2a3177bff19c016f28409cd52f9.jpg",
+    "caption": null
+   },
+   {
+    "url": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/8322bdf321bcf269f30aa207850a9d3d.jpg",
+    "caption": null
+   },
+   {
+    "url": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/2ea5502d05be272166a94de3aaa5d3dd.jpg",
+    "caption": null
+   }
+  ]
+ },
+ "externalLinks": [],
+ "cta": null,
+ "duration": null,
+ "price": null,
+ "todos": [
+  "No long-form description exists on the page; the body copy is a single 32-word paragraph, so longDescription is null.",
+  "META description is only the page title repeated (\"Private Chef\") — no genuine meta description exists in source.",
+  "No highlights, bullet list, inclusions or itinerary exist on the page; highlights left empty.",
+  "Gallery images are only referenced as _thumb.jpg derivatives; full-resolution originals are site-relative fancybox hrefs (../loggia-cdn/lodgeContent/<hash>-1.jpg). All 12 album images carry generic CMS alt text of the form \"Album Image  #NNNNN\" and empty data-caption attributes, so none can be identified without visual review.",
+  "No page-specific CTA in the page's own content. The only \"Book now\" button belongs to the global booking bar (form action https://thalassesvillas.reserve-online.net/) and was treated as CMS chrome, so cta is null.",
+  "No external links in the page's own content.",
+  "No duration stated in source.",
+  "No price stated in source.",
+  "The crawled HTML contains a mis-encoded character between \"modern\" and \"traditional\" (byte sequence C3 A2 C2 80 C2 93, a double-encoded en dash). Recorded here as an en dash \"–\"; confirm the intended punctuation with the client.",
+  "Page name (\"Private Chef\") does not match its URL slug (\"chef-in-villa\"); both are kept as-is.",
+  "No sample menus, dietary options, party sizes or number of courses are stated.",
+  "Gallery source is fancyalbum_3789; all 12 anchors have a genuinely empty data-caption, so every gallery caption is null.",
+  "categoryProposed is an editorial grouping added for the redesign; the live site has no categories — confirm with the client.",
+  "[TODO: needs content] — 31 words of body copy"
+ ]
+}

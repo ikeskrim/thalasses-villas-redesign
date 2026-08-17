@@ -1,0 +1,45 @@
+{
+ "slug": "boat-trip",
+ "name": "Private Boat Trip",
+ "legacyUrl": "https://thalasses.com/en/boat-trip",
+ "canonical": "boat-trip-1.html",
+ "meta": {
+  "title": "Private Boat Trip",
+  "description": "Private Boat Trip",
+  "keywords": "Thalasses Villas,Private Boat Trip,Experiences,Rethymno,Greece,Properties chain",
+  "ogImage": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/267597f7da675716be65dde87d17a259.jpg",
+  "ogUrl": "https://thalasses.com/en/boat-trip"
+ },
+ "sourceTaxonomy": "Experiences",
+ "categoryProposed": "Sea",
+ "shortDescription": "Our goal is to offer you a unique experience and to show you the sights of our beautiful island from the comfort of your own private boat.",
+ "longDescription": "Our goal is to offer you a unique experience and to show you the sights of our beautiful island from the comfort of your own private boat.\n\nWe have boats that are rented exclusively to you or your company and we organize cruises all over Crete.\n\nThe numerous coves accessible exclusively by boat, the sandy beaches, the marine habitats with the turquoise waters and the rocky landscape are an exceptional landscape ideal for relaxation, exploration, fishing and fun.",
+ "highlights": [],
+ "wordCount": 78,
+ "needsContent": false,
+ "brokenCta": false,
+ "images": [
+  "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/267597f7da675716be65dde87d17a259.jpg"
+ ],
+ "heroImage": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/267597f7da675716be65dde87d17a259.jpg",
+ "gallery": {
+  "heroImage": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/267597f7da675716be65dde87d17a259.jpg",
+  "images": []
+ },
+ "externalLinks": [],
+ "cta": null,
+ "duration": null,
+ "price": null,
+ "todos": [
+  "META description, og:description and twitter:description are all just the page title (\"Private Boat Trip\"); there is no unique SEO description in the source.",
+  "No boat types, passenger capacity, skipper/crew details, departure point, route or itinerary are stated.",
+  "Final sentence repeats \"landscape\" twice (\"...the rocky landscape are an exceptional landscape ideal for...\") and is grammatically off; needs an editorial pass. Preserved verbatim.",
+  "The page has no contact link, enquiry form or booking route of its own.",
+  "No highlights, bullets or structured list exist in the source, so highlights is empty.",
+  "No photo gallery on this page — the only page-specific image is the hero/parallax background.",
+  "No duration stated anywhere in the source page; duration left null.",
+  "No price, rate or 'from' figure stated anywhere in the source page; price left null.",
+  "No page-specific call to action exists in the source. The only CTA on the page is the site-wide booking bar (\"Book now\" -> https://thalassesvillas.reserve-online.net/), which is global chrome, so cta is null.",
+  "categoryProposed is an editorial grouping added for the redesign; the live site has no categories — confirm with the client."
+ ]
+}

@@ -1,0 +1,60 @@
+{
+ "slug": "hiking",
+ "name": "Hiking",
+ "legacyUrl": "https://thalasses.com/en/hiking",
+ "canonical": "hiking-1.html",
+ "meta": {
+  "title": "Hiking",
+  "description": "Hiking",
+  "keywords": "Thalasses Villas,Hiking,Experiences,Rethymno,Greece,Properties chain",
+  "ogImage": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/b1987c68d509d41e5aa1269ecd12a5d1.jpg",
+  "ogUrl": "https://thalasses.com/en/hiking"
+ },
+ "sourceTaxonomy": "Experiences",
+ "categoryProposed": "Land",
+ "shortDescription": "Ask us for routs in Crete. Explore the enchanting paths and enjoy the unique landscapes of Crete.",
+ "longDescription": null,
+ "highlights": [],
+ "wordCount": 17,
+ "needsContent": true,
+ "brokenCta": false,
+ "images": [
+  "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/b1987c68d509d41e5aa1269ecd12a5d1.jpg",
+  "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/a1478ffe450772d18d2ae6eb6006fe22.jpg"
+ ],
+ "heroImage": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/b1987c68d509d41e5aa1269ecd12a5d1.jpg",
+ "gallery": {
+  "heroImage": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/b1987c68d509d41e5aa1269ecd12a5d1.jpg",
+  "images": [
+   {
+    "url": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/b1987c68d509d41e5aa1269ecd12a5d1.jpg",
+    "caption": null
+   },
+   {
+    "url": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/a1478ffe450772d18d2ae6eb6006fe22.jpg",
+    "caption": null
+   }
+  ]
+ },
+ "externalLinks": [],
+ "cta": null,
+ "duration": null,
+ "price": null,
+ "todos": [
+  "Typo in source, kept verbatim: \"routs\" should read \"routes\".",
+  "No long-form description exists on the page; the body copy is a single 17-word paragraph, so longDescription is null.",
+  "META description is only the page title repeated (\"Hiking\") — no genuine meta description exists in source.",
+  "No highlights, bullet list, trail names, distances or difficulty grades exist on the page; highlights left empty.",
+  "Gallery item 1 is the same photo as the hero background (b1987c68d509d41e5aa1269ecd12a5d1).",
+  "Gallery item 2 (a1478ffe450772d18d2ae6eb6006fe22) appears in the source only as a _thumb.jpg S3 URL plus a relative local copy ../loggia-cdn/lodgeContent/a1478ffe450772d18d2ae6eb6006fe22-1.jpg; no full-size S3 URL is present, so the thumb URL is recorded as-is.",
+  "gallery.images[0].url is the b1987c68d509d41e5aa1269ecd12a5d1_thumb.jpg derivative actually carried by the album <img data-src>; the images array records the same photo at full size because it doubles as the hero parallax background. Same asset, two resolutions — not a duplicate.",
+  "No page-specific CTA in the page's own content. The only \"Book now\" button belongs to the global booking bar (form action https://thalassesvillas.reserve-online.net/) and was treated as CMS chrome, so cta is null.",
+  "No external links in the page's own content.",
+  "No duration stated in source.",
+  "No price stated in source.",
+  "Body copy is identical to the Running page except for the final punctuation (\".\" here vs \"!\" on Running) — duplicate copy should be rewritten for the redesign.",
+  "CORRECTION to the previous pass: hiking is NOT \"the only one of the seven experience pages with an album gallery\". Six of the 21 experience pages carry a fancybox album — dream-weadding-on-the-beach (20 images), chef-in-villa (12), exclusive-tour (12), biological-garden (8), private-helipad (8) and hiking (2). Hiking's album is fancyalbum_3779 with 2 items, alt \"Album Image  #17832\" and \"Album Image  #17833\"; both data-caption attributes are genuinely empty, so both gallery captions are null. Real alt text and captions are still needed for the redesign.",
+  "categoryProposed is an editorial grouping added for the redesign; the live site has no categories — confirm with the client.",
+  "[TODO: needs content] — 17 words of body copy"
+ ]
+}

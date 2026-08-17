@@ -1,0 +1,6372 @@
+{
+ "200": [
+  {
+   "tab": "Amenities",
+   "group": "Essentials",
+   "slug": "slug_property_feature_group_amenities_basics",
+   "items": [
+    {
+     "id": 5,
+     "name": "Essentials",
+     "type": 5,
+     "value": "1",
+     "description": "Towels, linen..."
+    },
+    {
+     "id": 6,
+     "name": "Supplies",
+     "type": 5,
+     "value": "1",
+     "description": "Paper, cleaning..."
+    }
+   ]
+  },
+  {
+   "tab": "Amenities",
+   "group": "Kitchen and dining",
+   "slug": "slug_property_feature_group_amenities_kitchen",
+   "items": [
+    {
+     "id": 566,
+     "name": "Kitchen",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 20,
+     "name": "Toaster",
+     "type": 5,
+     "value": "1",
+     "description": "For sandwich"
+    },
+    {
+     "id": 17,
+     "name": "Dishwasher",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 14,
+     "name": "Dishes & Utensils",
+     "type": 5,
+     "value": "1",
+     "description": "Dishes, pans, Cutlery"
+    },
+    {
+     "id": 19,
+     "name": "Microwave",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 16,
+     "name": "Coffee maker",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 789,
+     "name": "Pantry items",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 507,
+     "name": "Barbecue / grill",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 810,
+     "name": "Dining Table",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 499,
+     "name": "Oven",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 500,
+     "name": "Hob/Stove",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 472,
+     "name": "Kettle",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 501,
+     "name": "Fridge",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 18,
+     "name": "Freezer",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 498,
+     "name": "Spices",
+     "type": 5,
+     "value": "1",
+     "description": "Salt, Pepper, etc."
+    },
+    {
+     "id": 518,
+     "name": "High Chair",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 240,
+     "name": "Espresso Maker",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 425,
+     "name": "Electric kettle",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 15,
+     "name": "Basic appliances",
+     "type": 5,
+     "value": "1",
+     "description": "Oven, hobs, refrigerator..."
+    },
+    {
+     "id": 1402,
+     "name": "Wine glasses",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Amenities",
+   "group": "Essential amenities",
+   "slug": "slug_property_feature_group_amenities_comfort",
+   "items": [
+    {
+     "id": 7,
+     "name": "Air Conditioning",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 768,
+     "name": "Linen provided",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 897,
+     "name": "Basic soaps",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 21,
+     "name": "Washing machine",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 626,
+     "name": "Iron & board",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Amenities",
+   "group": "General",
+   "slug": "slug_property_feature_group_amenities_general",
+   "items": [
+    {
+     "id": 10,
+     "name": "Internet",
+     "type": 5,
+     "value": "1",
+     "description": "Free Wi-Fi / ethernet"
+    },
+    {
+     "id": 534,
+     "name": "Living Room",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 27,
+     "name": "Sitting area",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 692,
+     "name": "Parking",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Amenities",
+   "group": "Pool and spa facilities",
+   "slug": "slug_property_feature_group_amenities_pool-and-spa",
+   "items": [
+    {
+     "id": 32,
+     "name": "Pool",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 678,
+     "name": "Outdoor pool",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 366,
+     "name": "Private pool",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 527,
+     "name": "Spa whirlpool",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 531,
+     "name": "Heated Pool",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 648,
+     "name": "Pool towels",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Amenities",
+   "group": "Outdoor features",
+   "slug": "slug_property_feature_group_amenities_outdoor",
+   "items": [
+    {
+     "id": 924,
+     "name": "Deck chairs",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 798,
+     "name": "Outdoor/Garden furniture",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 503,
+     "name": "Balcony",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 797,
+     "name": "Beach towels",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 238,
+     "name": "Garden",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 33,
+     "name": "Sunbeds",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 28,
+     "name": "Dining area",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 30,
+     "name": "Car park",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 31,
+     "name": "Kids area",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 471,
+     "name": "Outdoor Shower",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 877,
+     "name": "Sun Loungers",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 886,
+     "name": "Umbrellas",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Amenities",
+   "group": "Accommodations",
+   "slug": "slug_property_feature_group_amenities_accommodations",
+   "items": [
+    {
+     "id": 618,
+     "name": "Breakfast Booking Possible",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 624,
+     "name": "Concierge",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 625,
+     "name": "Massage",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 620,
+     "name": "Private Chef",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Amenities",
+   "group": "Car",
+   "slug": "slug_property_feature_group_amenities_car",
+   "items": [
+    {
+     "id": 634,
+     "name": "Car Recommended",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Amenities",
+   "group": "Locations",
+   "slug": "slug_property_feature_group_amenities_topothesies",
+   "items": [
+    {
+     "id": 710,
+     "name": "Beach",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 736,
+     "name": "Waterfront",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 734,
+     "name": "Village",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 733,
+     "name": "Town",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 806,
+     "name": "Near the sea",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Amenities",
+   "group": "Bathroom",
+   "slug": "slug_property_feature_group_amenities_07_bathroom",
+   "items": [
+    {
+     "id": 1237,
+     "name": "Shower only",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 22,
+     "name": "Hair dryer",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 86,
+     "name": "Toilet paper",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 916,
+     "name": "Shampoo",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 461,
+     "name": "Towels provided",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Amenities",
+   "group": "Telephone",
+   "slug": "slug_property_feature_group_amenities_12_telephone",
+   "items": [
+    {
+     "id": 466,
+     "name": "Phone",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Entertainment / Activities",
+   "group": "Entertainment",
+   "slug": "slug_property_feature_group_amenities_entertainment",
+   "items": [
+    {
+     "id": 11,
+     "name": "Television",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 825,
+     "name": "Video game console",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 511,
+     "name": "Video games",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 510,
+     "name": "Stereo / sound system",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 515,
+     "name": "Toys",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 508,
+     "name": "Books",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 516,
+     "name": "DVD Player",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 12,
+     "name": "Satellite/Cable TV",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 517,
+     "name": "Ping pong table",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 544,
+     "name": "Games",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 888,
+     "name": "Board games/puzzles",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Entertainment / Activities",
+   "group": "Sports and Adventure",
+   "slug": "slug_property_feature_group_amenities_sports-and-adventures",
+   "items": [
+    {
+     "id": 576,
+     "name": "Cycling",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 554,
+     "name": "Fishing",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 581,
+     "name": "Hiking",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 559,
+     "name": "Jet Skiing",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 560,
+     "name": "Mountain Biking",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 584,
+     "name": "Mountain Climbing",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 587,
+     "name": "Sailing",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 573,
+     "name": "Surfing",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 700,
+     "name": "Swimming",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 574,
+     "name": "Water Tubing",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 570,
+     "name": "Water Skiing",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 575,
+     "name": "Wind Surfing",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 568,
+     "name": "Scuba or Snorkeling",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 802,
+     "name": "Snorkeling",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 804,
+     "name": "Caving",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Entertainment / Activities",
+   "group": "Leisure",
+   "slug": "slug_property_feature_group_amenities_leasure-activities",
+   "items": [
+    {
+     "id": 608,
+     "name": "Bird Watching",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 609,
+     "name": "Eco Tourism",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 610,
+     "name": "Horseback Riding",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 611,
+     "name": "Paddle Boating",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Entertainment / Activities",
+   "group": "Attractions",
+   "slug": "slug_property_feature_group_amenities_attractions",
+   "items": [
+    {
+     "id": 598,
+     "name": "Museums",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 593,
+     "name": "Marina",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 594,
+     "name": "Theme Parks",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 599,
+     "name": "Water Parks",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 595,
+     "name": "Winery Tours",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Entertainment / Activities",
+   "group": "Relaxation",
+   "slug": "slug_property_feature_group_activities_relax",
+   "items": [
+    {
+     "id": 34,
+     "name": "Jacuzzi",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Children",
+   "group": "Children Essentials",
+   "slug": "slug_property_feature_group_kids_children-essentials",
+   "items": [
+    {
+     "id": 61,
+     "name": "Baby's bed",
+     "type": 2,
+     "value": 1,
+     "description": null
+    },
+    {
+     "id": 63,
+     "name": "High chair",
+     "type": 2,
+     "value": 1,
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Children",
+   "group": "Activities",
+   "slug": "slug_property_feature_group_kids_activities",
+   "items": [
+    {
+     "id": 68,
+     "name": "Outdoor playground",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Cleaning",
+   "group": "Cleaning tools",
+   "slug": "slug_property_feature_group_clean_tools",
+   "items": [
+    {
+     "id": 77,
+     "name": "Broom",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 78,
+     "name": "Mop",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 79,
+     "name": "Towels",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 80,
+     "name": "Sponges",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Cleaning",
+   "group": "Cleaning supplies",
+   "slug": "slug_property_feature_group_clean_supplies",
+   "items": [
+    {
+     "id": 81,
+     "name": "Cleanser liquid",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 84,
+     "name": "Dishwashing liquid",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 82,
+     "name": "Detergent",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 83,
+     "name": "Dishwasher detergent",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 85,
+     "name": "Kitchen towel / dishcloth",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Cleaning",
+   "group": "Cleaning Policies",
+   "slug": "slug_property_feature_group_clean_cleaning-policies",
+   "items": [
+    {
+     "id": 751,
+     "name": "Cleaning Disinfection",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 752,
+     "name": "Common surface disinfectant cleaned",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 758,
+     "name": "Linen high temp wash",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Safety / Security",
+   "group": "Safety Essentials",
+   "slug": "slug_property_feature_group_safety_safety-essentials",
+   "items": [
+    {
+     "id": 88,
+     "name": "Police Hotline",
+     "type": 2,
+     "value": 100,
+     "description": null
+    },
+    {
+     "id": 89,
+     "name": "Fire department Hotline",
+     "type": 2,
+     "value": 199,
+     "description": null
+    },
+    {
+     "id": 90,
+     "name": "Ambulance Hotline",
+     "type": 2,
+     "value": 166,
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Safety / Security",
+   "group": "Building safety",
+   "slug": "slug_property_feature_group_safety_building",
+   "items": [
+    {
+     "id": 781,
+     "name": "Outdoor Lighting",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 783,
+     "name": "Smoke Detector",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 778,
+     "name": "Fire extinguisher",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Safety / Security",
+   "group": "Tenants safety",
+   "slug": "slug_property_feature_group_safety_people",
+   "items": [
+    {
+     "id": 779,
+     "name": "First aid kit",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 777,
+     "name": "Fire emergency contact",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 782,
+     "name": "Police emergency contact",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 780,
+     "name": "Medical emergency contact",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 97,
+     "name": "Safe deposit box",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Safety / Security",
+   "group": "Privacy",
+   "slug": "slug_property_feature_group_safety_privacy",
+   "items": [
+    {
+     "id": 99,
+     "name": "Fully fenced",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 564,
+     "name": "Outdoor Lighting",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Safety / Security",
+   "group": "Car",
+   "slug": "slug_property_feature_group_safety_cars",
+   "items": [
+    {
+     "id": 102,
+     "name": "Car park spaces",
+     "type": 2,
+     "value": 1,
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Safety / Security",
+   "group": "Parking and transportation",
+   "slug": "slug_property_feature_group_amenities_02_parking_transportation",
+   "items": [
+    {
+     "id": 688,
+     "name": "Private Parking",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  }
+ ],
+ "201": [
+  {
+   "tab": "Amenities",
+   "group": "Essentials",
+   "slug": "slug_property_feature_group_amenities_basics",
+   "items": [
+    {
+     "id": 5,
+     "name": "Essentials",
+     "type": 5,
+     "value": "1",
+     "description": "Towels, linen..."
+    },
+    {
+     "id": 6,
+     "name": "Supplies",
+     "type": 5,
+     "value": "1",
+     "description": "Paper, cleaning..."
+    }
+   ]
+  },
+  {
+   "tab": "Amenities",
+   "group": "Kitchen and dining",
+   "slug": "slug_property_feature_group_amenities_kitchen",
+   "items": [
+    {
+     "id": 566,
+     "name": "Kitchen",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 20,
+     "name": "Toaster",
+     "type": 5,
+     "value": "1",
+     "description": "For sandwich"
+    },
+    {
+     "id": 17,
+     "name": "Dishwasher",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 14,
+     "name": "Dishes & Utensils",
+     "type": 5,
+     "value": "1",
+     "description": "Dishes, pans, Cutlery"
+    },
+    {
+     "id": 19,
+     "name": "Microwave",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 16,
+     "name": "Coffee maker",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 789,
+     "name": "Pantry items",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 507,
+     "name": "Barbecue / grill",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 499,
+     "name": "Oven",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 500,
+     "name": "Hob/Stove",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 472,
+     "name": "Kettle",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 501,
+     "name": "Fridge",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 18,
+     "name": "Freezer",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 498,
+     "name": "Spices",
+     "type": 5,
+     "value": "1",
+     "description": "Salt, Pepper, etc."
+    },
+    {
+     "id": 518,
+     "name": "High Chair",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 240,
+     "name": "Espresso Maker",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 15,
+     "name": "Basic appliances",
+     "type": 5,
+     "value": "1",
+     "description": "Oven, hobs, refrigerator..."
+    }
+   ]
+  },
+  {
+   "tab": "Amenities",
+   "group": "Essential amenities",
+   "slug": "slug_property_feature_group_amenities_comfort",
+   "items": [
+    {
+     "id": 7,
+     "name": "Air Conditioning",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 768,
+     "name": "Linen provided",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 897,
+     "name": "Basic soaps",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 21,
+     "name": "Washing machine",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 626,
+     "name": "Iron & board",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Amenities",
+   "group": "General",
+   "slug": "slug_property_feature_group_amenities_general",
+   "items": [
+    {
+     "id": 10,
+     "name": "Internet",
+     "type": 5,
+     "value": "1",
+     "description": "Free Wi-Fi / ethernet"
+    },
+    {
+     "id": 534,
+     "name": "Living Room",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 27,
+     "name": "Sitting area",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 692,
+     "name": "Parking",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Amenities",
+   "group": "Pool and spa facilities",
+   "slug": "slug_property_feature_group_amenities_pool-and-spa",
+   "items": [
+    {
+     "id": 32,
+     "name": "Pool",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 366,
+     "name": "Private pool",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 527,
+     "name": "Spa whirlpool",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 531,
+     "name": "Heated Pool",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 648,
+     "name": "Pool towels",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Amenities",
+   "group": "Outdoor features",
+   "slug": "slug_property_feature_group_amenities_outdoor",
+   "items": [
+    {
+     "id": 798,
+     "name": "Outdoor/Garden furniture",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 503,
+     "name": "Balcony",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 567,
+     "name": "Terrace",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 797,
+     "name": "Beach towels",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 238,
+     "name": "Garden",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 505,
+     "name": "Veranda",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 33,
+     "name": "Sunbeds",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 28,
+     "name": "Dining area",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 30,
+     "name": "Car park",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 31,
+     "name": "Kids area",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 471,
+     "name": "Outdoor Shower",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Amenities",
+   "group": "Accommodations",
+   "slug": "slug_property_feature_group_amenities_accommodations",
+   "items": [
+    {
+     "id": 624,
+     "name": "Concierge",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 625,
+     "name": "Massage",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 620,
+     "name": "Private Chef",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Amenities",
+   "group": "Car",
+   "slug": "slug_property_feature_group_amenities_car",
+   "items": [
+    {
+     "id": 634,
+     "name": "Car Recommended",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Amenities",
+   "group": "Locations",
+   "slug": "slug_property_feature_group_amenities_topothesies",
+   "items": [
+    {
+     "id": 710,
+     "name": "Beach",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 736,
+     "name": "Waterfront",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 734,
+     "name": "Village",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 733,
+     "name": "Town",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 806,
+     "name": "Near the sea",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Amenities",
+   "group": "Themes",
+   "slug": "slug_property_feature_group_amenities_themata",
+   "items": [
+    {
+     "id": 771,
+     "name": "Romantic",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 770,
+     "name": "Family",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Amenities",
+   "group": "Bathroom",
+   "slug": "slug_property_feature_group_amenities_07_bathroom",
+   "items": [
+    {
+     "id": 1238,
+     "name": "Bathtub only",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 1237,
+     "name": "Shower only",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 22,
+     "name": "Hair dryer",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 86,
+     "name": "Toilet paper",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 916,
+     "name": "Shampoo",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 461,
+     "name": "Towels provided",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Amenities",
+   "group": "Telephone",
+   "slug": "slug_property_feature_group_amenities_12_telephone",
+   "items": [
+    {
+     "id": 466,
+     "name": "Phone",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Entertainment / Activities",
+   "group": "Entertainment",
+   "slug": "slug_property_feature_group_amenities_entertainment",
+   "items": [
+    {
+     "id": 11,
+     "name": "Television",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 825,
+     "name": "Video game console",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 511,
+     "name": "Video games",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 510,
+     "name": "Stereo / sound system",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 515,
+     "name": "Toys",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 508,
+     "name": "Books",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 516,
+     "name": "DVD Player",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 12,
+     "name": "Satellite/Cable TV",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 517,
+     "name": "Ping pong table",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 544,
+     "name": "Games",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Entertainment / Activities",
+   "group": "Sports and Adventure",
+   "slug": "slug_property_feature_group_amenities_sports-and-adventures",
+   "items": [
+    {
+     "id": 576,
+     "name": "Cycling",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 554,
+     "name": "Fishing",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 581,
+     "name": "Hiking",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 559,
+     "name": "Jet Skiing",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 560,
+     "name": "Mountain Biking",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 584,
+     "name": "Mountain Climbing",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 573,
+     "name": "Surfing",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 700,
+     "name": "Swimming",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 574,
+     "name": "Water Tubing",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 570,
+     "name": "Water Skiing",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 575,
+     "name": "Wind Surfing",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 568,
+     "name": "Scuba or Snorkeling",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 802,
+     "name": "Snorkeling",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 804,
+     "name": "Caving",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Entertainment / Activities",
+   "group": "Leisure",
+   "slug": "slug_property_feature_group_amenities_leasure-activities",
+   "items": [
+    {
+     "id": 608,
+     "name": "Bird Watching",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 609,
+     "name": "Eco Tourism",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 610,
+     "name": "Horseback Riding",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 611,
+     "name": "Paddle Boating",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Entertainment / Activities",
+   "group": "Attractions",
+   "slug": "slug_property_feature_group_amenities_attractions",
+   "items": [
+    {
+     "id": 598,
+     "name": "Museums",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 593,
+     "name": "Marina",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 594,
+     "name": "Theme Parks",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 599,
+     "name": "Water Parks",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 595,
+     "name": "Winery Tours",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Entertainment / Activities",
+   "group": "Relaxation",
+   "slug": "slug_property_feature_group_activities_relax",
+   "items": [
+    {
+     "id": 34,
+     "name": "Jacuzzi",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Children",
+   "group": "Children Essentials",
+   "slug": "slug_property_feature_group_kids_children-essentials",
+   "items": [
+    {
+     "id": 61,
+     "name": "Baby's bed",
+     "type": 2,
+     "value": 1,
+     "description": null
+    },
+    {
+     "id": 63,
+     "name": "High chair",
+     "type": 2,
+     "value": 1,
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Children",
+   "group": "Activities",
+   "slug": "slug_property_feature_group_kids_activities",
+   "items": [
+    {
+     "id": 68,
+     "name": "Outdoor playground",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Cleaning",
+   "group": "Cleaning tools",
+   "slug": "slug_property_feature_group_clean_tools",
+   "items": [
+    {
+     "id": 77,
+     "name": "Broom",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 78,
+     "name": "Mop",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 79,
+     "name": "Towels",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 80,
+     "name": "Sponges",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Cleaning",
+   "group": "Cleaning supplies",
+   "slug": "slug_property_feature_group_clean_supplies",
+   "items": [
+    {
+     "id": 81,
+     "name": "Cleanser liquid",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 84,
+     "name": "Dishwashing liquid",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 82,
+     "name": "Detergent",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 83,
+     "name": "Dishwasher detergent",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 85,
+     "name": "Kitchen towel / dishcloth",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Cleaning",
+   "group": "Cleaning Policies",
+   "slug": "slug_property_feature_group_clean_cleaning-policies",
+   "items": [
+    {
+     "id": 751,
+     "name": "Cleaning Disinfection",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 752,
+     "name": "Common surface disinfectant cleaned",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 758,
+     "name": "Linen high temp wash",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Safety / Security",
+   "group": "Safety Essentials",
+   "slug": "slug_property_feature_group_safety_safety-essentials",
+   "items": [
+    {
+     "id": 88,
+     "name": "Police Hotline",
+     "type": 2,
+     "value": 100,
+     "description": null
+    },
+    {
+     "id": 89,
+     "name": "Fire department Hotline",
+     "type": 2,
+     "value": 199,
+     "description": null
+    },
+    {
+     "id": 90,
+     "name": "Ambulance Hotline",
+     "type": 2,
+     "value": 166,
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Safety / Security",
+   "group": "Building safety",
+   "slug": "slug_property_feature_group_safety_building",
+   "items": [
+    {
+     "id": 781,
+     "name": "Outdoor Lighting",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 783,
+     "name": "Smoke Detector",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 778,
+     "name": "Fire extinguisher",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Safety / Security",
+   "group": "Tenants safety",
+   "slug": "slug_property_feature_group_safety_people",
+   "items": [
+    {
+     "id": 779,
+     "name": "First aid kit",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 777,
+     "name": "Fire emergency contact",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 782,
+     "name": "Police emergency contact",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 780,
+     "name": "Medical emergency contact",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 97,
+     "name": "Safe deposit box",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Safety / Security",
+   "group": "Privacy",
+   "slug": "slug_property_feature_group_safety_privacy",
+   "items": [
+    {
+     "id": 99,
+     "name": "Fully fenced",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 564,
+     "name": "Outdoor Lighting",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Safety / Security",
+   "group": "Car",
+   "slug": "slug_property_feature_group_safety_cars",
+   "items": [
+    {
+     "id": 102,
+     "name": "Car park spaces",
+     "type": 2,
+     "value": 1,
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Safety / Security",
+   "group": "Parking and transportation",
+   "slug": "slug_property_feature_group_amenities_02_parking_transportation",
+   "items": [
+    {
+     "id": 688,
+     "name": "Private Parking",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  }
+ ],
+ "202": [
+  {
+   "tab": "Amenities",
+   "group": "Essentials",
+   "slug": "slug_property_feature_group_amenities_basics",
+   "items": [
+    {
+     "id": 5,
+     "name": "Essentials",
+     "type": 5,
+     "value": "1",
+     "description": "Towels, linen..."
+    },
+    {
+     "id": 6,
+     "name": "Supplies",
+     "type": 5,
+     "value": "1",
+     "description": "Paper, cleaning..."
+    }
+   ]
+  },
+  {
+   "tab": "Amenities",
+   "group": "Kitchen and dining",
+   "slug": "slug_property_feature_group_amenities_kitchen",
+   "items": [
+    {
+     "id": 566,
+     "name": "Kitchen",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 20,
+     "name": "Toaster",
+     "type": 5,
+     "value": "1",
+     "description": "For sandwich"
+    },
+    {
+     "id": 17,
+     "name": "Dishwasher",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 14,
+     "name": "Dishes & Utensils",
+     "type": 5,
+     "value": "1",
+     "description": "Dishes, pans, Cutlery"
+    },
+    {
+     "id": 19,
+     "name": "Microwave",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 16,
+     "name": "Coffee maker",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 789,
+     "name": "Pantry items",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 507,
+     "name": "Barbecue / grill",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 499,
+     "name": "Oven",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 500,
+     "name": "Hob/Stove",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 472,
+     "name": "Kettle",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 501,
+     "name": "Fridge",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 18,
+     "name": "Freezer",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 498,
+     "name": "Spices",
+     "type": 5,
+     "value": "1",
+     "description": "Salt, Pepper, etc."
+    },
+    {
+     "id": 518,
+     "name": "High Chair",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 240,
+     "name": "Espresso Maker",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 15,
+     "name": "Basic appliances",
+     "type": 5,
+     "value": "1",
+     "description": "Oven, hobs, refrigerator..."
+    }
+   ]
+  },
+  {
+   "tab": "Amenities",
+   "group": "Essential amenities",
+   "slug": "slug_property_feature_group_amenities_comfort",
+   "items": [
+    {
+     "id": 7,
+     "name": "Air Conditioning",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 768,
+     "name": "Linen provided",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 897,
+     "name": "Basic soaps",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 21,
+     "name": "Washing machine",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 626,
+     "name": "Iron & board",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Amenities",
+   "group": "General",
+   "slug": "slug_property_feature_group_amenities_general",
+   "items": [
+    {
+     "id": 10,
+     "name": "Internet",
+     "type": 5,
+     "value": "1",
+     "description": "Free Wi-Fi / ethernet"
+    },
+    {
+     "id": 534,
+     "name": "Living Room",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 27,
+     "name": "Sitting area",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 692,
+     "name": "Parking",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Amenities",
+   "group": "Pool and spa facilities",
+   "slug": "slug_property_feature_group_amenities_pool-and-spa",
+   "items": [
+    {
+     "id": 32,
+     "name": "Pool",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 678,
+     "name": "Outdoor pool",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 366,
+     "name": "Private pool",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 527,
+     "name": "Spa whirlpool",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 531,
+     "name": "Heated Pool",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 648,
+     "name": "Pool towels",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Amenities",
+   "group": "Outdoor features",
+   "slug": "slug_property_feature_group_amenities_outdoor",
+   "items": [
+    {
+     "id": 798,
+     "name": "Outdoor/Garden furniture",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 503,
+     "name": "Balcony",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 567,
+     "name": "Terrace",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 797,
+     "name": "Beach towels",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 238,
+     "name": "Garden",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 505,
+     "name": "Veranda",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 33,
+     "name": "Sunbeds",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 28,
+     "name": "Dining area",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 30,
+     "name": "Car park",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 31,
+     "name": "Kids area",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 471,
+     "name": "Outdoor Shower",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Amenities",
+   "group": "Accommodations",
+   "slug": "slug_property_feature_group_amenities_accommodations",
+   "items": [
+    {
+     "id": 624,
+     "name": "Concierge",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 625,
+     "name": "Massage",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 620,
+     "name": "Private Chef",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Amenities",
+   "group": "Car",
+   "slug": "slug_property_feature_group_amenities_car",
+   "items": [
+    {
+     "id": 634,
+     "name": "Car Recommended",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Amenities",
+   "group": "Locations",
+   "slug": "slug_property_feature_group_amenities_topothesies",
+   "items": [
+    {
+     "id": 710,
+     "name": "Beach",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 736,
+     "name": "Waterfront",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 734,
+     "name": "Village",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 733,
+     "name": "Town",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 806,
+     "name": "Near the sea",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Amenities",
+   "group": "Themes",
+   "slug": "slug_property_feature_group_amenities_themata",
+   "items": [
+    {
+     "id": 771,
+     "name": "Romantic",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 770,
+     "name": "Family",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Amenities",
+   "group": "Bathroom",
+   "slug": "slug_property_feature_group_amenities_07_bathroom",
+   "items": [
+    {
+     "id": 1238,
+     "name": "Bathtub only",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 1237,
+     "name": "Shower only",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 22,
+     "name": "Hair dryer",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 86,
+     "name": "Toilet paper",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 916,
+     "name": "Shampoo",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 461,
+     "name": "Towels provided",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Amenities",
+   "group": "Telephone",
+   "slug": "slug_property_feature_group_amenities_12_telephone",
+   "items": [
+    {
+     "id": 466,
+     "name": "Phone",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Entertainment / Activities",
+   "group": "Entertainment",
+   "slug": "slug_property_feature_group_amenities_entertainment",
+   "items": [
+    {
+     "id": 11,
+     "name": "Television",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 825,
+     "name": "Video game console",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 511,
+     "name": "Video games",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 510,
+     "name": "Stereo / sound system",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 515,
+     "name": "Toys",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 508,
+     "name": "Books",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 516,
+     "name": "DVD Player",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 12,
+     "name": "Satellite/Cable TV",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 517,
+     "name": "Ping pong table",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 544,
+     "name": "Games",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 888,
+     "name": "Board games/puzzles",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Entertainment / Activities",
+   "group": "Sports and Adventure",
+   "slug": "slug_property_feature_group_amenities_sports-and-adventures",
+   "items": [
+    {
+     "id": 576,
+     "name": "Cycling",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 554,
+     "name": "Fishing",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 581,
+     "name": "Hiking",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 559,
+     "name": "Jet Skiing",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 560,
+     "name": "Mountain Biking",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 584,
+     "name": "Mountain Climbing",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 587,
+     "name": "Sailing",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 573,
+     "name": "Surfing",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 700,
+     "name": "Swimming",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 574,
+     "name": "Water Tubing",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 570,
+     "name": "Water Skiing",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 575,
+     "name": "Wind Surfing",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 568,
+     "name": "Scuba or Snorkeling",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 802,
+     "name": "Snorkeling",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 804,
+     "name": "Caving",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Entertainment / Activities",
+   "group": "Leisure",
+   "slug": "slug_property_feature_group_amenities_leasure-activities",
+   "items": [
+    {
+     "id": 608,
+     "name": "Bird Watching",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 609,
+     "name": "Eco Tourism",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 610,
+     "name": "Horseback Riding",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 611,
+     "name": "Paddle Boating",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Entertainment / Activities",
+   "group": "Attractions",
+   "slug": "slug_property_feature_group_amenities_attractions",
+   "items": [
+    {
+     "id": 598,
+     "name": "Museums",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 593,
+     "name": "Marina",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 594,
+     "name": "Theme Parks",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 599,
+     "name": "Water Parks",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 595,
+     "name": "Winery Tours",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Entertainment / Activities",
+   "group": "Relaxation",
+   "slug": "slug_property_feature_group_activities_relax",
+   "items": [
+    {
+     "id": 34,
+     "name": "Jacuzzi",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Children",
+   "group": "Children Essentials",
+   "slug": "slug_property_feature_group_kids_children-essentials",
+   "items": [
+    {
+     "id": 61,
+     "name": "Baby's bed",
+     "type": 2,
+     "value": 1,
+     "description": null
+    },
+    {
+     "id": 63,
+     "name": "High chair",
+     "type": 2,
+     "value": 1,
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Children",
+   "group": "Activities",
+   "slug": "slug_property_feature_group_kids_activities",
+   "items": [
+    {
+     "id": 68,
+     "name": "Outdoor playground",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Cleaning",
+   "group": "Cleaning tools",
+   "slug": "slug_property_feature_group_clean_tools",
+   "items": [
+    {
+     "id": 77,
+     "name": "Broom",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 78,
+     "name": "Mop",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 79,
+     "name": "Towels",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 80,
+     "name": "Sponges",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Cleaning",
+   "group": "Cleaning supplies",
+   "slug": "slug_property_feature_group_clean_supplies",
+   "items": [
+    {
+     "id": 81,
+     "name": "Cleanser liquid",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 84,
+     "name": "Dishwashing liquid",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 82,
+     "name": "Detergent",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 83,
+     "name": "Dishwasher detergent",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 85,
+     "name": "Kitchen towel / dishcloth",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Cleaning",
+   "group": "Cleaning Policies",
+   "slug": "slug_property_feature_group_clean_cleaning-policies",
+   "items": [
+    {
+     "id": 751,
+     "name": "Cleaning Disinfection",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 752,
+     "name": "Common surface disinfectant cleaned",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 758,
+     "name": "Linen high temp wash",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Safety / Security",
+   "group": "Safety Essentials",
+   "slug": "slug_property_feature_group_safety_safety-essentials",
+   "items": [
+    {
+     "id": 88,
+     "name": "Police Hotline",
+     "type": 2,
+     "value": 100,
+     "description": null
+    },
+    {
+     "id": 89,
+     "name": "Fire department Hotline",
+     "type": 2,
+     "value": 199,
+     "description": null
+    },
+    {
+     "id": 90,
+     "name": "Ambulance Hotline",
+     "type": 2,
+     "value": 166,
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Safety / Security",
+   "group": "Building safety",
+   "slug": "slug_property_feature_group_safety_building",
+   "items": [
+    {
+     "id": 781,
+     "name": "Outdoor Lighting",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 783,
+     "name": "Smoke Detector",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 778,
+     "name": "Fire extinguisher",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Safety / Security",
+   "group": "Tenants safety",
+   "slug": "slug_property_feature_group_safety_people",
+   "items": [
+    {
+     "id": 779,
+     "name": "First aid kit",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 777,
+     "name": "Fire emergency contact",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 782,
+     "name": "Police emergency contact",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 780,
+     "name": "Medical emergency contact",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 97,
+     "name": "Safe deposit box",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Safety / Security",
+   "group": "Privacy",
+   "slug": "slug_property_feature_group_safety_privacy",
+   "items": [
+    {
+     "id": 99,
+     "name": "Fully fenced",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 564,
+     "name": "Outdoor Lighting",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Safety / Security",
+   "group": "Car",
+   "slug": "slug_property_feature_group_safety_cars",
+   "items": [
+    {
+     "id": 102,
+     "name": "Car park spaces",
+     "type": 2,
+     "value": 1,
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Safety / Security",
+   "group": "Parking and transportation",
+   "slug": "slug_property_feature_group_amenities_02_parking_transportation",
+   "items": [
+    {
+     "id": 688,
+     "name": "Private Parking",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  }
+ ],
+ "203": [
+  {
+   "tab": "Amenities",
+   "group": "Essentials",
+   "slug": "slug_property_feature_group_amenities_basics",
+   "items": [
+    {
+     "id": 5,
+     "name": "Essentials",
+     "type": 5,
+     "value": "1",
+     "description": "Towels, linen..."
+    },
+    {
+     "id": 6,
+     "name": "Supplies",
+     "type": 5,
+     "value": "1",
+     "description": "Paper, cleaning..."
+    }
+   ]
+  },
+  {
+   "tab": "Amenities",
+   "group": "Kitchen and dining",
+   "slug": "slug_property_feature_group_amenities_kitchen",
+   "items": [
+    {
+     "id": 566,
+     "name": "Kitchen",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 20,
+     "name": "Toaster",
+     "type": 5,
+     "value": "1",
+     "description": "For sandwich"
+    },
+    {
+     "id": 17,
+     "name": "Dishwasher",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 14,
+     "name": "Dishes & Utensils",
+     "type": 5,
+     "value": "1",
+     "description": "Dishes, pans, Cutlery"
+    },
+    {
+     "id": 19,
+     "name": "Microwave",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 16,
+     "name": "Coffee maker",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 789,
+     "name": "Pantry items",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 507,
+     "name": "Barbecue / grill",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 499,
+     "name": "Oven",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 500,
+     "name": "Hob/Stove",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 472,
+     "name": "Kettle",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 501,
+     "name": "Fridge",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 18,
+     "name": "Freezer",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 498,
+     "name": "Spices",
+     "type": 5,
+     "value": "1",
+     "description": "Salt, Pepper, etc."
+    },
+    {
+     "id": 518,
+     "name": "High Chair",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 240,
+     "name": "Espresso Maker",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 15,
+     "name": "Basic appliances",
+     "type": 5,
+     "value": "1",
+     "description": "Oven, hobs, refrigerator..."
+    }
+   ]
+  },
+  {
+   "tab": "Amenities",
+   "group": "Essential amenities",
+   "slug": "slug_property_feature_group_amenities_comfort",
+   "items": [
+    {
+     "id": 7,
+     "name": "Air Conditioning",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 768,
+     "name": "Linen provided",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 897,
+     "name": "Basic soaps",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 21,
+     "name": "Washing machine",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 626,
+     "name": "Iron & board",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Amenities",
+   "group": "General",
+   "slug": "slug_property_feature_group_amenities_general",
+   "items": [
+    {
+     "id": 10,
+     "name": "Internet",
+     "type": 5,
+     "value": "1",
+     "description": "Free Wi-Fi / ethernet"
+    },
+    {
+     "id": 534,
+     "name": "Living Room",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 27,
+     "name": "Sitting area",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 692,
+     "name": "Parking",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Amenities",
+   "group": "Pool and spa facilities",
+   "slug": "slug_property_feature_group_amenities_pool-and-spa",
+   "items": [
+    {
+     "id": 32,
+     "name": "Pool",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 678,
+     "name": "Outdoor pool",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 366,
+     "name": "Private pool",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 527,
+     "name": "Spa whirlpool",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 531,
+     "name": "Heated Pool",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 648,
+     "name": "Pool towels",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Amenities",
+   "group": "Outdoor features",
+   "slug": "slug_property_feature_group_amenities_outdoor",
+   "items": [
+    {
+     "id": 524,
+     "name": "Golf",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 798,
+     "name": "Outdoor/Garden furniture",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 503,
+     "name": "Balcony",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 797,
+     "name": "Beach towels",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 238,
+     "name": "Garden",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 505,
+     "name": "Veranda",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 33,
+     "name": "Sunbeds",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 28,
+     "name": "Dining area",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 30,
+     "name": "Car park",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 31,
+     "name": "Kids area",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 471,
+     "name": "Outdoor Shower",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Amenities",
+   "group": "Accommodations",
+   "slug": "slug_property_feature_group_amenities_accommodations",
+   "items": [
+    {
+     "id": 624,
+     "name": "Concierge",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 625,
+     "name": "Massage",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 620,
+     "name": "Private Chef",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Amenities",
+   "group": "Car",
+   "slug": "slug_property_feature_group_amenities_car",
+   "items": [
+    {
+     "id": 634,
+     "name": "Car Recommended",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Amenities",
+   "group": "Locations",
+   "slug": "slug_property_feature_group_amenities_topothesies",
+   "items": [
+    {
+     "id": 710,
+     "name": "Beach",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 736,
+     "name": "Waterfront",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 734,
+     "name": "Village",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 733,
+     "name": "Town",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 806,
+     "name": "Near the sea",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Amenities",
+   "group": "Themes",
+   "slug": "slug_property_feature_group_amenities_themata",
+   "items": [
+    {
+     "id": 771,
+     "name": "Romantic",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 770,
+     "name": "Family",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Amenities",
+   "group": "Bathroom",
+   "slug": "slug_property_feature_group_amenities_07_bathroom",
+   "items": [
+    {
+     "id": 1238,
+     "name": "Bathtub only",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 1237,
+     "name": "Shower only",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 22,
+     "name": "Hair dryer",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 86,
+     "name": "Toilet paper",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 916,
+     "name": "Shampoo",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 461,
+     "name": "Towels provided",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Amenities",
+   "group": "Telephone",
+   "slug": "slug_property_feature_group_amenities_12_telephone",
+   "items": [
+    {
+     "id": 466,
+     "name": "Phone",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Entertainment / Activities",
+   "group": "Entertainment",
+   "slug": "slug_property_feature_group_amenities_entertainment",
+   "items": [
+    {
+     "id": 11,
+     "name": "Television",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 825,
+     "name": "Video game console",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 511,
+     "name": "Video games",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 510,
+     "name": "Stereo / sound system",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 515,
+     "name": "Toys",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 508,
+     "name": "Books",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 516,
+     "name": "DVD Player",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 12,
+     "name": "Satellite/Cable TV",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 517,
+     "name": "Ping pong table",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 888,
+     "name": "Board games/puzzles",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Entertainment / Activities",
+   "group": "Sports and Adventure",
+   "slug": "slug_property_feature_group_amenities_sports-and-adventures",
+   "items": [
+    {
+     "id": 576,
+     "name": "Cycling",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 554,
+     "name": "Fishing",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 581,
+     "name": "Hiking",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 559,
+     "name": "Jet Skiing",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 560,
+     "name": "Mountain Biking",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 584,
+     "name": "Mountain Climbing",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 587,
+     "name": "Sailing",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 573,
+     "name": "Surfing",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 700,
+     "name": "Swimming",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 574,
+     "name": "Water Tubing",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 570,
+     "name": "Water Skiing",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 575,
+     "name": "Wind Surfing",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 568,
+     "name": "Scuba or Snorkeling",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 802,
+     "name": "Snorkeling",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 804,
+     "name": "Caving",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Entertainment / Activities",
+   "group": "Leisure",
+   "slug": "slug_property_feature_group_amenities_leasure-activities",
+   "items": [
+    {
+     "id": 608,
+     "name": "Bird Watching",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 609,
+     "name": "Eco Tourism",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 610,
+     "name": "Horseback Riding",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 611,
+     "name": "Paddle Boating",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Entertainment / Activities",
+   "group": "Attractions",
+   "slug": "slug_property_feature_group_amenities_attractions",
+   "items": [
+    {
+     "id": 598,
+     "name": "Museums",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 593,
+     "name": "Marina",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 594,
+     "name": "Theme Parks",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 599,
+     "name": "Water Parks",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 595,
+     "name": "Winery Tours",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Entertainment / Activities",
+   "group": "Relaxation",
+   "slug": "slug_property_feature_group_activities_relax",
+   "items": [
+    {
+     "id": 34,
+     "name": "Jacuzzi",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Children",
+   "group": "Children Essentials",
+   "slug": "slug_property_feature_group_kids_children-essentials",
+   "items": [
+    {
+     "id": 61,
+     "name": "Baby's bed",
+     "type": 2,
+     "value": 1,
+     "description": null
+    },
+    {
+     "id": 63,
+     "name": "High chair",
+     "type": 2,
+     "value": 1,
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Children",
+   "group": "Activities",
+   "slug": "slug_property_feature_group_kids_activities",
+   "items": [
+    {
+     "id": 68,
+     "name": "Outdoor playground",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Cleaning",
+   "group": "Cleaning tools",
+   "slug": "slug_property_feature_group_clean_tools",
+   "items": [
+    {
+     "id": 77,
+     "name": "Broom",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 78,
+     "name": "Mop",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 79,
+     "name": "Towels",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 80,
+     "name": "Sponges",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Cleaning",
+   "group": "Cleaning supplies",
+   "slug": "slug_property_feature_group_clean_supplies",
+   "items": [
+    {
+     "id": 81,
+     "name": "Cleanser liquid",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 84,
+     "name": "Dishwashing liquid",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 82,
+     "name": "Detergent",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 83,
+     "name": "Dishwasher detergent",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 85,
+     "name": "Kitchen towel / dishcloth",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Cleaning",
+   "group": "Cleaning Policies",
+   "slug": "slug_property_feature_group_clean_cleaning-policies",
+   "items": [
+    {
+     "id": 751,
+     "name": "Cleaning Disinfection",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 752,
+     "name": "Common surface disinfectant cleaned",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 758,
+     "name": "Linen high temp wash",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Safety / Security",
+   "group": "Safety Essentials",
+   "slug": "slug_property_feature_group_safety_safety-essentials",
+   "items": [
+    {
+     "id": 88,
+     "name": "Police Hotline",
+     "type": 2,
+     "value": 100,
+     "description": null
+    },
+    {
+     "id": 89,
+     "name": "Fire department Hotline",
+     "type": 2,
+     "value": 199,
+     "description": null
+    },
+    {
+     "id": 90,
+     "name": "Ambulance Hotline",
+     "type": 2,
+     "value": 166,
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Safety / Security",
+   "group": "Building safety",
+   "slug": "slug_property_feature_group_safety_building",
+   "items": [
+    {
+     "id": 781,
+     "name": "Outdoor Lighting",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 783,
+     "name": "Smoke Detector",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 778,
+     "name": "Fire extinguisher",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Safety / Security",
+   "group": "Tenants safety",
+   "slug": "slug_property_feature_group_safety_people",
+   "items": [
+    {
+     "id": 779,
+     "name": "First aid kit",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 777,
+     "name": "Fire emergency contact",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 782,
+     "name": "Police emergency contact",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 780,
+     "name": "Medical emergency contact",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 97,
+     "name": "Safe deposit box",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Safety / Security",
+   "group": "Privacy",
+   "slug": "slug_property_feature_group_safety_privacy",
+   "items": [
+    {
+     "id": 99,
+     "name": "Fully fenced",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 564,
+     "name": "Outdoor Lighting",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Safety / Security",
+   "group": "Car",
+   "slug": "slug_property_feature_group_safety_cars",
+   "items": [
+    {
+     "id": 102,
+     "name": "Car park spaces",
+     "type": 2,
+     "value": 1,
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Safety / Security",
+   "group": "Parking and transportation",
+   "slug": "slug_property_feature_group_amenities_02_parking_transportation",
+   "items": [
+    {
+     "id": 688,
+     "name": "Private Parking",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  }
+ ],
+ "2142": [
+  {
+   "tab": "Amenities",
+   "group": "Essentials",
+   "slug": "slug_property_feature_group_amenities_basics",
+   "items": [
+    {
+     "id": 5,
+     "name": "Essentials",
+     "type": 5,
+     "value": "1",
+     "description": "Towels, linen..."
+    },
+    {
+     "id": 6,
+     "name": "Supplies",
+     "type": 5,
+     "value": "1",
+     "description": "Paper, cleaning..."
+    }
+   ]
+  },
+  {
+   "tab": "Amenities",
+   "group": "Kitchen and dining",
+   "slug": "slug_property_feature_group_amenities_kitchen",
+   "items": [
+    {
+     "id": 566,
+     "name": "Kitchen",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 20,
+     "name": "Toaster",
+     "type": 5,
+     "value": "1",
+     "description": "For sandwich"
+    },
+    {
+     "id": 787,
+     "name": "Blender",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 17,
+     "name": "Dishwasher",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 14,
+     "name": "Dishes & Utensils",
+     "type": 5,
+     "value": "1",
+     "description": "Dishes, pans, Cutlery"
+    },
+    {
+     "id": 19,
+     "name": "Microwave",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 16,
+     "name": "Coffee maker",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 789,
+     "name": "Pantry items",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 507,
+     "name": "Barbecue / grill",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 499,
+     "name": "Oven",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 500,
+     "name": "Hob/Stove",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 472,
+     "name": "Kettle",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 501,
+     "name": "Fridge",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 498,
+     "name": "Spices",
+     "type": 5,
+     "value": "1",
+     "description": "Salt, Pepper, etc."
+    },
+    {
+     "id": 518,
+     "name": "High Chair",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 240,
+     "name": "Espresso Maker",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 690,
+     "name": "Fully Equipped Kitchen",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 15,
+     "name": "Basic appliances",
+     "type": 5,
+     "value": "1",
+     "description": "Oven, hobs, refrigerator..."
+    }
+   ]
+  },
+  {
+   "tab": "Amenities",
+   "group": "Essential amenities",
+   "slug": "slug_property_feature_group_amenities_comfort",
+   "items": [
+    {
+     "id": 7,
+     "name": "Air Conditioning",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 768,
+     "name": "Linen provided",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 897,
+     "name": "Basic soaps",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 21,
+     "name": "Washing machine",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 626,
+     "name": "Iron & board",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Amenities",
+   "group": "General",
+   "slug": "slug_property_feature_group_amenities_general",
+   "items": [
+    {
+     "id": 10,
+     "name": "Internet",
+     "type": 5,
+     "value": "1",
+     "description": "Free Wi-Fi / ethernet"
+    },
+    {
+     "id": 534,
+     "name": "Living Room",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 692,
+     "name": "Parking",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Amenities",
+   "group": "Pool and spa facilities",
+   "slug": "slug_property_feature_group_amenities_pool-and-spa",
+   "items": [
+    {
+     "id": 678,
+     "name": "Outdoor pool",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 366,
+     "name": "Private pool",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 527,
+     "name": "Spa whirlpool",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 531,
+     "name": "Heated Pool",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 648,
+     "name": "Pool towels",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Amenities",
+   "group": "Outdoor features",
+   "slug": "slug_property_feature_group_amenities_outdoor",
+   "items": [
+    {
+     "id": 567,
+     "name": "Terrace",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 238,
+     "name": "Garden",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 505,
+     "name": "Veranda",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Amenities",
+   "group": "Accommodations",
+   "slug": "slug_property_feature_group_amenities_accommodations",
+   "items": [
+    {
+     "id": 624,
+     "name": "Concierge",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 625,
+     "name": "Massage",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 620,
+     "name": "Private Chef",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Amenities",
+   "group": "Car",
+   "slug": "slug_property_feature_group_amenities_car",
+   "items": [
+    {
+     "id": 634,
+     "name": "Car Recommended",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Amenities",
+   "group": "Locations",
+   "slug": "slug_property_feature_group_amenities_topothesies",
+   "items": [
+    {
+     "id": 710,
+     "name": "Beach",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 736,
+     "name": "Waterfront",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 734,
+     "name": "Village",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 733,
+     "name": "Town",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 806,
+     "name": "Near the sea",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Amenities",
+   "group": "Themes",
+   "slug": "slug_property_feature_group_amenities_themata",
+   "items": [
+    {
+     "id": 771,
+     "name": "Romantic",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 770,
+     "name": "Family",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Amenities",
+   "group": "Bathroom",
+   "slug": "slug_property_feature_group_amenities_07_bathroom",
+   "items": [
+    {
+     "id": 1238,
+     "name": "Bathtub only",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 1237,
+     "name": "Shower only",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 22,
+     "name": "Hair dryer",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 86,
+     "name": "Toilet paper",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 916,
+     "name": "Shampoo",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 461,
+     "name": "Towels provided",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Amenities",
+   "group": "Telephone",
+   "slug": "slug_property_feature_group_amenities_12_telephone",
+   "items": [
+    {
+     "id": 466,
+     "name": "Phone",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Entertainment / Activities",
+   "group": "Entertainment",
+   "slug": "slug_property_feature_group_amenities_entertainment",
+   "items": [
+    {
+     "id": 11,
+     "name": "Television",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 511,
+     "name": "Video games",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 510,
+     "name": "Stereo / sound system",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 515,
+     "name": "Toys",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 508,
+     "name": "Books",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 516,
+     "name": "DVD Player",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 12,
+     "name": "Satellite/Cable TV",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 517,
+     "name": "Ping pong table",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 544,
+     "name": "Games",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 888,
+     "name": "Board games/puzzles",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Entertainment / Activities",
+   "group": "Sports and Adventure",
+   "slug": "slug_property_feature_group_amenities_sports-and-adventures",
+   "items": [
+    {
+     "id": 576,
+     "name": "Cycling",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 554,
+     "name": "Fishing",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 581,
+     "name": "Hiking",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 559,
+     "name": "Jet Skiing",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 560,
+     "name": "Mountain Biking",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 584,
+     "name": "Mountain Climbing",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 587,
+     "name": "Sailing",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 573,
+     "name": "Surfing",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 700,
+     "name": "Swimming",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 574,
+     "name": "Water Tubing",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 570,
+     "name": "Water Skiing",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 575,
+     "name": "Wind Surfing",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 568,
+     "name": "Scuba or Snorkeling",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 802,
+     "name": "Snorkeling",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 804,
+     "name": "Caving",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Entertainment / Activities",
+   "group": "Leisure",
+   "slug": "slug_property_feature_group_amenities_leasure-activities",
+   "items": [
+    {
+     "id": 608,
+     "name": "Bird Watching",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 609,
+     "name": "Eco Tourism",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 610,
+     "name": "Horseback Riding",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 611,
+     "name": "Paddle Boating",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Entertainment / Activities",
+   "group": "Attractions",
+   "slug": "slug_property_feature_group_amenities_attractions",
+   "items": [
+    {
+     "id": 598,
+     "name": "Museums",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 593,
+     "name": "Marina",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 594,
+     "name": "Theme Parks",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 599,
+     "name": "Water Parks",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 595,
+     "name": "Winery Tours",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Entertainment / Activities",
+   "group": "Relaxation",
+   "slug": "slug_property_feature_group_activities_relax",
+   "items": [
+    {
+     "id": 34,
+     "name": "Jacuzzi",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Children",
+   "group": "Children Essentials",
+   "slug": "slug_property_feature_group_kids_children-essentials",
+   "items": [
+    {
+     "id": 61,
+     "name": "Baby's bed",
+     "type": 2,
+     "value": 3,
+     "description": null
+    },
+    {
+     "id": 63,
+     "name": "High chair",
+     "type": 2,
+     "value": 3,
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Children",
+   "group": "Activities",
+   "slug": "slug_property_feature_group_kids_activities",
+   "items": [
+    {
+     "id": 68,
+     "name": "Outdoor playground",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Cleaning",
+   "group": "Cleaning tools",
+   "slug": "slug_property_feature_group_clean_tools",
+   "items": [
+    {
+     "id": 77,
+     "name": "Broom",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 78,
+     "name": "Mop",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 79,
+     "name": "Towels",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 80,
+     "name": "Sponges",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Cleaning",
+   "group": "Cleaning supplies",
+   "slug": "slug_property_feature_group_clean_supplies",
+   "items": [
+    {
+     "id": 81,
+     "name": "Cleanser liquid",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 84,
+     "name": "Dishwashing liquid",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 82,
+     "name": "Detergent",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 83,
+     "name": "Dishwasher detergent",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 85,
+     "name": "Kitchen towel / dishcloth",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Cleaning",
+   "group": "Cleaning Policies",
+   "slug": "slug_property_feature_group_clean_cleaning-policies",
+   "items": [
+    {
+     "id": 751,
+     "name": "Cleaning Disinfection",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 752,
+     "name": "Common surface disinfectant cleaned",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 758,
+     "name": "Linen high temp wash",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 765,
+     "name": "Self check in/check out",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Safety / Security",
+   "group": "Safety Essentials",
+   "slug": "slug_property_feature_group_safety_safety-essentials",
+   "items": [
+    {
+     "id": 88,
+     "name": "Police Hotline",
+     "type": 2,
+     "value": 100,
+     "description": null
+    },
+    {
+     "id": 89,
+     "name": "Fire department Hotline",
+     "type": 2,
+     "value": 199,
+     "description": null
+    },
+    {
+     "id": 90,
+     "name": "Ambulance Hotline",
+     "type": 2,
+     "value": 166,
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Safety / Security",
+   "group": "Building safety",
+   "slug": "slug_property_feature_group_safety_building",
+   "items": [
+    {
+     "id": 781,
+     "name": "Outdoor Lighting",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 783,
+     "name": "Smoke Detector",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 778,
+     "name": "Fire extinguisher",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Safety / Security",
+   "group": "Tenants safety",
+   "slug": "slug_property_feature_group_safety_people",
+   "items": [
+    {
+     "id": 779,
+     "name": "First aid kit",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 777,
+     "name": "Fire emergency contact",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 782,
+     "name": "Police emergency contact",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 780,
+     "name": "Medical emergency contact",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 97,
+     "name": "Safe deposit box",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 699,
+     "name": "Mosquito nets",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Safety / Security",
+   "group": "Privacy",
+   "slug": "slug_property_feature_group_safety_privacy",
+   "items": [
+    {
+     "id": 99,
+     "name": "Fully fenced",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 564,
+     "name": "Outdoor Lighting",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Safety / Security",
+   "group": "Parking and transportation",
+   "slug": "slug_property_feature_group_amenities_02_parking_transportation",
+   "items": [
+    {
+     "id": 688,
+     "name": "Private Parking",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  }
+ ],
+ "pueblo": [
+  {
+   "tab": "Amenities",
+   "group": "Essentials",
+   "slug": "slug_property_feature_group_amenities_basics",
+   "items": [
+    {
+     "id": 5,
+     "name": "Essentials",
+     "type": 5,
+     "value": "1",
+     "description": "Towels, linen..."
+    },
+    {
+     "id": 6,
+     "name": "Supplies",
+     "type": 5,
+     "value": "1",
+     "description": "Paper, cleaning..."
+    }
+   ]
+  },
+  {
+   "tab": "Amenities",
+   "group": "Kitchen and dining",
+   "slug": "slug_property_feature_group_amenities_kitchen",
+   "items": [
+    {
+     "id": 566,
+     "name": "Kitchen",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 20,
+     "name": "Toaster",
+     "type": 5,
+     "value": "1",
+     "description": "For sandwich"
+    },
+    {
+     "id": 787,
+     "name": "Blender",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 17,
+     "name": "Dishwasher",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 14,
+     "name": "Dishes & Utensils",
+     "type": 5,
+     "value": "1",
+     "description": "Dishes, pans, Cutlery"
+    },
+    {
+     "id": 1365,
+     "name": "Silverware/utensils",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 19,
+     "name": "Microwave",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 16,
+     "name": "Coffee maker",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 507,
+     "name": "Barbecue / grill",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 810,
+     "name": "Dining Table",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 499,
+     "name": "Oven",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 500,
+     "name": "Hob/Stove",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 472,
+     "name": "Kettle",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 501,
+     "name": "Fridge",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 518,
+     "name": "High Chair",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 1402,
+     "name": "Wine glasses",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Amenities",
+   "group": "Essential amenities",
+   "slug": "slug_property_feature_group_amenities_comfort",
+   "items": [
+    {
+     "id": 7,
+     "name": "Air Conditioning",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 8,
+     "name": "Heating",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 891,
+     "name": "Free Wireless Internet",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 768,
+     "name": "Linen provided",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 21,
+     "name": "Washing machine",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 626,
+     "name": "Iron & board",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Amenities",
+   "group": "General",
+   "slug": "slug_property_feature_group_amenities_general",
+   "items": [
+    {
+     "id": 10,
+     "name": "Internet",
+     "type": 5,
+     "value": "1",
+     "description": "Free Wi-Fi / ethernet"
+    },
+    {
+     "id": 692,
+     "name": "Parking",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 993,
+     "name": "Wardrobe or closet",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 867,
+     "name": "Travel cot/crib",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 1385,
+     "name": "Entire property on ground floor",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 1190,
+     "name": "Modern Furnishing",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 1410,
+     "name": "Clothes drying rack",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Amenities",
+   "group": "Pool and spa facilities",
+   "slug": "slug_property_feature_group_amenities_pool-and-spa",
+   "items": [
+    {
+     "id": 32,
+     "name": "Pool",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Amenities",
+   "group": "Outdoor features",
+   "slug": "slug_property_feature_group_amenities_outdoor",
+   "items": [
+    {
+     "id": 798,
+     "name": "Outdoor/Garden furniture",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 1194,
+     "name": "Private Balcony or Terrace",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 797,
+     "name": "Beach towels",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 238,
+     "name": "Garden",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 33,
+     "name": "Sunbeds",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 28,
+     "name": "Dining area",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 886,
+     "name": "Umbrellas",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Amenities",
+   "group": "Locations",
+   "slug": "slug_property_feature_group_amenities_topothesies",
+   "items": [
+    {
+     "id": 736,
+     "name": "Waterfront",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Amenities",
+   "group": "Bathroom",
+   "slug": "slug_property_feature_group_amenities_07_bathroom",
+   "items": [
+    {
+     "id": 22,
+     "name": "Hair dryer",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 916,
+     "name": "Shampoo",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 1404,
+     "name": "Body soap",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Entertainment / Activities",
+   "group": "Entertainment",
+   "slug": "slug_property_feature_group_amenities_entertainment",
+   "items": [
+    {
+     "id": 11,
+     "name": "Television",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 794,
+     "name": "Games for kids",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 12,
+     "name": "Satellite/Cable TV",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 919,
+     "name": "Books for kids",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 823,
+     "name": "Children's toys",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 888,
+     "name": "Board games/puzzles",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Entertainment / Activities",
+   "group": "Sports and Adventure",
+   "slug": "slug_property_feature_group_amenities_sports-and-adventures",
+   "items": [
+    {
+     "id": 802,
+     "name": "Snorkeling",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Safety / Security",
+   "group": "Building safety",
+   "slug": "slug_property_feature_group_safety_building",
+   "items": [
+    {
+     "id": 778,
+     "name": "Fire extinguisher",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Safety / Security",
+   "group": "Tenants safety",
+   "slug": "slug_property_feature_group_safety_people",
+   "items": [
+    {
+     "id": 779,
+     "name": "First aid kit",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 97,
+     "name": "Safe deposit box",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 699,
+     "name": "Mosquito nets",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Safety / Security",
+   "group": "Privacy",
+   "slug": "slug_property_feature_group_safety_privacy",
+   "items": [
+    {
+     "id": 1373,
+     "name": "Private Entrance",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  }
+ ],
+ "index": [
+  {
+   "tab": "Amenities",
+   "group": "Essentials",
+   "slug": "slug_property_feature_group_amenities_basics",
+   "items": [
+    {
+     "id": 5,
+     "name": "Essentials",
+     "type": 5,
+     "value": "1",
+     "description": "Towels, linen..."
+    },
+    {
+     "id": 6,
+     "name": "Supplies",
+     "type": 5,
+     "value": "1",
+     "description": "Paper, cleaning..."
+    }
+   ]
+  },
+  {
+   "tab": "Amenities",
+   "group": "Kitchen and dining",
+   "slug": "slug_property_feature_group_amenities_kitchen",
+   "items": [
+    {
+     "id": 566,
+     "name": "Kitchen",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 20,
+     "name": "Toaster",
+     "type": 5,
+     "value": "1",
+     "description": "For sandwich"
+    },
+    {
+     "id": 787,
+     "name": "Blender",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 17,
+     "name": "Dishwasher",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 14,
+     "name": "Dishes & Utensils",
+     "type": 5,
+     "value": "1",
+     "description": "Dishes, pans, Cutlery"
+    },
+    {
+     "id": 1365,
+     "name": "Silverware/utensils",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 19,
+     "name": "Microwave",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 16,
+     "name": "Coffee maker",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 507,
+     "name": "Barbecue / grill",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 810,
+     "name": "Dining Table",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 499,
+     "name": "Oven",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 500,
+     "name": "Hob/Stove",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 472,
+     "name": "Kettle",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 501,
+     "name": "Fridge",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 518,
+     "name": "High Chair",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 1402,
+     "name": "Wine glasses",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Amenities",
+   "group": "Essential amenities",
+   "slug": "slug_property_feature_group_amenities_comfort",
+   "items": [
+    {
+     "id": 7,
+     "name": "Air Conditioning",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 8,
+     "name": "Heating",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 891,
+     "name": "Free Wireless Internet",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 768,
+     "name": "Linen provided",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 21,
+     "name": "Washing machine",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 626,
+     "name": "Iron & board",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Amenities",
+   "group": "General",
+   "slug": "slug_property_feature_group_amenities_general",
+   "items": [
+    {
+     "id": 10,
+     "name": "Internet",
+     "type": 5,
+     "value": "1",
+     "description": "Free Wi-Fi / ethernet"
+    },
+    {
+     "id": 692,
+     "name": "Parking",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 993,
+     "name": "Wardrobe or closet",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 867,
+     "name": "Travel cot/crib",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 1385,
+     "name": "Entire property on ground floor",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 1190,
+     "name": "Modern Furnishing",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 1410,
+     "name": "Clothes drying rack",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Amenities",
+   "group": "Pool and spa facilities",
+   "slug": "slug_property_feature_group_amenities_pool-and-spa",
+   "items": [
+    {
+     "id": 32,
+     "name": "Pool",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Amenities",
+   "group": "Outdoor features",
+   "slug": "slug_property_feature_group_amenities_outdoor",
+   "items": [
+    {
+     "id": 798,
+     "name": "Outdoor/Garden furniture",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 1194,
+     "name": "Private Balcony or Terrace",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 797,
+     "name": "Beach towels",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 238,
+     "name": "Garden",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 33,
+     "name": "Sunbeds",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 28,
+     "name": "Dining area",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 886,
+     "name": "Umbrellas",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Amenities",
+   "group": "Locations",
+   "slug": "slug_property_feature_group_amenities_topothesies",
+   "items": [
+    {
+     "id": 736,
+     "name": "Waterfront",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Amenities",
+   "group": "Bathroom",
+   "slug": "slug_property_feature_group_amenities_07_bathroom",
+   "items": [
+    {
+     "id": 22,
+     "name": "Hair dryer",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 916,
+     "name": "Shampoo",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 1404,
+     "name": "Body soap",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Entertainment / Activities",
+   "group": "Entertainment",
+   "slug": "slug_property_feature_group_amenities_entertainment",
+   "items": [
+    {
+     "id": 11,
+     "name": "Television",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 794,
+     "name": "Games for kids",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 12,
+     "name": "Satellite/Cable TV",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 919,
+     "name": "Books for kids",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 823,
+     "name": "Children's toys",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 888,
+     "name": "Board games/puzzles",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Entertainment / Activities",
+   "group": "Sports and Adventure",
+   "slug": "slug_property_feature_group_amenities_sports-and-adventures",
+   "items": [
+    {
+     "id": 802,
+     "name": "Snorkeling",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Safety / Security",
+   "group": "Building safety",
+   "slug": "slug_property_feature_group_safety_building",
+   "items": [
+    {
+     "id": 778,
+     "name": "Fire extinguisher",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Safety / Security",
+   "group": "Tenants safety",
+   "slug": "slug_property_feature_group_safety_people",
+   "items": [
+    {
+     "id": 779,
+     "name": "First aid kit",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 97,
+     "name": "Safe deposit box",
+     "type": 5,
+     "value": "1",
+     "description": null
+    },
+    {
+     "id": 699,
+     "name": "Mosquito nets",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  },
+  {
+   "tab": "Safety / Security",
+   "group": "Privacy",
+   "slug": "slug_property_feature_group_safety_privacy",
+   "items": [
+    {
+     "id": 1373,
+     "name": "Private Entrance",
+     "type": 5,
+     "value": "1",
+     "description": null
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,46 @@
+{
+ "slug": "chauffeur",
+ "name": "Chauffeur",
+ "legacyUrl": "https://thalasses.com/en/chauffeur",
+ "canonical": "chauffeur-1.html",
+ "meta": {
+  "title": "Chauffeur",
+  "description": "Chauffeur",
+  "keywords": "Thalasses Villas,Chauffeur,Experiences,Rethymno,Greece,Properties chain",
+  "ogImage": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/d9ec159dfbcda11acebe87c1e990ec3d.jpg",
+  "ogUrl": "https://thalasses.com/en/chauffeur"
+ },
+ "sourceTaxonomy": "Experiences",
+ "categoryProposed": "Service",
+ "shortDescription": "Have you arranged your vacation and do not know how to get from the airport or the port to your own private villa? Let us know and we will wait for you upon arrival to transport you.",
+ "longDescription": null,
+ "highlights": [],
+ "wordCount": 37,
+ "needsContent": true,
+ "brokenCta": false,
+ "images": [
+  "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/d9ec159dfbcda11acebe87c1e990ec3d.jpg"
+ ],
+ "heroImage": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/d9ec159dfbcda11acebe87c1e990ec3d.jpg",
+ "gallery": {
+  "heroImage": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/d9ec159dfbcda11acebe87c1e990ec3d.jpg",
+  "images": []
+ },
+ "externalLinks": [],
+ "cta": null,
+ "duration": null,
+ "price": null,
+ "todos": [
+  "No long-form description exists on the page; the body copy is a single 37-word paragraph, so longDescription is null.",
+  "META description is only the page title repeated (\"Chauffeur\") — no genuine meta description exists in source.",
+  "No highlights, bullet list, inclusions or itinerary exist on the page; highlights left empty.",
+  "No gallery/album images on this page. The only page-specific image is the hero parallax background (data-pages-bg-image on the jumbotron section). og:image points to the _thumb.jpg variant of the same photo.",
+  "No page-specific CTA in the page's own content. The only \"Book now\" button belongs to the global booking bar (form action https://thalassesvillas.reserve-online.net/) and was treated as CMS chrome, so cta is null.",
+  "No external links in the page's own content.",
+  "No duration stated in source.",
+  "No price stated in source.",
+  "No vehicle types, capacity, airports/ports served, transfer duration or meet-and-greet detail are stated.",
+  "categoryProposed is an editorial grouping added for the redesign; the live site has no categories — confirm with the client.",
+  "[TODO: needs content] — 37 words of body copy"
+ ]
+}

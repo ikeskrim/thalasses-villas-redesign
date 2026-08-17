@@ -1,0 +1,401 @@
+/* ==========================================================================
+   VILLA TEMPLATE + THE ESTATE (DESIGN-PLAN §5.6, §6.2, §6.4)
+   ========================================================================== */
+
+/* --- 02 The house: the one deep passage ----------------------------------- */
+/* The template's only ground change, matched to the Estate page so a villa and
+   the estate read as one document. `overflow: hidden` is what lets the ghost
+   numeral hang off the edge without widening the page — see the note on the
+   Inventory below for why beat 04 does not get one. */
+.villa-statement {
+  position: relative;
+  overflow: hidden;
+  background: var(--color-pelagos);
+  color: var(--color-limestone);
+  padding-block: var(--rhythm-prose-prose);
+}
+.villa-statement-grid {
+  margin-top: var(--spacing-step-8);
+}
+/* TWO classes on purpose.
+   globals.css imports every partial at the TOP of the file, so its own `.lede`
+   rule cascades AFTER atmosphere.css and was quietly winning the font-size:
+   the fourth voice rendered at 20px lede scale instead of its designed 38px,
+   which read as a caption in an empty column rather than as an aside. Raising
+   specificity is the fix; reordering the imports would move every partial's
+   cascade at once. */
+.lede.villa-angle {
+  color: var(--color-preveli);
+  font-size: clamp(1.625rem, 2.4vw, 2.375rem);
+  line-height: 1.3;
+  max-width: 20ch;
+}
+.villa-prose {
+  color: var(--color-preveli);
+}
+.villa-ledger {
+  margin-top: var(--spacing-step-8);
+}
+
+/* The detail rows the capacity lock added and no page ever printed: the bed and
+   bath breakdowns, the view, the distance to the water. Set as a list of facts,
+   not as a table — one hairline per row, label left, fact right. */
+.villa-detail {
+  margin-top: var(--spacing-step-8);
+  border-top: 1px solid rgb(164 204 201 / 0.28);
+}
+.villa-detail-row {
+  display: grid;
+  grid-template-columns: minmax(0, 10rem) minmax(0, 1fr);
+  gap: var(--spacing-step-5);
+  padding-block: var(--spacing-step-4);
+  border-bottom: 1px solid rgb(164 204 201 / 0.28);
+}
+.villa-detail-row dd {
+  color: var(--color-preveli);
+}
+@media (max-width: 639px) {
+  .villa-detail-row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--spacing-step-2);
+  }
+}
+
+/* --- 03 The rooms: a marker, not a heading -------------------------------- */
+.villa-marker {
+  padding-block: var(--rhythm-photo-prose) var(--spacing-step-6);
+}
+.villa-marker .datum-rule {
+  margin-top: var(--spacing-step-4);
+}
+
+/* --- Villa facts as clauses, never as spec chips -------------------------- */
+.villa-facts {
+  margin-top: var(--spacing-step-7);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-step-4);
+}
+.villa-facts:empty {
+  display: none;
+}
+
+.villa-cta {
+  position: relative;
+  overflow: hidden;
+  padding-block: var(--rhythm-prose-prose);
+}
+.villa-cta-primary {
+  color: var(--color-pelagos);
+}
+.villa-cta-secondary {
+  color: var(--color-phrygana);
+  text-decoration: underline;
+  text-underline-offset: 0.5em;
+  text-decoration-thickness: 1.5px;
+}
+
+/* ==========================================================================
+   THE RUN — high image count
+   Frames butt together so the waterline holds still. No gap, ever.
+   ========================================================================== */
+
+.run {
+  display: block;
+  font-size: 0;
+}
+.run-frame {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 78svh;
+  margin: 0;
+}
+.run-scrim {
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 42%;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(to top, rgb(22 38 43 / 0.75), rgb(22 38 43 / 0));
+}
+.run-caption {
+  position: absolute;
+  left: var(--page-margin);
+  bottom: var(--spacing-step-5);
+  z-index: 2;
+  color: var(--color-limestone);
+  max-width: 46ch;
+  text-shadow: 0 1px 24px rgb(22 38 43 / 0.85);
+}
+
+/* ==========================================================================
+   PLATES — low image count (Villa Pueblo has five)
+   Designed as its own layout, not as a grid with holes. Few, large, generous.
+   ========================================================================== */
+
+.plates {
+  display: block;
+}
+.plates-opener {
+  position: relative;
+  width: 100%;
+  height: 82svh;
+}
+.plates-caption {
+  margin-top: var(--spacing-step-4);
+  color: var(--color-phrygana);
+}
+
+.plate {
+  margin: 0;
+  padding-inline: var(--page-margin);
+  margin-top: var(--rhythm-photo-prose);
+  max-width: var(--container-canon);
+  margin-inline: auto;
+}
+.plate-figure {
+  position: relative;
+  width: 76%;
+  aspect-ratio: 3 / 2;
+  background: var(--color-ammos);
+}
+.plate--right .plate-figure {
+  margin-left: auto;
+}
+.plate-caption {
+  margin-top: var(--spacing-step-4);
+  color: var(--color-phrygana);
+  max-width: 46ch;
+}
+.plate--right .plate-caption {
+  margin-left: auto;
+  text-align: right;
+}
+
+@media (max-width: 767px) {
+  .plate-figure {
+    width: 100%;
+  }
+  .plate--right .plate-caption {
+    text-align: left;
+    margin-left: 0;
+  }
+}
+
+/* ==========================================================================
+   THE INVENTORY (DESIGN-PLAN §6.4)
+   ========================================================================== */
+
+.inventory {
+  padding-block: var(--rhythm-photo-prose) var(--rhythm-prose-prose);
+  background: var(--color-ammos);
+}
+.inventory-heading {
+  margin-top: var(--spacing-step-4);
+  display: flex;
+  align-items: baseline;
+  gap: 1ch;
+  flex-wrap: wrap;
+}
+.inventory-total {
+  color: var(--color-phrygana);
+}
+.inventory-body {
+  display: grid;
+  grid-template-columns: minmax(200px, 260px) minmax(0, 1fr);
+  gap: var(--spacing-step-9);
+  margin-top: var(--spacing-step-8);
+}
+
+/* The group rail speaks the site grammar: gerund plus a count as the tail.
+   The counts are right-aligned so all six figures form a clean vertical stack,
+   and the tiny ones are printed at full dignity rather than padded. */
+.inventory-rail ul {
+  list-style: none;
+  position: sticky;
+  top: var(--spacing-step-7);
+}
+.inventory-group {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--spacing-step-4);
+  width: 100%;
+  padding-block: var(--spacing-step-3);
+  background: none;
+  border: none;
+  color: var(--color-phrygana);
+  text-align: left;
+  cursor: pointer;
+}
+.inventory-group.is-active {
+  color: var(--color-basalt);
+}
+/* Three cues on the active group, never colour alone. */
+.inventory-group.is-active .inventory-group-name {
+  text-decoration: underline;
+  text-underline-offset: 0.28em;
+  text-decoration-thickness: 1.5px;
+  text-decoration-color: var(--color-pelagos);
+}
+.inventory-count {
+  font-size: var(--text-datum);
+  flex: none;
+}
+
+/* A column FLOW, not a grid. A two-item group in a flow is two lines; a
+   two-item cell in a 6-up grid is visibly broken. */
+.inventory-flow {
+  columns: 3;
+  column-gap: var(--spacing-step-7);
+}
+.inventory-subgroup {
+  break-inside: avoid;
+  margin-bottom: var(--spacing-step-6);
+}
+.inventory-subgroup-name {
+  break-after: avoid-column;
+  margin-bottom: var(--spacing-step-3);
+}
+.inventory-items {
+  list-style: none;
+}
+/* Presence is expressed by the item simply being printed. */
+.inventory-item {
+  font-size: var(--text-small);
+  line-height: 1.75;
+  color: var(--color-basalt);
+}
+.inventory-item-button {
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  border-bottom: 1px dotted rgb(84 93 78 / 0.4);
+}
+.inventory-item-desc {
+  display: block;
+  color: var(--color-phrygana);
+  padding-block: var(--spacing-step-1) var(--spacing-step-2);
+}
+
+@media (max-width: 1023px) {
+  .inventory-body {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--spacing-step-7);
+  }
+  .inventory-rail ul {
+    position: static;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-step-5);
+  }
+  .inventory-group {
+    width: auto;
+    gap: var(--spacing-step-2);
+  }
+  .inventory-flow {
+    columns: 2;
+  }
+}
+@media (max-width: 767px) {
+  .inventory-flow {
+    columns: 1;
+  }
+}
+
+/* ==========================================================================
+   THE ESTATE PAGE
+   ========================================================================== */
+
+.estate-concierge {
+  margin-top: var(--spacing-step-5);
+  color: var(--color-preveli);
+  max-width: 52ch;
+}
+.estate-detail {
+  padding-block: var(--rhythm-prose-prose);
+}
+.estate-detail > .micro + .grid-canon {
+  margin-top: var(--spacing-step-8);
+}
+.estate-villa-list,
+.estate-list {
+  list-style: none;
+  margin-top: var(--spacing-step-4);
+}
+.estate-villa-list li {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--spacing-step-5);
+  padding-block: var(--spacing-step-3);
+  border-bottom: 1px solid rgb(20 83 95 / 0.15);
+}
+.estate-villa-link {
+  color: var(--color-pelagos);
+  text-decoration: none;
+}
+.estate-villa-link:hover,
+.estate-villa-link:focus-visible {
+  text-decoration: underline;
+  text-underline-offset: 0.3em;
+  text-decoration-thickness: 1.5px;
+}
+.estate-villa-spec {
+  font-size: var(--text-datum);
+  color: var(--color-phrygana);
+  white-space: nowrap;
+}
+.estate-list li {
+  padding-block: var(--spacing-step-2);
+  color: var(--color-basalt);
+}
+
+/* ==========================================================================
+   CONTACT SHEET
+   The remainder of a large gallery, in the manner of a plate index at the back
+   of a book. Nothing is dropped; the page simply stops demanding forty screens.
+   ========================================================================== */
+
+.contact-sheet {
+  padding-block: var(--rhythm-photo-prose) var(--rhythm-prose-prose);
+}
+.contact-sheet-grid {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: var(--spacing-step-3);
+  margin-top: var(--spacing-step-5);
+}
+.contact-sheet-item {
+  position: relative;
+  aspect-ratio: 3 / 2;
+  background: var(--color-ammos);
+}
+@media (max-width: 1023px) {
+  .contact-sheet-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+@media (max-width: 767px) {
+  .contact-sheet-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* ==========================================================================
+   FONT A/B (styleguide only — these faces ship on no product page)
+   ========================================================================== */
+.ab-cormorant {
+  font-family: var(--font-cormorant), Georgia, serif;
+  font-weight: 400;
+}
+.ab-gfs {
+  font-family: var(--font-gfs-didot), Georgia, serif;
+  font-weight: 400;
+}

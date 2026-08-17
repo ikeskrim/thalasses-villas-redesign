@@ -1,0 +1,48 @@
+{
+ "slug": "jet-ski-safari",
+ "name": "Water Sports",
+ "legacyUrl": "https://thalasses.com/en/jet-ski-safari",
+ "canonical": "jet-ski-safari-1.html",
+ "meta": {
+  "title": "Water Sports",
+  "description": "Water Sports",
+  "keywords": "Thalasses Villas,Water Sports,Experiences,Rethymno,Greece,Properties chain",
+  "ogImage": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/e343feb5a2a5cab3bfb8988418ab9cbe.jpg",
+  "ogUrl": "https://thalasses.com/en/jet-ski-safari"
+ },
+ "sourceTaxonomy": "Experiences",
+ "categoryProposed": "Sea",
+ "shortDescription": "We cooperate with the best water sports in Rethymno.",
+ "longDescription": "We cooperate with the best water sports in Rethymno.\n\nOur partner provides professional equipment with high safety standards.\n\nJet skiing and Jetski Safari, Parasailing, Water skiing are just some of our water activities.\n\nWe care about our customers and that is why safety comes first for us.\n\nOur facilities also include a lifeguard watch all day and our equipment is checked daily by our specialized staff.\n\nContact us for more informations.",
+ "highlights": [],
+ "wordCount": 71,
+ "needsContent": false,
+ "brokenCta": true,
+ "images": [
+  "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/e343feb5a2a5cab3bfb8988418ab9cbe.jpg"
+ ],
+ "heroImage": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/e343feb5a2a5cab3bfb8988418ab9cbe.jpg",
+ "gallery": {
+  "heroImage": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/e343feb5a2a5cab3bfb8988418ab9cbe.jpg",
+  "images": []
+ },
+ "externalLinks": [],
+ "cta": null,
+ "duration": null,
+ "price": null,
+ "todos": [
+  "Slug/title mismatch: the URL slug is \"jet-ski-safari\" but the page TITLE, og:title and H1 are all \"Water Sports\". Decide which name to keep before migrating (affects redirects).",
+  "META description, og:description and twitter:description are all just the page title (\"Water Sports\"); there is no unique SEO description in the source.",
+  "Typo in source: \"Contact us for more informations.\" — \"informations\" should be \"information\". Preserved verbatim.",
+  "\"Contact us for more informations.\" is plain text with no <a href> — it is not linked to a contact page, form, email or phone number.",
+  "The water-sports partner referred to as \"our partner\" / \"the best water sports in Rethymno\" is never named.",
+  "\"Our facilities also include a lifeguard watch all day\" — it is ambiguous whether these are the villas' facilities or the partner's; needs clarification.",
+  "Copy is written as six separate one-sentence paragraphs; the four middle sentences read like feature bullets but are NOT marked up as a list in the source, so highlights is left empty rather than inventing structure.",
+  "No photo gallery on this page — the only page-specific image is the hero/parallax background.",
+  "No duration stated anywhere in the source page; duration left null.",
+  "No price, rate or 'from' figure stated anywhere in the source page; price left null.",
+  "No page-specific call to action exists in the source. The only CTA on the page is the site-wide booking bar (\"Book now\" -> https://thalassesvillas.reserve-online.net/), which is global chrome, so cta is null.",
+  "brokenCta: \"Contact us for more informations.\" is the page's only call to action and it has no anchor, no mailto and no form.",
+  "categoryProposed is an editorial grouping added for the redesign; the live site has no categories — confirm with the client."
+ ]
+}

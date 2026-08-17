@@ -1,0 +1,46 @@
+{
+ "slug": "bike-tours",
+ "name": "Bike Tours",
+ "legacyUrl": "https://thalasses.com/en/bike-tours",
+ "canonical": "bike-tours-1.html",
+ "meta": {
+  "title": "Bike Tours",
+  "description": "Bike Tours",
+  "keywords": "Thalasses Villas,Bike Tours,Experiences,Rethymno,Greece,Properties chain",
+  "ogImage": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/bc870bf24a014973d25acd877b7cf856.jpg",
+  "ogUrl": "https://thalasses.com/en/bike-tours"
+ },
+ "sourceTaxonomy": "Experiences",
+ "categoryProposed": "Land",
+ "shortDescription": "We can provide you a unique experience! Ask us to provide you with bicycles and explore routes around Crete!",
+ "longDescription": null,
+ "highlights": [],
+ "wordCount": 19,
+ "needsContent": true,
+ "brokenCta": false,
+ "images": [
+  "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/bc870bf24a014973d25acd877b7cf856.jpg"
+ ],
+ "heroImage": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/bc870bf24a014973d25acd877b7cf856.jpg",
+ "gallery": {
+  "heroImage": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/bc870bf24a014973d25acd877b7cf856.jpg",
+  "images": []
+ },
+ "externalLinks": [],
+ "cta": null,
+ "duration": null,
+ "price": null,
+ "todos": [
+  "No long-form description exists on the page; the body copy is a single 19-word paragraph, so longDescription is null.",
+  "META description is only the page title repeated (\"Bike Tours\") — no genuine meta description exists in source.",
+  "No highlights, bullet list, inclusions or itinerary exist on the page; highlights left empty.",
+  "No gallery/album images on this page. The only page-specific image is the hero parallax background (data-pages-bg-image on the jumbotron section). og:image points to the _thumb.jpg variant of the same photo.",
+  "No page-specific CTA in the page's own content. The only \"Book now\" button belongs to the global booking bar (form action https://thalassesvillas.reserve-online.net/) and was treated as CMS chrome, so cta is null.",
+  "No external links in the page's own content.",
+  "No duration stated in source.",
+  "No price stated in source.",
+  "No operator/partner name, meeting point, difficulty level, bike type or route names stated for Bike Tours.",
+  "categoryProposed is an editorial grouping added for the redesign; the live site has no categories — confirm with the client.",
+  "[TODO: needs content] — 19 words of body copy"
+ ]
+}

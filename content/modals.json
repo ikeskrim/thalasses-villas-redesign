@@ -1,0 +1,184 @@
+{
+ "_note": "Content of the five client-side article modals on thalasses.com. These are NOT reachable as URLs (/en/page/modal/article/{id} returns 404 on the live host); the HTML is baked into the page bundle and injected by Angular. Captured 2026-08-06 by rendering the live site and invoking loadArticlesModal('en', id). The U+FFFD replacement characters are present in the live source itself (broken encoding upstream) and are preserved verbatim in 'paragraphs'; 'paragraphsNormalized' holds the obvious intended characters.",
+ "modals": [
+  {
+   "articleId": 1896,
+   "heading": "Private Beach",
+   "usedBy": "homepage Amenities card 'Private Beach' -> Read more...",
+   "paragraphs": [
+    "Five luxurious - seafront villas with a private golden - sandy beach !",
+    "The clear blue sea and exclusive private beach equipped with sun loungers and sunshades will satisfy the most demanding sea and sun worshipers."
+   ],
+   "paragraphsNormalized": [
+    "Five luxurious - seafront villas with a private golden - sandy beach !",
+    "The clear blue sea and exclusive private beach equipped with sun loungers and sunshades will satisfy the most demanding sea and sun worshipers."
+   ],
+   "images": [
+    "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/ae3b9459e2e659faf3e93e5ab2e3e196.jpg",
+    "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/4d1ba8610cb4b4411a89d14c409c7e1d.jpg",
+    "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/1b61b4e1d52e1d0ecb0f515ee9bc931c.jpg",
+    "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/b28ebd1a8303a76e44a323310f5d597f.jpg",
+    "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/dd52c294b4705b286659fd15fef18c4e.jpg",
+    "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/2f8fee8905377184a14be9d5034d3146.jpg",
+    "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/26cbb1cafdfa1047e379771ec2228377.jpg",
+    "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/beea9040c72ed14dbf4cf46a7bb309e3.jpg",
+    "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/88aab15b6fc4764936202b6b5320f7e2.jpg",
+    "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/28e4fda34272c92a18478862c8b6925f.jpg",
+    "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/2d18e781a83498fda436c4c804b9e062.jpg",
+    "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/d5025bd2509cd9750607a4bfd0898d8b.jpg",
+    "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/6ab51797e0e16306acdff320191169f2.jpg"
+   ]
+  },
+  {
+   "articleId": 1898,
+   "heading": "Beaches",
+   "usedBy": "homepage Location section (#category570) -> Read more...",
+   "paragraphs": [
+    "Crete is a magical island filled with myth and legend, a place to relax the ideal choice for all the family.",
+    "The closest beaches to the villa that we suggest you to visit are:",
+    "- Villas' private beach which is only 50m distance.",
+    "- Rethymno beach which is just 8 km away from the villa. Rethymno beach is located 500m east of the city centre and it is a beach with golden sand and crystal clear shallow water, very well organized and close to all amenities of the city. It offers numerous beach bars, restaurants and cafes that offer umbrellas with sun beds, showers and changing rooms. Additionally on Rethymno�s beach you may find water sports facilities. Furthermore, there is a boardwalk which is ideal for afternoon walks by the sea, or simply shopping or dining.",
+    "- Ammoudaki beach: The turquoise waters and spectacular white coarse sand, make this small beach popular destination for nudists. Moreover, on the beach there is a small canteen, which also provides umbrellas and sun beds. At the west side of the beach, you can swim till a marine cave, where the sun rays make the color of the water vivid blue. The seabed is sandy and you can walk there. At the other end, there is an under water hole that connects Ammoudaki with Klisidi. So you can get from one beach to another only with a dive. To reach the beaches of Ammoudi on foot, you can walk east of Damnoni, till you meet Ammoudaki.",
+    "- Damnoni beach : Here you will find all the services of a well organized beach such as umbrellas, snack bars, showers, changing rooms, water sports, scuba diving centre, great hotels, restaurants, one horse riding centre etc. The west end of the beach, the most organized part, has a small river with water almost all year round. The east end of the beach is quieter and is linked with the adjacent beaches of Ammoudakii via a short dirt road. Moreover, beyond the west end of the beach there are several small coves with sand and rocks, where you can get isolated. These are located just next to the small harbor of the area.",
+    "Furthermore, On the South coast of the island you can also discover some of Crete�s most amazing natural beaches such as �Schinaria�, �Triopetra�, �Agios Pavlos� and \"Preveli\". The distance to the South coast from the villa is about 40 minutes by car and all the above beaches are located near to Plakias village where you can find shops and many taverns."
+   ],
+   "paragraphsNormalized": [
+    "Crete is a magical island filled with myth and legend, a place to relax the ideal choice for all the family.",
+    "The closest beaches to the villa that we suggest you to visit are:",
+    "- Villas' private beach which is only 50m distance.",
+    "- Rethymno beach which is just 8 km away from the villa. Rethymno beach is located 500m east of the city centre and it is a beach with golden sand and crystal clear shallow water, very well organized and close to all amenities of the city. It offers numerous beach bars, restaurants and cafes that offer umbrellas with sun beds, showers and changing rooms. Additionally on Rethymno's beach you may find water sports facilities. Furthermore, there is a boardwalk which is ideal for afternoon walks by the sea, or simply shopping or dining.",
+    "- Ammoudaki beach: The turquoise waters and spectacular white coarse sand, make this small beach popular destination for nudists. Moreover, on the beach there is a small canteen, which also provides umbrellas and sun beds. At the west side of the beach, you can swim till a marine cave, where the sun rays make the color of the water vivid blue. The seabed is sandy and you can walk there. At the other end, there is an under water hole that connects Ammoudaki with Klisidi. So you can get from one beach to another only with a dive. To reach the beaches of Ammoudi on foot, you can walk east of Damnoni, till you meet Ammoudaki.",
+    "- Damnoni beach : Here you will find all the services of a well organized beach such as umbrellas, snack bars, showers, changing rooms, water sports, scuba diving centre, great hotels, restaurants, one horse riding centre etc. The west end of the beach, the most organized part, has a small river with water almost all year round. The east end of the beach is quieter and is linked with the adjacent beaches of Ammoudakii via a short dirt road. Moreover, beyond the west end of the beach there are several small coves with sand and rocks, where you can get isolated. These are located just next to the small harbor of the area.",
+    "Furthermore, On the South coast of the island you can also discover some of Crete's most amazing natural beaches such as “Schinaria”, “Triopetra”, “Agios Pavlos” and \"Preveli\". The distance to the South coast from the villa is about 40 minutes by car and all the above beaches are located near to Plakias village where you can find shops and many taverns."
+   ],
+   "namedPlaces": [
+    {
+     "name": "Villas' private beach",
+     "distance": "50m"
+    },
+    {
+     "name": "Rethymno beach",
+     "distance": "8 km"
+    },
+    {
+     "name": "Ammoudaki beach",
+     "distance": null
+    },
+    {
+     "name": "Damnoni beach",
+     "distance": null
+    },
+    {
+     "name": "Klisidi",
+     "distance": null
+    },
+    {
+     "name": "Schinaria",
+     "distance": null
+    },
+    {
+     "name": "Triopetra",
+     "distance": null
+    },
+    {
+     "name": "Agios Pavlos",
+     "distance": null
+    },
+    {
+     "name": "Preveli",
+     "distance": null
+    },
+    {
+     "name": "Plakias village",
+     "distance": null
+    },
+    {
+     "name": "South coast",
+     "distance": "about 40 minutes by car"
+    }
+   ],
+   "images": [
+    "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/33dfaa1f26817d5a1b09235e185cc753.jpg",
+    "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/c645888aee978cf37acf3f6040c291f7.jpg",
+    "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/90f4f7c924ff0a9543547736e6c619aa.jpg",
+    "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/a223f5c819d18f96fe88a3e2cd901cbd.jpg",
+    "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/5d801c84bd44798f7f841e1de01d7499.jpg",
+    "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/d46d74613184883ec42184d66d1eef0a.jpg",
+    "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/977cea4bc1199ce4e46c880f2549e5f5.jpg",
+    "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/e7b6b411bba6d33fd598825d4877abf4.jpg",
+    "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/4211a80eec099419ecc47ffa30595696.jpg",
+    "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/e1303c1fa4637b376ce32ee39eb5fee2.jpg",
+    "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/92bb5f8dbeee14a5490095451988e089.jpg"
+   ]
+  },
+  {
+   "articleId": 3795,
+   "heading": "Doctor",
+   "usedBy": "homepage Amenities card 'Doctor' -> Read more...",
+   "paragraphs": [
+    "Doctor who can come to your place 24 hours a day.",
+    "For each of your emergencies there is a doctor who can come to your place 24 hours a day. Due to the disease Covid-19 a doctor can come to your place in case you need a rapid test."
+   ],
+   "paragraphsNormalized": [
+    "Doctor who can come to your place 24 hours a day.",
+    "For each of your emergencies there is a doctor who can come to your place 24 hours a day. Due to the disease Covid-19 a doctor can come to your place in case you need a rapid test."
+   ],
+   "images": [
+    "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/2119a061fcb9f948a11656d6c8a75ab0.jpg"
+   ]
+  },
+  {
+   "articleId": 3796,
+   "heading": "Babysitter",
+   "usedBy": "homepage Amenities card 'Babysitter' -> Read more...",
+   "paragraphs": [
+    "We can provide babysitting services. Please contact us for more information."
+   ],
+   "paragraphsNormalized": [
+    "We can provide babysitting services. Please contact us for more information."
+   ],
+   "images": [
+    "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/b622671c688bf1d7e961ee48e409f2e3.jpg"
+   ]
+  },
+  {
+   "articleId": 3869,
+   "heading": "Become one of us!",
+   "usedBy": "homepage Career Opportunities section (#category1158) -> Read more... (two cards, same article)",
+   "paragraphs": [
+    "Become part of our team! A team that shares more than the same employer � We share a vision.",
+    "Push your ambitions in a work atmosphere characterized by freedom, autonomy and growth culture.",
+    "Become one of us and send your CV at creteholidayhome@gmail.com."
+   ],
+   "paragraphsNormalized": [
+    "Become part of our team! A team that shares more than the same employer – We share a vision.",
+    "Push your ambitions in a work atmosphere characterized by freedom, autonomy and growth culture.",
+    "Become one of us and send your CV at creteholidayhome@gmail.com."
+   ],
+   "careersEmail": "creteholidayhome@gmail.com",
+   "images": [
+    "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/df2bacefb7d7d5df11c75781c3e5249f.jpg"
+   ]
+  }
+ ],
+ "amenityCardsWithNoDescription": [
+  "Playground and vegetable garden",
+  "Breakfast"
+ ],
+ "amenityCardWithRealPage": {
+  "title": "Sitting outdoor area",
+  "url": "/en/article/1899-1.html"
+ },
+ "articlesWithNoBakedContent": [
+  {
+   "articleId": 1897,
+   "card": "Playground and vegetable garden",
+   "evidence": "loadArticlesModal('en',1897) on a fresh page load yields an empty #modal_wrapper (0 chars); control article 1896 yields 13292 chars."
+  },
+  {
+   "articleId": 3063,
+   "card": "Breakfast",
+   "evidence": "loadArticlesModal('en',3063) on a fresh page load yields an empty #modal_wrapper (0 chars)."
+  }
+ ]
+}

@@ -1,0 +1,97 @@
+{
+ "slug": "biological-garden",
+ "name": "Organic Farm",
+ "legacyUrl": "https://thalasses.com/en/biological-garden",
+ "canonical": "biological-garden-1.html",
+ "meta": {
+  "title": "Organic Farm",
+  "description": "Organic Farm",
+  "keywords": "Thalasses Villas,Organic Farm,Experiences,Rethymno,Greece,Properties chain",
+  "ogImage": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/40e6d9fb89dcb0903bd01151439f00c3.jpg",
+  "ogUrl": "https://thalasses.com/en/biological-garden"
+ },
+ "sourceTaxonomy": "Experiences",
+ "categoryProposed": "Taste",
+ "shortDescription": "Come and live a unique experience with us in Thallasses Villas biological garden.Plant with us and taste fresh biological vegetables in your daily breakfast, also every night you will have in your villa a basket of fresh and organic vegetables which have grown only with water.",
+ "longDescription": "Come and live a unique experience with us in Thallasses Villas biological garden.Plant with us and taste fresh biological vegetables in your daily breakfast, also every night you will have in your villa a basket of fresh and organic vegetables which have grown only with water.\n\nCheck out our planting process here!",
+ "highlights": [],
+ "wordCount": 53,
+ "needsContent": false,
+ "brokenCta": false,
+ "images": [
+  "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/40e6d9fb89dcb0903bd01151439f00c3.jpg",
+  "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/40e6d9fb89dcb0903bd01151439f00c3.jpg",
+  "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/e466e69a16f456174adfc36e496ce364.jpg",
+  "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/8d40c1431e0bf618c06d957c5c2de54b.jpg",
+  "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/c296985fa33c5b1aa37fe0b0006c8568.jpg",
+  "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/049a195bcbe536035ada25e6263c1ed2.jpg",
+  "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/50f5ab5b8a6a26a89221cde41c32a205.jpg",
+  "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/7f0e1bf47c82ace1f52418dd6f4383fc.jpg",
+  "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/13d9c13931fb5185c8f2d37aaf7cfbe6.jpg"
+ ],
+ "heroImage": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/40e6d9fb89dcb0903bd01151439f00c3.jpg",
+ "gallery": {
+  "heroImage": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/40e6d9fb89dcb0903bd01151439f00c3.jpg",
+  "images": [
+   {
+    "url": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/40e6d9fb89dcb0903bd01151439f00c3.jpg",
+    "caption": "Thalasses Villas - Oganic Farm"
+   },
+   {
+    "url": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/e466e69a16f456174adfc36e496ce364.jpg",
+    "caption": "Thalasses Villas - Oganic Farm"
+   },
+   {
+    "url": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/8d40c1431e0bf618c06d957c5c2de54b.jpg",
+    "caption": "Thalasses Villas - Oganic Farm"
+   },
+   {
+    "url": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/c296985fa33c5b1aa37fe0b0006c8568.jpg",
+    "caption": "Thalasses Villas - Oganic Farm"
+   },
+   {
+    "url": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/049a195bcbe536035ada25e6263c1ed2.jpg",
+    "caption": "Thalasses Villas - Oganic Farm"
+   },
+   {
+    "url": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/50f5ab5b8a6a26a89221cde41c32a205.jpg",
+    "caption": null
+   },
+   {
+    "url": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/7f0e1bf47c82ace1f52418dd6f4383fc.jpg",
+    "caption": "Thalasses Villas - Oganic Farm"
+   },
+   {
+    "url": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/13d9c13931fb5185c8f2d37aaf7cfbe6.jpg",
+    "caption": "Thalasses Villas - Oganic Farm"
+   }
+  ]
+ },
+ "externalLinks": [
+  {
+   "label": "here",
+   "url": "https://www.youtube.com/watch?v=hOLSbf0zgJg"
+  }
+ ],
+ "cta": null,
+ "duration": null,
+ "price": null,
+ "todos": [
+  "Slug/title mismatch: the URL slug is \"biological-garden\" but the page TITLE, og:title and H1 are all \"Organic Farm\". Decide which name to keep before migrating (affects redirects).",
+  "META description, og:description and twitter:description are all just the page title (\"Organic Farm\"); there is no unique SEO description in the source.",
+  "Brand name misspelt in the body copy: \"Thallasses Villas\" (double \"l\") instead of \"Thalasses Villas\". Preserved verbatim.",
+  "Missing space after the full stop in the body copy: \"...biological garden.Plant with us and...\". Preserved verbatim.",
+  "Gallery captions read \"Thalasses Villas - Oganic Farm\" — \"Oganic\" is a typo for \"Organic\". It is repeated on 7 of the 8 gallery images. Preserved verbatim.",
+  "One gallery image (CMS alt text \"Album Image #17615\", URL .../50f5ab5b8a6a26a89221cde41c32a205_thumb.jpg) has NO caption in the source while all other gallery images do.",
+  "The copy mixes \"biological\" and \"organic\" for the same thing (\"fresh biological vegetables\" vs \"fresh and organic vegetables\") — terminology should be unified.",
+  "The claim \"which have grown only with water\" is unclear/unsubstantiated — verify what is meant before republishing.",
+  "The only link on the page uses the bare anchor text \"here\" (\"Check out our planting process here!\"), which is poor link text for accessibility and SEO; it points to a YouTube video.",
+  "Gallery image URLs in the source markup are the \"_thumb.jpg\" variants; only the hero/parallax background is available at full size. Full-resolution URLs for the gallery images are not present in the crawled source.",
+  "No highlights, bullets or structured list exist in the source, so highlights is empty.",
+  "No duration stated anywhere in the source page; duration left null.",
+  "No price, rate or 'from' figure stated anywhere in the source page; price left null.",
+  "No page-specific call to action exists in the source. The only CTA on the page is the site-wide booking bar (\"Book now\" -> https://thalassesvillas.reserve-online.net/), which is global chrome, so cta is null.",
+  "Gallery captions are recorded in the new gallery object: 7 of the 8 album images carry data-caption=\"Thalasses Villas - Oganic Farm\" (\"Oganic\" is a typo for \"Organic\", preserved verbatim); the 8th (50f5ab5b8a6a26a89221cde41c32a205) has a genuinely empty data-caption, so its caption is null.",
+  "categoryProposed is an editorial grouping added for the redesign; the live site has no categories — confirm with the client."
+ ]
+}

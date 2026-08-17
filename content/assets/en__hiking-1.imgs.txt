@@ -1,0 +1,7 @@
+﻿../bundles/frontend/theme_1/pages/images/linear_gradient-1.png
+../loggia-cdn/lodgeContent/3e3b5013ec554338704411496c011ec4-1.png
+/bundles/frontend/theme_1/assets/images/w3c/wcag1AA-blue-v.svg
+/bundles/frontend/theme_manager_3/assets/images/w3c/valid-xhtml20-blue-v.svg
+https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/87468a8759d555b8ca07e8c2a97568ab_thumb.jpg
+https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/a1478ffe450772d18d2ae6eb6006fe22_thumb.jpg
+https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/b1987c68d509d41e5aa1269ecd12a5d1_thumb.jpg

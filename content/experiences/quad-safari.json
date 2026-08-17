@@ -1,0 +1,47 @@
+{
+ "slug": "quad-safari",
+ "name": "Quad Safari",
+ "legacyUrl": "https://thalasses.com/en/quad-safari",
+ "canonical": "quad-safari-1.html",
+ "meta": {
+  "title": "Quad Safari",
+  "description": "Quad Safari",
+  "keywords": "Thalasses Villas,Quad Safari,Experiences,Rethymno,Greece,Properties chain",
+  "ogImage": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/7268b16ac113ef4d5b65d7fe5ed5dce5.jpg",
+  "ogUrl": "https://thalasses.com/en/quad-safari"
+ },
+ "sourceTaxonomy": "Experiences",
+ "categoryProposed": "Land",
+ "shortDescription": "Take a route that heads up to the mountains of Rethymno. Travel through impressive gorges with amazing archeological formations and cross shallow rivers to reach our next destination.",
+ "longDescription": null,
+ "highlights": [],
+ "wordCount": 28,
+ "needsContent": true,
+ "brokenCta": false,
+ "images": [
+  "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/7268b16ac113ef4d5b65d7fe5ed5dce5.jpg"
+ ],
+ "heroImage": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/7268b16ac113ef4d5b65d7fe5ed5dce5.jpg",
+ "gallery": {
+  "heroImage": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/7268b16ac113ef4d5b65d7fe5ed5dce5.jpg",
+  "images": []
+ },
+ "externalLinks": [],
+ "cta": null,
+ "duration": null,
+ "price": null,
+ "todos": [
+  "Copy ends on \"our next destination\" but no destination is ever named — the sentence appears to be an excerpt from longer copy that was never carried over.",
+  "No long-form description exists on the page; the body copy is a single 28-word paragraph, so longDescription is null.",
+  "META description is only the page title repeated (\"Quad Safari\") — no genuine meta description exists in source.",
+  "No highlights, bullet list, route names or inclusions exist on the page; highlights left empty.",
+  "No gallery/album images on this page. The only page-specific image is the hero parallax background (data-pages-bg-image on the jumbotron section). og:image points to the _thumb.jpg variant of the same photo.",
+  "No page-specific CTA in the page's own content. The only \"Book now\" button belongs to the global booking bar (form action https://thalassesvillas.reserve-online.net/) and was treated as CMS chrome, so cta is null.",
+  "No external links in the page's own content.",
+  "No duration stated in source.",
+  "No price stated in source.",
+  "No licence requirement, minimum age, rider-per-quad capacity or guide details stated for Quad Safari.",
+  "categoryProposed is an editorial grouping added for the redesign; the live site has no categories — confirm with the client.",
+  "[TODO: needs content] — 28 words of body copy"
+ ]
+}

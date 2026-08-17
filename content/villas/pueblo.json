@@ -1,0 +1,159 @@
+{
+ "id": "10655",
+ "slug": "villa-pueblo",
+ "name": "Villa Pueblo",
+ "pageType": "property",
+ "bookable": false,
+ "legacyUrls": [
+  "/en/villa-pueblo"
+ ],
+ "canonical": "https://thalasses.com/en/villa-pueblo",
+ "meta": {
+  "title": "Villa Pueblo, Rethymno, Greece",
+  "description": "Living Unlimited!.Unwind in utter seclusion when you book one of our five Thalasses Villas, Villa Pueblo (Adults Only).",
+  "keywords": "Thalasses Villas,Villa Pueblo,Rethymno,Greece,Property rental",
+  "ogImage": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/306268ec80fb6a07680e54463214d8d8.jpg",
+  "ogUrl": "https://thalasses.com/en/villa-pueblo",
+  "twitterCard": "summary"
+ },
+ "tagline": "Living Unlimited!",
+ "shortDescription": "Unwind in utter seclusion when you book one of our five Thalasses Villas, Villa Pueblo (Adults Only).",
+ "longDescription": "Inside this truly exceptional residence are three large bedrooms, where two of them features master beds and the other one, a king size bed. Moreover, the residence features three bathrooms. This gorgeous retreat can perfectly accommodate up to 6 guests! Furthermore, it is worth to mention the high-quality furniture, which designed by well know designers, only for our beloved and unique guests.\n\nThe indisputable star of Villa Pueblo is the exquisite outdoor area. Perfect for hosting friends and family on the spacious terrace with a private bar, it offers a large and private swimming pool, direct private beach access, and stunning views of your tropical island surroundings. The modern and sublime holiday retreat gives the privilege of the ultimate relaxation to the guests!\n\nAdditionally, the unique complex of Thalasses Villas commands sweeping views of the Cretan Sea! Situated in an ideal location it is a perfect haven for rest, comfort and luxury also are the only seafront villas with private helipad!\n\nLast but not least, please bear in mind that Villa Pueblo features the opportunity of a fixture private chef , who will be more than happy to “travel you all over the place” with unique and traditional Cretan dishes, wines and also a breakfast service in the private beach, where the guests will be able to “clear their thoughts” while enjoying the jaw-dropping view of Cretan Sea under the golden sun!",
+ "attributes": [],
+ "highlights": [
+  {
+   "text": "Outdoor Pool",
+   "source": "spaces-tile"
+  },
+  {
+   "text": "Bedrooms",
+   "source": "spaces-tile"
+  },
+  {
+   "text": "Indoor Area",
+   "source": "spaces-tile"
+  },
+  {
+   "text": "Outdoor Area",
+   "source": "spaces-tile"
+  }
+ ],
+ "specs": {
+  "bedrooms": 3,
+  "bathrooms": 3,
+  "maxGuests": 6,
+  "sizeSqm": 95,
+  "pools": 1,
+  "floors": null,
+  "view": null,
+  "distanceToBeach": null,
+  "checkIn": null,
+  "checkOut": null
+ },
+ "facilities": {
+  "ref": "content/facilities/pueblo.json",
+  "totalFeatures": 55,
+  "shownOnLiveSite": 43,
+  "tabs": [
+   {
+    "tab": "Amenities",
+    "count": 43,
+    "displayedOnLiveSite": true
+   },
+   {
+    "tab": "Entertainment / Activities",
+    "count": 7,
+    "displayedOnLiveSite": false
+   },
+   {
+    "tab": "Safety / Security",
+    "count": 5,
+    "displayedOnLiveSite": false
+   }
+  ]
+ },
+ "services": [],
+ "rooms": [
+  {
+   "name": "Outdoor Pool",
+   "description": null
+  },
+  {
+   "name": "Bedrooms",
+   "description": null
+  },
+  {
+   "name": "Indoor Area",
+   "description": null
+  },
+  {
+   "name": "Outdoor Area",
+   "description": null
+  }
+ ],
+ "gallery": {
+  "heroImage": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/306268ec80fb6a07680e54463214d8d8.jpg",
+  "albums": [],
+  "featured": [],
+  "allImages": [
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/306268ec80fb6a07680e54463214d8d8.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/7c18e5f4cd0e6eb3924f5df87e869564.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/667a0e341a65126ae163c48ce618713d.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/17ed137e30e76895c046a35fc2e4d76d.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/ba708bd7dc2cbb8b64977cf20f4ec861.jpg"
+  ]
+ },
+ "video": {
+  "youtubeId": "x0U8hZkxcJk",
+  "embedUrl": "https://www.youtube.com/embed/x0U8hZkxcJk"
+ },
+ "map": {
+  "lat": 35.380146561951,
+  "lng": 24.57279329824,
+  "embedUrl": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3892.6033269125232!2d24.570251776248284!3d35.38012254645541!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x149ba0874180b07b%3A0x2a6aaafb22f0a209!2sThalasses!5e1!3m2!1sel!2sgr!4v1748938627062!5m2!1sel!2sgr",
+  "mapsLink": "https://www.google.com/maps/search/?api=1&query=35.380146561951,24.57279329824",
+  "address": "Pigianos Kampos area, Rethymno, 74100, Greece"
+ },
+ "booking": {
+  "hasWidget": false,
+  "engine": null,
+  "formAction": null,
+  "method": null,
+  "roomCode": null,
+  "hiddenFields": {},
+  "inputs": [],
+  "submitLabel": null,
+  "ctaLabel": "Features",
+  "ctaHref": "#facilities"
+ },
+ "policies": [],
+ "relatedExperiences": [],
+ "todos": [
+  "VERIFIED bookable=false / booking.hasWidget=false: raw/en__villa-pueblo-1.html contains NO <form id=\"webHotelierForm\">. Its only forms are the empty <form> wrapper inside the Read more modal, the commented-out AngularJS contact form, the live Formspree contact form (action https://formspree.io/f/mrbkgjzw, method POST), the newsletter form (#frm_newsletter) and the AChecker validator form. By contrast raw/en__property__200.html and raw/en__property__2142.html both carry <form id=\"webHotelierForm\" action=\"https://etouri.reserve-online.net/\">.",
+  "REAL CTA: the only page-level call to action is the hero button <a href=\"#facilities\" class=\"btn btn-white ...\">Features</a>, recorded as booking.ctaLabel / ctaHref. The only other buttons on the page are \"Submit\" (Formspree contact form) and \"Subscribe!\" (newsletter). There is no \"Book now\", no room/rate code and no enquiry CTA specific to this villa. Decide in the redesign whether Villa Pueblo should get a WebHotelier room code or stay enquiry-only.",
+  "facilities: 55 real features are shipped in bundles/frontend/theme_1/app/pueblo-1.js, but the AngularJS controller does $scope.features = groups[0].group, so ONLY the 43 features of tab 0 (\"Amenities\") are ever rendered. Entertainment / Activities (7) and Safety / Security (5) are real CMS data the current site never shows. Full payload: content/facilities/pueblo.json. The saved HTML itself contains only unrendered templates ([[ feature.feature_title ]]) behind data-ng-init=\"fetchFacilities('10655', 'en')\".",
+  "NOTE: content/facilities/pueblo.json and content/facilities/index.json are IDENTICAL in content (same 3 tabs, same 55 features, same 43 shown). index-1.js is the bundle used by both the homepage and /en/thalasses-rituals, so Thalasses Rituals renders Villa Pueblo's amenity list. Verify with the CMS which property the payload really belongs to.",
+  "attributes is empty: unlike /en/thalasses-rituals and /en/property/2142, this page's #stats section has NO \"Attributes\" heading and no attribute tags - only the five counters. Nothing was dropped.",
+  "The stat strip is NOT a source string. The five counters render as 3 / 6 / 1 / 3 / 95m<sup>2</sup> with labels Bedrooms, Sleeps up to, Pools, Baths, Indoor Area, and have been split into specs.bedrooms, specs.maxGuests, specs.pools, specs.bathrooms and specs.sizeSqm. The previous synthetic string \"3 Bedrooms | 6 Sleeps up to | 1 Pools | 3 Baths | 95m2 Indoor Area\" existed nowhere in the source and has been removed.",
+  "The stats markup carries data-value=\"200\" on every counter - that is a pages-animate attribute, not a value. The displayed numbers 3 / 6 / 1 / 3 / 95m2 are the real content.",
+  "specs.sizeSqm = 95 is the \"Indoor Area\" figure only. No plot, outdoor or total area is stated.",
+  "specs.floors, specs.checkIn and specs.checkOut are null: none of the three is stated anywhere on the page (these keys were missing entirely from the previous version of this file).",
+  "specs.view is null: no structured view field. The prose says \"stunning views of your tropical island surroundings\" and \"sweeping views of the Cretan Sea\" - confirm whether either should become the view spec.",
+  "specs.distanceToBeach is null: the prose says \"direct private beach access\" but gives no distance.",
+  "gallery: this page has NO photo gallery of its own - zero fancybox anchors, zero data-caption attributes (it is the only villa page absent from content/captions.json), and no /albums page (property/{id} pages have a Gallery nav item; Villa Pueblo has none). gallery.allImages therefore holds only the single hero slide plus the four Spaces tile images; albums and featured are empty.",
+  "services is empty: this page has no fancyServiceImages* anchors and no Services section at all. The six service cards (Cook (professional chef) in the villa, Baby sitting, Pool maintenance, Pool Towels, Diving, Daily Excursions) exist only on the /en/property/{id} pages.",
+  "rooms[] descriptions are all null: the four Spaces tiles (Outdoor Pool, Bedrooms, Indoor Area, Outdoor Area) only expose a \"More details\" link calling loadPoolModal('en',3776), loadBedroomsModal('en',3), loadSpaceModal('en',27935) and loadSpaceModal('en',27936). Those modals are fetched at runtime and are not in the saved HTML.",
+  "map was MISSING from the previous version of this file. This page carries exactly the same Google Maps iframe embed and the same \"View on map\" link (35.380146561951, 24.57279329824) as the /en/property/{id} pages. map.address is the site-wide contact block (\"Thalasses Villas, Pigianos Kampos area, Rethymno, 74100, Greece\"); no Villa-Pueblo-specific address or coordinates exist.",
+  "policies is empty - and that is the source state, not an omission. The page states no cancellation, deposit, minimum-stay, house-rule, pet, smoking or children policy, and no price. The only near-policy statement is \"(Adults Only)\" inside the shortDescription.",
+  "relatedExperiences is empty: the promoted-articles sections of the HTML are empty and no experience is linked from this page.",
+  "SOURCE TYPO (kept verbatim): meta.description / og:description / twitter:description read \"Living Unlimited!.Unwind in utter seclusion...\" - a full stop directly after the exclamation mark with no space.",
+  "SOURCE TYPOS (kept verbatim in longDescription): \"two of them features master beds\", \"which designed by well know designers\" (should be \"well known\"), \"a fixture private chef ,\" (stray space before the comma), \"it is worth to mention\".",
+  "CASING INCONSISTENCY (kept verbatim): the tagline is \"Living Unlimited!\" here, \"Living unlimited!\" on /en/thalasses-rituals and \"Living unlimited\" (no exclamation mark) on the /en/property/{id} pages.",
+  "ENCODING: the saved HTML is double-encoded UTF-8 at the curly quotes (bytes C3 A2 C2 80 C2 9C / 9D). They have been decoded back to U+201C / U+201D in longDescription (“travel you all over the place”, “clear their thoughts”). There is no genuine U+FFFD on this page.",
+  "meta.ogImage NORMALISED: the source og:image / twitter:image is .../306268ec80fb6a07680e54463214d8d8_thumb.jpg; the _thumb suffix has been stripped per the project normalisation rule.",
+  "canonical: the saved <link rel=\"canonical\"> was rewritten by the crawler to the local filename \"villa-pueblo-1.html\". The value here is taken from og:url / twitter:url.",
+  "ID SPACE: the page body carries data-ng-init=\"page_id='172';property='10655'\" and fetchFacilities('10655','en'), so id is \"10655\". That is a different id space from the /en/property/{id} pages (200, 201, 202, 203, 2142). Confirm which id the redesign should key on. Note the page also contains a hard-coded loadFeatureGroupModal('en', group.group_id, '10655') that is a shared template default, not page data.",
+  "pageType is recorded as \"property\": Villa Pueblo is a real accommodation unit, listed in the \"Our Villas\" nav, rendered by the theme_1 property template with its own stats, Spaces tiles and its own facilities payload. It simply has no booking widget. Confirm if the redesign wants a separate classification for non-bookable villas.",
+  "map.address is COMPOSED, not a verbatim source string: no page prints \"Pigianos Kampos area, Rethymno, 74100, Greece\" as one line. It is assembled from the JSON-LD PostalAddress parts (streetAddress \"Pigianos Kampos area\", addressLocality \"Rethymno\", postalCode \"74100\", addressCountry \"Greece\"). site.json stores the same address as a 3-element addressLines array."
+ ]
+}

@@ -1,0 +1,2 @@
+﻿../../../loggia-cdn/lodgeContent/3e3b5013ec554338704411496c011ec4-1.png
+/bundles/frontend/theme_1/assets/images/progress.svg

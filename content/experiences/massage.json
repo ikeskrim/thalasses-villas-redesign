@@ -1,0 +1,47 @@
+{
+ "slug": "massage",
+ "name": "Massage",
+ "legacyUrl": "https://thalasses.com/en/massage",
+ "canonical": "massage-1.html",
+ "meta": {
+  "title": "Massage",
+  "description": "Massage",
+  "keywords": "Thalasses Villas,Massage,Experiences,Rethymno,Greece,Properties chain",
+  "ogImage": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/2ecca71169fd54974a50f596a089b8e2.jpg",
+  "ogUrl": "https://thalasses.com/en/massage"
+ },
+ "sourceTaxonomy": "Experiences",
+ "categoryProposed": "Wellness",
+ "shortDescription": "Book your appointment for a relaxing massage in comfort of your villa!",
+ "longDescription": null,
+ "highlights": [],
+ "wordCount": 12,
+ "needsContent": true,
+ "brokenCta": false,
+ "images": [
+  "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/2ecca71169fd54974a50f596a089b8e2.jpg"
+ ],
+ "heroImage": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/2ecca71169fd54974a50f596a089b8e2.jpg",
+ "gallery": {
+  "heroImage": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/2ecca71169fd54974a50f596a089b8e2.jpg",
+  "images": []
+ },
+ "externalLinks": [],
+ "cta": null,
+ "duration": null,
+ "price": null,
+ "todos": [
+  "No long-form description exists on the page; the body copy is a single 12-word paragraph, so longDescription is null.",
+  "META description is only the page title repeated (\"Massage\") — no genuine meta description exists in source.",
+  "No highlights, bullet list, inclusions or itinerary exist on the page; highlights left empty.",
+  "No gallery/album images on this page. The only page-specific image is the hero parallax background (data-pages-bg-image on the jumbotron section). og:image points to the _thumb.jpg variant of the same photo.",
+  "No page-specific CTA in the page's own content. The only \"Book now\" button belongs to the global booking bar (form action https://thalassesvillas.reserve-online.net/) and was treated as CMS chrome, so cta is null.",
+  "No external links in the page's own content.",
+  "No duration stated in source.",
+  "No price stated in source.",
+  "No massage types, therapist qualifications, session length or booking lead time are stated — the whole page is one 12-word sentence.",
+  "\"in comfort of your villa\" is missing the article \"the\" in the source; left verbatim, not corrected.",
+  "categoryProposed is an editorial grouping added for the redesign; the live site has no categories — confirm with the client.",
+  "[TODO: needs content] — 12 words of body copy"
+ ]
+}

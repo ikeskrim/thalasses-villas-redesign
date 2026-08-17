@@ -1,0 +1,624 @@
+{
+ "id": "203",
+ "slug": "villa-melia",
+ "name": "Villa Melia",
+ "pageType": "property",
+ "bookable": true,
+ "legacyUrls": [
+  "/en/property/203",
+  "/en/property/203/albums",
+  "/en/property/203/map"
+ ],
+ "canonical": "https://thalasses.com/en/property/203",
+ "meta": {
+  "title": "Villa Melia, Rethymno, Greece",
+  "description": "Living unlimited.Four luxurious villas in a privileged location 50 m from a private beach. The clear blue sea and exclusive private beach equipped with sun loungers and sunshades will satisfy the most demanding sea and sun worshipers. With facilities and services comparable to luxury hotels only with more privacy, each villa has spectacular views, a peaceful atmosphere and very modern amenities, perfect for restful holidays. The villas are designed with families, couples, newlyweds and those with exquisite taste who can appreciate the tranquillity, comfort and luxury of these unique villas.",
+  "keywords": "Thalasses Villas,Villa Melia,Rethymno,Greece,Villa",
+  "ogImage": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/65070ce083cb1d043359d54469a98399.jpg",
+  "ogUrl": "https://thalasses.com/en/property/203",
+  "twitterCard": "summary"
+ },
+ "tagline": "Living unlimited",
+ "shortDescription": "Four luxurious villas in a privileged location 50 m from a private beach. The clear blue sea and exclusive private beach equipped with sun loungers and sunshades will satisfy the most demanding sea and sun worshipers. With facilities and services comparable to luxury hotels only with more privacy, each villa has spectacular views, a peaceful atmosphere and very modern amenities, perfect for restful holidays. The villas are designed with families, couples, newlyweds and those with exquisite taste who can appreciate the tranquillity, comfort and luxury of these unique villas.",
+ "longDescription": "Four luxurious villas in a privileged location 50 m from a private beach. The clear blue sea and exclusive private beach equipped with sun loungers and sunshades will satisfy the most demanding sea and sun worshipers. With facilities and services comparable to luxury hotels only with more privacy, each villa has spectacular views, a peaceful atmosphere and very modern amenities, perfect for restful holidays. The villas are designed with families, couples, newlyweds and those with exquisite taste who can appreciate the tranquillity, comfort and luxury of these unique villas.\n\nThalasses Villas are four brand new luxurious villas located in a peaceful area of Pigianos Kampos, just a few meters away from our organised and well thought out private beach. There are two different types of villas in the complex. To the front villas “Thoi” and “Persi” which are single-storey, to the rear two-storey villas “Eeanthe” and “Melia”. All the villas have been designed to offer privacy with clear views of the sea!\n\nCreated and decorated with high standards, respect to the natural environment and only branded materials as every detail matters for us! Kitchen worktop from “Compac”, bedroom floors from “Kahrs”, white marbles from Greece, water systems from “Grohe”, lights from “Augenti\" and “Beca”, “Schüko” doors & windows, beds from “Cocomat” and furniture designed by Poul Christiansen & Boris Berlin (“Gubi dk”) and “Emu” designer Paola Navone are only some of the details which will make your senses to be unforgettably delighted.\n\nEach villa has private sun beds on the crystal clear water’s edge!\n\nFurthermore, an outdoor playground, vegetable garden, breakfast area and parking space are at your disposal and shared between the 4 villas of the complex.\n\nLayout of Villa Melia:\n\nVilla Melia offers 2 bedrooms and can accommodate 4 people in beds. It is a two-storey villa designed to offer direct view to the sea from the first floor bedrooms and balcony.\n\nIndoor layout:\n\nEntering the villa there is an open plan area consisting of the living room with satellite HDTV and Nintendo Wii, the indoor dining area and a fully equipped kitchen of top quality fixtures. Open the doors to the veranda and connect the living room area with the pool and the garden. On the same floor there is a bathroom with shower and a bedroom with 2 single beds which can be transformed to a double one if it’s needed, this room has direct access to the pool area. On the first floor there is another bedroom with a king size double bed and the main bathroom with Jacuzzi bath.\n\nOutdoor area:\n\nOutdoors the villa has its own fenced private area covered with grass and flowers, a heated swimming pool with hydro massage jet and sun beds. The swimming pool can be heated with an additional daily charge  upon request.  (Please note that the pool heating can be used upon advance request for the entire stay and it requires at least one week advance notice.) Next to the pool there is also a hot tube for 3 people! In addition there is an outdoor sitting area and a gas barbecue station from Porphyritic.\n\nThe pool contains a pool alarm system for child safety.\n\nThe unique benefits of Thalasses villas are:\n\n- Staying in a private sea front villa and enjoying your own private beach facilities is very special!\n\n- Feel the freedom of staying in your own villa but also take advantage of the “hotel style services” that we can offer if you want or need them such as room service, daily breakfast and cocktail bar in the complex.\n\n- Created with high standards and branded goods and materials, provides “comfort and luxury in every detail”.\n\n- Private beach and sun beds “on the water” for each villa.\n\n- Safety for children. The complex was designed with child safety in mind. We are offering a variety of facilities for children to occupy their time and leave parents the needed space to relax.\n\n- Taste our unique Cretan breakfast with fresh products picked from our vegetable garden!\n\n- The location, the complex is located in Piganos Kampos, a peaceful area yet close to everything.\n\n- No need to rent cars if you stay in Thalasses villas.",
+ "attributes": [
+  "Family",
+  "Relaxing",
+  "Coastal"
+ ],
+ "highlights": [
+  {
+   "text": "Private swimming pool (The pool can be also heated)",
+   "source": "slider-caption"
+  },
+  {
+   "text": "The villa is designed to offer clear view to the sea from the first floor bedrooms and balcony",
+   "source": "slider-caption"
+  },
+  {
+   "text": "Easy access to our Private beach",
+   "source": "slider-caption"
+  },
+  {
+   "text": "Common outdoor dining area for all villas",
+   "source": "slider-caption"
+  },
+  {
+   "text": "Each villa will have private lux sun beds in our private beach which is 50m away",
+   "source": "slider-caption"
+  }
+ ],
+ "specs": {
+  "bedrooms": 2,
+  "bathrooms": 2,
+  "maxGuests": 4,
+  "sizeSqm": 60,
+  "pools": 1,
+  "floors": 2,
+  "view": "direct view to the sea from the first floor bedrooms and balcony",
+  "distanceToBeach": "50 m",
+  "checkIn": null,
+  "checkOut": null,
+  "bedroomsDetail": "1 double + 1 twin",
+  "bathroomsDetail": "2 (Jacuzzi bath + shower)",
+  "maxGuestsBasis": "in beds",
+  "specsSource": "owner-confirmed 2026-08-06 (creteholidayhome.com stat strip + prose, corroborated by the WebHotelier availability engine)",
+  "specsConfirmed": true
+ },
+ "facilities": {
+  "ref": "content/facilities/203.json",
+  "totalFeatures": 136,
+  "shownOnLiveSite": 63,
+  "tabs": [
+   {
+    "tab": "Amenities",
+    "count": 63,
+    "displayedOnLiveSite": true
+   },
+   {
+    "tab": "Entertainment / Activities",
+    "count": 39,
+    "displayedOnLiveSite": false
+   },
+   {
+    "tab": "Children",
+    "count": 3,
+    "displayedOnLiveSite": false
+   },
+   {
+    "tab": "Cleaning",
+    "count": 12,
+    "displayedOnLiveSite": false
+   },
+   {
+    "tab": "Safety / Security",
+    "count": 17,
+    "displayedOnLiveSite": false
+   },
+   {
+    "tab": "Environment / Heating-Cooling",
+    "count": 2,
+    "displayedOnLiveSite": false
+   }
+  ]
+ },
+ "services": [
+  {
+   "name": "Cook (professional chef) in the villa",
+   "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/f9c9b5e3ccee14fa0b1e9adda9369a69.jpg"
+  },
+  {
+   "name": "Baby sitting",
+   "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/ff92de0b8a3816c7960ef57e0c803169.jpg"
+  },
+  {
+   "name": "Pool maintenance",
+   "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/367622fc62d6b70057569c40580fe7a4.jpg"
+  },
+  {
+   "name": "Pool Towels",
+   "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/fafea700c4a888003811c8139e89ec87.jpg"
+  },
+  {
+   "name": "Daily Excursions",
+   "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/635d506527ac868f8d19826ccd2cd581.jpg"
+  },
+  {
+   "name": "Diving",
+   "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/e9f80eb5acb93c984f034d865b59afbe.jpg"
+  }
+ ],
+ "rooms": [
+  {
+   "name": "Private swimming pool",
+   "description": null
+  },
+  {
+   "name": "Bedrooms",
+   "description": null
+  },
+  {
+   "name": "Living space",
+   "description": null
+  },
+  {
+   "name": "Outdoor",
+   "description": null
+  }
+ ],
+ "gallery": {
+  "heroImage": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/65070ce083cb1d043359d54469a98399.jpg",
+  "albums": [
+   {
+    "title": "Outdoors",
+    "images": [
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/ad5fa2df16a02047795213668676ac5e.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/a43c9a1581b6c1ef0b5d3d07c5c9b2d1.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/6990a9daf74d1b539e8c693e7a2ac07c.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/5bc964a6b767f933568c929ef1422e58.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/c1cc9359ead6221c4ac0be5ea44a1b87.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/c14ff1e58925f42db824e65cf8a393bc.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/4fb637aefdd44178fb5b562dba55f751.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/e1f660f2bac1f21fd9272cee140dd831.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/569b374bc48c2e4df74e8188139edf25.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/4f1f093a196959ade9e39d381d6fe1d1.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/98326ad10a1b270b0a84457a95db0200.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/50e09fec5ed312f11c40044b81fafc9f.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/e28993c01e979c5d87952db6ae1ecb9b.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/5d7d66b6fd5c54dd54e861b38b75071c.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/9f6948a794ee40bb43402b801a8e85fe.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/5d22149beddf038b4a7fd8805c69c942.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/76d2817d435bc2e940be21d7a183ac64.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/44a3fa3b14049b6e8b853a615ca43df6.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/65070ce083cb1d043359d54469a98399.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/840f632bd98f6003ff19532e4640498b.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/47dc65d08c571df8d2e09eb267c9ebe7.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/b209a35704651c2637a88ac1b4b8947c.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/c6334c6f678efa860f63dfff5127be1b.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/8f9169c3045e4341c159205d40bdd272.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/a6c269c9c0db0c17a3729cab687da9b8.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/dff3487b32d4d572184a9c4943dd603a.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/c4a288277ec58c08222af68a658bcad4.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/36e6cce20a997d05190bcee1e3337595.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/8277b2a85e013ebc2580d5f175c6b548.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/1d5f43e24f67bc28fb284fb9da90084d.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/b758091968a7286ff2f5a5963125c448.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/da15b7ebf305f6734ccb84ee9c1821ca.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/3a28424b8c1e12e77bca27faa8c7a61c.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/58e2711dd5706ea538045cac0a96bdb5.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/20f0e2cb02c05988bddcf94bae7a266b.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/913be088caf8e49043f70ecb126ab962.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/9cc4617118b4fd1c3555c22b1666b632.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/7463bd044a371f13c834b7c6f74806fc.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/90b4599c5b714346933c3ed5fd840b7e.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/f32cea497f782860f25da92e172548e3.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/33d9a4dc91a6ceb8656f60d2e9ce3581.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/472fdb51a1bd494c7a99c5b772f44ffc.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/45af143e88ad1d8e970ba949977c70f6.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/4c2ae3b77e31594baa206e7cbf38858c.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/a80e0a9b0d6d044978edd420c2b23d19.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/0335fdbe759e3994d9d1bf12d6d4078c.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/1a2e29a16982c06b458087ad2db5e051.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/7156ec533480940e5ae1824805d18ad2.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/d950315eee77186ca4c23c47472871e0.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/c093d66e479fe3e0c87e2cae8a087c6c.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/14d4a6bfd23cd1ef12fbc35f7998cb13.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/8ac462ab7202e4154f5abf539f8cdbb5.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/ce40c7c4060298ef2a2ab91608206341.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/49f8a7cac9860efabbadd32cccb3a706.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/eab26317168fedc8f1021eaae734ab55.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/f68a3556c04a6e5057f499d1d1d68e82.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/806cedf2103ae0bc43cb84272a9edc6f.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/9416809d27a0b8a4d881d32bfbeb6e09.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/f6ee0c69548f179c1644b9517189adf3.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/699847c839e8d0d26ae9a86790606a33.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/5c89d2561b1eadfc939deaa36565ea80.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/7727f0bae379634f78b150e93a8c1b41.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/ce22b543ded772dcefeea152dbd12ea2.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/10e74490c9819ed6fcf57b80965a22ed.jpg"
+    ]
+   },
+   {
+    "title": "Indoors",
+    "images": [
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/ea4e2478570f9f51eda174fd89c5e93c.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/341ef6877c55bf3a7be341820a4fd9ed.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/fa62c6f2a74cb7bef796eb9a1ee0edb7.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/5d7d66b6fd5c54dd54e861b38b75071c.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/733c3066dc1be3e63c65b445aa16d22f.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/42d1ecb9236a81d0d8480eb891749cda.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/5defcf9f94a540007a51f7b484290617.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/8a2ce151aca939ca53caca42db53695b.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/471209566eec701b04a565f2c73977eb.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/8676842cd13ae0b09469fa7f51e57e65.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/b5c1c1cd1d12f24601f8f11239deb0c9.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/7e7b6e4d8b12c5c4c00ab89e6fc97c1d.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/9e6fc5b2b6ed77d8890851162ebb7b6e.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/424b68e7a1210e5d79175e383e43f5a6.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/f888b5b377c52bf12810f9cba1f2aa0a.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/424b26e3256393c648bfc02dff4ffa80.jpg",
+     "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/15e97a3260044624852e287a6a828aef.jpg"
+    ]
+   }
+  ],
+  "featured": [
+   {
+    "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/65070ce083cb1d043359d54469a98399.jpg",
+    "caption": "Pool area with hot tub for 3 people"
+   },
+   {
+    "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/5d22149beddf038b4a7fd8805c69c942.jpg",
+    "caption": "Private swimming pool (The pool can be also heated)"
+   },
+   {
+    "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/569b374bc48c2e4df74e8188139edf25.jpg",
+    "caption": "The villa is designed to offer clear view to the sea from the first floor bedrooms and balcony"
+   },
+   {
+    "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/e1f660f2bac1f21fd9272cee140dd831.jpg",
+    "caption": "Easy access to our Private beach"
+   },
+   {
+    "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/8f9169c3045e4341c159205d40bdd272.jpg",
+    "caption": "Common outdoor dining area for all villas"
+   },
+   {
+    "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/c4a288277ec58c08222af68a658bcad4.jpg",
+    "caption": "Each villa will have private lux sun beds in our private beach which is 50m away"
+   },
+   {
+    "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/4f1f093a196959ade9e39d381d6fe1d1.jpg",
+    "caption": "Balcony on the first floor with sitting areas"
+   },
+   {
+    "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/50e09fec5ed312f11c40044b81fafc9f.jpg",
+    "caption": "Enjoy your drink in our balcony with sea view"
+   },
+   {
+    "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/6990a9daf74d1b539e8c693e7a2ac07c.jpg",
+    "caption": "Private swimming pool area with sun beds"
+   },
+   {
+    "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/ad5fa2df16a02047795213668676ac5e.jpg",
+    "caption": "Private swimming pool area with sun beds (The pool can be also heated)"
+   },
+   {
+    "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/5bc964a6b767f933568c929ef1422e58.jpg",
+    "caption": "Comfortable sun beds from EMU by the pool"
+   },
+   {
+    "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/c14ff1e58925f42db824e65cf8a393bc.jpg",
+    "caption": "Hot tub for 3 people!"
+   },
+   {
+    "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/a43c9a1581b6c1ef0b5d3d07c5c9b2d1.jpg",
+    "caption": "The swimming pool can be heated with additional 35€ per day upon request."
+   },
+   {
+    "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/4fb637aefdd44178fb5b562dba55f751.jpg",
+    "caption": "A gas barbecue station from Porphyritic"
+   },
+   {
+    "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/ea4e2478570f9f51eda174fd89c5e93c.jpg",
+    "caption": "Open plan living room with white marble from Greece"
+   },
+   {
+    "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/5d7d66b6fd5c54dd54e861b38b75071c.jpg",
+    "caption": "Outdoor sitting area connected to indoor area"
+   },
+   {
+    "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/341ef6877c55bf3a7be341820a4fd9ed.jpg",
+    "caption": "Indoor dining area"
+   },
+   {
+    "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/fa62c6f2a74cb7bef796eb9a1ee0edb7.jpg",
+    "caption": "Smeg refrigerator"
+   },
+   {
+    "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/9e6fc5b2b6ed77d8890851162ebb7b6e.jpg",
+    "caption": "Bedroom with 2 single beds on the ground floor"
+   },
+   {
+    "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/15e97a3260044624852e287a6a828aef.jpg",
+    "caption": "Bathroom with shower on the ground floor"
+   },
+   {
+    "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/733c3066dc1be3e63c65b445aa16d22f.jpg",
+    "caption": "Bedroom with a king size double bed on the first floor"
+   },
+   {
+    "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/42d1ecb9236a81d0d8480eb891749cda.jpg",
+    "caption": "Bedroom with a king size double bed on the first floor"
+   },
+   {
+    "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/471209566eec701b04a565f2c73977eb.jpg",
+    "caption": "The main bathroom with Jacuzzi on the first floor"
+   },
+   {
+    "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/caa71c9873130fbe17a0373b6b1d1717.jpg",
+    "caption": "Our bathroom amenities are from Korres and Cocomat"
+   },
+   {
+    "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/9f6948a794ee40bb43402b801a8e85fe.jpg",
+    "caption": "Welcome to Villa Melia!"
+   },
+   {
+    "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/c6334c6f678efa860f63dfff5127be1b.jpg",
+    "caption": "Communal playground area with toys, ping pong table and trampoline"
+   },
+   {
+    "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/6065f73ccef854ea37197849c1fad8ca.jpg",
+    "caption": "Communal playground area with toys, ping pong table and trampoline"
+   },
+   {
+    "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/a6c269c9c0db0c17a3729cab687da9b8.jpg",
+    "caption": "Daily Cretan Traditional Breakfast upon request with additional fee"
+   },
+   {
+    "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/dff3487b32d4d572184a9c4943dd603a.jpg",
+    "caption": "Wine cooler"
+   },
+   {
+    "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/49f8a7cac9860efabbadd32cccb3a706.jpg",
+    "caption": null
+   },
+   {
+    "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/9416809d27a0b8a4d881d32bfbeb6e09.jpg",
+    "caption": null
+   },
+   {
+    "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/1d5f43e24f67bc28fb284fb9da90084d.jpg",
+    "caption": "Private beach!"
+   },
+   {
+    "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/da15b7ebf305f6734ccb84ee9c1821ca.jpg",
+    "caption": "Private beach, Each villa has private sun beds on the crystal clear water's edge"
+   },
+   {
+    "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/3a28424b8c1e12e77bca27faa8c7a61c.jpg",
+    "caption": "Each villa has private sun beds on our Private Beach!"
+   },
+   {
+    "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/20f0e2cb02c05988bddcf94bae7a266b.jpg",
+    "caption": "Enjoy amazing Cretan sea views"
+   },
+   {
+    "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/8277b2a85e013ebc2580d5f175c6b548.jpg",
+    "caption": "Vegetable garden in which you can “use” with our gardener’s help and taste home grown vegetables."
+   },
+   {
+    "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/913be088caf8e49043f70ecb126ab962.jpg",
+    "caption": "Secure parking space"
+   },
+   {
+    "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/44a3fa3b14049b6e8b853a615ca43df6.jpg",
+    "caption": "The perfect spot for relaxing..!"
+   },
+   {
+    "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/76d2817d435bc2e940be21d7a183ac64.jpg",
+    "caption": "Enjoy tranquility all day long.."
+   },
+   {
+    "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/47dc65d08c571df8d2e09eb267c9ebe7.jpg",
+    "caption": "Each villa has its own outdoor area with pool & hot"
+   },
+   {
+    "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/9cc4617118b4fd1c3555c22b1666b632.jpg",
+    "caption": "Each villa will have private lux sun beds in our private beach which is 50m away"
+   },
+   {
+    "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/dcaa1710d540f880647b3f3606da6320.jpg",
+    "caption": "Communal playground area with toys, ping pong table and trampoline"
+   },
+   {
+    "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/90b4599c5b714346933c3ed5fd840b7e.jpg",
+    "caption": "Thalasses Villas - Luxurious accommodation"
+   },
+   {
+    "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/33d9a4dc91a6ceb8656f60d2e9ce3581.jpg",
+    "caption": "Thalasses Villas - Luxurious accommodation"
+   }
+  ],
+  "allImages": [
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/65070ce083cb1d043359d54469a98399.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/5d22149beddf038b4a7fd8805c69c942.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/569b374bc48c2e4df74e8188139edf25.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/e1f660f2bac1f21fd9272cee140dd831.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/8f9169c3045e4341c159205d40bdd272.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/c4a288277ec58c08222af68a658bcad4.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/4f1f093a196959ade9e39d381d6fe1d1.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/50e09fec5ed312f11c40044b81fafc9f.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/6990a9daf74d1b539e8c693e7a2ac07c.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/ad5fa2df16a02047795213668676ac5e.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/5bc964a6b767f933568c929ef1422e58.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/c14ff1e58925f42db824e65cf8a393bc.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/a43c9a1581b6c1ef0b5d3d07c5c9b2d1.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/4fb637aefdd44178fb5b562dba55f751.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/ea4e2478570f9f51eda174fd89c5e93c.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/5d7d66b6fd5c54dd54e861b38b75071c.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/341ef6877c55bf3a7be341820a4fd9ed.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/fa62c6f2a74cb7bef796eb9a1ee0edb7.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/9e6fc5b2b6ed77d8890851162ebb7b6e.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/15e97a3260044624852e287a6a828aef.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/733c3066dc1be3e63c65b445aa16d22f.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/42d1ecb9236a81d0d8480eb891749cda.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/471209566eec701b04a565f2c73977eb.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/caa71c9873130fbe17a0373b6b1d1717.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/9f6948a794ee40bb43402b801a8e85fe.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/c6334c6f678efa860f63dfff5127be1b.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/6065f73ccef854ea37197849c1fad8ca.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/a6c269c9c0db0c17a3729cab687da9b8.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/dff3487b32d4d572184a9c4943dd603a.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/49f8a7cac9860efabbadd32cccb3a706.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/9416809d27a0b8a4d881d32bfbeb6e09.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/1d5f43e24f67bc28fb284fb9da90084d.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/da15b7ebf305f6734ccb84ee9c1821ca.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/3a28424b8c1e12e77bca27faa8c7a61c.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/20f0e2cb02c05988bddcf94bae7a266b.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/8277b2a85e013ebc2580d5f175c6b548.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/913be088caf8e49043f70ecb126ab962.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/44a3fa3b14049b6e8b853a615ca43df6.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/76d2817d435bc2e940be21d7a183ac64.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/47dc65d08c571df8d2e09eb267c9ebe7.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/9cc4617118b4fd1c3555c22b1666b632.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/dcaa1710d540f880647b3f3606da6320.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/90b4599c5b714346933c3ed5fd840b7e.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/33d9a4dc91a6ceb8656f60d2e9ce3581.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/c1cc9359ead6221c4ac0be5ea44a1b87.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/98326ad10a1b270b0a84457a95db0200.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/e28993c01e979c5d87952db6ae1ecb9b.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/840f632bd98f6003ff19532e4640498b.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/b209a35704651c2637a88ac1b4b8947c.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/36e6cce20a997d05190bcee1e3337595.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/b758091968a7286ff2f5a5963125c448.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/58e2711dd5706ea538045cac0a96bdb5.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/7463bd044a371f13c834b7c6f74806fc.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/f32cea497f782860f25da92e172548e3.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/472fdb51a1bd494c7a99c5b772f44ffc.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/45af143e88ad1d8e970ba949977c70f6.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/4c2ae3b77e31594baa206e7cbf38858c.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/a80e0a9b0d6d044978edd420c2b23d19.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/0335fdbe759e3994d9d1bf12d6d4078c.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/1a2e29a16982c06b458087ad2db5e051.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/7156ec533480940e5ae1824805d18ad2.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/d950315eee77186ca4c23c47472871e0.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/c093d66e479fe3e0c87e2cae8a087c6c.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/14d4a6bfd23cd1ef12fbc35f7998cb13.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/8ac462ab7202e4154f5abf539f8cdbb5.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/ce40c7c4060298ef2a2ab91608206341.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/eab26317168fedc8f1021eaae734ab55.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/f68a3556c04a6e5057f499d1d1d68e82.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/806cedf2103ae0bc43cb84272a9edc6f.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/f6ee0c69548f179c1644b9517189adf3.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/699847c839e8d0d26ae9a86790606a33.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/5c89d2561b1eadfc939deaa36565ea80.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/7727f0bae379634f78b150e93a8c1b41.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/ce22b543ded772dcefeea152dbd12ea2.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/10e74490c9819ed6fcf57b80965a22ed.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/5defcf9f94a540007a51f7b484290617.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/8a2ce151aca939ca53caca42db53695b.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/8676842cd13ae0b09469fa7f51e57e65.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/b5c1c1cd1d12f24601f8f11239deb0c9.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/7e7b6e4d8b12c5c4c00ab89e6fc97c1d.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/424b68e7a1210e5d79175e383e43f5a6.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/f888b5b377c52bf12810f9cba1f2aa0a.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/424b26e3256393c648bfc02dff4ffa80.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/f9c9b5e3ccee14fa0b1e9adda9369a69.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/ff92de0b8a3816c7960ef57e0c803169.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/367622fc62d6b70057569c40580fe7a4.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/fafea700c4a888003811c8139e89ec87.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/635d506527ac868f8d19826ccd2cd581.jpg",
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/e9f80eb5acb93c984f034d865b59afbe.jpg"
+  ]
+ },
+ "video": {
+  "youtubeId": "7VWaiDAWPdY",
+  "embedUrl": "https://www.youtube.com/embed/7VWaiDAWPdY"
+ },
+ "map": {
+  "lat": 35.380146561951,
+  "lng": 24.57279329824,
+  "embedUrl": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3892.6033269125232!2d24.570251776248284!3d35.38012254645541!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x149ba0874180b07b%3A0x2a6aaafb22f0a209!2sThalasses!5e1!3m2!1sel!2sgr!4v1748938627062!5m2!1sel!2sgr",
+  "mapsLink": "https://www.google.com/maps/search/?api=1&query=35.380146561951,24.57279329824",
+  "address": "Pigianos Kampos area, Rethymno, 74100, Greece"
+ },
+ "booking": {
+  "hasWidget": true,
+  "engine": "WebHotelier",
+  "formAction": "https://etouri.reserve-online.net/",
+  "method": "GET",
+  "roomCode": "WH203",
+  "hiddenFields": {
+   "room": "WH203",
+   "exclusive": "1"
+  },
+  "inputs": [
+   {
+    "name": "checkin",
+    "label": "Arriving",
+    "type": "text",
+    "value": null,
+    "min": null,
+    "placeholder": null
+   },
+   {
+    "name": "checkout",
+    "label": "Departure",
+    "type": "text",
+    "value": null,
+    "min": null,
+    "placeholder": null
+   },
+   {
+    "name": "adults",
+    "label": "Adults",
+    "type": "number",
+    "value": "2",
+    "min": "1",
+    "placeholder": "Max "
+   },
+   {
+    "name": "children",
+    "label": "kids",
+    "type": "number",
+    "value": "0",
+    "min": "0",
+    "placeholder": "Max"
+   }
+  ],
+  "submitLabel": "Book now",
+  "ctaLabel": null,
+  "ctaHref": null
+ },
+ "policies": [
+  "The swimming pool can be heated with an additional daily charge  upon request.",
+  "The swimming pool can be heated with additional 35€ per day upon request.",
+  "(Please note that the pool heating can be used upon advance request for the entire stay and it requires at least one week advance notice.)",
+  "The pool contains a pool alarm system for child safety."
+ ],
+ "relatedExperiences": [],
+ "todos": [
+  "SOURCE ENCODING: content/raw/en__property__203.html is valid UTF-8 but the CMS stored double-encoded text (UTF-8 bytes re-read as Latin-1). Every string in this file has been decoded back to real Unicode: “Schüko”, “Compac”, “water’s edge”, curly quotes, and (on 203) “35€”. No wording was altered. There is NO genuine U+FFFD replacement character anywhere in this page, so no raw/normalised pair is needed.",
+  "meta.ogImage has been normalised to the full-size CDN file. The literal <meta property=\"og:image\"> value on the page is \"https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/65070ce083cb1d043359d54469a98399_thumb.jpg\" (with the _thumb suffix); same for twitter:image.",
+  "canonical uses the og:url value. The literal <link rel=\"canonical\"> in the crawled file is the crawler-rewritten local path \"203.html\" and is not usable.",
+  "meta.description is the og:description/meta description tag verbatim. It opens with \"Living unlimited.\" (the tagline, no space after the period) and then repeats the shared complex intro - it is not per-villa SEO copy.",
+  "longDescription is the full \"Read more...\" modal (#modal_desc) verbatim, in document order. Its FIRST paragraph is byte-identical to shortDescription because the source itself repeats the intro paragraph inside the modal; it was kept rather than trimmed so the field stays verbatim.",
+  "SOURCE TYPOS preserved verbatim in longDescription (do not silently fix): \"hot tube\" (should be hot tub); \"Piganos Kampos\" in the benefits list vs \"Pigianos Kampos\" earlier in the same text; the unbalanced quote in 'lights from “Augenti\" and “Beca”'.",
+  "Double spaces preserved verbatim where the source used &nbsp; followed by a normal space (e.g. \"upon request.  \").",
+  "specs.floors = 2 and specs.view are both read from the one sentence \"It is a two-storey villa designed to offer direct view to the sea from the first floor bedrooms and balcony.\" There is no numeric floor counter and no dedicated view field on the page.",
+  "specs.checkIn / specs.checkOut are null - no check-in or check-out time appears anywhere on this page. The only checkin/checkout tokens are the booking-form date input names and the global terms boilerplate.",
+  "specs.sizeSqm = 60 is the counter labelled \"Indoor Area\" (\"60m2\") - INDOOR area only. No plot or outdoor area figure is given, and 202 and 203 both print 60m2 despite different bedroom counts.",
+  "specs.bedrooms/maxGuests/bathrooms/pools come from the Overview counter strip, verbatim labels: Bedrooms=2, Sleeps up to=4, Pools=1, Baths=2, Indoor Area=60m2.",
+  "facilities is a pointer, not a copy. content/facilities/203.json holds the real payload recovered from the page's own app JS. The live Angular controller does $scope.features = groups[0].group, so ONLY tab 0 (\"Amenities\", 63 features) is ever rendered; the other 73 features across 5 tabs are real CMS data this site never shows. Do not drop them.",
+  "services[] are the six static fancybox anchors (data-fancybox=\"fancyServiceImages<id>\") that sit on every property page: Cook (professional chef) in the villa, Baby sitting, Pool maintenance, Pool Towels, Daily Excursions, Diving. Their ids are 391, 393, 1156, 329, 402, 405. They carry a caption and an image but NO description text in the static HTML - the descriptive copy lives behind loadServiceModal('en', id), which is Angular-loaded and absent from the export.",
+  "The page ALSO renders an Angular Services block (loadServices('en', {property_id: 203}) with \"Included Services\" / \"On Request\" / \"Services store\" tabs). That list is fetched at runtime and is NOT in the static export, so services[] here may be incomplete.",
+  "rooms[].description is null for all four spaces tiles: each tile only fires a modal on click (loadPoolModal / loadBedroomsModal / loadSpaceModal), and that modal HTML is not in the export. Modal ids for reference: pool=365, bedrooms=2, spaces=1243 & 1244.",
+  "gallery.albums holds the REAL albums, read from the two tab panes on /en/property/203/albums: \"Outdoors\" (64 images) and \"Indoors\" (17 images). The heading \"Photo gallery\" that appears on the property page is the overlay caption of the FIRST featured-gallery tile, not an album - it was wrongly recorded as a third album in the previous pass.",
+  "Album images on /albums all carry data-caption=\"\" - the Outdoors/Indoors albums genuinely have no captions. Only the featured gallery is captioned.",
+  "gallery.featured restores all 44 data-caption anchors from the featured gallery (fancyFeaturedImages), in document order, cross-checked against content/captions.json. These were dropped entirely by the first pass.",
+  "gallery.allImages (89 unique) is the deduplicated union, taken in this order: the 6 jumbotron slides, the 44 featured-gallery images, the 81 album images (Outdoors 64 + Indoors 17), the 6 service images, and any CDN-hosted spaces-tile backdrop. The jumbotron slides are a subset of the featured gallery; featured and albums overlap heavily.",
+  "One spaces-tile backdrop is NOT on the CDN and is therefore absent from gallery.allImages, which only holds normalised loggia-cdn URLs: the \"Outdoor\" tile uses the site-local path \"/assets/images/mailia/Out_1_11.jpg\". Re-host or re-point it before the redesign.",
+  "Image URLs in the crawled files are mirror-relative (\"../../loggia-cdn/lodgeContent/x.jpg\"). All have been rewritten to the CDN host and to full size (any _thumb / -N suffix stripped). Filenames are unchanged.",
+  "video: both 202 and 203 embed the SAME YouTube clip (7VWaiDAWPdY) next to the description. It is complex-wide footage, not villa-specific.",
+  "map.lat/map.lng are taken from the page's own \"View on map\" link. They are IDENTICAL on 202 and 203 - this is the Thalasses Villas complex coordinate, not a per-villa position.",
+  "map.address is assembled from the page JSON-LD PostalAddress (streetAddress \"Pigianos Kampos area\", addressLocality \"Rethymno\", postalCode \"74100\", addressCountry \"Greece\"). The page never prints a one-line street address for the villa itself.",
+  "booking.engine \"WebHotelier\" is inferred from the form id (\"webHotelierForm\") and the action host (etouri.reserve-online.net). The engine is never named in visible copy.",
+  "booking.method is GET: the <form id=\"webHotelierForm\"> has no method attribute, so the HTML default applies. It also carries target=\"_blank\".",
+  "booking.inputs lists the four VISIBLE controls only; the two hidden ones (room=WH203, exclusive=1) are in booking.hiddenFields. The adults placeholder is \"Max \" with a trailing space in the source - kept verbatim.",
+  "booking.ctaLabel / booking.ctaHref are null: the only booking control on the page is the form's own submit button (\"Book now\"). There is no separate CTA link.",
+  "policies[] holds only the page-specific conditions stated in this villa's own copy. The site-wide Terms & Conditions modal in the footer is identical on every page (global chrome) and was deliberately not copied here. No cancellation, deposit, minimum-stay, pet or smoking policy is stated on this page.",
+  "The featured-gallery caption \"Daily Cretan Traditional Breakfast upon request with additional fee\" is also a charging condition but names no amount; it is recorded in gallery.featured rather than policies.",
+  "relatedExperiences is empty: this page links to no experience/article page. The only article links are the global nav categories (Amenities #category571, Location #category570, Experiences #category1139, Career Opportunities #category1158) and the \"Villa Pueblo\" / \"Thalasses Rituals\" menu items - site chrome, not page content.",
+  "legacyUrls lists the three distinct pages of this property in the export: the property page, /albums and /map. They are recorded as site-relative paths; the absolute form is https://thalasses.com + path.",
+  "2 featured-gallery anchors carry data-caption=\"\" (empty) in the source, so their caption is null here, not invented: 49f8a7cac9860efabbadd32cccb3a706.jpg, 9416809d27a0b8a4d881d32bfbeb6e09.jpg.",
+  "The pool-heating price \"The swimming pool can be heated with additional 35€ per day upon request.\" appears TWICE across the site: here as the data-caption of featured image a43c9a1581b6c1ef0b5d3d07c5c9b2d1.jpg, and on Villa Persi (201) as the caption of 31ee31693e89b8e0512466d63152d164.jpg (recorded at villas/201.json gallery.featured[7] and policies[3]). It is the only monetary amount anywhere on the site, and it contradicts the body copy on 200/201/202/203/2142, which all describe the charge without naming a figure.",
+  "Source typo/inconsistency: the third spaces tile is labelled \"Living space\" on Villa Melia but \"Living room\" on Villa Eeanthe. Left verbatim.",
+  "Featured caption 39 reads \"Each villa has its own outdoor area with pool & hot\" - truncated in the source (Villa Eeanthe's equivalent caption ends \"...pool & hot tub\"). Left verbatim.",
+  "Villa Melia's raw HTML is larger than Eeanthe's (280,769 vs 195,770 bytes) only because of ~85 KB of whitespace padding in the contact block plus an extra Facebook Pixel script (fbq init 434580631066362). There is NO extra content section on 203.",
+  "map.address is COMPOSED, not a verbatim source string: no page prints \"Pigianos Kampos area, Rethymno, 74100, Greece\" as one line. It is assembled from the JSON-LD PostalAddress parts (streetAddress \"Pigianos Kampos area\", addressLocality \"Rethymno\", postalCode \"74100\", addressCountry \"Greece\"). site.json stores the same address as a 3-element addressLines array.",
+  "Capacity LOCKED by the owner: 2 bedrooms (1 double + 1 twin), 2 bathrooms (2 (Jacuzzi bath + shower)), sleeps 4 in beds. Source: owner-confirmed 2026-08-06 (creteholidayhome.com stat strip + prose, corroborated by the WebHotelier availability engine). The legacy site's 'sleeps up to 5' for Thoi and Persi is superseded as stale."
+ ],
+ "amenityFacts": [
+  "Single beds in the twin rooms convert to doubles on request."
+ ]
+}

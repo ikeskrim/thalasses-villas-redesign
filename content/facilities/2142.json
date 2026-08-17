@@ -1,0 +1,1634 @@
+{
+ "_note": "Real per-property facilities data, recovered from the hard-coded Promise.resolve payload inside bundles/frontend/theme_1/app/<page>.js. The live site's Angular controller sets $scope.features = groups[0].group, so ONLY tab 0 ('Amenities') is ever rendered; the remaining tabs are real CMS data for this property that the current site never shows. featureType 5/6 = boolean amenity; 1/2 = numeric value; 7 = enum id that cannot be resolved without the CMS lookup table.",
+ "page": "2142",
+ "property": "Thalasses Villas (entire estate)",
+ "totalFeatures": 127,
+ "featuresShownOnLiveSite": 54,
+ "tabs": [
+  {
+   "tab": "Amenities",
+   "tabIndex": 0,
+   "groupId": 2,
+   "icon": "fa-regular fa-square-check",
+   "displayedOnLiveSite": true,
+   "groups": [
+    {
+     "group": "Essentials",
+     "slug": "slug_property_feature_group_amenities_basics",
+     "items": [
+      {
+       "featureId": 5,
+       "name": "Essentials",
+       "description": "Towels, linen...",
+       "extraDescription": null,
+       "featureType": 5,
+       "value": "1",
+       "icon": "fa-solid fa-check-square",
+       "slug": "slug_property_feature_10_essentials",
+       "valueIsUnresolvedEnumId": false
+      },
+      {
+       "featureId": 6,
+       "name": "Supplies",
+       "description": "Paper, cleaning...",
+       "extraDescription": null,
+       "featureType": 5,
+       "value": "1",
+       "icon": "fa-solid fa-shopping-basket",
+       "slug": "slug_property_feature_10_supplies",
+       "valueIsUnresolvedEnumId": false
+      }
+     ]
+    },
+    {
+     "group": "Kitchen and dining",
+     "slug": "slug_property_feature_group_amenities_kitchen",
+     "items": [
+      {
+       "featureId": 566,
+       "name": "Kitchen",
+       "description": null,
+       "extraDescription": "4 Fully equipped kitchens with branded electric devices",
+       "featureType": 5,
+       "value": "1",
+       "icon": "fa-solid fa-knife-kitchen",
+       "slug": "slug_property_feature_group_amenities_kitchen_kitchen",
+       "valueIsUnresolvedEnumId": false
+      },
+      {
+       "featureId": 20,
+       "name": "Toaster",
+       "description": "For sandwich",
+       "extraDescription": "In each Kitchen",
+       "featureType": 5,
+       "value": "1",
+       "icon": "fa-solid fa-sandwich",
+       "slug": "slug_property_feature_13_toaster",
+       "valueIsUnresolvedEnumId": false
+      },
+      {
+       "featureId": 787,
+       "name": "Blender",
+       "description": null,
+       "extraDescription": null,
+       "featureType": 5,
+       "value": "1",
+       "icon": "fa-solid fa-blender",
+       "slug": "slug_property_feature_group_amenities_kitchen_blender",
+       "valueIsUnresolvedEnumId": false
+      },
+      {
+       "featureId": 17,
+       "name": "Dishwasher",
+       "description": null,
+       "extraDescription": "In each Kitchen",
+       "featureType": 5,
+       "value": "1",
+       "icon": "fa-light fa-washer",
+       "slug": "slug_property_feature_13_dishwasher",
+       "valueIsUnresolvedEnumId": false
+      },
+      {
+       "featureId": 14,
+       "name": "Dishes & Utensils",
+       "description": "Dishes, pans, Cutlery",
+       "extraDescription": "We provide you everything in order to cook and serve 18 people!",
+       "featureType": 5,
+       "value": "1",
+       "icon": "fa-regular fa-hat-chef",
+       "slug": "slug_property_feature_13_basics",
+       "valueIsUnresolvedEnumId": false
+      },
+      {
+       "featureId": 19,
+       "name": "Microwave",
+       "description": null,
+       "extraDescription": "In each Kitchen",
+       "featureType": 5,
+       "value": "1",
+       "icon": "fa-solid fa-microwave",
+       "slug": "slug_property_feature_13_microwave",
+       "valueIsUnresolvedEnumId": false
+      },
+      {
+       "featureId": 16,
+       "name": "Coffee maker",
+       "description": null,
+       "extraDescription": "Nespresso coffee facilities and filter coffee machine , in each Kitchen",
+       "featureType": 5,
+       "value": "1",
+       "icon": "fa-solid fa-coffee-pot",
+       "slug": "slug_property_feature_13_coffeemaker",
+       "valueIsUnresolvedEnumId": false
+      },
+      {
+       "featureId": 789,
+       "name": "Pantry items",
+       "description": null,
+       "extraDescription": null,
+       "featureType": 5,
+       "value": "1",
+       "icon": "fa-solid fa-croissant",
+       "slug": "slug_property_feature_group_amenities_kitchen_pantry-items",
+       "valueIsUnresolvedEnumId": false
+      },
+      {
+       "featureId": 507,
+       "name": "Barbecue / grill",
+       "description": null,
+       "extraDescription": null,
+       "featureType": 5,
+       "value": "1",
+       "icon": "fa-solid fa-shish-kebab",
+       "slug": "slug_property_feature_15_grill-area",
+       "valueIsUnresolvedEnumId": false
+      },
+      {
+       "featureId": 499,
+       "name": "Oven",
+       "description": null,
+       "extraDescription": "In each Kitchen",
+       "featureType": 5,
+       "value": "1",
+       "icon": "fa-regular fa-oven",
+       "slug": "slug_property_feature_13_oven",
+       "valueIsUnresolvedEnumId": false
+      },
+      {
+       "featureId": 500,
+       "name": "Hob/Stove",
+       "description": null,
+       "extraDescription": "4 rings ceramic top cooker in in each Kitchen",
+       "featureType": 5,
+       "value": "1",
+       "icon": "fa-duotone fa-circle",
+       "slug": "slug_property_feature_13_hobs",
+       "valueIsUnresolvedEnumId": false
+      },
+      {
+       "featureId": 472,
+       "name": "Kettle",
+       "description": null,
+       "extraDescription": null,
+       "featureType": 5,
+       "value": "1",
+       "icon": "fa-solid fa-cauldron",
+       "slug": "slug_property_feature_13_tkettle",
+       "valueIsUnresolvedEnumId": false
+      },
+      {
+       "featureId": 501,
+       "name": "Fridge",
+       "description": null,
+       "extraDescription": "\"Smeg\" refrigerator in each Kitchen",
+       "featureType": 5,
+       "value": "1",
+       "icon": "fa-solid fa-refrigerator",
+       "slug": "slug_property_feature_13_refrigerator",
+       "valueIsUnresolvedEnumId": false
+      },
+      {
+       "featureId": 498,
+       "name": "Spices",
+       "description": "Salt, Pepper, etc.",
+       "extraDescription": "On your arrival you will find coffee, sugar, salt, spices, some basic cleaning supplies, kitchen and toilet paper, bottled water.",
+       "featureType": 5,
+       "value": "1",
+       "icon": "fa-solid fa-mortar-pestle",
+       "slug": "slug_property_feature_13_spices",
+       "valueIsUnresolvedEnumId": false
+      },
+      {
+       "featureId": 518,
+       "name": "High Chair",
+       "description": null,
+       "extraDescription": null,
+       "featureType": 5,
+       "value": "1",
+       "icon": "fa-solid fa-chair",
+       "slug": "slug_property_feature_13_high-chair",
+       "valueIsUnresolvedEnumId": false
+      },
+      {
+       "featureId": 240,
+       "name": "Espresso Maker",
+       "description": null,
+       "extraDescription": null,
+       "featureType": 5,
+       "value": "1",
+       "icon": "fa-regular fa-coffee",
+       "slug": "slug_property_feature_13_tespresso_maker",
+       "valueIsUnresolvedEnumId": false
+      },
+      {
+       "featureId": 690,
+       "name": "Fully Equipped Kitchen",
+       "description": null,
+       "extraDescription": null,
+       "featureType": 5,
+       "value": "1",
+       "icon": "fa-solid fa-knife-kitchen",
+       "slug": "slug_property_feature_group_amenities_kitchen_fully-equipped-kitchen",
+       "valueIsUnresolvedEnumId": false
+      },
+      {
+       "featureId": 15,
+       "name": "Basic appliances",
+       "description": "Oven, hobs, refrigerator...",
+       "extraDescription": null,
+       "featureType": 5,
+       "value": "1",
+       "icon": "fa-light fa-knife-kitchen",
+       "slug": "slug_property_feature_13_appliances",
+       "valueIsUnresolvedEnumId": false
+      }
+     ]
+    },
+    {
+     "group": "Essential amenities",
+     "slug": "slug_property_feature_group_amenities_comfort",
+     "items": [
+      {
+       "featureId": 7,
+       "name": "Air Conditioning",
+       "description": null,
+       "extraDescription": "Air condition in every room and in all areas. Ecological air cooling systems are used, avoiding traditional air conditioning systems, which are often harmful to health.",
+       "featureType": 5,
+       "value": "1",
+       "icon": "fa-solid fa-air-conditioner",
+       "slug": "slug_property_feature_11_ac",
+       "valueIsUnresolvedEnumId": false
+      },
+      {
+       "featureId": 768,
+       "name": "Linen provided",
+       "description": null,
+       "extraDescription": "We will change towels and linen every 3 days",
+       "featureType": 5,
+       "value": "1",
+       "icon": "fa-solid fa-bed",
+       "slug": "slug_property_feature_group_amenities_comfort_leuka-idi",
+       "valueIsUnresolvedEnumId": false
+      },
+      {
+       "featureId": 897,
+       "name": "Basic soaps",
+       "description": null,
+       "extraDescription": null,
+       "featureType": 5,
+       "value": "1",
+       "icon": "",
+       "slug": "slug_property_feature_group_amenities_basics_basic-soaps",
+       "valueIsUnresolvedEnumId": false
+      },
+      {
+       "featureId": 21,
+       "name": "Washing machine",
+       "description": null,
+       "extraDescription": "Private washing machine in each house. We can also do the washing and ironing for you with an additional fee.",
+       "featureType": 5,
+       "value": "1",
+       "icon": "fa-solid fa-washer",
+       "slug": "slug_property_feature_14_washingmachine",
+       "valueIsUnresolvedEnumId": false
+      },
+      {
+       "featureId": 626,
+       "name": "Iron & board",
+       "description": null,
+       "extraDescription": null,
+       "featureType": 5,
+       "value": "1",
+       "icon": "fa-solid fa-union",
+       "slug": "slug_property_feature_group_amenities_bathroom_iron-board",
+       "valueIsUnresolvedEnumId": false
+      }
+     ]
+    },
+    {
+     "group": "General",
+     "slug": "slug_property_feature_group_amenities_general",
+     "items": [
+      {
+       "featureId": 10,
+       "name": "Internet",
+       "description": "Free Wi-Fi / ethernet",
+       "extraDescription": "High speed WiFi connection in all areas indoors and outdoors",
+       "featureType": 5,
+       "value": "1",
+       "icon": "fa-duotone fa-router",
+       "slug": "slug_property_feature_12_wifi",
+       "valueIsUnresolvedEnumId": false
+      },
+      {
+       "featureId": 534,
+       "name": "Living Room",
+       "description": null,
+       "extraDescription": "Each villa has a spacious living room area with a satellite TV and seating area. Open the doors and connect it with the pool area",
+       "featureType": 5,
+       "value": "1",
+       "icon": "fa-solid fa-couch",
+       "slug": "slug_property_feature_group_amenities_comfort_living-room",
+       "valueIsUnresolvedEnumId": false
+      },
+      {
+       "featureId": 692,
+       "name": "Parking",
+       "description": null,
+       "extraDescription": "Big parking for all your cars",
+       "featureType": 5,
+       "value": "1",
+       "icon": "fa-solid fa-parking",
+       "slug": "slug_property_feature_group_amenities_parking_parking",
+       "valueIsUnresolvedEnumId": false
+      }
+     ]
+    },
+    {
+     "group": "Pool and spa facilities",
+     "slug": "slug_property_feature_group_amenities_pool-and-spa",
+     "items": [
+      {
+       "featureId": 678,
+       "name": "Outdoor pool",
+       "description": null,
+       "extraDescription": null,
+       "featureType": 5,
+       "value": "1",
+       "icon": "fa-regular fa-swimming-pool",
+       "slug": "slug_property_feature_group_amenities_pool-and-spa_outdoor-pool",
+       "valueIsUnresolvedEnumId": false
+      },
+      {
+       "featureId": 366,
+       "name": "Private pool",
+       "description": null,
+       "extraDescription": "Each villa has a 20 square meters swimming pool. The swimming pools can be heated with an additional daily charge per pool upon advance request.",
+       "featureType": 5,
+       "value": "1",
+       "icon": "fa-solid fa-swimming-pool",
+       "slug": "slug_property_feature_75_private_pool",
+       "valueIsUnresolvedEnumId": false
+      },
+      {
+       "featureId": 527,
+       "name": "Spa whirlpool",
+       "description": null,
+       "extraDescription": null,
+       "featureType": 5,
+       "value": "1",
+       "icon": "fa-regular fa-hot-tub",
+       "slug": "slug_property_feature_group_amenities_pool-and-spa_spa-hot-tub",
+       "valueIsUnresolvedEnumId": false
+      },
+      {
+       "featureId": 531,
+       "name": "Heated Pool",
+       "description": null,
+       "extraDescription": null,
+       "featureType": 5,
+       "value": "1",
+       "icon": "fa-solid fa-temperature-up",
+       "slug": "slug_property_feature_group_amenities_pool-and-spa_heated-pool",
+       "valueIsUnresolvedEnumId": false
+      },
+      {
+       "featureId": 648,
+       "name": "Pool towels",
+       "description": null,
+       "extraDescription": null,
+       "featureType": 5,
+       "value": "1",
+       "icon": "fa-regular fa-blanket",
+       "slug": "slug_property_feature_group_amenities_bathroom_pool-towels",
+       "valueIsUnresolvedEnumId": false
+      }
+     ]
+    },
+    {
+     "group": "Outdoor features",
+     "slug": "slug_property_feature_group_amenities_outdoor",
+     "items": [
+      {
+       "featureId": 567,
+       "name": "Terrace",
+       "description": null,
+       "extraDescription": null,
+       "featureType": 5,
+       "value": "1",
+       "icon": "",
+       "slug": "slug_property_feature_group_amenities_outdoor_terrace",
+       "valueIsUnresolvedEnumId": false
+      },
+      {
+       "featureId": 238,
+       "name": "Garden",
+       "description": null,
+       "extraDescription": null,
+       "featureType": 5,
+       "value": "1",
+       "icon": "fa-light fa-flower-daffodil",
+       "slug": "slug_property_feature_15_garden",
+       "valueIsUnresolvedEnumId": false
+      },
+      {
+       "featureId": 505,
+       "name": "Veranda",
+       "description": null,
+       "extraDescription": null,
+       "featureType": 5,
+       "value": "1",
+       "icon": "",
+       "slug": "slug_property_feature_15_veranda",
+       "valueIsUnresolvedEnumId": false
+      }
+     ]
+    },
+    {
+     "group": "Accommodations",
+     "slug": "slug_property_feature_group_amenities_accommodations",
+     "items": [
+      {
+       "featureId": 624,
+       "name": "Concierge",
+       "description": null,
+       "extraDescription": null,
+       "featureType": 5,
+       "value": "1",
+       "icon": "",
+       "slug": "slug_property_feature_group_amenities_accommodations_concierge",
+       "valueIsUnresolvedEnumId": false
+      },
+      {
+       "featureId": 625,
+       "name": "Massage",
+       "description": null,
+       "extraDescription": null,
+       "featureType": 5,
+       "value": "1",
+       "icon": "fa-solid fa-bed-empty",
+       "slug": "slug_property_feature_group_amenities_accommodations_massage",
+       "valueIsUnresolvedEnumId": false
+      },
+      {
+       "featureId": 620,
+       "name": "Private Chef",
+       "description": null,
+       "extraDescription": null,
+       "featureType": 5,
+       "value": "1",
+       "icon": "fa-solid fa-hat-chef",
+       "slug": "slug_property_feature_group_amenities_accommodations_private-chef",
+       "valueIsUnresolvedEnumId": false
+      }
+     ]
+    },
+    {
+     "group": "Car",
+     "slug": "slug_property_feature_group_amenities_car",
+     "items": [
+      {
+       "featureId": 634,
+       "name": "Car Recommended",
+       "description": null,
+       "extraDescription": null,
+       "featureType": 5,
+       "value": "1",
+       "icon": "",
+       "slug": "slug_property_feature_group_amenities_car_car-recommended",
+       "valueIsUnresolvedEnumId": false
+      }
+     ]
+    },
+    {
+     "group": "Locations",
+     "slug": "slug_property_feature_group_amenities_topothesies",
+     "items": [
+      {
+       "featureId": 710,
+       "name": "Beach",
+       "description": null,
+       "extraDescription": null,
+       "featureType": 5,
+       "value": "1",
+       "icon": "fa-regular fa-umbrella-beach",
+       "slug": "slug_property_feature_group_amenities_topothesies_paralia",
+       "valueIsUnresolvedEnumId": false
+      },
+      {
+       "featureId": 736,
+       "name": "Waterfront",
+       "description": null,
+       "extraDescription": null,
+       "featureType": 5,
+       "value": "1",
+       "icon": "fa-light fa-house-flood",
+       "slug": "slug_property_feature_group_amenities_topothesies_prokimaia",
+       "valueIsUnresolvedEnumId": false
+      },
+      {
+       "featureId": 734,
+       "name": "Village",
+       "description": null,
+       "extraDescription": null,
+       "featureType": 5,
+       "value": "1",
+       "icon": "",
+       "slug": "slug_property_feature_group_amenities_topothesies_chorio",
+       "valueIsUnresolvedEnumId": false
+      },
+      {
+       "featureId": 733,
+       "name": "Town",
+       "description": null,
+       "extraDescription": null,
+       "featureType": 5,
+       "value": "1",
+       "icon": "",
+       "slug": "slug_property_feature_group_amenities_topothesies_poli",
+       "valueIsUnresolvedEnumId": false
+      },
+      {
+       "featureId": 806,
+       "name": "Near the sea",
+       "description": null,
+       "extraDescription": null,
+       "featureType": 5,
+       "value": "1",
+       "icon": "fa-light fa-water",
+       "slug": "slug_property_feature_group_amenities_topothesies_near-the-sea",
+       "valueIsUnresolvedEnumId": false
+      }
+     ]
+    },
+    {
+     "group": "Themes",
+     "slug": "slug_property_feature_group_amenities_themata",
+     "items": [
+      {
+       "featureId": 771,
+       "name": "Romantic",
+       "description": null,
+       "extraDescription": null,
+       "featureType": 5,
+       "value": "1",
+       "icon": "",
+       "slug": "slug_property_feature_group_amenities_themata_romantiko",
+       "valueIsUnresolvedEnumId": false
+      },
+      {
+       "featureId": 770,
+       "name": "Family",
+       "description": null,
+       "extraDescription": null,
+       "featureType": 5,
+       "value": "1",
+       "icon": "",
+       "slug": "slug_property_feature_group_amenities_themata_ikogeniako",
+       "valueIsUnresolvedEnumId": false
+      }
+     ]
+    },
+    {
+     "group": "Bathroom",
+     "slug": "slug_property_feature_group_amenities_07_bathroom",
+     "items": [
+      {
+       "featureId": 1238,
+       "name": "Bathtub only",
+       "description": null,
+       "extraDescription": null,
+       "featureType": 5,
+       "value": "1",
+       "icon": "",
+       "slug": "slug_property_feature_group_amenities_07_bathroom_bathtub-only",
+       "valueIsUnresolvedEnumId": false
+      },
+      {
+       "featureId": 1237,
+       "name": "Shower only",
+       "description": null,
+       "extraDescription": null,
+       "featureType": 5,
+       "value": "1",
+       "icon": "",
+       "slug": "slug_property_feature_group_amenities_07_bathroom_shower-only",
+       "valueIsUnresolvedEnumId": false
+      },
+      {
+       "featureId": 22,
+       "name": "Hair dryer",
+       "description": null,
+       "extraDescription": null,
+       "featureType": 5,
+       "value": "1",
+       "icon": "fa-solid fa-wind",
+       "slug": "slug_property_feature_14_hairdryer",
+       "valueIsUnresolvedEnumId": false
+      },
+      {
+       "featureId": 86,
+       "name": "Toilet paper",
+       "description": null,
+       "extraDescription": null,
+       "featureType": 5,
+       "value": "1",
+       "icon": "",
+       "slug": "slug_property_feature_22_toiletpapertowel",
+       "valueIsUnresolvedEnumId": false
+      },
+      {
+       "featureId": 916,
+       "name": "Shampoo",
+       "description": null,
+       "extraDescription": null,
+       "featureType": 5,
+       "value": "1",
+       "icon": "",
+       "slug": "slug_property_feature_group_amenities_general_shampoo",
+       "valueIsUnresolvedEnumId": false
+      },
+      {
+       "featureId": 461,
+       "name": "Towels provided",
+       "description": null,
+       "extraDescription": "We will change towels and linen every 3 days",
+       "featureType": 5,
+       "value": "1",
+       "icon": "fa-solid fa-blanket",
+       "slug": "slug_property_feature_80_towels_provided",
+       "valueIsUnresolvedEnumId": false
+      }
+     ]
+    },
+    {
+     "group": "Telephone",
+     "slug": "slug_property_feature_group_amenities_12_telephone",
+     "items": [
+      {
+       "featureId": 466,
+       "name": "Phone",
+       "description": null,
+       "extraDescription": "Etouri has a dedicated concierge team available to you before and during your stay to enhance your holidays. We know the island, so leave it to us to help you with suggestions and planning.",
+       "featureType": 5,
+       "value": "1",
+       "icon": "fa-solid fa-phone-alt",
+       "slug": "slug_property_feature_81_phone",
+       "valueIsUnresolvedEnumId": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "tab": "Entertainment / Activities",
+   "tabIndex": 1,
+   "groupId": 3,
+   "icon": "fa-bicycle",
+   "displayedOnLiveSite": false,
+   "groups": [
+    {
+     "group": "Entertainment",
+     "slug": "slug_property_feature_group_amenities_entertainment",
+     "items": [
+      {
+       "featureId": 11,
+       "name": "Television",
+       "description": null,
+       "extraDescription": "Satellite HDTV in each villa",
+       "featureType": 5,
+       "value": "1",
+       "icon": "fa-solid fa-tv",
+       "slug": "slug_property_feature_12_tv",
+       "valueIsUnresolvedEnumId": false
+      },
+      {
+       "featureId": 35,
+       "name": "TV",
+       "description": null,
+       "extraDescription": null,
+       "featureType": 7,
+       "value": "2",
+       "icon": "",
+       "slug": "slug_property_feature_3_tv",
+       "valueIsUnresolvedEnumId": true
+      },
+      {
+       "featureId": 36,
+       "name": "Channels",
+       "description": null,
+       "extraDescription": null,
+       "featureType": 7,
+       "value": "6",
+       "icon": "",
+       "slug": "slug_property_feature_3_channels",
+       "valueIsUnresolvedEnumId": true
+      },
+      {
+       "featureId": 39,
+       "name": "Movies",
+       "description": null,
+       "extraDescription": null,
+       "featureType": 7,
+       "value": "18",
+       "icon": "",
+       "slug": "slug_property_feature_3_movies",
+       "valueIsUnresolvedEnumId": true
+      },
+      {
+       "featureId": 40,
+       "name": "Music",
+       "description": null,
+       "extraDescription": null,
+       "featureType": 7,
+       "value": "20",
+       "icon": "",
+       "slug": "slug_property_feature_3_music",
+       "valueIsUnresolvedEnumId": true
+      },
+      {
+       "featureId": 511,
+       "name": "Video games",
+       "description": null,
+       "extraDescription": "Nintendo Wii in each villa",
+       "featureType": 5,
+       "value": "1",
+       "icon": "fa-solid fa-gamepad",
+       "slug": "slug_property_feature_12_video-games",
+       "valueIsUnresolvedEnumId": false
+      },
+      {
+       "featureId": 510,
+       "name": "Stereo / sound system",
+       "description": null,
+       "extraDescription": "Sony bluetooth speaker in each villa",
+       "featureType": 5,
+       "value": "1",
+       "icon": "fa-solid fa-waveform-path",
+       "slug": "slug_property_feature_12__stereo",
+       "valueIsUnresolvedEnumId": false
+      },
+      {
+       "featureId": 515,
+       "name": "Toys",
+       "description": null,
+       "extraDescription": "There are child toys for young children, private beach and the playground outdoor.",
+       "featureType": 5,
+       "value": "1",
+       "icon": "fa-solid fa-joystick",
+       "slug": "slug_property_feature_12_toys",
+       "valueIsUnresolvedEnumId": false
+      },
+      {
+       "featureId": 508,
+       "name": "Books",
+       "description": null,
+       "extraDescription": null,
+       "featureType": 5,
+       "value": "1",
+       "icon": "fa-solid fa-book",
+       "slug": "slug_property_feature_12_books",
+       "valueIsUnresolvedEnumId": false
+      },
+      {
+       "featureId": 516,
+       "name": "DVD Player",
+       "description": null,
+       "extraDescription": "in each villa",
+       "featureType": 5,
+       "value": "1",
+       "icon": "fa-solid fa-compact-disc",
+       "slug": "slug_property_feature_12_dvd-player",
+       "valueIsUnresolvedEnumId": false
+      },
+      {
+       "featureId": 12,
+       "name": "Satellite/Cable TV",
+       "description": null,
+       "extraDescription": null,
+       "featureType": 5,
+       "value": "1",
+       "icon": "fa-solid fa-satellite",
+       "slug": "slug_property_feature_12_satellite",
+       "valueIsUnresolvedEnumId": false
+      },
+      {
+       "featureId": 517,
+       "name": "Ping pong table",
+       "description": null,
+       "extraDescription": null,
+       "featureType": 5,
+       "value": "1",
+       "icon": "fa-solid fa-table-tennis",
+       "slug": "slug_property_feature_12_ping-pong-table",
+       "valueIsUnresolvedEnumId": false
+      },
+      {
+       "featureId": 544,
+       "name": "Games",
+       "description": null,
+       "extraDescription": "Board games",
+       "featureType": 5,
+       "value": "1",
+       "icon": "fa-light fa-game-console-handheld",
+       "slug": "slug_property_feature_group_amenities_entertainment_games",
+       "valueIsUnresolvedEnumId": false
+      },
+      {
+       "featureId": 888,
+       "name": "Board games/puzzles",
+       "description": null,
+       "extraDescription": null,
+       "featureType": 5,
+       "value": "1",
+       "icon": "fa-solid fa-dice",
+       "slug": "slug_property_feature_group_amenities_entertainment_board-games",
+       "valueIsUnresolvedEnumId": false
+      }
+     ]
+    },
+    {
+     "group": "Sports and Adventure",
+     "slug": "slug_property_feature_group_amenities_sports-and-adventures",
+     "items": [
+      {
+       "featureId": 576,
+       "name": "Cycling",
+       "description": null,
+       "extraDescription": null,
+       "featureType": 5,
+       "value": "1",
+       "icon": "",
+       "slug": "slug_property_feature_group_amenities_sports-and-adventures_cycling",
+       "valueIsUnresolvedEnumId": false
+      },
+      {
+       "featureId": 554,
+       "name": "Fishing",
+       "description": null,
+       "extraDescription": null,
+       "featureType": 5,
+       "value": "1",
+       "icon": "",
+       "slug": "slug_property_feature_group_amenities_sports-and-adventures_fishing",
+       "valueIsUnresolvedEnumId": false
+      },
+      {
+       "featureId": 581,
+       "name": "Hiking",
+       "description": null,
+       "extraDescription": null,
+       "featureType": 5,
+       "value": "1",
+       "icon": "",
+       "slug": "slug_property_feature_group_amenities_sports-and-adventures_hiking",
+       "valueIsUnresolvedEnumId": false
+      },
+      {
+       "featureId": 559,
+       "name": "Jet Skiing",
+       "description": null,
+       "extraDescription": null,
+       "featureType": 5,
+       "value": "1",
+       "icon": "",
+       "slug": "slug_property_feature_group_amenities_sports-and-adventures_jet-skiing",
+       "valueIsUnresolvedEnumId": false
+      },
+      {
+       "featureId": 560,
+       "name": "Mountain Biking",
+       "description": null,
+       "extraDescription": null,
+       "featureType": 5,
+       "value": "1",
+       "icon": "",
+       "slug": "slug_property_feature_group_amenities_sports-and-adventures_mountain-biking",
+       "valueIsUnresolvedEnumId": false
+      },
+      {
+       "featureId": 584,
+       "name": "Mountain Climbing",
+       "description": null,
+       "extraDescription": null,
+       "featureType": 5,
+       "value": "1",
+       "icon": "",
+       "slug": "slug_property_feature_group_amenities_sports-and-adventures_mountain-climbing",
+       "valueIsUnresolvedEnumId": false
+      },
+      {
+       "featureId": 587,
+       "name": "Sailing",
+       "description": null,
+       "extraDescription": null,
+       "featureType": 5,
+       "value": "1",
+       "icon": "",
+       "slug": "slug_property_feature_group_amenities_sports-and-adventures_sailng",
+       "valueIsUnresolvedEnumId": false
+      },
+      {
+       "featureId": 573,
+       "name": "Surfing",
+       "description": null,
+       "extraDescription": null,
+       "featureType": 5,
+       "value": "1",
+       "icon": "fa-light fa-snowboarding",
+       "slug": "slug_property_feature_group_amenities_sports-and-adventures_surfing",
+       "valueIsUnresolvedEnumId": false
+      },
+      {
+       "featureId": 700,
+       "name": "Swimming",
+       "description": null,
+       "extraDescription": null,
+       "featureType": 5,
+       "value": "1",
+       "icon": "",
+       "slug": "slug_property_feature_group_amenities_sports-and-adventures_kolimvisi",
+       "valueIsUnresolvedEnumId": false
+      },
+      {
+       "featureId": 574,
+       "name": "Water Tubing",
+       "description": null,
+       "extraDescription": null,
+       "featureType": 5,
+       "value": "1",
+       "icon": "",
+       "slug": "slug_property_feature_group_amenities_sports-and-adventures_water-tubing",
+       "valueIsUnresolvedEnumId": false
+      },
+      {
+       "featureId": 570,
+       "name": "Water Skiing",
+       "description": null,
+       "extraDescription": null,
+       "featureType": 5,
+       "value": "1",
+       "icon": "",
+       "slug": "slug_property_feature_group_amenities_sports-and-adventures_water-skiing",
+       "valueIsUnresolvedEnumId": false
+      },
+      {
+       "featureId": 575,
+       "name": "Wind Surfing",
+       "description": null,
+       "extraDescription": null,
+       "featureType": 5,
+       "value": "1",
+       "icon": "",
+       "slug": "slug_property_feature_group_amenities_sports-and-adventures_wind-surfing",
+       "valueIsUnresolvedEnumId": false
+      },
+      {
+       "featureId": 568,
+       "name": "Scuba or Snorkeling",
+       "description": null,
+       "extraDescription": null,
+       "featureType": 5,
+       "value": "1",
+       "icon": "",
+       "slug": "slug_property_feature_group_amenities_sports-and-adventures_scuba-or-snorkeling",
+       "valueIsUnresolvedEnumId": false
+      },
+      {
+       "featureId": 802,
+       "name": "Snorkeling",
+       "description": null,
+       "extraDescription": null,
+       "featureType": 5,
+       "value": "1",
+       "icon": "",
+       "slug": "slug_property_feature_group_amenities_sports-and-adventures_snorkeling",
+       "valueIsUnresolvedEnumId": false
+      },
+      {
+       "featureId": 804,
+       "name": "Caving",
+       "description": null,
+       "extraDescription": null,
+       "featureType": 5,
+       "value": "1",
+       "icon": "",
+       "slug": "slug_property_feature_group_amenities_sports-and-adventures_caving",
+       "valueIsUnresolvedEnumId": false
+      }
+     ]
+    },
+    {
+     "group": "Leisure",
+     "slug": "slug_property_feature_group_amenities_leasure-activities",
+     "items": [
+      {
+       "featureId": 608,
+       "name": "Bird Watching",
+       "description": null,
+       "extraDescription": null,
+       "featureType": 5,
+       "value": "1",
+       "icon": "",
+       "slug": "slug_property_feature_group_amenities_leasure-activities_bird-watching",
+       "valueIsUnresolvedEnumId": false
+      },
+      {
+       "featureId": 609,
+       "name": "Eco Tourism",
+       "description": null,
+       "extraDescription": null,
+       "featureType": 5,
+       "value": "1",
+       "icon": "",
+       "slug": "slug_property_feature_group_amenities_leasure-activities_eco-tourism",
+       "valueIsUnresolvedEnumId": false
+      },
+      {
+       "featureId": 610,
+       "name": "Horseback Riding",
+       "description": null,
+       "extraDescription": null,
+       "featureType": 5,
+       "value": "1",
+       "icon": "",
+       "slug": "slug_property_feature_group_amenities_leasure-activities_horseback-riding",
+       "valueIsUnresolvedEnumId": false
+      },
+      {
+       "featureId": 611,
+       "name": "Paddle Boating",
+       "description": null,
+       "extraDescription": null,
+       "featureType": 5,
+       "value": "1",
+       "icon": "",
+       "slug": "slug_property_feature_group_amenities_leasure-activities_paddle-boating",
+       "valueIsUnresolvedEnumId": false
+      }
+     ]
+    },
+    {
+     "group": "Attractions",
+     "slug": "slug_property_feature_group_amenities_attractions",
+     "items": [
+      {
+       "featureId": 598,
+       "name": "Museums",
+       "description": null,
+       "extraDescription": null,
+       "featureType": 5,
+       "value": "1",
+       "icon": "",
+       "slug": "slug_property_feature_group_amenities_attractions_museums",
+       "valueIsUnresolvedEnumId": false
+      },
+      {
+       "featureId": 593,
+       "name": "Marina",
+       "description": null,
+       "extraDescription": null,
+       "featureType": 5,
+       "value": "1",
+       "icon": "",
+       "slug": "slug_property_feature_group_amenities_attractions_marina",
+       "valueIsUnresolvedEnumId": false
+      },
+      {
+       "featureId": 594,
+       "name": "Theme Parks",
+       "description": null,
+       "extraDescription": null,
+       "featureType": 5,
+       "value": "1",
+       "icon": "",
+       "slug": "slug_property_feature_group_amenities_attractions_theme-parks",
+       "valueIsUnresolvedEnumId": false
+      },
+      {
+       "featureId": 599,
+       "name": "Water Parks",
+       "description": null,
+       "extraDescription": null,
+       "featureType": 5,
+       "value": "1",
+       "icon": "",
+       "slug": "slug_property_feature_group_amenities_attractions_water-parks",
+       "valueIsUnresolvedEnumId": false
+      },
+      {
+       "featureId": 595,
+       "name": "Winery Tours",
+       "description": null,
+       "extraDescription": null,
+       "featureType": 5,
+       "value": "1",
+       "icon": "",
+       "slug": "slug_property_feature_group_amenities_attractions_winery-tours",
+       "valueIsUnresolvedEnumId": false
+      }
+     ]
+    },
+    {
+     "group": "Relaxation",
+     "slug": "slug_property_feature_group_activities_relax",
+     "items": [
+      {
+       "featureId": 34,
+       "name": "Jacuzzi",
+       "description": null,
+       "extraDescription": null,
+       "featureType": 5,
+       "value": "1",
+       "icon": "fa-regular fa-hot-tub-person",
+       "slug": "slug_property_feature_15_jacuzzi",
+       "valueIsUnresolvedEnumId": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "tab": "Children",
+   "tabIndex": 2,
+   "groupId": 4,
+   "icon": "fa-child",
+   "displayedOnLiveSite": false,
+   "groups": [
+    {
+     "group": "Children Essentials",
+     "slug": "slug_property_feature_group_kids_children-essentials",
+     "items": [
+      {
+       "featureId": 61,
+       "name": "Baby's bed",
+       "description": null,
+       "extraDescription": null,
+       "featureType": 2,
+       "value": 3,
+       "icon": "",
+       "slug": "slug_property_feature_4_likno",
+       "valueIsUnresolvedEnumId": false
+      },
+      {
+       "featureId": 63,
+       "name": "High chair",
+       "description": null,
+       "extraDescription": null,
+       "featureType": 2,
+       "value": 3,
+       "icon": "",
+       "slug": "slug_property_feature_4_highchair",
+       "valueIsUnresolvedEnumId": false
+      }
+     ]
+    },
+    {
+     "group": "Activities",
+     "slug": "slug_property_feature_group_kids_activities",
+     "items": [
+      {
+       "featureId": 68,
+       "name": "Outdoor playground",
+       "description": null,
+       "extraDescription": null,
+       "featureType": 5,
+       "value": "1",
+       "icon": "fa-light fa-volleyball",
+       "slug": "slug_property_feature_19_outdoorplayground",
+       "valueIsUnresolvedEnumId": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "tab": "Cleaning",
+   "tabIndex": 3,
+   "groupId": 5,
+   "icon": "fa-regular fa-calendar-check",
+   "displayedOnLiveSite": false,
+   "groups": [
+    {
+     "group": "Cleaning tools",
+     "slug": "slug_property_feature_group_clean_tools",
+     "items": [
+      {
+       "featureId": 77,
+       "name": "Broom",
+       "description": null,
+       "extraDescription": null,
+       "featureType": 5,
+       "value": "1",
+       "icon": "",
+       "slug": "slug_property_feature_21_skoupa",
+       "valueIsUnresolvedEnumId": false
+      },
+      {
+       "featureId": 78,
+       "name": "Mop",
+       "description": null,
+       "extraDescription": null,
+       "featureType": 5,
+       "value": "1",
+       "icon": "",
+       "slug": "slug_property_feature_21_sfouggaristra",
+       "valueIsUnresolvedEnumId": false
+      },
+      {
+       "featureId": 79,
+       "name": "Towels",
+       "description": null,
+       "extraDescription": null,
+       "featureType": 5,
+       "value": "1",
+       "icon": "",
+       "slug": "slug_property_feature_21_towels",
+       "valueIsUnresolvedEnumId": false
+      },
+      {
+       "featureId": 80,
+       "name": "Sponges",
+       "description": null,
+       "extraDescription": null,
+       "featureType": 5,
+       "value": "1",
+       "icon": "",
+       "slug": "slug_property_feature_21_sponges",
+       "valueIsUnresolvedEnumId": false
+      }
+     ]
+    },
+    {
+     "group": "Cleaning supplies",
+     "slug": "slug_property_feature_group_clean_supplies",
+     "items": [
+      {
+       "featureId": 81,
+       "name": "Cleanser liquid",
+       "description": null,
+       "extraDescription": null,
+       "featureType": 5,
+       "value": "1",
+       "icon": "",
+       "slug": "slug_property_feature_22_liquidgeneral",
+       "valueIsUnresolvedEnumId": false
+      },
+      {
+       "featureId": 84,
+       "name": "Dishwashing liquid",
+       "description": null,
+       "extraDescription": null,
+       "featureType": 5,
+       "value": "1",
+       "icon": "",
+       "slug": "slug_property_feature_22_liquiddishes",
+       "valueIsUnresolvedEnumId": false
+      },
+      {
+       "featureId": 82,
+       "name": "Detergent",
+       "description": null,
+       "extraDescription": null,
+       "featureType": 5,
+       "value": "1",
+       "icon": "",
+       "slug": "slug_property_feature_22_liquidwashingmachine",
+       "valueIsUnresolvedEnumId": false
+      },
+      {
+       "featureId": 83,
+       "name": "Dishwasher detergent",
+       "description": null,
+       "extraDescription": null,
+       "featureType": 5,
+       "value": "1",
+       "icon": "",
+       "slug": "slug_property_feature_22_liquiddishwasher",
+       "valueIsUnresolvedEnumId": false
+      },
+      {
+       "featureId": 85,
+       "name": "Kitchen towel / dishcloth",
+       "description": null,
+       "extraDescription": null,
+       "featureType": 5,
+       "value": "1",
+       "icon": "",
+       "slug": "slug_property_feature_22_kitchentowel",
+       "valueIsUnresolvedEnumId": false
+      }
+     ]
+    },
+    {
+     "group": "Cleaning Policies",
+     "slug": "slug_property_feature_group_clean_cleaning-policies",
+     "items": [
+      {
+       "featureId": 751,
+       "name": "Cleaning Disinfection",
+       "description": null,
+       "extraDescription": null,
+       "featureType": 5,
+       "value": "1",
+       "icon": "",
+       "slug": "slug_property_feature_group_amenities_katharismos-kai-asfalia_apolimansi",
+       "valueIsUnresolvedEnumId": false
+      },
+      {
+       "featureId": 752,
+       "name": "Common surface disinfectant cleaned",
+       "description": null,
+       "extraDescription": null,
+       "featureType": 5,
+       "value": "1",
+       "icon": "",
+       "slug": "slug_property_feature_group_amenities_katharismos-kai-asfalia_katharismos-kinis-epifanias",
+       "valueIsUnresolvedEnumId": false
+      },
+      {
+       "featureId": 758,
+       "name": "Linen high temp wash",
+       "description": null,
+       "extraDescription": null,
+       "featureType": 5,
+       "value": "1",
+       "icon": "",
+       "slug": "slug_property_feature_group_amenities_katharismos-kai-asfalia_leuka-idi-plisimo-se-megali-thermokrasia",
+       "valueIsUnresolvedEnumId": false
+      },
+      {
+       "featureId": 765,
+       "name": "Self check in/check out",
+       "description": null,
+       "extraDescription": null,
+       "featureType": 5,
+       "value": "1",
+       "icon": "",
+       "slug": "slug_property_feature_group_amenities_katharismos-kai-asfalia_check-in-check-out-choris-epikinonia",
+       "valueIsUnresolvedEnumId": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "tab": "Safety / Security",
+   "tabIndex": 4,
+   "groupId": 6,
+   "icon": "fa-ambulance",
+   "displayedOnLiveSite": false,
+   "groups": [
+    {
+     "group": "Safety Essentials",
+     "slug": "slug_property_feature_group_safety_safety-essentials",
+     "items": [
+      {
+       "featureId": 87,
+       "name": "Legal coverage (insurance)",
+       "description": null,
+       "extraDescription": null,
+       "featureType": 7,
+       "value": "27",
+       "icon": "",
+       "slug": "slug_property_feature_6_insurance",
+       "valueIsUnresolvedEnumId": true
+      },
+      {
+       "featureId": 88,
+       "name": "Police Hotline",
+       "description": null,
+       "extraDescription": null,
+       "featureType": 2,
+       "value": 100,
+       "icon": "",
+       "slug": "slug_property_feature_6_phonepolice",
+       "valueIsUnresolvedEnumId": false
+      },
+      {
+       "featureId": 89,
+       "name": "Fire department Hotline",
+       "description": null,
+       "extraDescription": null,
+       "featureType": 2,
+       "value": 199,
+       "icon": "",
+       "slug": "slug_property_feature_6_phonefire",
+       "valueIsUnresolvedEnumId": false
+      },
+      {
+       "featureId": 90,
+       "name": "Ambulance Hotline",
+       "description": null,
+       "extraDescription": null,
+       "featureType": 2,
+       "value": 166,
+       "icon": "",
+       "slug": "slug_property_feature_6_phoneekab",
+       "valueIsUnresolvedEnumId": false
+      }
+     ]
+    },
+    {
+     "group": "Building safety",
+     "slug": "slug_property_feature_group_safety_building",
+     "items": [
+      {
+       "featureId": 781,
+       "name": "Outdoor Lighting",
+       "description": null,
+       "extraDescription": null,
+       "featureType": 5,
+       "value": "1",
+       "icon": "",
+       "slug": "slug_property_feature_group_amenities_safety-feature-values_fota-exoterikou-chorou",
+       "valueIsUnresolvedEnumId": false
+      },
+      {
+       "featureId": 783,
+       "name": "Smoke Detector",
+       "description": null,
+       "extraDescription": null,
+       "featureType": 5,
+       "value": "1",
+       "icon": "",
+       "slug": "slug_property_feature_group_amenities_safety-feature-values_anichneutis-kapnou",
+       "valueIsUnresolvedEnumId": false
+      },
+      {
+       "featureId": 778,
+       "name": "Fire extinguisher",
+       "description": null,
+       "extraDescription": null,
+       "featureType": 5,
+       "value": "1",
+       "icon": "",
+       "slug": "slug_property_feature_group_amenities_safety-feature-values_pirosvestiras",
+       "valueIsUnresolvedEnumId": false
+      }
+     ]
+    },
+    {
+     "group": "Tenants safety",
+     "slug": "slug_property_feature_group_safety_people",
+     "items": [
+      {
+       "featureId": 779,
+       "name": "First aid kit",
+       "description": null,
+       "extraDescription": null,
+       "featureType": 5,
+       "value": "1",
+       "icon": "",
+       "slug": "slug_property_feature_group_amenities_safety-feature-values_kouti-proton-voithion",
+       "valueIsUnresolvedEnumId": false
+      },
+      {
+       "featureId": 777,
+       "name": "Fire emergency contact",
+       "description": null,
+       "extraDescription": "199",
+       "featureType": 5,
+       "value": "1",
+       "icon": "",
+       "slug": "slug_property_feature_group_amenities_safety-feature-values_epikinonia-se-periptosi-fotias",
+       "valueIsUnresolvedEnumId": false
+      },
+      {
+       "featureId": 782,
+       "name": "Police emergency contact",
+       "description": null,
+       "extraDescription": "100",
+       "featureType": 5,
+       "value": "1",
+       "icon": "",
+       "slug": "slug_property_feature_group_amenities_safety-feature-values_epikinonia-me-amesi-drasi",
+       "valueIsUnresolvedEnumId": false
+      },
+      {
+       "featureId": 780,
+       "name": "Medical emergency contact",
+       "description": null,
+       "extraDescription": "166",
+       "featureType": 5,
+       "value": "1",
+       "icon": "",
+       "slug": "slug_property_feature_group_amenities_safety-feature-values_epikinonia-me-iatro",
+       "valueIsUnresolvedEnumId": false
+      },
+      {
+       "featureId": 97,
+       "name": "Safe deposit box",
+       "description": null,
+       "extraDescription": null,
+       "featureType": 5,
+       "value": "1",
+       "icon": "fa-regular fa-vault",
+       "slug": "slug_property_feature_24_safebox",
+       "valueIsUnresolvedEnumId": false
+      },
+      {
+       "featureId": 699,
+       "name": "Mosquito nets",
+       "description": null,
+       "extraDescription": null,
+       "featureType": 5,
+       "value": "1",
+       "icon": "",
+       "slug": "slug_property_feature_group_safety_people_mosquito-nets",
+       "valueIsUnresolvedEnumId": false
+      }
+     ]
+    },
+    {
+     "group": "Privacy",
+     "slug": "slug_property_feature_group_safety_privacy",
+     "items": [
+      {
+       "featureId": 99,
+       "name": "Fully fenced",
+       "description": null,
+       "extraDescription": null,
+       "featureType": 5,
+       "value": "1",
+       "icon": "",
+       "slug": "slug_property_feature_25_fence",
+       "valueIsUnresolvedEnumId": false
+      },
+      {
+       "featureId": 564,
+       "name": "Outdoor Lighting",
+       "description": null,
+       "extraDescription": null,
+       "featureType": 5,
+       "value": "1",
+       "icon": "",
+       "slug": "slug_property_feature_group_safety_privacy_outdoor-lighting",
+       "valueIsUnresolvedEnumId": false
+      }
+     ]
+    },
+    {
+     "group": "Car",
+     "slug": "slug_property_feature_group_safety_cars",
+     "items": [
+      {
+       "featureId": 101,
+       "name": "Car park type",
+       "description": null,
+       "extraDescription": null,
+       "featureType": 7,
+       "value": "266",
+       "icon": "",
+       "slug": "slug_property_feature_26_carpark",
+       "valueIsUnresolvedEnumId": true
+      }
+     ]
+    },
+    {
+     "group": "Parking and transportation",
+     "slug": "slug_property_feature_group_amenities_02_parking_transportation",
+     "items": [
+      {
+       "featureId": 688,
+       "name": "Private Parking",
+       "description": null,
+       "extraDescription": null,
+       "featureType": 5,
+       "value": "1",
+       "icon": "fa-solid fa-parking",
+       "slug": "slug_property_feature_group_amenities_parking_private-parking",
+       "valueIsUnresolvedEnumId": false
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "tab": "Environment / Heating-Cooling",
+   "tabIndex": 5,
+   "groupId": 7,
+   "icon": "fa-recycle",
+   "displayedOnLiveSite": false,
+   "groups": [
+    {
+     "group": "Building features",
+     "slug": "slug_property_feature_group_environment_building",
+     "items": [
+      {
+       "featureId": 105,
+       "name": "Cooling",
+       "description": null,
+       "extraDescription": null,
+       "featureType": 7,
+       "value": "45",
+       "icon": "",
+       "slug": "slug_property_feature_7_cooling",
+       "valueIsUnresolvedEnumId": true
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

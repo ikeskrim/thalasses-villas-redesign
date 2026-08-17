@@ -1,0 +1,647 @@
+/* ==========================================================================
+   THE SIX PATTERNS — Seasats mechanics, Thalasses identity
+   Tokens only. Limestone ground, pelagos deep sections.
+   ========================================================================== */
+
+.icon {
+  display: block;
+  color: currentColor;
+}
+
+/* ---- The spec ledger (an approved element) ------------------------------- */
+.ledger-spec {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: var(--spacing-step-5);
+  margin-top: var(--spacing-step-5);
+}
+.ledger-spec-value {
+  margin-top: var(--spacing-step-2);
+  font-size: var(--text-c4);
+  line-height: 1.1;
+}
+.ledger-inline {
+  margin-top: var(--spacing-step-3);
+  font-size: var(--text-datum);
+  color: var(--color-phrygana);
+}
+.on-dark .ledger-inline,
+.acts .ledger-inline {
+  color: var(--color-preveli);
+}
+
+/* ==========================================================================
+   PATTERN 1 — THE LITANY
+   ========================================================================== */
+
+.litany {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  align-items: stretch;
+  background: var(--color-limestone);
+}
+.litany-media {
+  position: relative;
+  min-height: 100svh;
+}
+.litany-frame {
+  position: absolute;
+  inset: 0;
+}
+.litany-copy {
+  padding: var(--rhythm-prose-photo) var(--page-margin);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.litany-list {
+  list-style: none;
+}
+.litany-line {
+  padding-block: var(--spacing-step-6);
+  color: var(--color-phrygana);
+  opacity: 0.34;
+  transition: opacity 0.6s var(--ease-thalasses), color 0.6s var(--ease-thalasses);
+  max-width: 22ch;
+}
+.litany-line.is-active {
+  opacity: 1;
+  color: var(--color-basalt);
+}
+.litany-payoff {
+  margin-top: var(--spacing-step-8);
+  display: flex;
+  align-items: baseline;
+  gap: 1ch;
+  flex-wrap: wrap;
+}
+.litany-payoff-tail {
+  font-size: var(--text-tail-lg);
+}
+
+@media (max-width: 1023px) {
+  .litany {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .litany-media {
+    min-height: 62svh;
+  }
+  .litany-line {
+    padding-block: var(--spacing-step-5);
+    /* No scroll-driven dimming on touch — every line reads at full ink. */
+    opacity: 1;
+    color: var(--color-basalt);
+  }
+}
+
+/* ==========================================================================
+   PATTERN 2 — THE THREE ACTS
+   The one deep-ground run: limestone gives way to pelagos and returns.
+   ========================================================================== */
+
+.acts {
+  position: relative;
+  background: var(--color-pelagos);
+  color: var(--color-limestone);
+}
+.acts-sticky {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.acts-nav {
+  padding-top: var(--spacing-step-7);
+  flex: none;
+}
+.acts-nav ol {
+  list-style: none;
+  display: flex;
+  gap: var(--spacing-step-7);
+  border-bottom: 1px solid rgb(164 204 201 / 0.28);
+  padding-bottom: var(--spacing-step-4);
+}
+.acts-tab {
+  display: flex;
+  align-items: baseline;
+  gap: var(--spacing-step-3);
+  background: none;
+  border: none;
+  color: var(--color-preveli);
+  cursor: pointer;
+  padding: 0;
+  opacity: 0.6;
+  transition: opacity 0.4s var(--ease-thalasses);
+}
+/* Three cues on the active tab: ink, an underline, and aria-current. */
+.acts-tab.is-active {
+  opacity: 1;
+  color: var(--color-limestone);
+}
+.acts-tab.is-active .acts-tab-label {
+  text-decoration: underline;
+  text-underline-offset: 0.5em;
+  text-decoration-thickness: 1.5px;
+}
+.acts-tab-label {
+  font-family: var(--font-display);
+  font-size: var(--text-c4);
+}
+.acts-stage {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+}
+.act {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  align-items: center;
+  gap: clamp(2rem, 4vw, 4rem);
+}
+.act-media {
+  position: relative;
+  height: 100%;
+  min-height: 0;
+}
+.act-body {
+  padding-block: var(--spacing-step-6);
+}
+.act-title {
+  margin-top: var(--spacing-step-3);
+}
+.act-cards {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--spacing-step-6) var(--spacing-step-7);
+  margin-top: var(--spacing-step-7);
+}
+.act-card {
+  color: var(--color-limestone);
+}
+.act-card .icon {
+  color: var(--color-preveli);
+  margin-bottom: var(--spacing-step-3);
+}
+.act-card-title {
+  font-size: var(--text-body);
+  font-weight: 500;
+  line-height: 1.35;
+}
+.act-card-desc {
+  margin-top: var(--spacing-step-2);
+  color: var(--color-preveli);
+}
+
+/* The stacked version — touch, narrow, and reduced motion. */
+.acts-stack {
+  background: var(--color-pelagos);
+  color: var(--color-limestone);
+}
+.act--stacked {
+  position: static;
+  display: block;
+  padding-bottom: var(--rhythm-prose-photo);
+}
+.act--stacked .act-media {
+  position: relative;
+  height: 56svh;
+}
+.act--stacked .act-body {
+  padding-top: var(--spacing-step-7);
+}
+@media (max-width: 767px) {
+  .act-cards {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* ==========================================================================
+   PATTERN 3 — THE ESTATE MAP
+   ========================================================================== */
+
+.estate-map {
+  padding-block: var(--rhythm-photo-prose) var(--rhythm-prose-prose);
+}
+.estate-map-title {
+  margin-top: var(--spacing-step-3);
+}
+.estate-map-frame {
+  position: relative;
+  margin-top: var(--spacing-step-8);
+  aspect-ratio: 16 / 9;
+  overflow: visible;
+  background: var(--color-ammos);
+}
+.estate-map-scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgb(22 38 43 / 0.18), rgb(22 38 43 / 0.38));
+  pointer-events: none;
+}
+.estate-map-spot {
+  position: absolute;
+  transform: translate(-50%, -50%);
+}
+.estate-map-marker {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1.5px solid var(--color-limestone);
+  background: rgb(22 38 43 / 0.35);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.35s var(--ease-thalasses), transform 0.35s var(--ease-thalasses);
+}
+.estate-map-marker:hover,
+.estate-map-marker:focus-visible,
+.estate-map-marker.is-open {
+  background: var(--color-limestone);
+  transform: scale(1.08);
+}
+.estate-map-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--color-limestone);
+}
+.estate-map-marker:hover .estate-map-dot,
+.estate-map-marker:focus-visible .estate-map-dot,
+.estate-map-marker.is-open .estate-map-dot {
+  background: var(--color-pelagos);
+}
+.estate-map-card {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 12px);
+  transform: translateX(-50%);
+  width: 260px;
+  background: var(--color-limestone);
+  color: var(--color-basalt);
+  padding: var(--spacing-step-4);
+  display: flex;
+  gap: var(--spacing-step-4);
+  z-index: 3;
+}
+.estate-map-thumb {
+  position: relative;
+  flex: none;
+  width: 72px;
+  height: 72px;
+  background: var(--color-ammos);
+}
+.estate-map-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-step-2);
+  min-width: 0;
+}
+.estate-map-card-name {
+  font-weight: 500;
+}
+.estate-map-card-link {
+  color: var(--color-pelagos);
+  text-decoration: underline;
+  text-underline-offset: 0.4em;
+  text-decoration-thickness: 1.5px;
+}
+
+/* The same places, always readable, never locked behind a pointer. */
+.estate-map-list {
+  list-style: none;
+  margin-top: var(--spacing-step-8);
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--spacing-step-5) var(--spacing-step-7);
+}
+.estate-map-list-item {
+  display: flex;
+  gap: var(--spacing-step-4);
+  align-items: baseline;
+}
+.estate-map-list-index {
+  font-size: var(--text-datum);
+  color: var(--color-pelagos);
+  flex: none;
+}
+.estate-map-list-name {
+  display: block;
+}
+.estate-map-list-name a {
+  color: var(--color-pelagos);
+  text-decoration: none;
+}
+.estate-map-list-name a:hover,
+.estate-map-list-name a:focus-visible {
+  text-decoration: underline;
+  text-underline-offset: 0.3em;
+  text-decoration-thickness: 1.5px;
+}
+.estate-map-list-line {
+  display: block;
+  color: var(--color-phrygana);
+}
+@media (max-width: 1023px) {
+  .estate-map-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .estate-map-card {
+    width: 210px;
+  }
+}
+@media (max-width: 639px) {
+  .estate-map-list {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* ==========================================================================
+   PATTERN 5 — FILTER CHIPS
+   ========================================================================== */
+
+.chips {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-step-3);
+  margin-top: var(--spacing-step-7);
+}
+.chip {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--spacing-step-2);
+  padding: 12px 20px;
+  border: 1px solid rgb(20 83 95 / 0.3);
+  background: transparent;
+  color: var(--color-phrygana);
+  cursor: pointer;
+}
+.chip.is-active {
+  background: var(--color-basalt);
+  border-color: var(--color-basalt);
+  color: var(--color-limestone);
+}
+.chip:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+.chip-count {
+  font-size: var(--text-caption);
+  opacity: 0.75;
+}
+
+/* ==========================================================================
+   PATTERN 6 — THE ODOMETER
+   ========================================================================== */
+
+.odometer {
+  background: var(--color-basalt);
+  color: var(--color-limestone);
+  padding: var(--spacing-step-7) var(--page-margin);
+  display: flex;
+  align-items: baseline;
+  gap: var(--spacing-step-4);
+  flex-wrap: wrap;
+  max-width: none;
+}
+.odometer-value {
+  font-size: var(--text-c4);
+  font-family: var(--font-display);
+}
+.odometer-note {
+  color: var(--color-preveli);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .litany-line {
+    opacity: 1 !important;
+    color: var(--color-basalt) !important;
+  }
+  .estate-map-marker {
+    transition: none !important;
+  }
+}
+
+.estate-map-heading { margin-top: var(--spacing-step-3); }
+.estate-map-ledger { margin-top: var(--spacing-step-6); max-width: 60rem; }
+.estate-map-cta { margin-top: var(--spacing-step-8); }
+
+/* On a phone the hotspot cards cannot open without pushing past the viewport,
+   and a 260px card anchored to a marker at 84% will always overflow at 360.
+   So below 768 the markers are withdrawn and the numbered list carries the
+   information — which it already does in full, for every reader, at every size.
+   The map becomes a photograph with a legend beneath it: a designed mobile
+   layout rather than a desktop one squeezed. */
+@media (max-width: 767px) {
+  .estate-map-spot {
+    display: none;
+  }
+  .estate-map-frame {
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+  }
+  .estate-map-list {
+    margin-top: var(--spacing-step-6);
+  }
+}
+
+/* Belt and braces: an open card may never widen the document. */
+.estate-map-frame {
+  max-width: 100%;
+}
+.estate-map-card {
+  max-width: min(260px, calc(100vw - 2 * var(--page-margin)));
+}
+
+/* The primary CTA carries real sentences ("Enquire — we design your stay"),
+   and at 360 that plus 40px of padding each side measures 366px — six pixels
+   wider than the viewport, which is the whole horizontal scroll. Below the
+   canon width the label wraps and the padding relaxes; the tap target only
+   grows. */
+@media (max-width: 767px) {
+  .btn-primary {
+    white-space: normal;
+    padding: 18px 24px;
+    max-width: 100%;
+    text-align: center;
+    line-height: 1.5;
+  }
+  .magnetic,
+  .magnetic-inner {
+    max-width: 100%;
+  }
+}
+
+/* ==========================================================================
+   THE NAVIGATION — with the deferred glass spec
+   backdrop-filter lives HERE and nowhere else. It sits on a fixed element with
+   no sticky descendants, so it cannot repeat T-203.
+   ========================================================================== */
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 200;
+  background: var(--color-basalt);
+  color: var(--color-limestone);
+  padding: 16px 24px;
+}
+.skip-link:focus {
+  left: var(--page-margin);
+  top: var(--spacing-step-4);
+}
+
+.nav {
+  position: fixed;
+  inset-inline: 0;
+  top: 0;
+  z-index: 70;
+  color: var(--color-limestone);
+  transition: background 0.6s var(--ease-thalasses), backdrop-filter 0.6s var(--ease-thalasses),
+    border-color 0.6s var(--ease-thalasses);
+  border-bottom: 1px solid transparent;
+}
+/* Transparent over the hero — the first screen stays a photograph. */
+.nav.is-solid {
+  background: rgb(22 38 43 / 0.55);
+  /* No hand-written -webkit- twin. Writing the unprefixed property first and
+     the prefixed one second made Lightning CSS collapse the pair to the
+     -webkit- form ALONE — so Safari got glass and Chrome and Firefox got
+     nothing. The build prefixes from the browser targets on its own. */
+  backdrop-filter: blur(18px) saturate(1.1);
+  border-bottom-color: rgb(164 204 201 / 0.22);
+}
+.nav-inner {
+  max-width: var(--container-canon);
+  margin-inline: auto;
+  padding: var(--spacing-step-4) var(--page-margin);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-step-6);
+}
+.nav-mark {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  letter-spacing: 0.16em;
+  color: inherit;
+  text-decoration: none;
+  flex: none;
+}
+.nav-register {
+  margin-inline: auto;
+}
+.nav-register ul {
+  list-style: none;
+  display: flex;
+  gap: var(--spacing-step-6);
+}
+.nav-link {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--spacing-step-2);
+  color: var(--color-preveli);
+  text-decoration: none;
+  font-size: var(--text-small);
+}
+.nav-link:hover,
+.nav-link:focus-visible {
+  color: var(--color-limestone);
+  text-decoration: underline;
+  text-underline-offset: 0.45em;
+  text-decoration-thickness: 1.5px;
+}
+.nav-index {
+  font-size: var(--text-caption);
+  opacity: 0.7;
+}
+.nav-book {
+  flex: none;
+  padding: 12px 22px;
+  border: 1px solid var(--color-preveli);
+  color: var(--color-limestone);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.nav-book:hover,
+.nav-book:focus-visible {
+  background: var(--color-limestone);
+  color: var(--color-basalt);
+}
+.nav-toggle {
+  display: none;
+  flex: none;
+  background: none;
+  border: none;
+  color: var(--color-limestone);
+  cursor: pointer;
+  padding: 12px 0;
+}
+.nav-panel {
+  background: rgb(22 38 43 / 0.96);
+  backdrop-filter: blur(20px);
+  padding: var(--spacing-step-7) var(--page-margin) var(--spacing-step-8);
+}
+.nav-panel ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-step-5);
+}
+.nav-panel a {
+  color: var(--color-limestone);
+  text-decoration: none;
+}
+
+.nav-book-short {
+  display: none;
+}
+
+@media (max-width: 1023px) {
+  .nav-register {
+    display: none;
+  }
+  .nav-toggle {
+    display: block;
+  }
+  .nav-register + .nav-book {
+    margin-inline-start: auto;
+  }
+  .nav-book {
+    padding: 10px 16px;
+  }
+}
+
+/* Phones. The bar carries three things at once here — the mark, the booking
+   affordance and the menu — and at 320 they have 280px between them. Measured
+   at 320/360/390/430: the full label alone was 207px. */
+@media (max-width: 767px) {
+  .nav-inner {
+    gap: var(--spacing-step-4);
+  }
+  .nav-mark {
+    font-size: 1.125rem;
+    letter-spacing: 0.1em;
+  }
+  .nav-book {
+    padding: 10px 14px;
+  }
+  .nav-book-full {
+    display: none;
+  }
+  .nav-book-short {
+    display: inline;
+  }
+}
+@media (min-width: 1024px) {
+  .nav-panel {
+    display: none;
+  }
+}

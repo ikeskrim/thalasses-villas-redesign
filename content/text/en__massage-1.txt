@@ -1,0 +1,125 @@
+﻿TITLE: Massage
+META keywords: Thalasses Villas,Massage,Experiences,Rethymno,Greece,Properties chain
+META og:title: Massage
+META twitter:title: Massage
+META description: Massage
+META og:description: Massage
+META twitter:description: Massage
+META twitter:card: summary
+META og:image: https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/2ecca71169fd54974a50f596a089b8e2_thumb.jpg
+META twitter:image: https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/2ecca71169fd54974a50f596a089b8e2_thumb.jpg
+META og:url: https://thalasses.com/en/massage
+META twitter:url: https://thalasses.com/en/massage
+CANONICAL: massage-1.html
+
+===== BODY =====
+ï»¿
+Massage
+Email
+has already subscribed to our news letter!
+has successfully subscribed to our news letter!
+An error occurred! Please try again later.
+Your Message has been delivered!
+Stop Sales
+Not operating
+Booked
+Unavailable
+Can Checkout
+Available for arrival
+Unavailable for booking
+[IMG alt: Thalasses Villas]
+[IMG alt: Thalasses Villas]
+x
+Our Villas
+Villa Pueblo
+Thalasses Rituals
+Villa Thoi
+Villa Melia
+Villa Eeanthe
+Villa Persi
+Thalasses Villas
+Amenities
+Location
+Experiences
+Career Opportunities
+Contact
+6Ldn5jYUAAAAAHV8v0apDoa8Hd1O67fo92WqpWRY
+Massage
+Book your appointment for a relaxing massage in comfort of your villa!
+g
+g
+g
+g
+g
+Make your reservation
+Arriving
+Departure
+Adults
+kids
+Book now
+0;"> Please fill in the age of kids at the date of arrival...
+Kid [[select]]
+=1;$index>0" data-ng-repeat="group in chunkedData">
+Kid [[select]]
+*This Property can't accommodate more than kids.
+*This Property can't accommodate more than Adults.
+Overview
+Our Villas
+Contact
+Please read our
+Terms of Use
+before you continue using this website.
+Copyright © 2025
+ÎÏÎ¼Î·ÏÎ· ÎÏÎ¹Î²ÎµÎ»ÏÏÎ¼ÎµÎ½Ï ÎÎ¾ÏÎµÎµ
+All Rights Reserved.
+Terms & Conditions
+These terms and conditions, as may be amended from time to time, apply to all our services directly or indirectly (through distributors) made available online, through any mobile device, by email or by telephone. By accessing, browsing and using our (mobile) website or any of our applications through whatever platform (hereafter collectively referred to as the "website") and/or by completing a reservation, you acknowledge and agree to have read, understood and agreed to the terms and conditions set out below (including the privacy statement).These pages, the content and infrastructure of these pages, and the online reservation service provided on these pages and through the website are owned, operated and providded by Thalasses Villa and are provided for your personal, non-commercial use only, subject to the terms and conditions set out below.
+1.0 Definitions
+âThalasses Villasâ, "us", "we" or "our" means Thalasses Villas, a company incorporated under the laws of the Greece, and having its registered address at Trantallidou 13-15 Rethymno, 74100 Crete.
+"Platform" means the (mobile) website and app on which the Service is made available owned, controlled, managed, maintained and/or hosted by Ink Hotel.
+"Service" means the online reservation service (including the facilitation of payments) of various products and services as from time to time made available by Suppliers on the Platform.
+"Supplier" means the provider of accommodation (e.g. hotel, motel, apartment, bed & breakfast), (theme) parks, attractions, museums, sightseeing tours, cruises, rail and coach tours, transfers, tour operators, insurances, and any other travel or related product or service as from time to time available for reservation on the Platform.
+2.0 Scope of Service
+Through the Platform, we provide an online platform through which Suppliers can advertise their products and service for reservation, and through which visitors of the Platform can make such reservations (i.e. the reservation service). By making a reservation through Ink Hotel, you enter into a direct (legally binding) contractual relationship with the Supplier with which you make a reservation or purchase a product or service (as applicable). From the point at which you make your reservation, we act solely as an intermediary between you and the Supplier, transmitting the details of your reservation to the relevant Supplier(s) and sending you a confirmation email for and on behalf of the Supplier.
+When rendering our Service, the information that we disclose is based on the information provided to us by Suppliers and certified by us. Also, the Suppliers are given access to online and offline tools through which they fully comply for updating all rates, availability and other information which is displayed on our Platform. We will use reasonable skill and care in performing our Service, and we will verify if, so we can guarantee that, all information is accurate, complete or correct. We thought cannot we be held responsible for any errors (including manifest and typographical errors), any interruptions (whether due to any (temporary and/or partial) breakdown, repair, upgrade or maintenance of our Platform or otherwise), inaccurate, misleading or untrue information or non-delivery of information. Our Platform does not constitute and should not be regarded as a recommendation or endorsement of the quality, service level, qualification or (star) rating of any Supplier (or its facilities, venue, products or services) made available.
+Our Service is made available for personal and non-commercial use only. Therefore, you are not allowed to re-sell, deep-link, use, copy, monitor (e.g. spider, scrape), display, download or reproduce any content or information, software, reservations, tickets, products or services available on our Platform for any commercial or competitive activity or purpose.
+3.0 Prices, crossed-out rates and Best Price Guarantee
+The prices on our Platform are highly competitive. All room/property prices are per room/property for your entire stay and all prices are displayed including VAT/sales tax and all other taxes (subject to change of such taxes), unless stated differently on our Platform or the confirmation email/ticket. Ticket prices are per person or group and subject to validity as indicated on the ticket, if applicable. Applicable fees and taxes (including tourist/city tax) may be charged by the Supplier in the event of a no-show or cancellation fee. Applicable taxes may be charged by the accommodation in the event of a no-show or cancellation fee.
+Sometimes cheaper rates are available on our Platform for a specific stay, product or service, however, these rates made available by Suppliers may carry special restrictions and conditions, for example non-cancelable and non-refundable. Please check the relevant product, service and reservation conditions and details thoroughly for any such conditions prior to making your reservation.
+The crossed-out rate shown for rooms is based on the third highest current price of the Supplier for your product or service with the same booking conditions in a 30-day window around your check-in date (15 days before and 15 days after check-in date; if less than 15 days are between today and the check-in date, we will use the corresponding number of days after the check-in date to result in a 30-day total). To ensure we are making a fair comparison, we always use the same reservation conditions (e.g. meal plan, cancellation policy and room type). This means that you get the same room for a lower price compared to other check-in dates at the same time of year.
+The currency converter is for information purposes only and should not be relied upon as accurate and real time; actual rates may vary.
+Obvious errors and mistakes (including misprints) are not binding.
+All special offers and promotions are marked as such.
+4.0 Privacy and cookies
+Thalasses Villas respects your privacy. Please have a look at our privacy and cookies policy for further information.
+5.0 Free of charge
+Our service is free of charge because, unlike many other parties, we will not charge you for our Service or add any additional (reservation) fees to the rate.
+Suppliers pay a commission (being a small percentage of the product price (e.g. room price)) to Ink Hotel after the end user has consummated the service or product of the Supplier or after the guest has stayed at (and paid) the accommodation.
+6.0 Credit card or bank transfer
+If applicable and available, certain Suppliers offer the opportunity for reservations to be paid (wholly or partly and as required under the payment policy of the accommodation) to the Supplier during the reservation process by means of secure online payment (all to the extent offered and supported by your bank). For certain products and services, Thalasses Villas facilitates (through third party payment processors) the payment of the relevant product or service (i.e. the payment facilitation service) for and on behalf of the Supplier (Thalasses Villas acts and operates as the merchant of record). Payment is safely processed from your credit/debit card or bank account to the bank account of the accommodation provider through a third party payment processor.
+For certain (non-refundable) rates or special offers, please note that Suppliers may require that payment is made upfront by wire transfer (if available) or by credit card, and therefore your credit card may be pre-authorised or charged (sometimes without any option for refund) upon making the reservation. Please check the (reservation) details of your product or service of choice thoroughly for any such conditions prior to making your reservation.
+In the event of credit card fraud or unauthorised use of your credit card by third parties, most banks and credit card companies bear the risk and cover all the charges resulting from such fraud or misuse, which may sometimes be subject to a deductible (usually set at EUR 50 (or the equivalent in your local currency)). In the event that your credit card company or bank charges the deductible from you because of unauthorised transactions resulting from a reservation made on our Platform, we will pay you this deductible, up to an aggregate amount of EUR 50 (or the equivalent in your local currency). In order to indemnify you, please make sure that you report this fraud to your credit card provider (in accordance with its reporting rules and procedures) and contact us immediately by email [email protected]
+. Please state 'credit card fraud' in the subject line of your email and provide us with evidence of the charged deductible (e.g. policy of the credit card company). This indemnification only applies to credit card reservations made using Thalasses Villasâ secure server and the unauthorised use of your credit card resulted through our default or negligence and through no fault of your own while using the secure server.
+7.0 Pre-payment, cancellation, no-show and fine print
+By making a reservation with a Supplier, you accept and agree to the relevant cancellation and no-show policy of that Supplier, and to any additional (delivery) terms and conditions of the Supplier that may apply to your visit or stay (including the fine print of the Supplier made available on our Platform and the relevant house rules of the Supplier), including for services rendered and/or products offered by the accommodation provider (the delivery terms and conditions of an accommodation provider can be obtained with the relevant accommodation provider). The general cancellation and no-show policy of each Supplier is made available on our Platform on the Supplier information pages, during the reservation procedure and in the confirmation email or ticket (if applicable). Please note that certain rates or special offers are not eligible for cancellation or change. Applicable city/tourist tax may still be charged by the Supplier in the event of a no-show or charged cancellation. Please check the (reservation) details of your product or service of choice thoroughly for any such conditions prior to making your reservation. Please note that a reservation which requires down payment or (wholly or partly) prepayment may be cancelled (without a prior notice of default or warning) insofar the relevant (remaining) amount(s) cannot be collected in full on the relevant payment date in accordance with the relevant payment policy of the Supplier and the reservation. Cancellation and prepayment policies may vary according to room type. Please carefully read the fine print (below the room types or at the bottom of each Supplier page on our Platform) and important information in your reservation confirmation for additional policies as may be applied by the Supplier (e.g. in respect of age requirement, security deposit, non-cancellation/additional supplements for group bookings, extra beds/no free breakfast, pets/cards accepted). Late payment, wrong bank, debit or credit card details, invalid credit/debit cards or insufficient funds are for your own risk and account and you shall not be entitled to any refund of any (non-refundable) prepaid amount unless the Supplier agrees or allows otherwise under its (pre)payment and cancellation policy.
+If you wish to review, adjust or cancel your reservation, please revert to the confirmation email and follow the instructions therein. Please note that you may be charged for your cancellation in accordance with the accommodation provider's cancellation, (pre)payment and no-show policy or not be entitled to any repayment of any (pre)paid amount. We recommend that you read the cancellation, (pre)payment and no-show policy of the accommodation provider carefully prior to making your reservation and remember to make further payments on time as may be required for the relevant reservation.
+If you have a late or delayed arrival on the check-in date or only arrive the next day, make sure to (timely/promptly) communicate this with the Supplier so they know when to expect you to avoid cancellation of your reservation or room or charge of the no-show fee. Our customer service department can help you if needed with informing the Supplier. Ink Hotel does not accept any liability or responsibility for the consequences of your delayed arrival or any cancellation or charged no-show fee by the Supplier.
+8.0 (Further) correspondence and communication
+By completing a booking, you agree to receive (i) an email which we may send you shortly prior to your arrival date, giving you information on your destination and providing you with certain information and offers (including third party offers to the extent that you have actively opted in for this information) relevant to your reservation and destination, and (ii) an email which we may send to you promptly after your stay inviting you to complete our guest review form. Please see our privacy and cookies policy for more information about how we may contact you.
+Thalasses Villas disclaims any liability or responsibility for any communication with the Supplier on or through its platform. You cannot derive any rights from any request to, or communication with the Supplier or (any form of) acknowledgement of receipt of any communication or request. Thalasses Villas cannot guarantee that any request or communication will be (duly and timely) received/read by, complied with, executed or accepted by the Supplier.
+In order to duly complete and secure your reservation, you need to use your correct email address. We are not responsible or liable for (and have no obligation to verify) any wrong or misspelled email address or inaccurate or wrong (mobile) phone number or credit card number.
+Any claim or complaint against Thalasses Villas or in respect of the Service must be promptly submitted, but in any event within 30 days after the scheduled day of consummation of the product or service (e.g. check out date). Any claim or complaint that is submitted after the 30 days period, may be rejected and the claimant shall forfeit its right to any (damage or cost) compensation.
+Due to the continuous update and adjustments of rates and availability, we strongly suggest to make screenshots when making a reservation to support your position (if needed).
+9.0 Disclaimer
+Subject to the limitations set out in these terms and conditions and to the extent permitted by law, we shall only be liable for direct damages actually suffered, paid or incurred by you due to an attributable shortcoming of our obligations in respect to our services, up to an aggregate amount of the aggregate cost of your reservation as set out in the confirmation email (whether for one event or series of connected events).
+However and to the extent permitted by law, neither we nor any of our officers, directors, employees, representatives, subsidiaries, affiliated companies, distributors, affiliate (distribution) partners, licensees, agents or others involved in creating, sponsoring, promoting, or otherwise making available the site and its contents shall be liable for (i) any punitive, special, indirect or consequential loss or damages, any loss of production, loss of profit, loss of revenue, loss of contract, loss of or damage to goodwill or reputation, loss of claim, (ii) any inaccuracy relating to the (descriptive) information (including rates, availability and ratings) of the Supplier as made available on our Platform, (iii) the services rendered or the products offered by the Supplier or other business partners, (iv) any (direct, indirect, consequential or punitive) damages, losses or costs suffered, incurred or paid by you, pursuant to, arising out of or in connection with the use, inability to use or delay of our Platform, or (v) any (personal) injury, death, property damage, or other (direct, indirect, special, consequential or punitive) damages, losses or costs suffered, incurred or paid by you, whether due to (legal) acts, errors, breaches, (gross) negligence, willful misconduct, omissions, non-performance, misrepresentations, tort or strict liability by or (wholly or partly) attributable to the Supplier or any of our other business partners (including any of their employees, directors, officers, agents, representatives or affiliated companies) whose products or service are (directly or indirectly) made available, offered or promoted on or through the Platform, including any (partial) cancellation, overbooking, strike, force majeure or any other event beyond our control.
+By uploading photos/images onto our system (for instance in addition to a review) you certify, warrant and agree that you own the copyright to the photos/images and that you agree that Thalasses Villas may use the uploaded photos/images on its (mobile) website and app, and in (online/offline) promotional materials and publications and as Thalasses Villas at its discretion sees fit. You are granting Thalasses Villas a non-exclusive, worldwide, irrevocable, unconditional, perpetual right and license to use, reproduce, display, have reproduced, distribute, sublicense, communicate and make available the photos/images as Thalasses Villas at its discretion sees fit. By uploading these photos/images the person uploading the picture(s) accepts full legal and moral responsibility of any and all legal claims that are made by any third parties (including, but not limited to, accommodation owners) due to Ink Hotel publishing and using these photos/images. Ink Hotel does not own or endorse the photos/images that are uploaded. The truthfulness, validity and right to use of all photos/images is assumed by the person who uploaded the photo, and is not the responsibility of Thalasses Villas. Thalasses Villas disclaims all responsibility and liability for the pictures posted. The person who uploaded the photo warrants that the photos/images shall not contain any viruses, Trojan horses or infected files and shall not contain any pornographic, illegal, obscene, insulting, objectionable or inappropriate material and does not infringe any third party (intellectual property right, copyright or privacy) rights. Any photo/image that does not meet the aforesaid criteria will not be posted and/or can be removed/deleted at any time and without prior notice.
+10.0 Intellectual property rights
+Unless stated otherwise, the software required for our services or available at or used by our Platform and the intellectual property rights (including the copyrights) of the contents and information of and material on our Platform are owned by Thalasses Villas, its suppliers or providers.
+Thalasses Villas exclusively retains ownership of all rights, title and interest in and to (all intellectual property rights of) (the look and feel (including infrastructure) of) the Platform on which the service is made available (including the guest reviews and translated content) and you are not entitled to copy, scrape, (hyper-/deep)link to, publish, promote, market, integrate, utilise, combine or otherwise use the content (including any translations thereof and the guest reviews) or our brand without our express written permission. To the extent that you would (wholly or partly) use or combine our (translated) content (including guest reviews) or would otherwise own any intellectual property rights in the Platform or any (translated) content or guest reviews, you hereby assign, transfer and set over all such intellectual property rights to Thalasses Villas. Any unlawful use or any of the aforementioned actions or behaviour will constitute a material infringement of our intellectual property rights (including copyright and database right).
+11.0 Miscellaneous
+To the extent permitted by law, these terms and conditions and the provision of our services shall be governed by and construed in accordance with Greek law and any dispute arising out of these general terms and conditions and our services shall exclusively be submitted to the competent courts in Greece.
+The original Greek version of these terms and conditions may have been translated into other languages. The translated version is a courtesy and office translation only and you cannot derive any rights from the translated version. In the event of a dispute about the contents or interpretation of these terms and conditions or inconsistency or discrepancy between the Greek version and any other language version of these terms and conditions, the Greek language version to the extent permitted by law shall apply, prevail and be conclusive. The Greek version is available on our Platform (by selecting the Greek language) or shall be sent to you upon your written request.
+If any provision of these terms and conditions is or becomes invalid, unenforceable or non-binding, you shall remain bound by all other provisions hereof. In such event, such invalid provision shall nonetheless be enforced to the fullest extent permitted by applicable law, and you will at least agree to accept a similar effect as the invalid, unenforceable or non-binding provision, given the contents and purpose of these terms and conditions.
+12.0 About the company and the support companies
+The online reservation service is rendered by Thalasses Villas, which is a company, incorporated under the laws of Greece and having its offices at Trantallidou 13- 15 Rethymno, 74100 Crete and registered with the trade register of the Chamber of Commerce in Greece under registration number 998802380. Our VAT registration number is EL998802380.

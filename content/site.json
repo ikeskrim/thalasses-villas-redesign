@@ -1,0 +1,513 @@
+{
+ "brand": {
+  "name": "Thalasses Villas",
+  "tagline": "Living Unlimited",
+  "logoImages": [
+   "../loggia-cdn/lodgeContent/3e3b5013ec554338704411496c011ec4-1.png"
+  ]
+ },
+ "meta": {
+  "homeTitle": "Thalasses Villas",
+  "homeDescription": "Five luxurious villas in a privileged seafront location. The clear blue sea and exclusive private beach equipped with sun loungers and sunshades will satisfy the most demanding sea and sun worshipers. With facilities and services comparable to luxury hotels only with more privacy, each villa has spectacular views, a peaceful atmosphere and very modern amenities, perfect for restful holidays. The villas are designed with families, couples, newlyweds and those with exquisite taste who can appreciate the tranquillity, comfort and luxury of these unique villas.",
+  "homeKeywords": "Thalasses Villas,Rethymno,Greece",
+  "ogImage": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/87468a8759d555b8ca07e8c2a97568ab.jpg",
+  "ogUrl": "https://thalasses.com/en/",
+  "canonical": "index-1.htm"
+ },
+ "nav": [
+  {
+   "label": "Our Villas",
+   "href": "#featured_gallery",
+   "children": [
+    {
+     "label": "Villa Pueblo",
+     "href": "villa-pueblo-1.html"
+    },
+    {
+     "label": "Thalasses Rituals",
+     "href": "thalasses-rituals-1.html"
+    },
+    {
+     "label": "Villa Thoi",
+     "href": "property/200.html"
+    },
+    {
+     "label": "Villa Melia",
+     "href": "property/203.html"
+    },
+    {
+     "label": "Villa Eeanthe",
+     "href": "property/202.html"
+    },
+    {
+     "label": "Villa Persi",
+     "href": "property/201.html"
+    },
+    {
+     "label": "Thalasses Villas",
+     "href": "property/2142.html"
+    }
+   ]
+  },
+  {
+   "label": "Amenities",
+   "href": "#category571",
+   "children": []
+  },
+  {
+   "label": "Location",
+   "href": "#category570",
+   "children": []
+  },
+  {
+   "label": "Experiences",
+   "href": "#category1139",
+   "children": []
+  },
+  {
+   "label": "Career Opportunities",
+   "href": "#category1158",
+   "children": []
+  },
+  {
+   "label": "Contact",
+   "href": "#contact",
+   "children": []
+  }
+ ],
+ "hero": {
+  "headings": [
+   "Living Unlimited"
+  ],
+  "subheadings": [],
+  "sliderSlides": [
+   {
+    "heading": "Living Unlimited",
+    "subheading": null,
+    "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/87468a8759d555b8ca07e8c2a97568ab.jpg"
+   },
+   {
+    "heading": null,
+    "subheading": null,
+    "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/5bc02ce23eec5d914bcc76097a523c9b.jpg"
+   },
+   {
+    "heading": null,
+    "subheading": null,
+    "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/59270e898b2559f2abae20d109522f44.jpg"
+   },
+   {
+    "heading": null,
+    "subheading": null,
+    "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/ba718ebcfbeb72ffcbe0c2334c12cc73.jpg"
+   },
+   {
+    "heading": null,
+    "subheading": null,
+    "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/2c985c96c990731af26b19772328d37c.jpg"
+   },
+   {
+    "heading": null,
+    "subheading": null,
+    "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/fd2f7826c351f82244248223d5f6e4f2.jpg"
+   }
+  ],
+  "scrollIndicator": true
+ },
+ "bookingBar": {
+  "labels": {
+   "arriving": "Arriving",
+   "departure": "Departure",
+   "adults": "Adults",
+   "kids": "kids",
+   "submit": "Book now"
+  },
+  "helperTexts": [
+   "Please fill in the age of kids at the date of arrival...",
+   "*This Property can't accommodate more than kids.",
+   "*This Property can't accommodate more than Adults."
+  ]
+ },
+ "intro": {
+  "eyebrow": "Thalasses Villas",
+  "heading": "Living Unlimited",
+  "body": "Five luxurious villas in a privileged seafront location. The clear blue sea and exclusive private beach equipped with sun loungers and sunshades will satisfy the most demanding sea and sun worshipers. With facilities and services comparable to luxury hotels only with more privacy, each villa has spectacular views, a peaceful atmosphere and very modern amenities, perfect for restful holidays. The villas are designed with families, couples, newlyweds and those with exquisite taste who can appreciate the tranquillity, comfort and luxury of these unique villas."
+ },
+ "press": {
+  "mention": null,
+  "linkUrl": "https://www.cntraveler.com/story/where-to-stay-in-crete",
+  "context": "Image-only link inside div.cn_traveller placed immediately after the intro section; img src \"../assets/customers/thalasses/thalasses-cn-traveller-1.png\", alt \"cn_traveller\", height 350, target _blank. No accompanying text on the page."
+ },
+ "featuredVillas": [
+  {
+   "name": "Villa Pueblo",
+   "tagline": "Living Unlimited!",
+   "href": "villa-pueblo-1.html",
+   "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/306268ec80fb6a07680e54463214d8d8.jpg"
+  },
+  {
+   "name": "Thalasses Rituals",
+   "tagline": "Living unlimited!",
+   "href": "thalasses-rituals-1.html",
+   "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/8b9e368b164eab6ade49d33722a0cbfa.jpg"
+  },
+  {
+   "name": "Villa Thoi",
+   "tagline": "Living unlimited",
+   "href": "property/200.html",
+   "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/a3795044c605303bbd6f712209c487e3.jpg"
+  },
+  {
+   "name": "Villa Melia",
+   "tagline": "Living unlimited",
+   "href": "property/203.html",
+   "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/65070ce083cb1d043359d54469a98399.jpg"
+  },
+  {
+   "name": "Villa Eeanthe",
+   "tagline": "Living unlimited",
+   "href": "property/202.html",
+   "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/56a298fddcf18fa81f36814c8a32e16e.jpg"
+  },
+  {
+   "name": "Villa Persi",
+   "tagline": "Living unlimited",
+   "href": "property/201.html",
+   "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/851c20a9d75e7685d99e34b64af6cd45.jpg"
+  },
+  {
+   "name": "Thalasses Villas",
+   "tagline": "Rent them all together",
+   "href": "property/2142.html",
+   "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/01e5107612a2f4f472c6b9d19d5025b9.jpg"
+  }
+ ],
+ "sectionAnchors": {
+  "amenities": "#category571",
+  "location": "#category570",
+  "experiences": "#category1139",
+  "careers": "#category1158",
+  "featuredGallery": "#featured_gallery",
+  "overview": "#overview",
+  "contact": "#contact"
+ },
+ "experiencesSection": {
+  "heading": "Experiences",
+  "strapline": "For getting the maximum which you deserve we offer exclusive experience packages!",
+  "anchor": "#category1139",
+  "cta": "Read more...",
+  "cards": [
+   {
+    "label": "Dream Wedding on the Beach",
+    "href": "dream-weadding-on-the-beach-1.html",
+    "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/7569639007094f08ba07c7e69f83af08.jpg",
+    "isExternal": false
+   },
+   {
+    "label": "A Moment of Fairytale",
+    "href": "https://www.youtube.com/watch?v=nuSIWyTiwBU&ab_channel=CreteHolidayHome",
+    "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/2984622fa70b8aaa4796d646c5a7c6ea.jpg",
+    "isExternal": true
+   },
+   {
+    "label": "Organic Farm",
+    "href": "biological-garden-1.html",
+    "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/40e6d9fb89dcb0903bd01151439f00c3.jpg",
+    "isExternal": false
+   },
+   {
+    "label": "Breakfast on the Beach",
+    "href": "breakfast-on-the-beach-1.html",
+    "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/e960a92792cd5952d275cd242fe8e99b.jpg",
+    "isExternal": false
+   },
+   {
+    "label": "Scuba Diving",
+    "href": "scuba-diving-1.html",
+    "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/54095a9f31b0139695c64ad1d801083e.jpg",
+    "isExternal": false
+   },
+   {
+    "label": "Bike Tours",
+    "href": "bike-tours-1.html",
+    "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/bc870bf24a014973d25acd877b7cf856.jpg",
+    "isExternal": false
+   },
+   {
+    "label": "Hiking",
+    "href": "hiking-1.html",
+    "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/b1987c68d509d41e5aa1269ecd12a5d1.jpg",
+    "isExternal": false
+   },
+   {
+    "label": "Jeep safari",
+    "href": "jeep-safari-1.html",
+    "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/0c4f054699fa4cd5f3592c934df7d5dc.jpg",
+    "isExternal": false
+   },
+   {
+    "label": "Quad Safari",
+    "href": "quad-safari-1.html",
+    "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/7268b16ac113ef4d5b65d7fe5ed5dce5.jpg",
+    "isExternal": false
+   },
+   {
+    "label": "Exclusive Tour",
+    "href": "exclusive-tour-1.html",
+    "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/1c263ae8e7a7ec57c5735885379ef302.jpg",
+    "isExternal": false
+   },
+   {
+    "label": "Water Sports",
+    "href": "jet-ski-safari-1.html",
+    "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/e343feb5a2a5cab3bfb8988418ab9cbe.jpg",
+    "isExternal": false
+   },
+   {
+    "label": "Personal Trainer",
+    "href": "personal-trainer-1.html",
+    "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/4b0fcbfb168597e79076b3cac6ec1d1c.jpg",
+    "isExternal": false
+   },
+   {
+    "label": "Massage",
+    "href": "massage-1.html",
+    "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/2ecca71169fd54974a50f596a089b8e2.jpg",
+    "isExternal": false
+   },
+   {
+    "label": "Therapist",
+    "href": "therapist-1.html",
+    "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/733997e4cda86e32b69dc8883a526a07.jpg",
+    "isExternal": false
+   },
+   {
+    "label": "Private Chef",
+    "href": "chef-in-villa-1.html",
+    "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/04dccbf09dd7c516e55988fc4122b14d.jpg",
+    "isExternal": false
+   },
+   {
+    "label": "Wine Tasting",
+    "href": "wine-tasting-1.html",
+    "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/dd02adb78e41b725facdf9786cb9d686.jpg",
+    "isExternal": false
+   },
+   {
+    "label": "Wine Production",
+    "href": "wine-production-1.html",
+    "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/b70c87734651ed6a4cb9b75b18016353.jpg",
+    "isExternal": false
+   },
+   {
+    "label": "Private Boat Trip",
+    "href": "boat-trip-1.html",
+    "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/267597f7da675716be65dde87d17a259.jpg",
+    "isExternal": false
+   },
+   {
+    "label": "Learn the secrets of Cretan Cuisine!",
+    "href": "learn-the-secrets-of-cretan-cuisine-1.html",
+    "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/9e80231c072456bb5f5b0de3f1943b64.jpg",
+    "isExternal": false
+   },
+   {
+    "label": "Running",
+    "href": "running-1.html",
+    "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/c24c3cbb07a7d000732744102339fad6.jpg",
+    "isExternal": false
+   },
+   {
+    "label": "Chauffeur",
+    "href": "chauffeur-1.html",
+    "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/d9ec159dfbcda11acebe87c1e990ec3d.jpg",
+    "isExternal": false
+   },
+   {
+    "label": "Private Helipad",
+    "href": "private-helipad-1.html",
+    "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/84d095eab652d2a508f63adcca984100.jpg",
+    "isExternal": false
+   }
+  ]
+ },
+ "careers": {
+  "heading": "Career Opportunities",
+  "body": "Become a member of our team!",
+  "cardLabel": "Become one of us!",
+  "cta": "Read more...",
+  "modalHeading": "Become one of us!",
+  "paragraphs": [
+   "Become part of our team! A team that shares more than the same employer � We share a vision.",
+   "Push your ambitions in a work atmosphere characterized by freedom, autonomy and growth culture.",
+   "Become one of us and send your CV at creteholidayhome@gmail.com."
+  ],
+  "paragraphsNormalized": [
+   "Become part of our team! A team that shares more than the same employer – We share a vision.",
+   "Push your ambitions in a work atmosphere characterized by freedom, autonomy and growth culture.",
+   "Become one of us and send your CV at creteholidayhome@gmail.com."
+  ],
+  "careersEmail": "creteholidayhome@gmail.com",
+  "source": "modal:3869",
+  "image": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/df2bacefb7d7d5df11c75781c3e5249f.jpg",
+  "images": [
+   "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/df2bacefb7d7d5df11c75781c3e5249f.jpg"
+  ],
+  "href": null
+ },
+ "contact": {
+  "heading": "How can we assist you?",
+  "addressLines": [
+   "Pigianos Kampos area",
+   "Rethymno, 74100",
+   "Greece"
+  ],
+  "phones": [
+   "(+30) 6974069475",
+   "(+30) 2114445757"
+  ],
+  "phoneHrefs": [
+   "tel:+306974069475",
+   "tel:+302114445757"
+  ],
+  "email": "info@thalasses.com",
+  "emailObfuscated": true,
+  "formFields": [
+   {
+    "label": "First Name",
+    "name": "first_name",
+    "type": "text",
+    "required": true
+   },
+   {
+    "label": "Last Name",
+    "name": "last_name",
+    "type": "text",
+    "required": true
+   },
+   {
+    "label": "Email",
+    "name": "email",
+    "type": "email",
+    "required": true
+   },
+   {
+    "label": "Message",
+    "name": "message",
+    "type": "textarea",
+    "required": true
+   }
+  ],
+  "consentText": "I hereby certify that the information above is true and accurate.",
+  "submitLabel": "Submit",
+  "mapUrl": "https://www.google.com/maps/search/?api=1&query=35.380146561951,24.57279329824",
+  "coordinates": {
+   "lat": 35.380146561951,
+   "lng": 24.57279329824
+  }
+ },
+ "partner": {
+  "name": null,
+  "logoImage": "../wp-content/uploads/2021/12/creteholidayhome-logo-1.jpg",
+  "url": "https://creteholidayhome.com/",
+  "context": "Sales and Marketing queries:"
+ },
+ "socials": [
+  {
+   "platform": "Facebook",
+   "url": "https://www.facebook.com/villasthalasses"
+  },
+  {
+   "platform": "Instagram",
+   "url": "https://www.instagram.com/thalasses_villas/"
+  },
+  {
+   "platform": "YouTube",
+   "url": "https://www.youtube.com/channel/UCiHumP-cMIBORj4fVf9tCvw/videos"
+  }
+ ],
+ "footer": {
+  "columns": [
+   {
+    "heading": null,
+    "links": [
+     {
+      "label": "Overview",
+      "href": "#overview"
+     },
+     {
+      "label": "Our Villas",
+      "href": "#featured_gallery"
+     },
+     {
+      "label": "Contact",
+      "href": "#contact"
+     }
+    ]
+   }
+  ],
+  "legalLinks": [
+   {
+    "label": "Terms of Use",
+    "href": "terms-and-conditions-1.html"
+   }
+  ],
+  "copyright": "Copyright © 2025 Δόμηση Ντιβελόπμεντ Αξτεε All Rights Reserved.",
+  "poweredBy": null
+ },
+ "newsletter": {
+  "present": false,
+  "heading": "Sign up now and receive exclusive offers and benefits.",
+  "placeholder": "Example@mailserver.com",
+  "submitLabel": "Subscribe!"
+ },
+ "todos": [
+  "press.mention is null: the Condé Nast Traveler endorsement on the homepage is an image link only (alt \"cn_traveller\"); no quotation, award name, headline or date is present in the page text. Source the actual quote/award wording from the publication or the client.",
+  "partner.name is null: the \"Sales and Marketing queries:\" logo has alt text \"manager logo\" only. The company name is not stated anywhere in the page text (the URL is https://creteholidayhome.com/ and the file is creteholidayhome-logo-1.jpg, but no name string exists in the source). Confirm the legal/trading name.",
+  "careers: RESOLVED since the first pass — the careers copy was never missing from the site, only from the crawl. The site is a static export and /en/page/modal/article/3869 returns 404, but the modal HTML is baked into the page bundle and injected by Angular. The three paragraphs are now folded in from content/modals.json.",
+  "careers.careersEmail is creteholidayhome@gmail.com, which is NOT the same address as contact.email (info@thalasses.com). It is a third-party Gmail address matching the partner company creteholidayhome.com (see \"partner\"). Applications therefore leave the thalasses.com domain entirely. Confirm with the client whether this is intentional and whether it should become a branded address or a form on the rebuilt site.",
+  "careers: the email address appears only as plain text inside the modal paragraph (\"send your CV at creteholidayhome@gmail.com.\") — it is not a mailto: link and, unlike contact.email, it is not Cloudflare-obfuscated, so it is exposed to scrapers as-is.",
+  "careers.paragraphs[0] contains a genuine U+FFFD replacement character where an en dash belongs (\"the same employer � We share a vision\"). This is broken encoding in the live source, not a decoding error on our side. paragraphs preserves it verbatim; paragraphsNormalized supplies the intended \"–\".",
+  "careers.href is null: the \"Read more...\" button opens an in-page Angular modal via data-ng-click=\"loadArticlesModal('en',3869)\" with no href. There is no crawlable career page URL. Need a real destination URL.",
+  "careers: the card's own label is \"Become one of us!\" (a separate string from the section subtitle \"Become a member of our team!\"). The identical card is rendered twice — once in a .hidden-xs block and once in a .visible-xs block, both calling loadArticlesModal('en',3869) — so it is one job listing, not two, despite appearing twice in the extracted text.",
+  "careers: no role, department, location, contract type, salary or closing date is stated anywhere. The section advertises a culture, not a vacancy. The rebuild will need either real job listings or a decision to keep it as a general expression-of-interest block.",
+  "experiencesSection.cards holds 22 cards but content/experiences/ holds only 21 JSON files — the difference is \"A Moment of Fairytale\", which has no detail page at all.",
+  "experiencesSection card 2 \"A Moment of Fairytale\" links straight off-site to https://www.youtube.com/watch?v=nuSIWyTiwBU&ab_channel=CreteHolidayHome (isExternal true). It is the only external link in the grid, it opens in the same tab (no target attribute in the source), and its only asset anywhere on the site is the card thumbnail 2984622fa70b8aaa4796d646c5a7c6ea_thumb.jpg. There is no title, description or body copy for it — the video is the content. Decide whether to embed the video on a real page or drop the card.",
+  "experiencesSection: five card labels do not match their slugs. \"Organic Farm\" → biological-garden-1.html, \"Water Sports\" → jet-ski-safari-1.html, \"Private Chef\" → chef-in-villa-1.html, \"Private Boat Trip\" → boat-trip-1.html, and \"Dream Wedding on the Beach\" → dream-weadding-on-the-beach-1.html. The labels appear to have been renamed without the URLs following. Preserve the old paths as redirects when re-platforming.",
+  "experiencesSection: source typo preserved verbatim in the URL slug \"dream-weadding-on-the-beach-1.html\" (\"weadding\" for \"wedding\"). Do not silently fix — it is a live, indexable URL.",
+  "experiencesSection: source casing inconsistency preserved verbatim — \"Jeep safari\" (lowercase s) sits directly above \"Quad Safari\" (capital S) in the same grid. The homepage card label reads \"Organic Farm\"; check the detail page, which spells it differently.",
+  "experiencesSection: \"Learn the secrets of Cretan Cuisine!\" is the only card label ending in an exclamation mark and is by far the longest, which will break a uniform card grid.",
+  "experiencesSection: each card is one <a> wrapping a photo, the label and the shared string \"Read more...\". There is no per-card description, price, duration, or booking control anywhere in the section — every card is title-plus-photo only.",
+  "experiencesSection: all 22 images are _thumb.jpg derivatives (each with a .webp twin via data-webp and a lazyload base64 GIF placeholder). No full-size originals for the cards are referenced on the homepage.",
+  "experiencesSection.strapline is rendered in an <h5 class=\"hidden-xs ...\">, i.e. it is hidden on mobile — the same pattern as the Location teaser paragraph. The h3/h4 slots above it contain only the placeholder character 'n' (CMS chrome).",
+  "Template divergence between page types (verified across en/index-1.htm, en/property/{200,201,202,203,2142}.html, en/villa-pueblo-1.html and en/thalasses-rituals-1.html): the property/<id>.html pages carry an EXTRA nav item \"Gallery\" (href \"<id>/albums.html\", inserted between \"Career Opportunities\" and \"Contact\") and exactly ONE social link in the footer, Facebook at https://www.facebook.com/villasthalasses/?ref=bookmarks — note the ?ref=bookmarks query string, which the homepage URL does not have. The homepage carries no Gallery nav item and all three socials (Facebook, Instagram, YouTube). villa-pueblo-1.html and thalasses-rituals-1.html match the homepage nav (no Gallery item) but have NO social links at all. Three different header/footer variants for one site — pick one for the rebuild, and note that the Instagram and YouTube links are unreachable from any property page.",
+  "Property pages also break the phone links: the homepage renders two separate anchors, href=\"tel:+306974069475\" and href=\"tel:+302114445757\" (recorded in contact.phoneHrefs). Every property, pueblo and rituals page instead emits a single malformed anchor, href=\"tel:+6974069475, (+30) 2114445757\" — both numbers crammed into one tel: URI, with the +30 country code dropped from the first. This link cannot dial. Fix on rebuild.",
+  "sectionAnchors.overview = \"#overview\" is a dead anchor: the footer links to #overview but no element with id=\"overview\" exists in the homepage HTML. The intro/description section is wrapped in <div id=\"descriptions\"> instead. Decide whether to repoint the link or add the anchor.",
+  "hero: only slide 1 carries a heading (\"Living Unlimited\", duplicated as an h1 for .hidden-xs and an h2 for .visible-xs). Slides 2-6 have empty caption paragraphs containing only &nbsp;, so hero.subheadings is an empty array and slides 2-6 have null heading/subheading. Copy is needed if the redesign wants per-slide text.",
+  "hero.scrollIndicator: the mouse/scroll indicator markup (div.mouse-wrapper) carries class \"visible-xs\", i.e. it is rendered on mobile only, not on desktop.",
+  "newsletter.present = false: the entire newsletter section is commented out in the homepage HTML. The heading, placeholder and submitLabel recorded here come from that commented-out markup, not from rendered content. The commented block also contains the eyebrow \"Stay in touch\", the note \"We value your privacy. None of the details supplied will be shared with external parties\", and fields \"First name\" / \"Last name\" / \"Email Address\". Confirm whether the newsletter should be revived.",
+  "The newsletter anchor div on the homepage is spelled id=\"newsetter\" (missing the second 'l') — typo present in the source; do not silently fix without confirming nothing links to it.",
+  "footer.poweredBy is null: the \"Made with Loggia's SimpleLodge\" link (https://www.loggia.gr) and the W3C/AChecker validator badges are present in the source but wrapped in an HTML comment, so they are not rendered.",
+  "footer.copyright: the Greek company name is stored double-encoded (mojibake) in the source bytes and renders as \"ÎÏÎ¼Î·ÏÎ· ÎÏÎ¹Î²ÎµÎ»ÏÏÎ¼ÎµÎ½Ï ÎÎ¾ÏÎµÎµ\". The value recorded here is the correctly decoded text \"Δόμηση Ντιβελόπμεντ Αξτεε\". Confirm the exact legal name and spelling (likely an ΑΞΤΕΕ entity) before publishing.",
+  "contact.email was recovered by decoding the Cloudflare obfuscation data-cfemail=\"630a0d050c23170b020f02101006104d000c0e\" (XOR key 0x63) → info@thalasses.com. The rendered page shows only \"[email protected]\".",
+  "contact: no map is rendered on the homepage. The Google Maps script targets document.querySelector('#lodge-map') but no #lodge-map element exists on this page; coordinates and mapUrl were taken from the inline map JavaScript (marker id 2291, zoom 11). The marker info window titles the location \"Pigianos Kampos\".",
+  "contact form: the live form posts to https://formspree.io/f/mrbkgjzw (method POST). A second, older Angular contact form (posting via sendContact()) is present but fully commented out. Placeholders on the live form: email = \"You will get your reply to this email\", message = \"Type the message you wish to send\". The schema has no field for the form's intro sentence, which reads \"Fill up this form to contact us if you have any further questions\".",
+  "bookingBar: the schema has no field for the submit target or supporting strings. The form posts to https://thalassesvillas.reserve-online.net/ (target _blank) with a hidden input exclusive=1 and field names checkin/checkout/adults/children; booking_domain is initialised to https://booking.loggia.gr/en/book. A visually hidden h2 reads \"Make your reservation\". Adults placeholder is \"Max\", kids placeholder is \"0\", and per-child age inputs are labelled \"Kid [n]\" with placeholder \"Age of kid [n]\" (min 1, max 17).",
+  "bookingBar.labels.kids is lowercase \"kids\" in the source while the sibling label is capitalised \"Adults\" — typo/inconsistency preserved verbatim, not fixed.",
+  "featuredVillas taglines are inconsistently cased and punctuated in the source: \"Living Unlimited!\" (Villa Pueblo), \"Living unlimited!\" (Thalasses Rituals), \"Living unlimited\" (Villa Thoi, Melia, Eeanthe, Persi). Preserved verbatim; decide on a single form for the redesign.",
+  "nav/href paths are recorded as they appear in en/index-1.htm (relative, e.g. \"villa-pueblo-1.html\", \"property/200.html\", \"terms-and-conditions-1.html\"). The site root copy (root.html) serves the identical page with an \"en/\" prefix on every one of those hrefs and with logo src \"loggia-cdn/...\" instead of \"../loggia-cdn/...\". Normalise to absolute paths when rebuilding.",
+  "meta.ogUrl differs between the two copies of the homepage: root.txt declares https://thalasses.com/ and en__index-1.txt declares https://thalasses.com/en/. Both declare the same relative CANONICAL value \"index-1.htm\", which is not a valid absolute canonical.",
+  "meta.ogImage points at a _thumb.jpg derivative (87468a8759d555b8ca07e8c2a97568ab_thumb.jpg) rather than the full-size hero image; there is no separate og:image:width/height or twitter:card=summary_large_image.",
+  "brand.logoImages contains a single file used for both the default and the scrolled/alternate header states (rendered twice with classes \"logo_header logo\" and \"logo_header alt\"). No separate light/dark or favicon asset is referenced on the homepage.",
+  "No site-wide numbers are stated anywhere on the homepage: no bedroom counts, guest capacities, villa sizes, prices, or distances to airport/beach/town. Only the marketing phrase \"Five luxurious villas\" appears (in the meta description and intro body). Any such figures must come from the individual property pages or the client.",
+  "A Google reCAPTCHA site key is exposed in the page markup (span#captchaSiteKey) and a Google Maps API key is exposed in the maps script src. Flag for the rebuild — do not carry these values over blindly.",
+  "The 'Location' section heading pair is \"Location\" (eyebrow) / \"Beaches\" (h2); its \"Read more...\" opens an Angular modal (loadArticlesModal('en',1898)) with no crawlable URL, so the Location section has no linkable page.",
+  "The footer legal sentence surrounding the Terms link is \"Please read our Terms of Use before you continue using this website.\" — the link label in the source has two leading spaces (\"  Terms of Use\") inside the <strong> tag.",
+  "Operating licence (Permission of legality) 1041K91003163701 must be shown in the footer of every page — a legal requirement under Greek short-term-rental rules, not a design choice."
+ ],
+ "legal": {
+  "operatingLicence": "1041K91003163701",
+  "operatingLicenceLabel": "Permission of legality",
+  "displayRequirement": "Greek short-term-rental rules require the licence number to be displayed. It must appear in the footer of every page."
+ }
+}

@@ -1,0 +1,47 @@
+{
+ "slug": "wine-production",
+ "name": "Wine Production",
+ "legacyUrl": "https://thalasses.com/en/wine-production",
+ "canonical": "wine-production-1.html",
+ "meta": {
+  "title": "Wine Production",
+  "description": "Wine Production",
+  "keywords": "Thalasses Villas,Wine Production,Experiences,Rethymno,Greece,Properties chain",
+  "ogImage": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/b70c87734651ed6a4cb9b75b18016353.jpg",
+  "ogUrl": "https://thalasses.com/en/wine-production"
+ },
+ "sourceTaxonomy": "Experiences",
+ "categoryProposed": "Taste",
+ "shortDescription": "The wine of Crete is worldwide famous. Come with us and explore how the production is done in Famous Wineries around Crete.",
+ "longDescription": null,
+ "highlights": [],
+ "wordCount": 22,
+ "needsContent": true,
+ "brokenCta": false,
+ "images": [
+  "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/b70c87734651ed6a4cb9b75b18016353.jpg"
+ ],
+ "heroImage": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/b70c87734651ed6a4cb9b75b18016353.jpg",
+ "gallery": {
+  "heroImage": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/b70c87734651ed6a4cb9b75b18016353.jpg",
+  "images": []
+ },
+ "externalLinks": [],
+ "cta": null,
+ "duration": null,
+ "price": null,
+ "todos": [
+  "Odd capitalisation in source, kept verbatim: \"Famous Wineries\" is title-cased mid-sentence as if it were a proper name; no winery is actually named on the page.",
+  "No long-form description exists on the page; the body copy is a single 22-word paragraph, so longDescription is null.",
+  "META description is only the page title repeated (\"Wine Production\") — no genuine meta description exists in source.",
+  "No highlights, bullet list, winery names, or tour stages exist on the page; highlights left empty.",
+  "No gallery/album images on this page. The only page-specific image is the hero parallax background (data-pages-bg-image on the jumbotron section). og:image points to the _thumb.jpg variant of the same photo.",
+  "No page-specific CTA in the page's own content. The only \"Book now\" button belongs to the global booking bar (form action https://thalassesvillas.reserve-online.net/) and was treated as CMS chrome, so cta is null.",
+  "No external links in the page's own content — no winery partner is linked or named.",
+  "No duration stated in source.",
+  "No price stated in source.",
+  "No transport, seasonality (harvest window) or whether a tasting is included is stated. Overlaps heavily with the separate Wine Tasting page — confirm how the two pages relate and whether they should be cross-linked or merged.",
+  "categoryProposed is an editorial grouping added for the redesign; the live site has no categories — confirm with the client.",
+  "[TODO: needs content] — 22 words of body copy"
+ ]
+}

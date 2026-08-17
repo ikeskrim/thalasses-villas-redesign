@@ -1,0 +1,370 @@
+/* ==========================================================================
+   HOMEPAGE SECTIONS (DESIGN-PLAN §5.5)
+   Imported by globals.css. Tokens only — no ad-hoc colours or sizes.
+   ========================================================================== */
+
+/* --- 02 Statement --------------------------------------------------------- */
+.statement {
+  padding-block: var(--rhythm-prose-prose);
+}
+
+/* --- 03 The Position ------------------------------------------------------ */
+/* Photograph to photograph is 0. Always. Whitespace between frames of the sea
+   would break the waterline, so the run is one block with no gap. */
+.position-run {
+  display: block;
+  font-size: 0;
+}
+.position-run > .field {
+  display: block;
+}
+
+/* --- 04 The Collection ---------------------------------------------------- */
+.collection {
+  padding-block: var(--rhythm-photo-prose) var(--rhythm-prose-prose);
+}
+.collection-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--gutter);
+  margin-top: var(--spacing-step-8);
+}
+
+/* The datum: the same 1px pelagos line as the hero and the ledger top edge.
+   A spatial axis, not a divider. The rear row sits above it, the front row
+   below, which is the estate real geometry. */
+.datum-rule {
+  height: 1px;
+  background: var(--color-pelagos);
+  margin-top: var(--spacing-step-8);
+  opacity: 0.55;
+}
+
+.collection-cell {
+  min-width: 0;
+}
+.collection-link {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+.collection-figure {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  background: var(--color-ammos);
+}
+.collection-ordinal {
+  margin-top: var(--spacing-step-4);
+  font-size: var(--text-datum);
+  color: var(--color-phrygana);
+}
+.collection-name {
+  margin-top: var(--spacing-step-2);
+}
+.collection-link .clause {
+  margin-top: var(--spacing-step-3);
+}
+/* Two cues, never colour alone. */
+.collection-link:hover .collection-name,
+.collection-link:focus-visible .collection-name {
+  text-decoration: underline;
+  text-underline-offset: 0.22em;
+  text-decoration-thickness: 1.5px;
+}
+.collection-fifth {
+  margin-top: var(--spacing-step-9);
+  max-width: 52%;
+}
+
+@media (max-width: 767px) {
+  .collection-row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--spacing-step-8);
+  }
+  .collection-fifth {
+    max-width: none;
+  }
+}
+
+/* --- 05 The Entire Estate ------------------------------------------------- */
+/* The only section on the site that changes ground. Nothing else uses the sea
+   as a surface, which is what makes this the crown piece without a badge. */
+.estate {
+  background: var(--color-pelagos);
+  color: var(--color-limestone);
+  padding-block: var(--rhythm-prose-prose);
+  /* Required by the ghost numeral, which hangs off the right edge by design.
+     Without it the oversized glyph widens the document and the overflow suite
+     fails at every width. Nothing inside this section is sticky, so clipping
+     here cannot repeat T-203. */
+  overflow: hidden;
+}
+.estate-lede {
+  margin-top: var(--spacing-step-7);
+  color: var(--color-preveli);
+}
+.estate-figures {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: var(--gutter);
+  margin-top: var(--spacing-step-8);
+}
+.estate-figure-value {
+  margin-top: var(--spacing-step-2);
+}
+.estate-cta-row {
+  margin-top: var(--spacing-step-8);
+}
+.estate-cta {
+  display: inline-block;
+  color: var(--color-limestone);
+  text-decoration: underline;
+  text-underline-offset: 0.5em;
+  text-decoration-thickness: 1.5px;
+  padding-block: var(--spacing-step-2);
+}
+@media (max-width: 1023px) {
+  .estate-figures {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    row-gap: var(--spacing-step-6);
+  }
+}
+@media (max-width: 479px) {
+  .estate-figures {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* --- 06 Experiences: The Register ----------------------------------------- */
+.experiences {
+  padding-block: var(--rhythm-prose-prose);
+}
+.register {
+  list-style: none;
+  margin-top: var(--spacing-step-8);
+}
+.register-row + .register-row {
+  margin-top: var(--spacing-step-1);
+}
+/* Expand in place, never navigate. Identical on touch and pointer, and no thin
+   URL is ever minted for an experience with twelve words of copy. */
+.register-trigger {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--spacing-step-5);
+  width: 100%;
+  padding-block: var(--spacing-step-4);
+  background: none;
+  border: none;
+  text-align: left;
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+.register-action {
+  flex: none;
+  color: var(--color-pelagos);
+}
+.register-trigger:hover .register-name,
+.register-trigger:focus-visible .register-name {
+  text-decoration: underline;
+  text-underline-offset: 0.22em;
+  text-decoration-thickness: 1.5px;
+}
+.register-panel {
+  padding-bottom: var(--spacing-step-5);
+  max-width: 62ch;
+}
+.register-line {
+  color: var(--color-phrygana);
+}
+
+/* --- 07 Location: The Coast Line ------------------------------------------ */
+/* One line down the page, everything hung off it in order of distance, so the
+   page itself is a scale: the beach at the top, Chania port at the bottom. */
+.coastline {
+  padding-block: var(--rhythm-prose-prose);
+  background: var(--color-ammos);
+}
+.coastline-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--spacing-step-9);
+  margin-top: var(--spacing-step-8);
+}
+.coastline-heading {
+  margin-bottom: var(--spacing-step-5);
+}
+.coastline-list {
+  border-top: 1px solid rgb(20 83 95 / 0.25);
+}
+.coastline-entry {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--spacing-step-5);
+  padding-block: var(--spacing-step-3);
+  border-bottom: 1px solid rgb(20 83 95 / 0.15);
+}
+.coastline-value {
+  color: var(--color-pelagos);
+  font-size: var(--text-datum);
+  white-space: nowrap;
+}
+.coastline-note {
+  display: block;
+  color: var(--color-phrygana);
+  text-align: right;
+}
+@media (max-width: 767px) {
+  .coastline-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--spacing-step-8);
+  }
+}
+
+/* ==========================================================================
+   THE LEDGER (DESIGN-PLAN §7)
+   ========================================================================== */
+
+.ledger {
+  position: sticky;
+  bottom: 0;
+  z-index: 20;
+  background: var(--color-basalt);
+  color: var(--color-limestone);
+  border-top: 1px solid var(--color-pelagos);
+}
+.ledger-inner {
+  max-width: var(--container-canon);
+  margin-inline: auto;
+  padding: var(--spacing-step-4) var(--page-margin);
+  display: flex;
+  align-items: end;
+  gap: var(--spacing-step-6);
+  flex-wrap: wrap;
+}
+.ledger-slot {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-step-2);
+  min-width: 0;
+}
+.ledger-slot--name {
+  margin-right: auto;
+}
+.ledger-value {
+  font-size: var(--text-datum);
+}
+.ledger-input {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgb(164 204 201 / 0.45);
+  color: var(--color-limestone);
+  font-family: var(--font-sans);
+  font-size: var(--text-datum);
+  padding-block: var(--spacing-step-2);
+  width: 10ch;
+  color-scheme: dark;
+}
+.ledger-input:focus-visible {
+  border-bottom-color: var(--color-preveli);
+  border-bottom-width: 1.5px;
+}
+.ledger-submit {
+  margin-left: auto;
+  padding: var(--spacing-step-4) var(--spacing-step-6);
+  background: var(--color-limestone);
+  color: var(--color-basalt);
+  text-decoration: none;
+  white-space: nowrap;
+}
+@media (max-width: 767px) {
+  .ledger-inner {
+    gap: var(--spacing-step-4);
+  }
+  .ledger-input {
+    width: 8ch;
+  }
+  .ledger-submit {
+    margin-left: 0;
+    width: 100%;
+    text-align: center;
+  }
+}
+
+/* ==========================================================================
+   FOOTER
+   ========================================================================== */
+
+.site-footer {
+  background: var(--color-basalt);
+  color: var(--color-limestone);
+  padding-block: var(--rhythm-prose-photo) var(--spacing-step-8);
+}
+.footer-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--gutter);
+  margin-top: var(--spacing-step-9);
+}
+.footer-heading {
+  margin-bottom: var(--spacing-step-4);
+}
+.footer-address {
+  font-style: normal;
+  display: flex;
+  flex-direction: column;
+  color: var(--color-preveli);
+}
+.footer-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-step-2);
+}
+.footer-link {
+  color: var(--color-preveli);
+  text-decoration: none;
+}
+.footer-link:hover,
+.footer-link:focus-visible {
+  text-decoration: underline;
+  text-underline-offset: 0.35em;
+  text-decoration-thickness: 1.5px;
+}
+/* The licence number is a legal requirement, so it is set in the primary ink at
+   body size. Never a micro-label, never greyed out, never behind a link. */
+.footer-legal {
+  margin-top: var(--spacing-step-9);
+  display: flex;
+  justify-content: space-between;
+  gap: var(--spacing-step-5);
+  flex-wrap: wrap;
+}
+@media (max-width: 767px) {
+  .footer-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    row-gap: var(--spacing-step-7);
+  }
+}
+
+/* ==========================================================================
+   HERO / LEDGER CLEARANCE
+   The ledger is sticky at the bottom of the viewport, so any Field copy in the
+   first screen must clear it or the C1 clause sits underneath the controls.
+   ========================================================================== */
+
+.field-copy {
+  padding-bottom: var(--ledger-clearance, 0px);
+}
+
+:root {
+  --ledger-clearance: 104px;
+}
+@media (max-width: 767px) {
+  :root {
+    --ledger-clearance: 148px;
+  }
+}

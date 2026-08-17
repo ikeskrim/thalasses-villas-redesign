@@ -1,0 +1,353 @@
+/* ==========================================================================
+   THE ATMOSPHERE LAYER
+   Depth, light and scale — never pattern, never clutter. Everything here sits
+   UNDER content and none of it is an element you are meant to notice.
+   ========================================================================== */
+
+@theme {
+  --font-display-sc: var(--font-marcellus-sc), Georgia, serif;
+  --font-italic: var(--font-cormorant-italic), Georgia, serif;
+}
+
+/* ---- 1. Film grain ------------------------------------------------------- */
+/* One fixed SVG turbulence tile at 3%. It unifies photography shot across
+   years and cameras. Fixed position so it never repaints on scroll, and it
+   composites on its own layer. ~1 KB, inline, no request. */
+.grain {
+  position: fixed;
+  inset: -50%;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0.032;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)'/%3E%3C/svg%3E");
+  will-change: auto;
+  contain: strict;
+}
+
+/* ---- 2. Ambient light on the deep grounds -------------------------------- */
+/* Two very slow radial gradients on pelagos, suggesting sea-light moving. You
+   should only notice it when it stops. 74s and 96s so the two never sync. */
+.acts,
+.acts-stack,
+.estate,
+.villa-statement,
+.pinned {
+  position: relative;
+  isolation: isolate;
+}
+.acts::before,
+.acts-stack::before,
+.estate::before,
+.villa-statement::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(60% 45% at 22% 18%, rgb(164 204 201 / 0.16), transparent 70%),
+    radial-gradient(52% 40% at 80% 76%, rgb(164 204 201 / 0.1), transparent 72%);
+  animation: sealight 74s ease-in-out infinite alternate;
+  /* z-index -1, NOT 0. At 0 this positioned pseudo-element paints above the
+     section's non-positioned children, which is why an earlier version forced
+     `position: relative` onto every direct child to lift them back — and that
+     rule silently overrode `position: sticky` on .acts-sticky, un-pinning the
+     entire three-act showcase (T-203). Sending the glow behind the flow instead
+     needs nothing from the children at all. `isolation: isolate` on the section
+     keeps the negative index from escaping. */
+  z-index: -1;
+}
+@keyframes sealight {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 0.85;
+  }
+  100% {
+    transform: translate3d(2%, -1.5%, 0) scale(1.08);
+    opacity: 1;
+  }
+}
+/* Deliberately NO position/z-index rule on the children. See the note above:
+   forcing `position: relative` here is what killed the sticky pin. */
+
+/* ---- 3. Ghost typography ------------------------------------------------- */
+/* The beat numeral, oversized, at 4% ink behind the beat. It ties the numbered
+   system into the surface instead of leaving it as a label. */
+.ghost {
+  position: absolute;
+  z-index: 0;
+  pointer-events: none;
+  font-family: var(--font-display);
+  font-size: clamp(14rem, 34vw, 34rem);
+  line-height: 0.8;
+  color: var(--color-basalt);
+  opacity: 0.038;
+  user-select: none;
+}
+.on-dark .ghost,
+.acts .ghost,
+.estate .ghost,
+.villa-statement .ghost {
+  color: var(--color-limestone);
+  opacity: 0.05;
+}
+.ghost--right {
+  right: -0.08em;
+  bottom: -0.12em;
+}
+.ghost--left {
+  left: -0.06em;
+  top: -0.1em;
+}
+
+/* ---- 4. Ambient image echo ---------------------------------------------- */
+/* A blurred, scaled copy of the photograph glowing behind its own frame.
+   Depth for free, in the picture's own colours — no invented palette. */
+.echo {
+  position: relative;
+  isolation: isolate;
+}
+.echo::after {
+  content: "";
+  position: absolute;
+  inset: -6%;
+  z-index: -1;
+  background: inherit;
+  filter: blur(46px) saturate(1.25);
+  opacity: 0.5;
+  transform: scale(1.04);
+  pointer-events: none;
+}
+.collection-figure {
+  isolation: isolate;
+}
+.collection-cell {
+  position: relative;
+}
+.collection-cell::before {
+  content: "";
+  position: absolute;
+  inset: 4% 6% 42%;
+  z-index: -1;
+  background: var(--color-pelagos);
+  filter: blur(60px);
+  opacity: 0.14;
+  pointer-events: none;
+}
+
+/* The same lift the Collection gets, on the other bounded photograph in the
+   system — the villa plate. Written as a box-shadow rather than a blurred
+   pseudo-element because ImageReveal clips its own contents, so a ::before
+   would never escape the frame. One soft, wide, sea-coloured shadow; a plate
+   on limestone reads as an object rather than as a hole in the page. */
+.plate-figure {
+  box-shadow: 0 40px 90px -44px rgb(20 83 95 / 0.34);
+}
+
+/* ---- 5. Hero vignette ---------------------------------------------------- */
+/* Type sits in light, not on it. */
+.hero::after,
+.field::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: radial-gradient(120% 92% at 50% 42%, transparent 44%, rgb(22 38 43 / 0.42) 100%);
+}
+.hero::after {
+  z-index: 1;
+}
+.hero-copy {
+  z-index: 3;
+}
+
+/* ==========================================================================
+   TYPOGRAPHY DEEPENING
+   ========================================================================== */
+
+/* True small caps from the same hand, for the letterspaced micro register. */
+.micro,
+.acts-tab-index,
+.ledger-spec dt,
+.ledger-inline .micro {
+  font-family: var(--font-display-sc);
+  letter-spacing: 0.2em;
+  text-transform: none;
+}
+
+/* The emotional register — pull-quotes and short asides only. Never body. */
+.aside-italic {
+  font-family: var(--font-italic);
+  font-style: italic;
+  font-size: clamp(1.5rem, 2.6vw, 2.375rem);
+  line-height: 1.3;
+  letter-spacing: 0;
+  max-width: 26ch;
+  color: var(--color-phrygana);
+}
+.on-dark .aside-italic,
+.acts .aside-italic {
+  color: var(--color-preveli);
+}
+
+/* Scale is the cheapest luxury there is. One full step up at the canon width,
+   and the biggest lines are allowed to approach the edges. */
+@media (min-width: 1440px) {
+  :root {
+    --text-c1: clamp(8rem, 15vw, 18rem);
+    --text-c2: clamp(4.5rem, 9vw, 9.5rem);
+    --text-c3: clamp(2.5rem, 4vw, 4rem);
+  }
+}
+
+html {
+  font-feature-settings: "liga" 1, "kern" 1, "calt" 1;
+}
+
+::selection {
+  background: var(--color-pelagos);
+  color: var(--color-limestone);
+}
+
+/* Thin ink scrollbar. */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgb(20 83 95 / 0.45) transparent;
+}
+::-webkit-scrollbar {
+  width: 9px;
+  height: 9px;
+}
+::-webkit-scrollbar-thumb {
+  background: rgb(20 83 95 / 0.42);
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* ==========================================================================
+   EFFECTS
+   ========================================================================== */
+
+/* Blur-up: the frame sits on a tinted ground and sharpens in. Cheap on every
+   image, and it removes the grey-rectangle moment entirely. */
+.blur-up img {
+  animation: sharpen 0.9s var(--ease-thalasses) both;
+}
+@keyframes sharpen {
+  from {
+    filter: blur(18px);
+    transform: scale(1.03);
+    opacity: 0;
+  }
+  to {
+    filter: blur(0);
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* The map markers pulse once as the map arrives, then hold still. */
+.estate-map-frame.is-seen .estate-map-marker {
+  animation: marker-pulse 1.6s var(--ease-thalasses) 1;
+}
+@keyframes marker-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgb(232 233 227 / 0.55);
+  }
+  70% {
+    box-shadow: 0 0 0 16px rgb(232 233 227 / 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgb(232 233 227 / 0);
+  }
+}
+
+/* The letterbox — the helipad beat's one event. Bars close over the frame as
+   it arrives, so a single beat becomes a shot. */
+.letterbox {
+  position: relative;
+}
+.letterbox::before,
+.letterbox::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  height: 8svh;
+  background: var(--color-basalt);
+  pointer-events: none;
+  transition: height 1.2s var(--ease-thalasses);
+}
+.letterbox::before {
+  top: 0;
+}
+.letterbox::after {
+  bottom: 0;
+}
+
+/* ==========================================================================
+   REDUCED MOTION — the atmosphere stops moving, and stays beautiful
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .acts::before,
+  .acts-stack::before,
+  .estate::before {
+    animation: none !important;
+  }
+  .blur-up img,
+  .estate-map-frame.is-seen .estate-map-marker {
+    animation: none !important;
+  }
+  .letterbox::before,
+  .letterbox::after {
+    transition: none !important;
+  }
+}
+
+/* ---- Word masks ---------------------------------------------------------- */
+.wordmask {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+}
+.wordmask-inner {
+  display: inline-block;
+  will-change: transform;
+}
+
+.collection {
+  position: relative;
+  overflow: hidden;
+}
+
+/* ==========================================================================
+   SCALE, CONTAINED
+   The +1 step at 1440 is right for beats that own a whole screen. It is WRONG
+   inside the pinned acts, where a title shares a fixed 100svh container with a
+   tab bar and four cards: the larger c2 pushed the heading and the selector
+   clean out of the frame. Caught by the screenshot gate, not by a test.
+   The act title keeps its own ceiling. Scale where there is room for it.
+   ========================================================================== */
+.acts .act-title,
+.acts-stack .act-title {
+  font-size: clamp(2.5rem, 4.2vw, 4.25rem);
+  line-height: 0.98;
+}
+.acts .act {
+  align-content: center;
+  overflow: hidden;
+}
+.acts .act-body {
+  max-height: 100%;
+  overflow: hidden;
+}
+/* The media fills its column edge to edge; a half-height photograph on a deep
+   ground reads as a mistake, not as space. */
+.acts .act-media {
+  align-self: stretch;
+  height: 100%;
+}

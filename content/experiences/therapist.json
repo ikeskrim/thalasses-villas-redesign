@@ -1,0 +1,47 @@
+{
+ "slug": "therapist",
+ "name": "Therapist",
+ "legacyUrl": "https://thalasses.com/en/therapist",
+ "canonical": "therapist-1.html",
+ "meta": {
+  "title": "Therapist",
+  "description": "Therapist",
+  "keywords": "Thalasses Villas,Therapist,Experiences,Rethymno,Greece,Properties chain",
+  "ogImage": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/733997e4cda86e32b69dc8883a526a07.jpg",
+  "ogUrl": "https://thalasses.com/en/therapist"
+ },
+ "sourceTaxonomy": "Experiences",
+ "categoryProposed": "Wellness",
+ "shortDescription": "Find your Healing space! A therapist can be at your Villa to help you find your inner peace, balance and vitality in life and relationships.",
+ "longDescription": null,
+ "highlights": [],
+ "wordCount": 25,
+ "needsContent": true,
+ "brokenCta": false,
+ "images": [
+  "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/733997e4cda86e32b69dc8883a526a07.jpg"
+ ],
+ "heroImage": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/733997e4cda86e32b69dc8883a526a07.jpg",
+ "gallery": {
+  "heroImage": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/733997e4cda86e32b69dc8883a526a07.jpg",
+  "images": []
+ },
+ "externalLinks": [],
+ "cta": null,
+ "duration": null,
+ "price": null,
+ "todos": [
+  "No long-form description exists on the page; the body copy is a single 25-word paragraph, so longDescription is null.",
+  "META description is only the page title repeated (\"Therapist\") — no genuine meta description exists in source.",
+  "No highlights, bullet list, inclusions or itinerary exist on the page; highlights left empty.",
+  "No gallery/album images on this page. The only page-specific image is the hero parallax background (data-pages-bg-image on the jumbotron section). og:image points to the _thumb.jpg variant of the same photo.",
+  "No page-specific CTA in the page's own content. The only \"Book now\" button belongs to the global booking bar (form action https://thalassesvillas.reserve-online.net/) and was treated as CMS chrome, so cta is null.",
+  "No external links in the page's own content.",
+  "No duration stated in source.",
+  "No price stated in source.",
+  "Source markup splits the sentence across two <span> elements with an empty <span> between them (\"...help you find your\" + \"\" + \"inner peace...\"), so the live page renders \"yourinner\" with no space. Recorded here with a single space; confirm the intended wording with the client.",
+  "\"Therapist\" is not defined on the page — no discipline, qualification or modality is stated, so it is unclear whether this is psychotherapy, physiotherapy or something else.",
+  "categoryProposed is an editorial grouping added for the redesign; the live site has no categories — confirm with the client.",
+  "[TODO: needs content] — 25 words of body copy"
+ ]
+}

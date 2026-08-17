@@ -1,0 +1,92 @@
+{
+ "slug": "private-helipad",
+ "name": "Private Helipad",
+ "legacyUrl": "https://thalasses.com/en/private-helipad",
+ "canonical": "private-helipad-1.html",
+ "meta": {
+  "title": "Private Helipad",
+  "description": "Private Helipad",
+  "keywords": "Thalasses Villas,Private Helipad,Experiences,Rethymno,Greece,Properties chain",
+  "ogImage": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/84d095eab652d2a508f63adcca984100.jpg",
+  "ogUrl": "https://thalasses.com/en/private-helipad"
+ },
+ "sourceTaxonomy": "Experiences",
+ "categoryProposed": "Service",
+ "shortDescription": "The Thalasses Villas commands sweeping views of the Cretan sea! Situated in an ideal location it is a perfect haven for rest, comfort and luxury also are the only seafront villas with private helipad in the property.",
+ "longDescription": "The Thalasses Villas commands sweeping views of the Cretan sea! Situated in an ideal location it is a perfect haven for rest, comfort and luxury also are the only seafront villas with private helipad in the property.\n\nCheck our video here!",
+ "highlights": [],
+ "wordCount": 41,
+ "needsContent": false,
+ "brokenCta": false,
+ "images": [
+  "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/84d095eab652d2a508f63adcca984100.jpg",
+  "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/84d095eab652d2a508f63adcca984100.jpg",
+  "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/fe9ae3181b07bfa6f93c82f642809b13.jpg",
+  "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/4faf3e69d886fa6656421ecdf70e20e8.jpg",
+  "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/f3c41959dedb98781c7dc72d5921275a.jpg",
+  "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/de89bf455f9a497ced654fca60476f25.jpg",
+  "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/e0169c9be1d682492840e5191384044a.jpg",
+  "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/422ac9a49fa39ad78823d625cc98964d.jpg",
+  "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/9a16ab0a7035b82e849766b486fc1885.jpg"
+ ],
+ "heroImage": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/84d095eab652d2a508f63adcca984100.jpg",
+ "gallery": {
+  "heroImage": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/84d095eab652d2a508f63adcca984100.jpg",
+  "images": [
+   {
+    "url": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/84d095eab652d2a508f63adcca984100.jpg",
+    "caption": "Thalasses Villas - Private Helipad"
+   },
+   {
+    "url": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/fe9ae3181b07bfa6f93c82f642809b13.jpg",
+    "caption": "Thalasses Villas - Private Helipad"
+   },
+   {
+    "url": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/4faf3e69d886fa6656421ecdf70e20e8.jpg",
+    "caption": "Thalasses Villas - Private Helipad"
+   },
+   {
+    "url": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/f3c41959dedb98781c7dc72d5921275a.jpg",
+    "caption": "Thalasses Villas - Private Helipad"
+   },
+   {
+    "url": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/de89bf455f9a497ced654fca60476f25.jpg",
+    "caption": "Thalasses Villas - Private Helipad"
+   },
+   {
+    "url": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/e0169c9be1d682492840e5191384044a.jpg",
+    "caption": "Thalasses Villas - Private Helipad"
+   },
+   {
+    "url": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/422ac9a49fa39ad78823d625cc98964d.jpg",
+    "caption": "Thalasses Villas - Private Helipad"
+   },
+   {
+    "url": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/9a16ab0a7035b82e849766b486fc1885.jpg",
+    "caption": "Thalasses Villas - Private Helipad"
+   }
+  ]
+ },
+ "externalLinks": [
+  {
+   "label": "here",
+   "url": "https://youtu.be/LlitYjfYa3k"
+  }
+ ],
+ "cta": null,
+ "duration": null,
+ "price": null,
+ "todos": [
+  "META description is only the page title repeated (\"Private Helipad\") — no genuine meta description exists in source.",
+  "No highlights, bullet list, inclusions or itinerary exist on the page; highlights left empty.",
+  "No page-specific CTA in the page's own content. The only \"Book now\" button belongs to the global booking bar (form action https://thalassesvillas.reserve-online.net/) and was treated as CMS chrome, so cta is null.",
+  "No duration stated in source.",
+  "No price stated in source.",
+  "The second paragraph is a single sentence containing an inline link: \"Check our video <a href=\\\"https://youtu.be/LlitYjfYa3k\\\">here</a>!\". The link target is a YouTube URL, so the video is not self-hosted.",
+  "The sentence \"...also are the only seafront villas with private helipad in the property.\" is ungrammatical in the source; left verbatim, not corrected.",
+  "No helicopter operator, landing fees, pad dimensions or booking procedure are stated.",
+  "CORRECTION to the previous pass: the 8 album images do NOT have empty data-caption attributes. Every one of the 8 anchors in fancyalbum_3927 carries data-caption=\"Thalasses Villas - Private Helipad\" (confirmed in captions.json and in the raw HTML). Only the alt text is a generic CMS placeholder (\"Album Image  #NNNNN\"). The single shared caption is still not per-image descriptive alt text, so real alt text is needed for the redesign.",
+  "Gallery URLs recorded here are the _thumb.jpg derivatives carried by the album <img data-src>; the full-resolution originals exist only as site-relative fancybox hrefs (../loggia-cdn/lodgeContent/<hash>-1.jpg).",
+  "categoryProposed is an editorial grouping added for the redesign; the live site has no categories — confirm with the client."
+ ]
+}

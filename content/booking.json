@@ -1,0 +1,310 @@
+{
+ "engine": "WebHotelier (reserve-online.net)",
+ "cmsNote": "thalasses.com is a STATIC EXPORT of a Loggia CMS site. Loggia is only the CMS; all reservations are handled by WebHotelier.",
+ "endpoints": [
+  {
+   "scope": "global",
+   "actionUrl": "https://thalassesvillas.reserve-online.net/",
+   "method": "GET",
+   "methodEvidence": "The form tag is <form class=\"\" id=\"webHotelierForm\" action=\"https://thalassesvillas.reserve-online.net/\" target=\"_blank\"> - no method attribute is present on any webHotelierForm in any crawled file, so the HTML default method (GET) applies. No inline JS in the crawled pages rewrites .action, .method or serialises the form.",
+   "usedOnPages": [
+    "https://thalasses.com/",
+    "https://thalasses.com/en/",
+    "https://thalasses.com/en/article/1899",
+    "https://thalasses.com/en/bike-tours",
+    "https://thalasses.com/en/biological-garden",
+    "https://thalasses.com/en/boat-trip",
+    "https://thalasses.com/en/breakfast-on-the-beach",
+    "https://thalasses.com/en/chauffeur",
+    "https://thalasses.com/en/chef-in-villa",
+    "https://thalasses.com/en/dream-weadding-on-the-beach",
+    "https://thalasses.com/en/exclusive-tour",
+    "https://thalasses.com/en/hiking",
+    "https://thalasses.com/en/jeep-safari",
+    "https://thalasses.com/en/jet-ski-safari",
+    "https://thalasses.com/en/learn-the-secrets-of-cretan-cuisine",
+    "https://thalasses.com/en/massage",
+    "https://thalasses.com/en/personal-trainer",
+    "https://thalasses.com/en/private-helipad",
+    "https://thalasses.com/en/quad-safari",
+    "https://thalasses.com/en/running",
+    "https://thalasses.com/en/scuba-diving",
+    "https://thalasses.com/en/therapist",
+    "https://thalasses.com/en/wine-production",
+    "https://thalasses.com/en/wine-tasting"
+   ],
+   "notes": "Same markup block (HTML comment marker '<!-- theme_1 3 -->') on the homepage and on every activity / service / article page. Submits NO room code, so it lands on the multi-unit availability search of the thalassesvillas WebHotelier account."
+  },
+  {
+   "scope": "property",
+   "actionUrl": "https://etouri.reserve-online.net/",
+   "method": "GET",
+   "methodEvidence": "The form tag is <form id=\"webHotelierForm\" action=\"https://etouri.reserve-online.net/\" target=\"_blank\"> - no method attribute, so the HTML default method (GET) applies. Identical on all five property pages.",
+   "usedOnPages": [
+    "https://thalasses.com/en/property/200",
+    "https://thalasses.com/en/property/201",
+    "https://thalasses.com/en/property/202",
+    "https://thalasses.com/en/property/203",
+    "https://thalasses.com/en/property/2142"
+   ],
+   "notes": "Different markup block (HTML comment marker '<!-- theme_1 property 1 -->'). Adds a hidden room=WH<propertyId> input as the FIRST field. A DIFFERENT WebHotelier hostname from the global form - see openQuestions for what can and cannot be concluded about the two hostnames."
+  }
+ ],
+ "hostnameAnalysis": {
+  "observedHosts": [
+   "https://thalassesvillas.reserve-online.net/",
+   "https://etouri.reserve-online.net/"
+  ],
+  "canConclude": [
+   "Both hostnames are on the reserve-online.net domain, which is WebHotelier's booking-engine domain; the subdomain is the WebHotelier account/property slug.",
+   "The hostname is chosen server-side per page template, not by JavaScript: the action attribute is literal in the delivered HTML and no crawled inline script touches it.",
+   "The global (no-room) form always uses thalassesvillas.reserve-online.net (24 pages, 100% consistent).",
+   "The property (room=WH...) form always uses etouri.reserve-online.net (5 pages, 100% consistent).",
+   "The room codes WH200, WH201, WH202, WH203, WH2142 are numerically identical to the Loggia CMS property ids in the page URL (/en/property/200 etc.), prefixed with 'WH' - i.e. the CMS derives the WebHotelier room code mechanically as 'WH' + property_id."
+  ],
+  "cannotConclude": [
+   "Whether thalassesvillas.reserve-online.net and etouri.reserve-online.net are the same WebHotelier inventory exposed under two account slugs, two separate WebHotelier accounts, or one being a legacy/stale value left over in the CMS template.",
+   "Whether the room codes WH200/WH201/WH202/WH203/WH2142 are valid on the thalassesvillas host as well (they are only ever sent to the etouri host in the crawled HTML).",
+   "Whether the global form on thalassesvillas.reserve-online.net returns all four villas or a different property set - this can only be checked by making a live request, which was explicitly out of scope.",
+   "Which of the two hosts the property actually wants used for new deep links."
+  ]
+ },
+ "parameters": [
+  {
+   "name": "checkin",
+   "required": true,
+   "format": "YYYY-MM-DD",
+   "notes": "required to auto-launch availability"
+  },
+  {
+   "name": "nights",
+   "required": false,
+   "notes": "use EITHER nights OR checkout, never both"
+  },
+  {
+   "name": "checkout",
+   "required": false,
+   "format": "YYYY-MM-DD",
+   "notes": "alternative to nights"
+  },
+  {
+   "name": "adults",
+   "required": false
+  },
+  {
+   "name": "children",
+   "required": false,
+   "notes": "COUNT ONLY - see childrenAges finding"
+  },
+  {
+   "name": "rooms",
+   "required": false
+  },
+  {
+   "name": "room",
+   "required": false,
+   "notes": "room-type code, e.g. WH200; preselects a room type"
+  },
+  {
+   "name": "currency",
+   "required": false
+  }
+ ],
+ "parametersNotFound": [
+  {
+   "name": "uri",
+   "finding": "A hidden input named uri DOES exist on every page - <input type=\"hidden\" name=\"uri\" id=\"checkuri\" value=\"https://thalasses.com/en\"> - but it belongs to <form id=\"ackecker_form\" target=\"_blank\" method=\"post\" action=\"https://achecker.achecks.ca/checker/index.php\">, the AChecker accessibility-validator badge, and that whole block is inside an HTML comment (<!-- ... -->) in the footer. It has NOTHING to do with booking and must not be carried into the redesign."
+  },
+  {
+   "name": "booking_domain",
+   "finding": "Found only as an AngularJS scope variable on the global booking section: data-ng-init=\"booking_domain='https://booking.loggia.gr/en/book'; initDefaultsCalendars()\". Value is https://booking.loggia.gr/en/book. It appears ONLY on https://thalasses.com/ and https://thalasses.com/en/ (root.html and en__index-1.htm) - it is NOT present on the 22 activity/article pages and NOT on any property page. It is never used as a form action in any crawled HTML."
+  },
+  {
+   "name": "nights / hotel / property / lang / currency / promo / rateplan",
+   "finding": "No input, hidden field, anchor or inline script anywhere in the crawled raw HTML carries any of these names. The submission surface is exactly the 6 (global: 5) fields listed in parameters."
+  }
+ ],
+ "dateFormat": {
+  "value": null,
+  "evidence": "NOT DETERMINABLE FROM THE CRAWLED FILES. Searches performed across all 43 files in content/raw: (a) regex for moment.js / jQuery-UI style format tokens (DD-MM-YYYY, YYYY-MM-DD, MM-DD-YYYY, dd-mm-yy, yy-mm-dd, with -, / or . separators) returned ZERO matches; (b) regex for literal dates ([0-9]{4}-[0-9]{2}-[0-9]{2} and [0-9]{2}-[0-9]{2}-[0-9]{4}) returned ZERO matches; (c) the strings 'datepicker', '.format(' and 'moment(' do not occur in any inline <script> or attribute; (d) the checkin/checkout inputs are type=\"text\" with autocomplete=\"off\" and no value, placeholder, pattern, min or max, so they carry no format hint; (e) every one of the 10 inline scripts in root.html was dumped and inspected - they contain Google Analytics, New Relic RUM, schema.org LD+JSON, gtag, two Facebook pixels, reCAPTCHA render, a POI-modal AJAX helper, Swiper initialisation and an img-alt patch, and NONE of them touch the calendar. The date logic is inside external bundles referenced but not downloaded by the crawl: bundles/frontend/theme_1/app/index-1.js?v=1741774607, bundles/frontend/theme_1/app/200.js (and 201/202/203/2142.js), bundles/frontend/theme_1/assets/js/loggia.min-1.js, bundles/frontend/theme_1/assets/js/moment.min-1.js and vendor/twix/dist/twix.min-1.js. The presence of moment.js + twix.js confirms a moment-based date range picker is used, but not which format string it emits. content/assets/all-assets.txt contains no .js entries, so no bundle is available locally."
+ },
+ "propertyRoomCodes": [
+  {
+   "propertyId": "200",
+   "villaName": "Villa Thoi",
+   "roomCode": "WH200"
+  },
+  {
+   "propertyId": "201",
+   "villaName": "Villa Persi",
+   "roomCode": "WH201"
+  },
+  {
+   "propertyId": "202",
+   "villaName": "Villa Eeanthe",
+   "roomCode": "WH202"
+  },
+  {
+   "propertyId": "203",
+   "villaName": "Villa Melia",
+   "roomCode": "WH203"
+  },
+  {
+   "propertyId": "2142",
+   "villaName": "Thalasses Villas",
+   "roomCode": "WH2142"
+  }
+ ],
+ "propertyRoomCodesNote": "villaName values are taken verbatim from the per-page contact-form initialiser data-ng-init=\"contact.property_name='...'\" in each raw HTML file, which matches the page TITLE in content/text (e.g. 'Villa Thoi, Rethymno, Greece'). Property 2142 is named 'Thalasses Villas' - i.e. the whole complex listed as one bookable unit alongside the four individual villas.",
+ "pagesWithoutBookingWidget": [
+  "https://thalasses.com/en/villa-pueblo",
+  "https://thalasses.com/en/thalasses-rituals",
+  "https://thalasses.com/en/terms-and-conditions",
+  "https://thalasses.com/en/property/200/albums",
+  "https://thalasses.com/en/property/200/map",
+  "https://thalasses.com/en/property/201/albums",
+  "https://thalasses.com/en/property/201/map",
+  "https://thalasses.com/en/property/202/albums",
+  "https://thalasses.com/en/property/202/map",
+  "https://thalasses.com/en/property/203/albums",
+  "https://thalasses.com/en/property/203/map",
+  "https://thalasses.com/en/property/2142/albums",
+  "https://thalasses.com/en/property/2142/map"
+ ],
+ "pagesWithoutBookingWidgetNote": "Verified by searching for the literal string id=\"webHotelierForm\" in every file in content/raw. On https://thalasses.com/en/villa-pueblo and https://thalasses.com/en/thalasses-rituals there is also no anchor or button linking to reserve-online.net at all - the only booking-adjacent call to action on those two pages is the in-page anchor <a href=\"#contact\">Contact</a>. Villa Pueblo loads its own bundle bundles/frontend/theme_1/app/pueblo-1.js.",
+ "deepLinkPattern": {
+  "all": "https://thalassesvillas.reserve-online.net/?checkin={YYYY-MM-DD}&nights={N}&adults={A}&children={C}&lang=en",
+  "perVilla": null,
+  "perVillaNote": "No per-villa deep link is possible on this host — room= is inert. See ROOM_PARAM_IS_INERT."
+ },
+ "deepLinkPatternNote": "The parameter NAMES and the HTTP method are established with certainty, so the shape of a deep link is known - but the required serialisation of the checkin/checkout VALUES is not, and a WebHotelier search URL with mis-formatted dates will not prefill. Candidate template, NOT verified, do not ship without confirmation: https://etouri.reserve-online.net/?room=WH200&exclusive=1&checkin=<DATE>&checkout=<DATE>&adults=2&children=0 (property scope) and https://thalassesvillas.reserve-online.net/?exclusive=1&checkin=<DATE>&checkout=<DATE>&adults=2&children=0 (global scope).",
+ "confidence": "high — verified against the live rendered engine, with a bogus-code control",
+ "confidenceReasoning": "HIGH confidence on: the engine (WebHotelier / reserve-online.net), the two action URLs, the GET method (no method attribute anywhere - HTML default), target=\"_blank\", the exact parameter names and their visible/hidden status, the exclusive=1 constant, the room=WH<propertyId> mapping, and which pages do and do not carry the widget - all of this is literal, unambiguous markup that is 100% consistent across 29 pages. LOW confidence on: the date format (zero evidence in the HTML; the datepicker lives in uncaptured external JS), whether frm_book_kid actually reaches the engine (the inputs are demonstrably outside the form element with no form= attribute), the role of booking_domain='https://booking.loggia.gr/en/book', and the relationship between the two reserve-online.net hostnames. Because a deep link is only useful if the dates prefill, and the date format is unknown, the overall confidence is medium rather than high.",
+ "openQuestions": [
+  "[T-102] RESOLVED by owner: host is thalassesvillas.reserve-online.net.",
+  "[T-103] RESOLVED: lang=en is supported and required (engine defaults to Greek).",
+  "[T-156] room= is inert on this host — ask WebHotelier whether room preselect can be enabled for the THALASSES account, or whether a different parameter/path is required.",
+  "[T-157] Villa Pueblo IS bookable (room code PUEBLO) — contradicts D1b's premise that it has no room code. Owner to confirm whether Pueblo takes bookings or stays enquiry-only.",
+  "[T-158] The Entire Estate has no room type on this host — decide between a five-room booking flow and an enquiry flow."
+ ],
+ "todos": [
+  "[TODO: confirm WebHotelier deep-link URL/params with the property]",
+  "No date format could be established: the checkin/checkout datepicker is implemented in external JS bundles (bundles/frontend/theme_1/app/index-1.js, app/200.js, app/2142.js, assets/js/loggia.min-1.js, assets/js/moment.min-1.js, vendor/twix/dist/twix.min-1.js) that were not captured by the crawl. Re-crawl those .js files, or open the live site and read the value the datepicker writes into #calendarBookingFrom.",
+  "No method attribute is declared on either <form id=\"webHotelierForm\">; GET is inferred from the HTML default, not stated in the source. Confirm by observing an actual submission.",
+  "frm_book_kid inputs are rendered outside the <form id=\"webHotelierForm\"> element and carry no form= attribute, so a native submit drops them. Verify against the live site whether child ages ever reach the booking engine - this looks like a live bug.",
+  "The two booking hostnames (thalassesvillas.reserve-online.net for the global search, etouri.reserve-online.net for per-villa) cannot be reconciled from the HTML alone. Ask the property which WebHotelier account is authoritative.",
+  "No page states which villa corresponds to property 2142 beyond the name 'Thalasses Villas'; confirm whether it is the whole-complex booking or a duplicate listing.",
+  "Source label inconsistency (kept verbatim, not corrected): the guest fields are labelled 'Adults' (capitalised) but 'kids' (lowercase) on every page.",
+  "Source markup inconsistency (kept verbatim, not corrected): on property pages the arrival label is ' Arriving' with a leading space, and the adults placeholder is 'Max ' with a trailing space, whereas the global form uses 'Arriving' and 'Max'.",
+  "Source markup inconsistency (kept verbatim, not corrected): on the global form the element ids do not match the submitted names - id=\"adults1\" submits name=\"adults\" and id=\"kids\" submits name=\"children\".",
+  "content/raw/en__index-1.htm_q_x=1 is a byte-identical duplicate of content/raw/en__index-1.htm (same MD5 0d7d98a1cd0995cb852cb3413c9c6c55); it was counted once in usedOnPages.",
+  "No live request was made to either reserve-online.net host, per the task constraints, so every statement here is derived from the delivered HTML only.",
+  "[T-156] room= inert on thalassesvillas — villa CTAs ship with dates only, no preselect.",
+  "[T-157] PUEBLO room code exists in the engine; D1b assumed it did not.",
+  "[T-158] No estate room type; Entire Estate CTA needs an owner decision.",
+  "[T-159] Engine defaults to Greek — lang=en is mandatory on every generated booking link."
+ ],
+ "properties": [
+  {
+   "host": "thalassesvillas.reserve-online.net",
+   "webhotelierPropertyCode": "THALASSES",
+   "templateId": "tpl12824",
+   "brandedTitle": "Thalasses Villas, Rethymno, Crete, Greece | Book Online",
+   "usedBy": "homepage booking bar (and all 22 activity/article pages)",
+   "sendsRoomCode": false
+  },
+  {
+   "host": "etouri.reserve-online.net",
+   "webhotelierPropertyCode": "ETOURICRE",
+   "templateId": "tpl10151",
+   "brandedTitle": "Etouri Vacation Rental Management Crete, Greece | Book Online",
+   "usedBy": "all 5 property pages (200/201/202/203/2142)",
+   "sendsRoomCode": true
+  }
+ ],
+ "parameterEvidence": "Confirmed by static analysis of the live engine bundle https://thalassesvillas.reserve-online.net/dist/4b51fa865d052996.js — the only query-parameter string literals it references are: adults, checkin, checkout, children, currency, nights, room, rooms.",
+ "childrenAges": {
+  "supported": false,
+  "evidence": "No childAges / child_ages / children_ages / ages parameter appears anywhere in the engine bundle. The legacy Loggia form collected per-child ages in a 'frm_book_kid' field, but that field is NOT a WebHotelier parameter and cannot be forwarded.",
+  "consequence": "The new booking bar collects a CHILD COUNT only. Do not build an ages UI."
+ },
+ "verification2026_08_06": {
+  "method": "HTTP GET against both hosts plus static analysis of the engine JS bundle.",
+  "confirmed": [
+   "Both hosts return HTTP 200 for the full parameter set; no redirect, no rejection.",
+   "Parameter names confirmed from the engine bundle (authoritative).",
+   "thalassesvillas = WebHotelier property THALASSES, branded 'Thalasses Villas'.",
+   "etouri = WebHotelier property ETOURICRE, branded 'Etouri Vacation Rental Management'.",
+   "No children-ages parameter exists."
+  ],
+  "NOTverified": [
+   "Whether room=WH200..WH2142 resolves on the THALASSES host. The server merely echoes the value into <input type=\"hidden\" name=\"room\">; the response for room=WH200 is byte-identical to the response for a deliberately bogus room=BOGUSXX once the echoed code is masked. Room resolution happens client-side after an availability call, so it cannot be settled over plain HTTP.",
+   "The /book endpoint returns HTTP 400 for every GET (valid and bogus codes alike) - it is a session/POST endpoint and is not a discriminating test.",
+   "Whether a lang parameter is supported (the engine shows a GR flag but 'lang' is not a literal in the bundle)."
+  ],
+  "blocker": "The in-app browser could not be granted access to the reserve-online.net origin in this non-interactive session, so the rendered availability result could not be inspected.",
+  "inference": "The live site sends room=WH<id> ONLY to etouri, and sends NO room code to thalassesvillas. That is consistent with the WH codes being room types of the ETOURICRE account rather than of THALASSES - but this is an inference, not a verified fact, and is not treated as one."
+ },
+ "implementationDecision": {
+  "config": "content/booking.json is the single source of truth; the app reads host + params from here.",
+  "default": "Per D4 the preferred host is thalassesvillas (the property's own branded engine). Until the room-code binding is verified, the module ships with hosts configured PER SCOPE, matching the live site's proven behaviour: global bar -> thalassesvillas (no room code, proven); villa/estate CTA -> etouri (with room code, proven). A single flag 'preferPropertyHostForAll' flips every link to thalassesvillas once the binding is confirmed.",
+  "rationale": "Defaulting villa CTAs to thalassesvillas before verification would silently drop room preselection if the WH codes are not THALASSES room types - a regression invisible in testing but costly in bookings."
+ },
+ "host": "thalassesvillas.reserve-online.net",
+ "hostDecision": "CONFIRMED by owner (D4): all bookings route through the property's own subdomain.",
+ "verification2026_08_06_live": {
+  "method": "Loaded the live engine in a browser and inspected the rendered availability table.",
+  "CONFIRMED_WORKING": {
+   "host": "https://thalassesvillas.reserve-online.net/ — branded 'Thalasses Villas, Rethymno, Crete, Greece | Book Online'",
+   "checkin": "YYYY-MM-DD, launches availability",
+   "nights": "integer; engine also auto-appends rooms=1",
+   "adults": "integer",
+   "children": "integer (count only)",
+   "rooms": "integer",
+   "lang": "lang=en RENDERS THE ENGINE IN ENGLISH. The engine DEFAULTS TO GREEK without it. This resolves T-103 and is REQUIRED on every deep link."
+  },
+  "ROOM_PARAM_IS_INERT": {
+   "finding": "room= does NOT preselect or filter on this host. Verified by comparing the rendered [data-room] set across four requests: no room param, room=THOI, room=WH200, room=BOGUSXX. All four render the identical five room blocks.",
+   "consequence": "Villa CTAs cannot preselect a villa on this host. Per D4's instruction, they link with dates only rather than falling back to etouri.",
+   "earlierFalsePositive": "A first read of room=WH200 appeared to show only 'Thoi -' prefixed rates. That was a partially-rendered page captured mid-load, not filtering. Retested fully rendered."
+  },
+  "REAL_ROOM_CODES_ON_THIS_HOST": [
+   "THOI",
+   "PERSI",
+   "MELIA",
+   "EEANTH",
+   "PUEBLO"
+  ],
+  "note_on_WH_codes": "The WH200/WH201/WH202/WH203/WH2142 codes belong to the ETOURICRE account on etouri.reserve-online.net. They are not this property's codes. Neither the WH codes nor this host's own codes have any effect as a room= value."
+ },
+ "roomInventory": {
+  "source": "live availability table + /accommodation/villa on thalassesvillas.reserve-online.net",
+  "roomsInAvailabilityEngine": [
+   "THOI",
+   "PERSI",
+   "MELIA",
+   "EEANTH",
+   "PUEBLO"
+  ],
+  "roomsListedOnVillaPage": [
+   {
+    "name": "Thoi",
+    "guests": 4
+   },
+   {
+    "name": "Persi",
+    "guests": 4
+   },
+   {
+    "name": "Melia",
+    "guests": 4
+   },
+   {
+    "name": "Eeanthe",
+    "guests": 6
+   }
+  ],
+  "PUEBLO_IS_BOOKABLE": "Villa Pueblo IS present in the availability engine as room code PUEBLO, even though the legacy website had no booking widget for it and the engine's own /accommodation/villa page omits it. This CONTRADICTS the premise of decision D1b.",
+  "NO_ESTATE_ROOM": "There is no whole-estate room type on this host. The legacy WH2142 'rent them all together' listing has no equivalent. Booking the whole estate means booking five rooms, or an enquiry."
+ }
+}

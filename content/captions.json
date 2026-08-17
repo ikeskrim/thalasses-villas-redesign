@@ -1,0 +1,4963 @@
+{
+ "en__article__1899-1.html": {
+  "total": 58,
+  "byGroup": {
+   "fancyalbum_1899": [
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/fe2df41e47d8cefafe156e89ba47513d-1.jpg",
+     "fancyboxGroup": "fancyalbum_1899"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/aa5c1e62df529e609f2855e9889952dc-1.jpg",
+     "fancyboxGroup": "fancyalbum_1899"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/85143cb51591dedbff303c56b2a2f9f9-1.jpg",
+     "fancyboxGroup": "fancyalbum_1899"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/b19813a4b7cc6b1a866c30b1bea59cac-1.jpg",
+     "fancyboxGroup": "fancyalbum_1899"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/f3e2e9c9bf813716f89a473986f55bdc-1.jpg",
+     "fancyboxGroup": "fancyalbum_1899"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/5589142bfeb33a7133d8ec75df8afdc2-1.jpg",
+     "fancyboxGroup": "fancyalbum_1899"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/e6b6ff8b4184b94a995327f10b5821a7-1.jpg",
+     "fancyboxGroup": "fancyalbum_1899"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/bc662bf3c6ac79576072cecee9e4a9f0-1.jpg",
+     "fancyboxGroup": "fancyalbum_1899"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/09785af360a4a17f90387460ce7a86b7-1.jpg",
+     "fancyboxGroup": "fancyalbum_1899"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/7cbce5682cd2c4fce51239259df0456a-1.jpg",
+     "fancyboxGroup": "fancyalbum_1899"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/79a57f1de7f6039646e8c4c673a7d546-1.jpg",
+     "fancyboxGroup": "fancyalbum_1899"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/e46a3c3916f001c6239a53805d18436a-1.jpg",
+     "fancyboxGroup": "fancyalbum_1899"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/56801cdcf99b2f2e943502d8fd1e6a41-1.jpg",
+     "fancyboxGroup": "fancyalbum_1899"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/8b41bde4cc2ecef1b117b6fe16afda76-1.jpg",
+     "fancyboxGroup": "fancyalbum_1899"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/28afc35baada29b42abf8f613c1a1abe-1.jpg",
+     "fancyboxGroup": "fancyalbum_1899"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/8be1ad163593723da037ae3897a942ba-1.jpg",
+     "fancyboxGroup": "fancyalbum_1899"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/89d927a2bad0ea94fa34547356d7e001-1.jpg",
+     "fancyboxGroup": "fancyalbum_1899"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/54ab1d579ea96cf5481e0028258f47cb-1.jpg",
+     "fancyboxGroup": "fancyalbum_1899"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/d75844e8e4b2b9664d2eb3e2103373e5-1.jpg",
+     "fancyboxGroup": "fancyalbum_1899"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/e4aba8049d4a2638f265d7c0580eb187-1.jpg",
+     "fancyboxGroup": "fancyalbum_1899"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/31ce8998356d0d3fc07037d2eb70e1ee-1.jpg",
+     "fancyboxGroup": "fancyalbum_1899"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/14a865e747095acb40a2bddf04b336e9-1.jpg",
+     "fancyboxGroup": "fancyalbum_1899"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/8bda89e1b94cda1dbe38453849cb7f57-1.jpg",
+     "fancyboxGroup": "fancyalbum_1899"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/e1eae9bbb8075a1b7599e42e83a175a0-1.jpg",
+     "fancyboxGroup": "fancyalbum_1899"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/8156cc85a8e577510d332d773103eae0-1.jpg",
+     "fancyboxGroup": "fancyalbum_1899"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/561a0e7947c6c910391833c8b12130c5-1.jpg",
+     "fancyboxGroup": "fancyalbum_1899"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/45a92e490d7ff6fbcc09231c4481ec41-1.jpg",
+     "fancyboxGroup": "fancyalbum_1899"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/a7a124a60a5b87088053dff044714f3a-1.jpg",
+     "fancyboxGroup": "fancyalbum_1899"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/6cc0bb9e6e2140cb669f6f6b7dbc5ffe-1.jpg",
+     "fancyboxGroup": "fancyalbum_1899"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/0ae7ffe0249f5b9809b2c65fce1ebbff-1.jpg",
+     "fancyboxGroup": "fancyalbum_1899"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/312ed763399cb98ae6e64e23cbac5cdb-1.jpg",
+     "fancyboxGroup": "fancyalbum_1899"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/ab02e9346d117215c7e33fcfb8f9f1c9-1.jpg",
+     "fancyboxGroup": "fancyalbum_1899"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/138f0270bbf2ba29162b9c81f08d9bf1-1.jpg",
+     "fancyboxGroup": "fancyalbum_1899"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/1045f9d8fb0ed17311059882986f6ae2-1.jpg",
+     "fancyboxGroup": "fancyalbum_1899"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/14e21fa5c4ba9f7ab9b1a925773c9282-1.jpg",
+     "fancyboxGroup": "fancyalbum_1899"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/4061547978a0f802bc4712fee10f236d-1.jpg",
+     "fancyboxGroup": "fancyalbum_1899"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/5341530807842b6190e178e7dd18ffbe-1.jpg",
+     "fancyboxGroup": "fancyalbum_1899"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/b8dd884bc65502e026476ed1745f9f56-1.jpg",
+     "fancyboxGroup": "fancyalbum_1899"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/2ca530376f629c92eadcd526ba9f25c9-1.jpg",
+     "fancyboxGroup": "fancyalbum_1899"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/7d7371862c699c51640f2560ccce2a13-1.jpg",
+     "fancyboxGroup": "fancyalbum_1899"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/fa522a7b5db4d20471f89e7dfcda4b8a-1.jpg",
+     "fancyboxGroup": "fancyalbum_1899"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/403531ec621c47c91671948043972cd3-1.jpg",
+     "fancyboxGroup": "fancyalbum_1899"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/04ce3e55f27eea6435f8043d69a55703-1.jpg",
+     "fancyboxGroup": "fancyalbum_1899"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/4f1aa7709547d50d798131ba68324212-1.jpg",
+     "fancyboxGroup": "fancyalbum_1899"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/063f186175f503152e60d21b7260ffc8-1.jpg",
+     "fancyboxGroup": "fancyalbum_1899"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/c5aa7abe9a09e1af57711704c56399ad-1.jpg",
+     "fancyboxGroup": "fancyalbum_1899"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/61aa21a8b371640f8876d855e3cc0c2b-1.jpg",
+     "fancyboxGroup": "fancyalbum_1899"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/825e276b0579de3c39d8d0877196023e-1.jpg",
+     "fancyboxGroup": "fancyalbum_1899"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/f859ee2a1014631299b480d16ba56ec4-1.jpg",
+     "fancyboxGroup": "fancyalbum_1899"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/3be1fb7263a5cd618ee659c332f2df5c-1.jpg",
+     "fancyboxGroup": "fancyalbum_1899"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/d7ccfe09a8af00019aec5c3a68ba1bba-1.jpg",
+     "fancyboxGroup": "fancyalbum_1899"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/9518b8610a44f19b76002d16d2cef8f6-1.jpg",
+     "fancyboxGroup": "fancyalbum_1899"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/7cd5eee9ea5ea43cce15930b7074df74-1.jpg",
+     "fancyboxGroup": "fancyalbum_1899"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/1a3f7f14d02bcf9395a284506f8fad6f-1.jpg",
+     "fancyboxGroup": "fancyalbum_1899"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/3c0f655e98f77023ddf584bb163b82c8-1.jpg",
+     "fancyboxGroup": "fancyalbum_1899"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/90a53d25dea90a385136f3b178ca6b49-1.jpg",
+     "fancyboxGroup": "fancyalbum_1899"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/a133e87685082126f1e9170f80a893be-1.jpg",
+     "fancyboxGroup": "fancyalbum_1899"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/2d59ac4b8ca4b0b96486ff255285dfcb-1.jpg",
+     "fancyboxGroup": "fancyalbum_1899"
+    }
+   ]
+  },
+  "distinctCaptions": []
+ },
+ "en__biological-garden-1.html": {
+  "total": 8,
+  "byGroup": {
+   "fancyalbum_3792": [
+    {
+     "caption": "Thalasses Villas - Oganic Farm",
+     "image": "../loggia-cdn/lodgeContent/40e6d9fb89dcb0903bd01151439f00c3-1.jpg",
+     "fancyboxGroup": "fancyalbum_3792"
+    },
+    {
+     "caption": "Thalasses Villas - Oganic Farm",
+     "image": "../loggia-cdn/lodgeContent/e466e69a16f456174adfc36e496ce364-1.jpg",
+     "fancyboxGroup": "fancyalbum_3792"
+    },
+    {
+     "caption": "Thalasses Villas - Oganic Farm",
+     "image": "../loggia-cdn/lodgeContent/8d40c1431e0bf618c06d957c5c2de54b-1.jpg",
+     "fancyboxGroup": "fancyalbum_3792"
+    },
+    {
+     "caption": "Thalasses Villas - Oganic Farm",
+     "image": "../loggia-cdn/lodgeContent/c296985fa33c5b1aa37fe0b0006c8568-1.jpg",
+     "fancyboxGroup": "fancyalbum_3792"
+    },
+    {
+     "caption": "Thalasses Villas - Oganic Farm",
+     "image": "../loggia-cdn/lodgeContent/049a195bcbe536035ada25e6263c1ed2-1.jpg",
+     "fancyboxGroup": "fancyalbum_3792"
+    },
+    {
+     "caption": "",
+     "image": "../loggia-cdn/lodgeContent/50f5ab5b8a6a26a89221cde41c32a205-1.jpg",
+     "fancyboxGroup": "fancyalbum_3792"
+    },
+    {
+     "caption": "Thalasses Villas - Oganic Farm",
+     "image": "../loggia-cdn/lodgeContent/7f0e1bf47c82ace1f52418dd6f4383fc-1.jpg",
+     "fancyboxGroup": "fancyalbum_3792"
+    },
+    {
+     "caption": "Thalasses Villas - Oganic Farm",
+     "image": "../loggia-cdn/lodgeContent/13d9c13931fb5185c8f2d37aaf7cfbe6-1.jpg",
+     "fancyboxGroup": "fancyalbum_3792"
+    }
+   ]
+  },
+  "distinctCaptions": [
+   "Thalasses Villas - Oganic Farm"
+  ]
+ },
+ "en__chef-in-villa-1.html": {
+  "total": 12,
+  "byGroup": {
+   "fancyalbum_3789": [
+    {
+     "caption": "",
+     "image": "../loggia-cdn/lodgeContent/04dccbf09dd7c516e55988fc4122b14d-1.jpg",
+     "fancyboxGroup": "fancyalbum_3789"
+    },
+    {
+     "caption": "",
+     "image": "../loggia-cdn/lodgeContent/3d475e914305447d2a611b01670e4932-1.jpg",
+     "fancyboxGroup": "fancyalbum_3789"
+    },
+    {
+     "caption": "",
+     "image": "../loggia-cdn/lodgeContent/d08b226f7bab811672c94f62a1f40af0-1.jpg",
+     "fancyboxGroup": "fancyalbum_3789"
+    },
+    {
+     "caption": "",
+     "image": "../loggia-cdn/lodgeContent/c9fb183d8864828cfec7491ff0608411-1.jpg",
+     "fancyboxGroup": "fancyalbum_3789"
+    },
+    {
+     "caption": "",
+     "image": "../loggia-cdn/lodgeContent/7cf8a9573f058e5e80e0b95b24546e92-1.jpg",
+     "fancyboxGroup": "fancyalbum_3789"
+    },
+    {
+     "caption": "",
+     "image": "../loggia-cdn/lodgeContent/51aa712dc35abb623bae1fe09a5e6c9b-1.jpg",
+     "fancyboxGroup": "fancyalbum_3789"
+    },
+    {
+     "caption": "",
+     "image": "../loggia-cdn/lodgeContent/87916b04afac710f995cc2c9e15e28da-1.jpg",
+     "fancyboxGroup": "fancyalbum_3789"
+    },
+    {
+     "caption": "",
+     "image": "../loggia-cdn/lodgeContent/0b61a517e2cabcafa0ded6e0d3e91417-1.jpg",
+     "fancyboxGroup": "fancyalbum_3789"
+    },
+    {
+     "caption": "",
+     "image": "../loggia-cdn/lodgeContent/db02a210bc206e0800c0c36a6d4e2c21-1.jpg",
+     "fancyboxGroup": "fancyalbum_3789"
+    },
+    {
+     "caption": "",
+     "image": "../loggia-cdn/lodgeContent/4f59b2a3177bff19c016f28409cd52f9-1.jpg",
+     "fancyboxGroup": "fancyalbum_3789"
+    },
+    {
+     "caption": "",
+     "image": "../loggia-cdn/lodgeContent/8322bdf321bcf269f30aa207850a9d3d-1.jpg",
+     "fancyboxGroup": "fancyalbum_3789"
+    },
+    {
+     "caption": "",
+     "image": "../loggia-cdn/lodgeContent/2ea5502d05be272166a94de3aaa5d3dd-1.jpg",
+     "fancyboxGroup": "fancyalbum_3789"
+    }
+   ]
+  },
+  "distinctCaptions": []
+ },
+ "en__dream-weadding-on-the-beach-1.html": {
+  "total": 20,
+  "byGroup": {
+   "fancyalbum_3776": [
+    {
+     "caption": "Thalasses Rituals - Wedding Venue",
+     "image": "../loggia-cdn/lodgeContent/7569639007094f08ba07c7e69f83af08-1.jpg",
+     "fancyboxGroup": "fancyalbum_3776"
+    },
+    {
+     "caption": "Thalasses Rituals - Wedding Venue",
+     "image": "../loggia-cdn/lodgeContent/9df0a49d48fe38d8951ad64883b03952-1.jpg",
+     "fancyboxGroup": "fancyalbum_3776"
+    },
+    {
+     "caption": "Thalasses Rituals - Wedding Venue",
+     "image": "../loggia-cdn/lodgeContent/ab540b4539c47a4383eed58342380e3b-1.jpg",
+     "fancyboxGroup": "fancyalbum_3776"
+    },
+    {
+     "caption": "Thalasses Rituals - Wedding Venue",
+     "image": "../loggia-cdn/lodgeContent/fb3964c34512c53313ad8b5ea75136c7-1.jpg",
+     "fancyboxGroup": "fancyalbum_3776"
+    },
+    {
+     "caption": "Thalasses Rituals - Wedding Venue",
+     "image": "../loggia-cdn/lodgeContent/be021f0d34ff98678d865ff534ff5c98-1.jpg",
+     "fancyboxGroup": "fancyalbum_3776"
+    },
+    {
+     "caption": "Thalasses Rituals - Wedding Venue",
+     "image": "../loggia-cdn/lodgeContent/300dda470a09fa74802d1d7b4d9f3294-1.jpg",
+     "fancyboxGroup": "fancyalbum_3776"
+    },
+    {
+     "caption": "Thalasses Rituals - Wedding Venue",
+     "image": "../loggia-cdn/lodgeContent/9e9458136fdf98fd4578dc76ce899b65-1.jpg",
+     "fancyboxGroup": "fancyalbum_3776"
+    },
+    {
+     "caption": "Thalasses Rituals - Wedding Venue",
+     "image": "../loggia-cdn/lodgeContent/a3fb11c1e68108f3f2a48e72df735028-1.jpg",
+     "fancyboxGroup": "fancyalbum_3776"
+    },
+    {
+     "caption": "Thalasses Rituals - Wedding Venue",
+     "image": "../loggia-cdn/lodgeContent/ecfb1307ea99d0001e9c0813f62bd57b-1.jpg",
+     "fancyboxGroup": "fancyalbum_3776"
+    },
+    {
+     "caption": "Thalasses Rituals - Wedding Venue",
+     "image": "../loggia-cdn/lodgeContent/edad394d70574607873933c1f6211835-1.jpg",
+     "fancyboxGroup": "fancyalbum_3776"
+    },
+    {
+     "caption": "Thalasses Rituals - Wedding Venue",
+     "image": "../loggia-cdn/lodgeContent/066b03cb29ffd263047dd0933ce7251a-1.jpg",
+     "fancyboxGroup": "fancyalbum_3776"
+    },
+    {
+     "caption": "Thalasses Rituals - Wedding Venue",
+     "image": "../loggia-cdn/lodgeContent/b1f2757bc495c948bbaf19e233159804-1.jpg",
+     "fancyboxGroup": "fancyalbum_3776"
+    },
+    {
+     "caption": "Thalasses Rituals - Wedding Venue",
+     "image": "../loggia-cdn/lodgeContent/5f440e4d512211ddd897bdca5c207fee-1.jpg",
+     "fancyboxGroup": "fancyalbum_3776"
+    },
+    {
+     "caption": "Thalasses Rituals - Wedding Venue",
+     "image": "../loggia-cdn/lodgeContent/86c13ad510a0e14167c94ddf4133ca8c-1.jpg",
+     "fancyboxGroup": "fancyalbum_3776"
+    },
+    {
+     "caption": "Thalasses Rituals - Wedding Venue",
+     "image": "../loggia-cdn/lodgeContent/b169a96ee970610d57dfd85ac84561f6-1.jpg",
+     "fancyboxGroup": "fancyalbum_3776"
+    },
+    {
+     "caption": "Thalasses Rituals - Wedding Venue",
+     "image": "../loggia-cdn/lodgeContent/16e655bd996e2d6db27a794cad220c1e-1.jpg",
+     "fancyboxGroup": "fancyalbum_3776"
+    },
+    {
+     "caption": "Thalasses Rituals - Wedding Venue",
+     "image": "../loggia-cdn/lodgeContent/4637e3b515e3840514acd0866c658ae4-1.jpg",
+     "fancyboxGroup": "fancyalbum_3776"
+    },
+    {
+     "caption": "Thalasses Rituals - Wedding Venue",
+     "image": "../loggia-cdn/lodgeContent/56a0b4d7405e78566742ea4bbf002bbf-1.jpg",
+     "fancyboxGroup": "fancyalbum_3776"
+    },
+    {
+     "caption": "Thalasses Rituals - Wedding Venue",
+     "image": "../loggia-cdn/lodgeContent/5de107bc62904d69a482bc322352e5a2-1.jpg",
+     "fancyboxGroup": "fancyalbum_3776"
+    },
+    {
+     "caption": "Thalasses Rituals - Wedding Venue",
+     "image": "../loggia-cdn/lodgeContent/f6bc3bd5c238d2631fbde3a70e7efaf6-1.jpg",
+     "fancyboxGroup": "fancyalbum_3776"
+    }
+   ]
+  },
+  "distinctCaptions": [
+   "Thalasses Rituals - Wedding Venue"
+  ]
+ },
+ "en__exclusive-tour-1.html": {
+  "total": 12,
+  "byGroup": {
+   "fancyalbum_3782": [
+    {
+     "caption": "",
+     "image": "../loggia-cdn/lodgeContent/1c263ae8e7a7ec57c5735885379ef302-1.jpg",
+     "fancyboxGroup": "fancyalbum_3782"
+    },
+    {
+     "caption": "",
+     "image": "../loggia-cdn/lodgeContent/b34864e12e6bf5a7f650709cfa73ac2f-1.jpg",
+     "fancyboxGroup": "fancyalbum_3782"
+    },
+    {
+     "caption": "",
+     "image": "../loggia-cdn/lodgeContent/23408fe631ed4b65fe41095dc717413e-1.jpg",
+     "fancyboxGroup": "fancyalbum_3782"
+    },
+    {
+     "caption": "",
+     "image": "../loggia-cdn/lodgeContent/f1225e8e21c4fc5eb67756722bf01f2a-1.jpg",
+     "fancyboxGroup": "fancyalbum_3782"
+    },
+    {
+     "caption": "",
+     "image": "../loggia-cdn/lodgeContent/6daf78e90ace6b7ac0a75a4bb2705a64-1.jpg",
+     "fancyboxGroup": "fancyalbum_3782"
+    },
+    {
+     "caption": "",
+     "image": "../loggia-cdn/lodgeContent/8c640a3df462f2bd4f99c0fe4b529221-1.jpg",
+     "fancyboxGroup": "fancyalbum_3782"
+    },
+    {
+     "caption": "",
+     "image": "../loggia-cdn/lodgeContent/4493f076e7110b75adfa0c05344e920d-1.jpg",
+     "fancyboxGroup": "fancyalbum_3782"
+    },
+    {
+     "caption": "",
+     "image": "../loggia-cdn/lodgeContent/93091179304e5a54144fa74c83d2977f-1.jpg",
+     "fancyboxGroup": "fancyalbum_3782"
+    },
+    {
+     "caption": "",
+     "image": "../loggia-cdn/lodgeContent/4088b922635567e2a388c664796a8760-1.jpg",
+     "fancyboxGroup": "fancyalbum_3782"
+    },
+    {
+     "caption": "",
+     "image": "../loggia-cdn/lodgeContent/e69aab806ba435342e443ce4629ced84-1.jpg",
+     "fancyboxGroup": "fancyalbum_3782"
+    },
+    {
+     "caption": "",
+     "image": "../loggia-cdn/lodgeContent/b0222a22726bd95411f35ce7b9b49747-1.jpg",
+     "fancyboxGroup": "fancyalbum_3782"
+    },
+    {
+     "caption": "",
+     "image": "../loggia-cdn/lodgeContent/ed28359d803f3e23535628e9521b33de-1.jpg",
+     "fancyboxGroup": "fancyalbum_3782"
+    }
+   ]
+  },
+  "distinctCaptions": []
+ },
+ "en__hiking-1.html": {
+  "total": 2,
+  "byGroup": {
+   "fancyalbum_3779": [
+    {
+     "caption": "",
+     "image": "../loggia-cdn/lodgeContent/b1987c68d509d41e5aa1269ecd12a5d1-1.jpg",
+     "fancyboxGroup": "fancyalbum_3779"
+    },
+    {
+     "caption": "",
+     "image": "../loggia-cdn/lodgeContent/a1478ffe450772d18d2ae6eb6006fe22-1.jpg",
+     "fancyboxGroup": "fancyalbum_3779"
+    }
+   ]
+  },
+  "distinctCaptions": []
+ },
+ "en__index-1.htm": {
+  "total": 4,
+  "byGroup": {
+   "fancyArticleImage1897_2": [
+    {
+     "caption": "",
+     "image": "../loggia-cdn/lodgeContent/b1bbe80a75b67db2c4370e62f6f836f3_thumb-1.jpg",
+     "fancyboxGroup": "fancyArticleImage1897_2"
+    }
+   ],
+   "fancyArticleImage3063_4": [
+    {
+     "caption": "",
+     "image": "../loggia-cdn/lodgeContent/14e77715b78ae6ce96ada21da4e1c939_thumb-1.jpg",
+     "fancyboxGroup": "fancyArticleImage3063_4"
+    }
+   ],
+   "fancyArticleImage3869": [
+    {
+     "caption": "",
+     "image": "../loggia-cdn/lodgeContent/df2bacefb7d7d5df11c75781c3e5249f_thumb-1.jpg",
+     "fancyboxGroup": "fancyArticleImage3869"
+    }
+   ],
+   "fancyArticleImageXs3869": [
+    {
+     "caption": "",
+     "image": "../loggia-cdn/lodgeContent/df2bacefb7d7d5df11c75781c3e5249f_thumb-1.jpg",
+     "fancyboxGroup": "fancyArticleImageXs3869"
+    }
+   ]
+  },
+  "distinctCaptions": []
+ },
+ "en__private-helipad-1.html": {
+  "total": 8,
+  "byGroup": {
+   "fancyalbum_3927": [
+    {
+     "caption": "Thalasses Villas - Private Helipad",
+     "image": "../loggia-cdn/lodgeContent/84d095eab652d2a508f63adcca984100-1.jpg",
+     "fancyboxGroup": "fancyalbum_3927"
+    },
+    {
+     "caption": "Thalasses Villas - Private Helipad",
+     "image": "../loggia-cdn/lodgeContent/fe9ae3181b07bfa6f93c82f642809b13-1.jpg",
+     "fancyboxGroup": "fancyalbum_3927"
+    },
+    {
+     "caption": "Thalasses Villas - Private Helipad",
+     "image": "../loggia-cdn/lodgeContent/4faf3e69d886fa6656421ecdf70e20e8-1.jpg",
+     "fancyboxGroup": "fancyalbum_3927"
+    },
+    {
+     "caption": "Thalasses Villas - Private Helipad",
+     "image": "../loggia-cdn/lodgeContent/f3c41959dedb98781c7dc72d5921275a-1.jpg",
+     "fancyboxGroup": "fancyalbum_3927"
+    },
+    {
+     "caption": "Thalasses Villas - Private Helipad",
+     "image": "../loggia-cdn/lodgeContent/de89bf455f9a497ced654fca60476f25-1.jpg",
+     "fancyboxGroup": "fancyalbum_3927"
+    },
+    {
+     "caption": "Thalasses Villas - Private Helipad",
+     "image": "../loggia-cdn/lodgeContent/e0169c9be1d682492840e5191384044a-1.jpg",
+     "fancyboxGroup": "fancyalbum_3927"
+    },
+    {
+     "caption": "Thalasses Villas - Private Helipad",
+     "image": "../loggia-cdn/lodgeContent/422ac9a49fa39ad78823d625cc98964d-1.jpg",
+     "fancyboxGroup": "fancyalbum_3927"
+    },
+    {
+     "caption": "Thalasses Villas - Private Helipad",
+     "image": "../loggia-cdn/lodgeContent/9a16ab0a7035b82e849766b486fc1885-1.jpg",
+     "fancyboxGroup": "fancyalbum_3927"
+    }
+   ]
+  },
+  "distinctCaptions": [
+   "Thalasses Villas - Private Helipad"
+  ]
+ },
+ "en__property__200.html": {
+  "total": 46,
+  "byGroup": {
+   "fancyFeaturedImages": [
+    {
+     "caption": "Private swimming pool area with sun beds, there is also a hot tub. (The pool can be also heated)",
+     "image": "../../loggia-cdn/lodgeContent/a3795044c605303bbd6f712209c487e3.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Sunbathing area by the pool, external furniture from EMU",
+     "image": "../../loggia-cdn/lodgeContent/8a3dfa7a16633800b8b219c3f0debd44.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Hot tub in our garden",
+     "image": "../../loggia-cdn/lodgeContent/c0ad9be74c151ab93430a3ca4cb5050d.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Safe organised playground area for young children in the complex",
+     "image": "../../loggia-cdn/lodgeContent/dc44f605eea4e7e83fbc02c10b444e72.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Easy access to our Private beach",
+     "image": "../../loggia-cdn/lodgeContent/607d26e8d7c258f625054971c22faa58.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Barbecue area",
+     "image": "../../loggia-cdn/lodgeContent/43208ecb7923d3f45ba8b849c0a6a131.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Open plan living room with white marble from Greece",
+     "image": "../../loggia-cdn/lodgeContent/4df8529e99d519b1d72523af894ad427.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Private swimming pool area with sun beds & there is also a hot tub",
+     "image": "../../loggia-cdn/lodgeContent/bed52047f8ccd70b88fd4fc84cd75113.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Hot tub in our garden\n*Villa Thoi*",
+     "image": "../../loggia-cdn/lodgeContent/8049201833b5c0add8b63ceff62c1040.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Comfortable sun beds from EMU by the pool",
+     "image": "../../loggia-cdn/lodgeContent/5ac78ccccf2bbef240f45c96dfd803f7.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Outdoor sitting area",
+     "image": "../../loggia-cdn/lodgeContent/698ae610f28e6c0bf630084f01cb36c8.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Living room has access to veranda",
+     "image": "../../loggia-cdn/lodgeContent/d6d2a3d0d61549e101883a4e0f413b55.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Fully equipped kitchen with top quality fixtures",
+     "image": "../../loggia-cdn/lodgeContent/9ca52cea48d0e905a8127ec57e5d4306.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Open plan area",
+     "image": "../../loggia-cdn/lodgeContent/a863aa9f76ad8362207bf3e3177eb800.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Indoor dining area",
+     "image": "../../loggia-cdn/lodgeContent/b2f5ab577056d658aaae771bb4337d1f.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "We have paid attention for every details",
+     "image": "../../loggia-cdn/lodgeContent/a4aa107c2d0d8f3842e40218e19f7ac6.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Bedroom with 2 single beds which can also be set up as a double bed",
+     "image": "../../loggia-cdn/lodgeContent/fee600163b2857511b1425d59343efe7.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Bedroom with a king size double bed",
+     "image": "../../loggia-cdn/lodgeContent/b5d0c1f9e5ca955c1f69aec25de2178d.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "The bedroom has access to outdoor area",
+     "image": "../../loggia-cdn/lodgeContent/39041a540d116f44da94a12123ce2224.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Bathroom with hydro massage shower cabin",
+     "image": "../../loggia-cdn/lodgeContent/6d00ab1240f8f6545f0dcda44c994e85.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "GROHE products in all the water systems",
+     "image": "../../loggia-cdn/lodgeContent/cdca477019c56e2c11910c0659e8551f.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Bathroom details",
+     "image": "../../loggia-cdn/lodgeContent/f6c9dccbbd5f8fd96b14b164789ec23d.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "From the living room area you have direct access to the pool area",
+     "image": "../../loggia-cdn/lodgeContent/bec7a3fdf2b132fb8b80eb3e58ce1952.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Enjoy tranquility all day long..",
+     "image": "../../loggia-cdn/lodgeContent/49909837de6b5c3614976c1015162e87.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Villa Thoi",
+     "image": "../../loggia-cdn/lodgeContent/62ddaf0ee433cfaf8a81e63e802eb5b6.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/420d64f1f505773e7a53ab47b9acb67f.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Communal playground area with toys, ping pong table and trampoline",
+     "image": "../../loggia-cdn/lodgeContent/0763e50501ff3e64313782154b6310e2.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Common outdoor dining area for all villas",
+     "image": "../../loggia-cdn/lodgeContent/9b8468a0fb864cd5acbc8a749b27885e.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Daily Cretan Traditional Breakfast upon request with additional fee",
+     "image": "../../loggia-cdn/lodgeContent/3d0ad4fed37872466fe569d789df7b55.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Wine cooler",
+     "image": "../../loggia-cdn/lodgeContent/4a78cf4e198b2dc603bfd27d72d847f5.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/6428a8e443a3661255994dcc9dea6364.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/7cf8abd6ecd6ab6d80820c7ce2bc1e0a.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Each villa will have private lux sun beds in our private beach which is 50m away",
+     "image": "../../loggia-cdn/lodgeContent/a3dc2787980e29a39aa26c3099565138.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Vegetable garden in which you can âuseâ with our gardenerâs help and taste home grown vegetables.",
+     "image": "../../loggia-cdn/lodgeContent/b2010be47e7e0502b72db3ee67cb1e40.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Private beach, each villa has private sun beds on the crystal clear water's edge",
+     "image": "../../loggia-cdn/lodgeContent/51032332337ee6ceb20ec03e0553657f.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Each villa has private sun beds on our Private Beach!",
+     "image": "../../loggia-cdn/lodgeContent/7348b8c115ea46548478ebb275ee4061.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Enjoy amazing Cretan sea views",
+     "image": "../../loggia-cdn/lodgeContent/8fb186ece553196481ff2f02651b3ce4.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Secure parking space",
+     "image": "../../loggia-cdn/lodgeContent/97faa0a20499ee9d6ac2fce9aebd274f.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Each villa will have private lux sun beds in our private beach which is 50m away",
+     "image": "../../loggia-cdn/lodgeContent/ad55ec4dbce790cbb95c215a0626b6a9.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Thalasses Villas - Luxurious accommodation",
+     "image": "../../loggia-cdn/lodgeContent/c6d33babac9030814aaff6ee34013857.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    }
+   ],
+   "fancyServiceImages391": [
+    {
+     "caption": "Cook (professional chef) in the villa",
+     "image": "../../loggia-cdn/lodgeContent/f9c9b5e3ccee14fa0b1e9adda9369a69.jpg",
+     "fancyboxGroup": "fancyServiceImages391"
+    }
+   ],
+   "fancyServiceImages393": [
+    {
+     "caption": "Baby sitting",
+     "image": "../../loggia-cdn/lodgeContent/ff92de0b8a3816c7960ef57e0c803169.jpg",
+     "fancyboxGroup": "fancyServiceImages393"
+    }
+   ],
+   "fancyServiceImages1156": [
+    {
+     "caption": "Pool maintenance",
+     "image": "../../loggia-cdn/lodgeContent/367622fc62d6b70057569c40580fe7a4.jpg",
+     "fancyboxGroup": "fancyServiceImages1156"
+    }
+   ],
+   "fancyServiceImages329": [
+    {
+     "caption": "Pool Towels",
+     "image": "../../loggia-cdn/lodgeContent/fafea700c4a888003811c8139e89ec87.jpg",
+     "fancyboxGroup": "fancyServiceImages329"
+    }
+   ],
+   "fancyServiceImages405": [
+    {
+     "caption": "Diving",
+     "image": "../../loggia-cdn/lodgeContent/e9f80eb5acb93c984f034d865b59afbe.jpg",
+     "fancyboxGroup": "fancyServiceImages405"
+    }
+   ],
+   "fancyServiceImages402": [
+    {
+     "caption": "Daily Excursions",
+     "image": "../../loggia-cdn/lodgeContent/635d506527ac868f8d19826ccd2cd581.jpg",
+     "fancyboxGroup": "fancyServiceImages402"
+    }
+   ]
+  },
+  "distinctCaptions": [
+   "Baby sitting",
+   "Barbecue area",
+   "Bathroom details",
+   "Bathroom with hydro massage shower cabin",
+   "Bedroom with 2 single beds which can also be set up as a double bed",
+   "Bedroom with a king size double bed",
+   "Comfortable sun beds from EMU by the pool",
+   "Common outdoor dining area for all villas",
+   "Communal playground area with toys, ping pong table and trampoline",
+   "Cook (professional chef) in the villa",
+   "Daily Cretan Traditional Breakfast upon request with additional fee",
+   "Daily Excursions",
+   "Diving",
+   "Each villa has private sun beds on our Private Beach!",
+   "Each villa will have private lux sun beds in our private beach which is 50m away",
+   "Easy access to our Private beach",
+   "Enjoy amazing Cretan sea views",
+   "Enjoy tranquility all day long..",
+   "From the living room area you have direct access to the pool area",
+   "Fully equipped kitchen with top quality fixtures",
+   "GROHE products in all the water systems",
+   "Hot tub in our garden",
+   "Hot tub in our garden\n*Villa Thoi*",
+   "Indoor dining area",
+   "Living room has access to veranda",
+   "Open plan area",
+   "Open plan living room with white marble from Greece",
+   "Outdoor sitting area",
+   "Pool Towels",
+   "Pool maintenance",
+   "Private beach, each villa has private sun beds on the crystal clear water's edge",
+   "Private swimming pool area with sun beds & there is also a hot tub",
+   "Private swimming pool area with sun beds, there is also a hot tub. (The pool can be also heated)",
+   "Safe organised playground area for young children in the complex",
+   "Secure parking space",
+   "Sunbathing area by the pool, external furniture from EMU",
+   "Thalasses Villas - Luxurious accommodation",
+   "The bedroom has access to outdoor area",
+   "Vegetable garden in which you can âuseâ with our gardenerâs help and taste home grown vegetables.",
+   "Villa Thoi",
+   "We have paid attention for every details",
+   "Wine cooler"
+  ]
+ },
+ "en__property__200__albums.html": {
+  "total": 87,
+  "byGroup": {
+   "fancyalbum_815": [
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/76493615229232052144ee7764f684bf.jpg",
+     "fancyboxGroup": "fancyalbum_815"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/4030bc33e293f07758786307858053f4.jpg",
+     "fancyboxGroup": "fancyalbum_815"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/fa1bd9e6ebd46b7fdc869ed3dd99c54f.jpg",
+     "fancyboxGroup": "fancyalbum_815"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/a3795044c605303bbd6f712209c487e3.jpg",
+     "fancyboxGroup": "fancyalbum_815"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/8a3dfa7a16633800b8b219c3f0debd44.jpg",
+     "fancyboxGroup": "fancyalbum_815"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/5ac78ccccf2bbef240f45c96dfd803f7.jpg",
+     "fancyboxGroup": "fancyalbum_815"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/94cae9dafef192681493911d51d109e6.jpg",
+     "fancyboxGroup": "fancyalbum_815"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/bed52047f8ccd70b88fd4fc84cd75113.jpg",
+     "fancyboxGroup": "fancyalbum_815"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/b54ea280e11fb043d485146240054023.jpg",
+     "fancyboxGroup": "fancyalbum_815"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/698ae610f28e6c0bf630084f01cb36c8.jpg",
+     "fancyboxGroup": "fancyalbum_815"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/43208ecb7923d3f45ba8b849c0a6a131.jpg",
+     "fancyboxGroup": "fancyalbum_815"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/ed80d9020c6a8cd463759d47907cd99f.jpg",
+     "fancyboxGroup": "fancyalbum_815"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/654e35278ac654c97c5623e712c79f41.jpg",
+     "fancyboxGroup": "fancyalbum_815"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/e294f4ccdf72c52289e66942afb113ca.jpg",
+     "fancyboxGroup": "fancyalbum_815"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/c0ad9be74c151ab93430a3ca4cb5050d.jpg",
+     "fancyboxGroup": "fancyalbum_815"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/8049201833b5c0add8b63ceff62c1040.jpg",
+     "fancyboxGroup": "fancyalbum_815"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/bec7a3fdf2b132fb8b80eb3e58ce1952.jpg",
+     "fancyboxGroup": "fancyalbum_815"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/a025ac7f4e6237726f7d90f7e56aebc1.jpg",
+     "fancyboxGroup": "fancyalbum_815"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/49909837de6b5c3614976c1015162e87.jpg",
+     "fancyboxGroup": "fancyalbum_815"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/0763e50501ff3e64313782154b6310e2.jpg",
+     "fancyboxGroup": "fancyalbum_815"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/dc44f605eea4e7e83fbc02c10b444e72.jpg",
+     "fancyboxGroup": "fancyalbum_815"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/e05e6bb3d20179ad057a0a2d722e7bde.jpg",
+     "fancyboxGroup": "fancyalbum_815"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/c3182c886366fe00122bc8cccc6f18ec.jpg",
+     "fancyboxGroup": "fancyalbum_815"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/8842df22449a04d999108fede67bf1fa.jpg",
+     "fancyboxGroup": "fancyalbum_815"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/9b8468a0fb864cd5acbc8a749b27885e.jpg",
+     "fancyboxGroup": "fancyalbum_815"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/bb7f03da037c2acfb12bccf8bc363f07.jpg",
+     "fancyboxGroup": "fancyalbum_815"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/8fb186ece553196481ff2f02651b3ce4.jpg",
+     "fancyboxGroup": "fancyalbum_815"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/d3cebffbfb023d0184cc778701d8b6f0.jpg",
+     "fancyboxGroup": "fancyalbum_815"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/51032332337ee6ceb20ec03e0553657f.jpg",
+     "fancyboxGroup": "fancyalbum_815"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/7987aad2815f698f2b17f5bd7647be16.jpg",
+     "fancyboxGroup": "fancyalbum_815"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/607d26e8d7c258f625054971c22faa58.jpg",
+     "fancyboxGroup": "fancyalbum_815"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/ddf1e870c84ec9a3ee0789a5cc155d54.jpg",
+     "fancyboxGroup": "fancyalbum_815"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/4a879006baa0e536a0703cf7c79faea3.jpg",
+     "fancyboxGroup": "fancyalbum_815"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/7348b8c115ea46548478ebb275ee4061.jpg",
+     "fancyboxGroup": "fancyalbum_815"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/420d64f1f505773e7a53ab47b9acb67f.jpg",
+     "fancyboxGroup": "fancyalbum_815"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/b2010be47e7e0502b72db3ee67cb1e40.jpg",
+     "fancyboxGroup": "fancyalbum_815"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/ad55ec4dbce790cbb95c215a0626b6a9.jpg",
+     "fancyboxGroup": "fancyalbum_815"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/f8c07e577b3c8794d4b88be418d757a4.jpg",
+     "fancyboxGroup": "fancyalbum_815"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/e1e3401394e7693706e85696578afa64.jpg",
+     "fancyboxGroup": "fancyalbum_815"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/46ff7de0b32c7baf2f2f0c24b35aebb1.jpg",
+     "fancyboxGroup": "fancyalbum_815"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/eb9c6ad0bd764cc4887b91d5cce773f3.jpg",
+     "fancyboxGroup": "fancyalbum_815"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/c6d33babac9030814aaff6ee34013857.jpg",
+     "fancyboxGroup": "fancyalbum_815"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/d3d5bda1fbf875a15a0bfd30c2e91225.jpg",
+     "fancyboxGroup": "fancyalbum_815"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/4a05eb80bcbc71cc2943329b2fc30048.jpg",
+     "fancyboxGroup": "fancyalbum_815"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/62ddaf0ee433cfaf8a81e63e802eb5b6.jpg",
+     "fancyboxGroup": "fancyalbum_815"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/a3dc2787980e29a39aa26c3099565138.jpg",
+     "fancyboxGroup": "fancyalbum_815"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/97faa0a20499ee9d6ac2fce9aebd274f.jpg",
+     "fancyboxGroup": "fancyalbum_815"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/87966f8d17ef45ff7dc136f8cc491dcb.jpg",
+     "fancyboxGroup": "fancyalbum_815"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/62d7157e31d5919056313c3ff2265977.jpg",
+     "fancyboxGroup": "fancyalbum_815"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/3d692f069e02e550920a241808b9cbfc.jpg",
+     "fancyboxGroup": "fancyalbum_815"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/625529f11af3617065fa572ed1ae68a4.jpg",
+     "fancyboxGroup": "fancyalbum_815"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/3eec89ca7d2cd787c3ad88c619dd99b5.jpg",
+     "fancyboxGroup": "fancyalbum_815"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/d61a1ab515cbe98c90721622bcc21f93.jpg",
+     "fancyboxGroup": "fancyalbum_815"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/76214944eb5f75c3cd6e7c8246e6d88d.jpg",
+     "fancyboxGroup": "fancyalbum_815"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/2685565f2565035c7cbdef68142fad30.jpg",
+     "fancyboxGroup": "fancyalbum_815"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/e158a58f2c9e522ae2f02d8e7cfb745d.jpg",
+     "fancyboxGroup": "fancyalbum_815"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/7d1412373e0ebb85342ab230ac05448f.jpg",
+     "fancyboxGroup": "fancyalbum_815"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/6428a8e443a3661255994dcc9dea6364.jpg",
+     "fancyboxGroup": "fancyalbum_815"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/af99489850cda5b8ab9544d1b3b9bc51.jpg",
+     "fancyboxGroup": "fancyalbum_815"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/f1bec69f3665f499f3cf5151105c1ebf.jpg",
+     "fancyboxGroup": "fancyalbum_815"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/7cf8abd6ecd6ab6d80820c7ce2bc1e0a.jpg",
+     "fancyboxGroup": "fancyalbum_815"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/e73f1a87b67cdc6c940e658bb9649e80.jpg",
+     "fancyboxGroup": "fancyalbum_815"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/b18681613684b4b02e832658ae3dcc22.jpg",
+     "fancyboxGroup": "fancyalbum_815"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/ac19e5d7780b5a3fadc20898a8d2c15a.jpg",
+     "fancyboxGroup": "fancyalbum_815"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/9b6e24a54f01a5f5594bf259c3a9bcd6.jpg",
+     "fancyboxGroup": "fancyalbum_815"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/85797c2b281527e04ee7cc703aa0834d.jpg",
+     "fancyboxGroup": "fancyalbum_815"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/14fc33abfd4f0a0f2b7efbbfe3263432.jpg",
+     "fancyboxGroup": "fancyalbum_815"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/752336eddef10372852e707e214239a9.jpg",
+     "fancyboxGroup": "fancyalbum_815"
+    }
+   ],
+   "fancyalbum_816": [
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/c32de46f596617fc92c332540ba7a1a3.jpg",
+     "fancyboxGroup": "fancyalbum_816"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/d6d2a3d0d61549e101883a4e0f413b55.jpg",
+     "fancyboxGroup": "fancyalbum_816"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/4df8529e99d519b1d72523af894ad427.jpg",
+     "fancyboxGroup": "fancyalbum_816"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/bc64cf865765e44a4239fded25e1c0ed.jpg",
+     "fancyboxGroup": "fancyalbum_816"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/9ca52cea48d0e905a8127ec57e5d4306.jpg",
+     "fancyboxGroup": "fancyalbum_816"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/a4aa107c2d0d8f3842e40218e19f7ac6.jpg",
+     "fancyboxGroup": "fancyalbum_816"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/a863aa9f76ad8362207bf3e3177eb800.jpg",
+     "fancyboxGroup": "fancyalbum_816"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/a2f8f15757fadbeef304f8f92451dfcb.jpg",
+     "fancyboxGroup": "fancyalbum_816"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/bab323d5e6c6a2b3079f3e7932d6ee46.jpg",
+     "fancyboxGroup": "fancyalbum_816"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/b2f5ab577056d658aaae771bb4337d1f.jpg",
+     "fancyboxGroup": "fancyalbum_816"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/3d0ad4fed37872466fe569d789df7b55.jpg",
+     "fancyboxGroup": "fancyalbum_816"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/39041a540d116f44da94a12123ce2224.jpg",
+     "fancyboxGroup": "fancyalbum_816"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/5cfdce30ef1dc1ef8cbb477f52b481bd.jpg",
+     "fancyboxGroup": "fancyalbum_816"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/b5d0c1f9e5ca955c1f69aec25de2178d.jpg",
+     "fancyboxGroup": "fancyalbum_816"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/fee600163b2857511b1425d59343efe7.jpg",
+     "fancyboxGroup": "fancyalbum_816"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/cf899666579c5960758e3d2958ce82d9.jpg",
+     "fancyboxGroup": "fancyalbum_816"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/6d00ab1240f8f6545f0dcda44c994e85.jpg",
+     "fancyboxGroup": "fancyalbum_816"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/f6c9dccbbd5f8fd96b14b164789ec23d.jpg",
+     "fancyboxGroup": "fancyalbum_816"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/cdca477019c56e2c11910c0659e8551f.jpg",
+     "fancyboxGroup": "fancyalbum_816"
+    }
+   ]
+  },
+  "distinctCaptions": []
+ },
+ "en__property__201.html": {
+  "total": 49,
+  "byGroup": {
+   "fancyFeaturedImages": [
+    {
+     "caption": "Private swimming pool area with sun beds (The pool can be also heated)",
+     "image": "../../loggia-cdn/lodgeContent/851c20a9d75e7685d99e34b64af6cd45.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Enjoy Cretan sea views from the hot tub",
+     "image": "../../loggia-cdn/lodgeContent/af6749452c2d829e1b591e859e6282c3.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Private swimming pool area with sun beds (The pool can be also heated)",
+     "image": "../../loggia-cdn/lodgeContent/283fe190eb3a3a69ccddd753370da1ac.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Safe organised playground area for young children in the complex",
+     "image": "../../loggia-cdn/lodgeContent/a6f9cfc58e877c961ec443ea5b7ab6e7.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Easy access to our Private beach",
+     "image": "../../loggia-cdn/lodgeContent/e6040667c4a747fc56ea78d11cca103b.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Open plan living room with white marble from Greece",
+     "image": "../../loggia-cdn/lodgeContent/9ef6b381c3630544ed9ddcbbbfc29067.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Outdoor area of the villa, each villa has its own outdoor area with pool & hot tub",
+     "image": "../../loggia-cdn/lodgeContent/3334c6bef782c6bd416d1420648fc12b.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "The swimming pool can be heated with additional 35â¬ per day upon request.",
+     "image": "../../loggia-cdn/lodgeContent/31ee31693e89b8e0512466d63152d164.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Outdoor area of the villa, each villa has its own outdoor area with pool & hot tub",
+     "image": "../../loggia-cdn/lodgeContent/731389adc2763660a231028c226a663d.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "The villa is designed to offer clear view to the sea",
+     "image": "../../loggia-cdn/lodgeContent/c00ef337c09565edb5e114cc19575e98.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Private swimming pool area with sun beds, there is also a hot tub",
+     "image": "../../loggia-cdn/lodgeContent/d94e71f3d45735a9766d7ea54f22c3e5.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Direct access to living room",
+     "image": "../../loggia-cdn/lodgeContent/e590b2cf6eba071f8ba20aea9880ccaf.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Private swimming pool area with sun beds",
+     "image": "../../loggia-cdn/lodgeContent/d260bd7232313a727234a3de93326c0f.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Clear panoramic sea view from the villa",
+     "image": "../../loggia-cdn/lodgeContent/90595ea60f605bee53a6ab578c700f63.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Open plan living room with white marble from Greece",
+     "image": "../../loggia-cdn/lodgeContent/cbb909bbf6e7d157facfc8092acb2ec5.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Living room has access to veranda",
+     "image": "../../loggia-cdn/lodgeContent/5a7b3a9f3affe9a7ea4a1fde7e3d4f6c.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Bedroom with a king size double bed",
+     "image": "../../loggia-cdn/lodgeContent/5f605e498123edabfbbb6e355cd7d6fa.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/c3eac5ff7e97428f04f8b63e6dcae28c.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Bedroom with 2 single beds (can also be set up as one double)",
+     "image": "../../loggia-cdn/lodgeContent/74cbf4ba63a371d4b6dee44c9f59d3f7.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Bedroom with a king size double bed",
+     "image": "../../loggia-cdn/lodgeContent/553d4bb7230628755f015bd32ce12e17.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "The bedrooms flooring is from KÃ¤hrs",
+     "image": "../../loggia-cdn/lodgeContent/4000dec402c1758393b1c2a022a1806e.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Bathroom with Jacuzzi bath and shower cabin",
+     "image": "../../loggia-cdn/lodgeContent/3ce7fadc3ba6605c9c8e0457f044bd8b.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Bathroom with Jacuzzi bath and shower cabin",
+     "image": "../../loggia-cdn/lodgeContent/7ee99d7d635e71ec5c4ecb9f4a850f25.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Each villa will have private lux sun beds in our private beach which is 50m away",
+     "image": "../../loggia-cdn/lodgeContent/4d0e6fe2b1a47b45dc5f492bea6bb854.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Communal playground area with toys, ping pong table and trampoline",
+     "image": "../../loggia-cdn/lodgeContent/f2b39b207deb246b22e3b17c98d17e87.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Common outdoor dining area for all villas",
+     "image": "../../loggia-cdn/lodgeContent/810200d8ac880405c46025c16b35897d.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/e34e305ba85f2cc8b0e478841b17408a.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/a9a69962012086776aea9bd5d0314762.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Daily Cretan Traditional Breakfast upon request with additional fee",
+     "image": "../../loggia-cdn/lodgeContent/80871bd8b367718f10265f779702bea5.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/e7326efd2662cb48ca52bbdf8ec36b99.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Private beach!",
+     "image": "../../loggia-cdn/lodgeContent/5591bd308fa8a6a734d32aa9eacd13e1.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Private beach, Each villa has private sun beds on the crystal clear water's edge",
+     "image": "../../loggia-cdn/lodgeContent/b6826004e4ae14b76c44691731a96d65.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Enjoy amazing Cretan sea views",
+     "image": "../../loggia-cdn/lodgeContent/3083bfe05b176053347a45a3ab7ef3d6.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/5b79cf077d64fc268a6cd061435f06e7.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Secure parking space",
+     "image": "../../loggia-cdn/lodgeContent/c7a2a82f782e5a037704bd6034fc9bf9.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Sunset time in the villas",
+     "image": "../../loggia-cdn/lodgeContent/4c887755a3cfc5f08e220dd497043999.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Communal playground area with toys, ping pong table and trampoline",
+     "image": "../../loggia-cdn/lodgeContent/7180791aea5e613af04c2496a6337aa3.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Outdoor area",
+     "image": "../../loggia-cdn/lodgeContent/d9aa356cc1bb59631fd9f4c0f71d44e8.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Outdoor area detail",
+     "image": "../../loggia-cdn/lodgeContent/3f5efbb7eb3868080505ca1fbb9f0a0c.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "A gas barbecue station from Porphyritic next to the pool area",
+     "image": "../../loggia-cdn/lodgeContent/7d9326b75b53511d13ae17b7ac7a925f.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Outdoor sitting area next to the pool, there is also a hot tub",
+     "image": "../../loggia-cdn/lodgeContent/8ec0384ac2b4ed9b6c771e377bad2334.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Sunbathing area by the pool, external furniture from EMU",
+     "image": "../../loggia-cdn/lodgeContent/8011a06558e0ac894e0c4d82580fa6c9.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Thalasses villas - Luxurious accommodation",
+     "image": "../../loggia-cdn/lodgeContent/336063087288c157ee890843487d6397.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    }
+   ],
+   "fancyServiceImages391": [
+    {
+     "caption": "Cook (professional chef) in the villa",
+     "image": "../../loggia-cdn/lodgeContent/f9c9b5e3ccee14fa0b1e9adda9369a69.jpg",
+     "fancyboxGroup": "fancyServiceImages391"
+    }
+   ],
+   "fancyServiceImages393": [
+    {
+     "caption": "Baby sitting",
+     "image": "../../loggia-cdn/lodgeContent/ff92de0b8a3816c7960ef57e0c803169.jpg",
+     "fancyboxGroup": "fancyServiceImages393"
+    }
+   ],
+   "fancyServiceImages1156": [
+    {
+     "caption": "Pool maintenance",
+     "image": "../../loggia-cdn/lodgeContent/367622fc62d6b70057569c40580fe7a4.jpg",
+     "fancyboxGroup": "fancyServiceImages1156"
+    }
+   ],
+   "fancyServiceImages329": [
+    {
+     "caption": "Pool Towels",
+     "image": "../../loggia-cdn/lodgeContent/fafea700c4a888003811c8139e89ec87.jpg",
+     "fancyboxGroup": "fancyServiceImages329"
+    }
+   ],
+   "fancyServiceImages402": [
+    {
+     "caption": "Daily Excursions",
+     "image": "../../loggia-cdn/lodgeContent/635d506527ac868f8d19826ccd2cd581.jpg",
+     "fancyboxGroup": "fancyServiceImages402"
+    }
+   ],
+   "fancyServiceImages405": [
+    {
+     "caption": "Diving",
+     "image": "../../loggia-cdn/lodgeContent/e9f80eb5acb93c984f034d865b59afbe.jpg",
+     "fancyboxGroup": "fancyServiceImages405"
+    }
+   ]
+  },
+  "distinctCaptions": [
+   "A gas barbecue station from Porphyritic next to the pool area",
+   "Baby sitting",
+   "Bathroom with Jacuzzi bath and shower cabin",
+   "Bedroom with 2 single beds (can also be set up as one double)",
+   "Bedroom with a king size double bed",
+   "Clear panoramic sea view from the villa",
+   "Common outdoor dining area for all villas",
+   "Communal playground area with toys, ping pong table and trampoline",
+   "Cook (professional chef) in the villa",
+   "Daily Cretan Traditional Breakfast upon request with additional fee",
+   "Daily Excursions",
+   "Direct access to living room",
+   "Diving",
+   "Each villa will have private lux sun beds in our private beach which is 50m away",
+   "Easy access to our Private beach",
+   "Enjoy Cretan sea views from the hot tub",
+   "Enjoy amazing Cretan sea views",
+   "Living room has access to veranda",
+   "Open plan living room with white marble from Greece",
+   "Outdoor area",
+   "Outdoor area detail",
+   "Outdoor area of the villa, each villa has its own outdoor area with pool & hot tub",
+   "Outdoor sitting area next to the pool, there is also a hot tub",
+   "Pool Towels",
+   "Pool maintenance",
+   "Private beach!",
+   "Private beach, Each villa has private sun beds on the crystal clear water's edge",
+   "Private swimming pool area with sun beds",
+   "Private swimming pool area with sun beds (The pool can be also heated)",
+   "Private swimming pool area with sun beds, there is also a hot tub",
+   "Safe organised playground area for young children in the complex",
+   "Secure parking space",
+   "Sunbathing area by the pool, external furniture from EMU",
+   "Sunset time in the villas",
+   "Thalasses villas - Luxurious accommodation",
+   "The bedrooms flooring is from KÃ¤hrs",
+   "The swimming pool can be heated with additional 35â¬ per day upon request.",
+   "The villa is designed to offer clear view to the sea"
+  ]
+ },
+ "en__property__201__albums.html": {
+  "total": 71,
+  "byGroup": {
+   "fancyalbum_817": [
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/851c20a9d75e7685d99e34b64af6cd45.jpg",
+     "fancyboxGroup": "fancyalbum_817"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/d94e71f3d45735a9766d7ea54f22c3e5.jpg",
+     "fancyboxGroup": "fancyalbum_817"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/d260bd7232313a727234a3de93326c0f.jpg",
+     "fancyboxGroup": "fancyalbum_817"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/283fe190eb3a3a69ccddd753370da1ac.jpg",
+     "fancyboxGroup": "fancyalbum_817"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/c00ef337c09565edb5e114cc19575e98.jpg",
+     "fancyboxGroup": "fancyalbum_817"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/e6040667c4a747fc56ea78d11cca103b.jpg",
+     "fancyboxGroup": "fancyalbum_817"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/af6749452c2d829e1b591e859e6282c3.jpg",
+     "fancyboxGroup": "fancyalbum_817"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/d7e3c4fb423810fd193c4a62a8fc25b5.jpg",
+     "fancyboxGroup": "fancyalbum_817"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/43f1687300cda621d519f0d1311388ec.jpg",
+     "fancyboxGroup": "fancyalbum_817"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/df2737796e65db4b5453a574a755e8a3.jpg",
+     "fancyboxGroup": "fancyalbum_817"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/3334c6bef782c6bd416d1420648fc12b.jpg",
+     "fancyboxGroup": "fancyalbum_817"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/90595ea60f605bee53a6ab578c700f63.jpg",
+     "fancyboxGroup": "fancyalbum_817"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/e72699edb6c350c2da600a4bc4c3bdd7.jpg",
+     "fancyboxGroup": "fancyalbum_817"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/31ee31693e89b8e0512466d63152d164.jpg",
+     "fancyboxGroup": "fancyalbum_817"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/731389adc2763660a231028c226a663d.jpg",
+     "fancyboxGroup": "fancyalbum_817"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/e590b2cf6eba071f8ba20aea9880ccaf.jpg",
+     "fancyboxGroup": "fancyalbum_817"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/d9aa356cc1bb59631fd9f4c0f71d44e8.jpg",
+     "fancyboxGroup": "fancyalbum_817"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/8ec0384ac2b4ed9b6c771e377bad2334.jpg",
+     "fancyboxGroup": "fancyalbum_817"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/8011a06558e0ac894e0c4d82580fa6c9.jpg",
+     "fancyboxGroup": "fancyalbum_817"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/2246da131714c2c9d1de8d64c2915af0.jpg",
+     "fancyboxGroup": "fancyalbum_817"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/810200d8ac880405c46025c16b35897d.jpg",
+     "fancyboxGroup": "fancyalbum_817"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/80871bd8b367718f10265f779702bea5.jpg",
+     "fancyboxGroup": "fancyalbum_817"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/e7326efd2662cb48ca52bbdf8ec36b99.jpg",
+     "fancyboxGroup": "fancyalbum_817"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/f2b39b207deb246b22e3b17c98d17e87.jpg",
+     "fancyboxGroup": "fancyalbum_817"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/a6f9cfc58e877c961ec443ea5b7ab6e7.jpg",
+     "fancyboxGroup": "fancyalbum_817"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/5591bd308fa8a6a734d32aa9eacd13e1.jpg",
+     "fancyboxGroup": "fancyalbum_817"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/41fb09192a5b9ed238a8fe6f365e3801.jpg",
+     "fancyboxGroup": "fancyalbum_817"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/70395c9c597aa12cf02baa0e5e0f97a1.jpg",
+     "fancyboxGroup": "fancyalbum_817"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/b6826004e4ae14b76c44691731a96d65.jpg",
+     "fancyboxGroup": "fancyalbum_817"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/6f4fed20ee5ff815f4fdafd505797d2a.jpg",
+     "fancyboxGroup": "fancyalbum_817"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/3083bfe05b176053347a45a3ab7ef3d6.jpg",
+     "fancyboxGroup": "fancyalbum_817"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/4d0e6fe2b1a47b45dc5f492bea6bb854.jpg",
+     "fancyboxGroup": "fancyalbum_817"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/c7a2a82f782e5a037704bd6034fc9bf9.jpg",
+     "fancyboxGroup": "fancyalbum_817"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/5b79cf077d64fc268a6cd061435f06e7.jpg",
+     "fancyboxGroup": "fancyalbum_817"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/4c887755a3cfc5f08e220dd497043999.jpg",
+     "fancyboxGroup": "fancyalbum_817"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/7180791aea5e613af04c2496a6337aa3.jpg",
+     "fancyboxGroup": "fancyalbum_817"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/336063087288c157ee890843487d6397.jpg",
+     "fancyboxGroup": "fancyalbum_817"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/37e6a0c5a79025d09b901cf0a82e55d0.jpg",
+     "fancyboxGroup": "fancyalbum_817"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/494c7f128f138c716063ba7f4c64d769.jpg",
+     "fancyboxGroup": "fancyalbum_817"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/440e9cb51a7904665276e470adec232e.jpg",
+     "fancyboxGroup": "fancyalbum_817"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/765759a02586d42f867d2bc943ce401a.jpg",
+     "fancyboxGroup": "fancyalbum_817"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/7b813ded0e42edb3e65bae90b0a1362a.jpg",
+     "fancyboxGroup": "fancyalbum_817"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/58265d04bd8a1a1a8061346070917cdf.jpg",
+     "fancyboxGroup": "fancyalbum_817"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/f3767bdd46a88e9aac0593f5c10a55ec.jpg",
+     "fancyboxGroup": "fancyalbum_817"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/067597ad2c64eeef13bd566548d67c5b.jpg",
+     "fancyboxGroup": "fancyalbum_817"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/8d8f8fa82313c95258ffbec8a9ebb0e2.jpg",
+     "fancyboxGroup": "fancyalbum_817"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/f4ce809444820e6479bd30644b38dcee.jpg",
+     "fancyboxGroup": "fancyalbum_817"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/9533564e0de581cf4f1b50448f0aac61.jpg",
+     "fancyboxGroup": "fancyalbum_817"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/afd3dc753c8f06d12a388c0bc2d7430d.jpg",
+     "fancyboxGroup": "fancyalbum_817"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/b9423e7ace89e8a2f1885e05048c8385.jpg",
+     "fancyboxGroup": "fancyalbum_817"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/e0e18e303e9c9a0c20cf692f435e9751.jpg",
+     "fancyboxGroup": "fancyalbum_817"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/e34e305ba85f2cc8b0e478841b17408a.jpg",
+     "fancyboxGroup": "fancyalbum_817"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/e700e4e1ea9d52231d7c5b9c30fc8c9c.jpg",
+     "fancyboxGroup": "fancyalbum_817"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/fe1dec65919ca1b9cbf588ed75033f04.jpg",
+     "fancyboxGroup": "fancyalbum_817"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/a9a69962012086776aea9bd5d0314762.jpg",
+     "fancyboxGroup": "fancyalbum_817"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/e660b24438f59bfcf75441f04be429af.jpg",
+     "fancyboxGroup": "fancyalbum_817"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/64bd61b65b913f450b4db959d86d5e18.jpg",
+     "fancyboxGroup": "fancyalbum_817"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/5e1b844ff617e57287bbe90971bc390a.jpg",
+     "fancyboxGroup": "fancyalbum_817"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/3e7eb28e3b297c947ec63c008a295aba.jpg",
+     "fancyboxGroup": "fancyalbum_817"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/b978460a76a5d4534fbce4a1c38b058d.jpg",
+     "fancyboxGroup": "fancyalbum_817"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/3bed19b1ed1c2454e3d365cb1d13a521.jpg",
+     "fancyboxGroup": "fancyalbum_817"
+    }
+   ],
+   "fancyalbum_818": [
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/9ef6b381c3630544ed9ddcbbbfc29067.jpg",
+     "fancyboxGroup": "fancyalbum_818"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/cbb909bbf6e7d157facfc8092acb2ec5.jpg",
+     "fancyboxGroup": "fancyalbum_818"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/5a7b3a9f3affe9a7ea4a1fde7e3d4f6c.jpg",
+     "fancyboxGroup": "fancyalbum_818"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/5f605e498123edabfbbb6e355cd7d6fa.jpg",
+     "fancyboxGroup": "fancyalbum_818"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/553d4bb7230628755f015bd32ce12e17.jpg",
+     "fancyboxGroup": "fancyalbum_818"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/4000dec402c1758393b1c2a022a1806e.jpg",
+     "fancyboxGroup": "fancyalbum_818"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/c3eac5ff7e97428f04f8b63e6dcae28c.jpg",
+     "fancyboxGroup": "fancyalbum_818"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/74cbf4ba63a371d4b6dee44c9f59d3f7.jpg",
+     "fancyboxGroup": "fancyalbum_818"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/3ce7fadc3ba6605c9c8e0457f044bd8b.jpg",
+     "fancyboxGroup": "fancyalbum_818"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/7ee99d7d635e71ec5c4ecb9f4a850f25.jpg",
+     "fancyboxGroup": "fancyalbum_818"
+    }
+   ]
+  },
+  "distinctCaptions": []
+ },
+ "en__property__202.html": {
+  "total": 51,
+  "byGroup": {
+   "fancyFeaturedImages": [
+    {
+     "caption": "The villas are located just a few meters away from our private beach!",
+     "image": "../../loggia-cdn/lodgeContent/56a298fddcf18fa81f36814c8a32e16e.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "The villas are located just a few meters away from our private beach!",
+     "image": "../../loggia-cdn/lodgeContent/48aafde8005bd7150db755625b15b48a.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Easy access to our Private beach",
+     "image": "../../loggia-cdn/lodgeContent/93aa7c74d8f3ae6988ceee542b57eb0a.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Each villa has its own outdoor area with pool & hot tub",
+     "image": "../../loggia-cdn/lodgeContent/594f099b9fbbf9524a50ee80bf51e5ef.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Outdoor sitting area in the veranda connected to kitchen area",
+     "image": "../../loggia-cdn/lodgeContent/88ff791fbee90d87ee3ccd7caa3cacc0.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Indoor kitchen and dining area with access to outdoor area",
+     "image": "../../loggia-cdn/lodgeContent/5e218f1178743fe48a0b005690ddd926.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Pool and sunbathing area (The pool can be also heated)",
+     "image": "../../loggia-cdn/lodgeContent/5cc2dbcf1859395b2ae891f961292936.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Barbecue area",
+     "image": "../../loggia-cdn/lodgeContent/b3af4d093e252c1ddbfc75306d623fe1.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Barbecue area",
+     "image": "../../loggia-cdn/lodgeContent/3ccb2ef15f398af5498c91828638f7bc.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Hot Tub in our garden.",
+     "image": "../../loggia-cdn/lodgeContent/74a1ca2c52e0b00582bb72585b9e4a9a.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Hot Tub!",
+     "image": "../../loggia-cdn/lodgeContent/b6b58df3b32cdc194c72d33cc8b37d3e.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Open plan living room with white marble from Greece",
+     "image": "../../loggia-cdn/lodgeContent/66dcf8cd286629a06f3ca3b10c0cd4e7.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Living room next to the pool area",
+     "image": "../../loggia-cdn/lodgeContent/822455d2dd39168de2deb48186bee610.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Fully equipped kitchen and indoor dining table",
+     "image": "../../loggia-cdn/lodgeContent/347992cb41992b314ced4e75b6152a9f.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "GROHE products in all the water systems",
+     "image": "../../loggia-cdn/lodgeContent/41b7fe9560a1084098b4f5aa8d117969.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Bedroom with 2 single beds on the ground floor",
+     "image": "../../loggia-cdn/lodgeContent/6d57c1975fa88be1f222ef88eba5400e.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Bedroom with a king size double bed on the first floor",
+     "image": "../../loggia-cdn/lodgeContent/365043ab93ce9db461af20e6e4d7e2bd.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "The bedroom has access to outdoor balcony with outstanding view!",
+     "image": "../../loggia-cdn/lodgeContent/7065293aee738f3ace812a03de1a901e.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Our bed mattresses are from \"Cocomat\" which promises the good sleep!",
+     "image": "../../loggia-cdn/lodgeContent/e10c6f7f17e8c869b906f4baa4f0d3ee.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "The main bathroom with Jacuzzi on the first floor",
+     "image": "../../loggia-cdn/lodgeContent/f024742b08eb10941ae421bf6dac2ca0.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Bathroom with shower on the ground floor",
+     "image": "../../loggia-cdn/lodgeContent/f752470416c60455f7c407165ec5265c.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Our bathroom amenities are from \"Korres\" and \"Cocomat\"",
+     "image": "../../loggia-cdn/lodgeContent/c26521e47027eee6b3e2e5781383d96d.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Bedroom with 2 single beds on the ground floor",
+     "image": "../../loggia-cdn/lodgeContent/2235006efbe431e8004b5a0586921f30.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Welcome to villa Eeanthe!",
+     "image": "../../loggia-cdn/lodgeContent/91d5812c0513637def3226e998fff9e6.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Safe organised playground area for young children in the complex",
+     "image": "../../loggia-cdn/lodgeContent/5b4e34eb4559f99fdb1d3106e5926260.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Communal playground area with toys, ping pong table and trampoline",
+     "image": "../../loggia-cdn/lodgeContent/7aa833e6dc6d071bae45944d29bd6eef.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Common outdoor dining area for all villas",
+     "image": "../../loggia-cdn/lodgeContent/cdd65b2ccce235d8df9f75727c28a479.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Daily Cretan Traditional Breakfast upon request with additional fee",
+     "image": "../../loggia-cdn/lodgeContent/1227f6dba8c6aee91bba6c32868d47ce.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Wine cooler",
+     "image": "../../loggia-cdn/lodgeContent/4d94c4be3c6a3f9210c7cf0f6f4d5dfa.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Each villa will have private lux sun beds in our private beach which is 50m away",
+     "image": "../../loggia-cdn/lodgeContent/c83ea359dbb6ef35b3970ae9a0e38f34.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Vegetable garden in which you can âuseâ with our gardenerâs help and taste home grown vegetables.",
+     "image": "../../loggia-cdn/lodgeContent/e9d879bccdb2a2185628e5998ffbecfd.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/fcac1aa5d8fcf71392483ef5f0ee37a7.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/e911281af35a0f52eb5bbcb557dbbaba.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Private beach!",
+     "image": "../../loggia-cdn/lodgeContent/b5b02c4afe1eae2217c46518c30da75a.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Private beach, Each villa has private sun beds on the crystal clear water's edge",
+     "image": "../../loggia-cdn/lodgeContent/75fdb9227a111095dfe698ac296e23ea.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Each villa has private sun beds on our Private Beach!",
+     "image": "../../loggia-cdn/lodgeContent/9da84ba4943ad800e10e43a555417a92.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Enjoy amazing Cretan sea views",
+     "image": "../../loggia-cdn/lodgeContent/524e2bd6a46b3b633244baf33e37b3de.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Secure parking space",
+     "image": "../../loggia-cdn/lodgeContent/8dd17fd2b16a08abc05928da1b710960.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "We have paid attention for every details",
+     "image": "../../loggia-cdn/lodgeContent/5acdf90ecd6d002ee8a04fdeca074e72.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Outdoor area of the villa, each villa has its own outdoor area with pool & hot tub",
+     "image": "../../loggia-cdn/lodgeContent/dca811b07c0d0f81d7a50b911e336513.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Outdoor area",
+     "image": "../../loggia-cdn/lodgeContent/c945f4a29ee6d4a8417b97632017b2b2.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "The perfect spot for relaxing..!",
+     "image": "../../loggia-cdn/lodgeContent/c7a5085d9d07decf04d3b076044009a6.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Sunset time in the villas",
+     "image": "../../loggia-cdn/lodgeContent/16601f49aade294aea08977902522a49.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Communal playground area with toys, ping pong table and trampoline",
+     "image": "../../loggia-cdn/lodgeContent/8daa8c827a0a5d5f30c70155bc586150.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Enjoy tranquillity, comfort and luxury of these unique villas",
+     "image": "../../loggia-cdn/lodgeContent/9069024e8563c370045997b6419c8e43.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    }
+   ],
+   "fancyServiceImages391": [
+    {
+     "caption": "Cook (professional chef) in the villa",
+     "image": "../../loggia-cdn/lodgeContent/f9c9b5e3ccee14fa0b1e9adda9369a69.jpg",
+     "fancyboxGroup": "fancyServiceImages391"
+    }
+   ],
+   "fancyServiceImages393": [
+    {
+     "caption": "Baby sitting",
+     "image": "../../loggia-cdn/lodgeContent/ff92de0b8a3816c7960ef57e0c803169.jpg",
+     "fancyboxGroup": "fancyServiceImages393"
+    }
+   ],
+   "fancyServiceImages1156": [
+    {
+     "caption": "Pool maintenance",
+     "image": "../../loggia-cdn/lodgeContent/367622fc62d6b70057569c40580fe7a4.jpg",
+     "fancyboxGroup": "fancyServiceImages1156"
+    }
+   ],
+   "fancyServiceImages329": [
+    {
+     "caption": "Pool Towels",
+     "image": "../../loggia-cdn/lodgeContent/fafea700c4a888003811c8139e89ec87.jpg",
+     "fancyboxGroup": "fancyServiceImages329"
+    }
+   ],
+   "fancyServiceImages402": [
+    {
+     "caption": "Daily Excursions",
+     "image": "../../loggia-cdn/lodgeContent/635d506527ac868f8d19826ccd2cd581.jpg",
+     "fancyboxGroup": "fancyServiceImages402"
+    }
+   ],
+   "fancyServiceImages405": [
+    {
+     "caption": "Diving",
+     "image": "../../loggia-cdn/lodgeContent/e9f80eb5acb93c984f034d865b59afbe.jpg",
+     "fancyboxGroup": "fancyServiceImages405"
+    }
+   ]
+  },
+  "distinctCaptions": [
+   "Baby sitting",
+   "Barbecue area",
+   "Bathroom with shower on the ground floor",
+   "Bedroom with 2 single beds on the ground floor",
+   "Bedroom with a king size double bed on the first floor",
+   "Common outdoor dining area for all villas",
+   "Communal playground area with toys, ping pong table and trampoline",
+   "Cook (professional chef) in the villa",
+   "Daily Cretan Traditional Breakfast upon request with additional fee",
+   "Daily Excursions",
+   "Diving",
+   "Each villa has its own outdoor area with pool & hot tub",
+   "Each villa has private sun beds on our Private Beach!",
+   "Each villa will have private lux sun beds in our private beach which is 50m away",
+   "Easy access to our Private beach",
+   "Enjoy amazing Cretan sea views",
+   "Enjoy tranquillity, comfort and luxury of these unique villas",
+   "Fully equipped kitchen and indoor dining table",
+   "GROHE products in all the water systems",
+   "Hot Tub in our garden.",
+   "Hot Tub!",
+   "Indoor kitchen and dining area with access to outdoor area",
+   "Living room next to the pool area",
+   "Open plan living room with white marble from Greece",
+   "Our bathroom amenities are from \"Korres\" and \"Cocomat\"",
+   "Our bed mattresses are from \"Cocomat\" which promises the good sleep!",
+   "Outdoor area",
+   "Outdoor area of the villa, each villa has its own outdoor area with pool & hot tub",
+   "Outdoor sitting area in the veranda connected to kitchen area",
+   "Pool Towels",
+   "Pool and sunbathing area (The pool can be also heated)",
+   "Pool maintenance",
+   "Private beach!",
+   "Private beach, Each villa has private sun beds on the crystal clear water's edge",
+   "Safe organised playground area for young children in the complex",
+   "Secure parking space",
+   "Sunset time in the villas",
+   "The bedroom has access to outdoor balcony with outstanding view!",
+   "The main bathroom with Jacuzzi on the first floor",
+   "The perfect spot for relaxing..!",
+   "The villas are located just a few meters away from our private beach!",
+   "Vegetable garden in which you can âuseâ with our gardenerâs help and taste home grown vegetables.",
+   "We have paid attention for every details",
+   "Welcome to villa Eeanthe!",
+   "Wine cooler"
+  ]
+ },
+ "en__property__202__albums.html": {
+  "total": 92,
+  "byGroup": {
+   "fancyalbum_819": [
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/5cc2dbcf1859395b2ae891f961292936.jpg",
+     "fancyboxGroup": "fancyalbum_819"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/56a298fddcf18fa81f36814c8a32e16e.jpg",
+     "fancyboxGroup": "fancyalbum_819"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/a27cda6e6fe32a5867d97870063d17f7.jpg",
+     "fancyboxGroup": "fancyalbum_819"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/88ff791fbee90d87ee3ccd7caa3cacc0.jpg",
+     "fancyboxGroup": "fancyalbum_819"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/aeb622a98493300027688b61d649d5f5.jpg",
+     "fancyboxGroup": "fancyalbum_819"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/b3af4d093e252c1ddbfc75306d623fe1.jpg",
+     "fancyboxGroup": "fancyalbum_819"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/802d35f9f1f8ac373b4812cebb5693dc.jpg",
+     "fancyboxGroup": "fancyalbum_819"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/3ccb2ef15f398af5498c91828638f7bc.jpg",
+     "fancyboxGroup": "fancyalbum_819"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/48aafde8005bd7150db755625b15b48a.jpg",
+     "fancyboxGroup": "fancyalbum_819"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/b6b58df3b32cdc194c72d33cc8b37d3e.jpg",
+     "fancyboxGroup": "fancyalbum_819"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/74a1ca2c52e0b00582bb72585b9e4a9a.jpg",
+     "fancyboxGroup": "fancyalbum_819"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/a0c13cb62501cf50ef39bcf642d1527d.jpg",
+     "fancyboxGroup": "fancyalbum_819"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/530b7ee0e16dca43676cdf49e4ae62f7.jpg",
+     "fancyboxGroup": "fancyalbum_819"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/3d09e0b4b0af457545d17e03111d600a.jpg",
+     "fancyboxGroup": "fancyalbum_819"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/dca811b07c0d0f81d7a50b911e336513.jpg",
+     "fancyboxGroup": "fancyalbum_819"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/8f55bcdec7b442161de93c9dd5d0b458.jpg",
+     "fancyboxGroup": "fancyalbum_819"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/c945f4a29ee6d4a8417b97632017b2b2.jpg",
+     "fancyboxGroup": "fancyalbum_819"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/be4442a70b52dd6b49f1cfdc95770d9d.jpg",
+     "fancyboxGroup": "fancyalbum_819"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/c7a5085d9d07decf04d3b076044009a6.jpg",
+     "fancyboxGroup": "fancyalbum_819"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/5acdf90ecd6d002ee8a04fdeca074e72.jpg",
+     "fancyboxGroup": "fancyalbum_819"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/71c90c592c9de399a307c6c526e2fe8c.jpg",
+     "fancyboxGroup": "fancyalbum_819"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/62ca2e56b6c9b6186c0712d0cdb19b93.jpg",
+     "fancyboxGroup": "fancyalbum_819"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/5d0c1ab1b3c23dee9218370a6e38a834.jpg",
+     "fancyboxGroup": "fancyalbum_819"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/7aa833e6dc6d071bae45944d29bd6eef.jpg",
+     "fancyboxGroup": "fancyalbum_819"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/7f581d0287733e0f65c28da00f569c89.jpg",
+     "fancyboxGroup": "fancyalbum_819"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/cdd65b2ccce235d8df9f75727c28a479.jpg",
+     "fancyboxGroup": "fancyalbum_819"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/8cbad18064fa84d6bc5434f73c5e69fc.jpg",
+     "fancyboxGroup": "fancyalbum_819"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/4d94c4be3c6a3f9210c7cf0f6f4d5dfa.jpg",
+     "fancyboxGroup": "fancyalbum_819"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/b5b02c4afe1eae2217c46518c30da75a.jpg",
+     "fancyboxGroup": "fancyalbum_819"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/b647769909983b984310380326f17424.jpg",
+     "fancyboxGroup": "fancyalbum_819"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/604e1af1b9d2d22f14f86cad5026598d.jpg",
+     "fancyboxGroup": "fancyalbum_819"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/fef829677b1eb4663fa278e85fb71486.jpg",
+     "fancyboxGroup": "fancyalbum_819"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/9da84ba4943ad800e10e43a555417a92.jpg",
+     "fancyboxGroup": "fancyalbum_819"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/80231fcf0405bbb2ccc75a4e27dddc0f.jpg",
+     "fancyboxGroup": "fancyalbum_819"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/524e2bd6a46b3b633244baf33e37b3de.jpg",
+     "fancyboxGroup": "fancyalbum_819"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/c83ea359dbb6ef35b3970ae9a0e38f34.jpg",
+     "fancyboxGroup": "fancyalbum_819"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/c5840a38afdfe0e8a3f7fb81726f92f8.jpg",
+     "fancyboxGroup": "fancyalbum_819"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/e9d879bccdb2a2185628e5998ffbecfd.jpg",
+     "fancyboxGroup": "fancyalbum_819"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/91d5812c0513637def3226e998fff9e6.jpg",
+     "fancyboxGroup": "fancyalbum_819"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/16601f49aade294aea08977902522a49.jpg",
+     "fancyboxGroup": "fancyalbum_819"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/518c17aa30c3ce20e305c39048387004.jpg",
+     "fancyboxGroup": "fancyalbum_819"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/f05c0685553ac9937313734a6297f262.jpg",
+     "fancyboxGroup": "fancyalbum_819"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/8daa8c827a0a5d5f30c70155bc586150.jpg",
+     "fancyboxGroup": "fancyalbum_819"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/9069024e8563c370045997b6419c8e43.jpg",
+     "fancyboxGroup": "fancyalbum_819"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/eb1f0619326d4f4ebc1d25fb73e2f43f.jpg",
+     "fancyboxGroup": "fancyalbum_819"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/8dd17fd2b16a08abc05928da1b710960.jpg",
+     "fancyboxGroup": "fancyalbum_819"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/5091509074f3752a5eb3da20cdb2b337.jpg",
+     "fancyboxGroup": "fancyalbum_819"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/c5f6278961afc0190b7d15957a2897a6.jpg",
+     "fancyboxGroup": "fancyalbum_819"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/c74dd1f22506fed5089dc16c8769ba24.jpg",
+     "fancyboxGroup": "fancyalbum_819"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/947f132593fecc4ba081c122b5a28f41.jpg",
+     "fancyboxGroup": "fancyalbum_819"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/7395e762b499b146a6ce189670e4f926.jpg",
+     "fancyboxGroup": "fancyalbum_819"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/646920c119d5fb606bb81e6df2e727f7.jpg",
+     "fancyboxGroup": "fancyalbum_819"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/cc48b06d2a21fb3b3bf82b78f7841b36.jpg",
+     "fancyboxGroup": "fancyalbum_819"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/2781c1154a9b156eaeaced76c28fa7a6.jpg",
+     "fancyboxGroup": "fancyalbum_819"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/9123c9f519b78bad07abc23163a59573.jpg",
+     "fancyboxGroup": "fancyalbum_819"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/0d8c944435338cedf3adb4a84d0dca6c.jpg",
+     "fancyboxGroup": "fancyalbum_819"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/e911281af35a0f52eb5bbcb557dbbaba.jpg",
+     "fancyboxGroup": "fancyalbum_819"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/7a83e85c06ef09b784ae3339a9623eb9.jpg",
+     "fancyboxGroup": "fancyalbum_819"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/b20cea2ff8ea1c4513a7a0ffc61705b2.jpg",
+     "fancyboxGroup": "fancyalbum_819"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/bc6dfa7f233b733878d15deedd3f348b.jpg",
+     "fancyboxGroup": "fancyalbum_819"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/301c163617a522470e95053b21254495.jpg",
+     "fancyboxGroup": "fancyalbum_819"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/fcac1aa5d8fcf71392483ef5f0ee37a7.jpg",
+     "fancyboxGroup": "fancyalbum_819"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/174361e395aff84b1af9f15822996159.jpg",
+     "fancyboxGroup": "fancyalbum_819"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/9d13d529c60c95275072bbc748a0577b.jpg",
+     "fancyboxGroup": "fancyalbum_819"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/12e099d04cb17783bc4db654b766b369.jpg",
+     "fancyboxGroup": "fancyalbum_819"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/0b2ce60b995f3aebd7489fa680b20fa9.jpg",
+     "fancyboxGroup": "fancyalbum_819"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/235cf9ee005dd93b402377d60b8de578.jpg",
+     "fancyboxGroup": "fancyalbum_819"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/6a455617ea44da784f9e67d35ffbb778.jpg",
+     "fancyboxGroup": "fancyalbum_819"
+    }
+   ],
+   "fancyalbum_820": [
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/66dcf8cd286629a06f3ca3b10c0cd4e7.jpg",
+     "fancyboxGroup": "fancyalbum_820"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/347992cb41992b314ced4e75b6152a9f.jpg",
+     "fancyboxGroup": "fancyalbum_820"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/5f710b132f90e3e98707dcd62074a363.jpg",
+     "fancyboxGroup": "fancyalbum_820"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/5e218f1178743fe48a0b005690ddd926.jpg",
+     "fancyboxGroup": "fancyalbum_820"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/822455d2dd39168de2deb48186bee610.jpg",
+     "fancyboxGroup": "fancyalbum_820"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/5e50f037ce476c6eeea27a17e7cac59d.jpg",
+     "fancyboxGroup": "fancyalbum_820"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/89b9b7d0649de8eaf9e70763e3b9c2f5.jpg",
+     "fancyboxGroup": "fancyalbum_820"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/41b7fe9560a1084098b4f5aa8d117969.jpg",
+     "fancyboxGroup": "fancyalbum_820"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/365043ab93ce9db461af20e6e4d7e2bd.jpg",
+     "fancyboxGroup": "fancyalbum_820"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/7065293aee738f3ace812a03de1a901e.jpg",
+     "fancyboxGroup": "fancyalbum_820"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/e10c6f7f17e8c869b906f4baa4f0d3ee.jpg",
+     "fancyboxGroup": "fancyalbum_820"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/907621a5a8957ca6d26eb18d86fbed55.jpg",
+     "fancyboxGroup": "fancyalbum_820"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/d940b1e8b629d012b0eaad5378166fa4.jpg",
+     "fancyboxGroup": "fancyalbum_820"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/f024742b08eb10941ae421bf6dac2ca0.jpg",
+     "fancyboxGroup": "fancyalbum_820"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/feda203e48b9d1e4ee85b5b8dc87c0ad.jpg",
+     "fancyboxGroup": "fancyalbum_820"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/5baee9559ac239f57013076261990da7.jpg",
+     "fancyboxGroup": "fancyalbum_820"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/44285126e407b72cdb553f0539c4738a.jpg",
+     "fancyboxGroup": "fancyalbum_820"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/6d57c1975fa88be1f222ef88eba5400e.jpg",
+     "fancyboxGroup": "fancyalbum_820"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/d38327707f2cf01987911199c95ff709.jpg",
+     "fancyboxGroup": "fancyalbum_820"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/573e8944e1dcb542793486821e77902f.jpg",
+     "fancyboxGroup": "fancyalbum_820"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/aabcd97beb54f1afde638b02783c4a8e.jpg",
+     "fancyboxGroup": "fancyalbum_820"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/c26521e47027eee6b3e2e5781383d96d.jpg",
+     "fancyboxGroup": "fancyalbum_820"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/2235006efbe431e8004b5a0586921f30.jpg",
+     "fancyboxGroup": "fancyalbum_820"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/f752470416c60455f7c407165ec5265c.jpg",
+     "fancyboxGroup": "fancyalbum_820"
+    }
+   ]
+  },
+  "distinctCaptions": []
+ },
+ "en__property__203.html": {
+  "total": 50,
+  "byGroup": {
+   "fancyFeaturedImages": [
+    {
+     "caption": "Pool area with hot tub for 3 people",
+     "image": "../../loggia-cdn/lodgeContent/65070ce083cb1d043359d54469a98399.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Private swimming pool (The pool can be also heated)",
+     "image": "../../loggia-cdn/lodgeContent/5d22149beddf038b4a7fd8805c69c942.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "The villa is designed to offer clear view to the sea from the first floor bedrooms and balcony",
+     "image": "../../loggia-cdn/lodgeContent/569b374bc48c2e4df74e8188139edf25.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Easy access to our Private beach",
+     "image": "../../loggia-cdn/lodgeContent/e1f660f2bac1f21fd9272cee140dd831.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Common outdoor dining area for all villas",
+     "image": "../../loggia-cdn/lodgeContent/8f9169c3045e4341c159205d40bdd272.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Each villa will have private lux sun beds in our private beach which is 50m away",
+     "image": "../../loggia-cdn/lodgeContent/c4a288277ec58c08222af68a658bcad4.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Balcony on the first floor with sitting areas",
+     "image": "../../loggia-cdn/lodgeContent/4f1f093a196959ade9e39d381d6fe1d1.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Enjoy your drink in our balcony with sea view",
+     "image": "../../loggia-cdn/lodgeContent/50e09fec5ed312f11c40044b81fafc9f.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Private swimming pool area with sun beds",
+     "image": "../../loggia-cdn/lodgeContent/6990a9daf74d1b539e8c693e7a2ac07c.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Private swimming pool area with sun beds (The pool can be also heated)",
+     "image": "../../loggia-cdn/lodgeContent/ad5fa2df16a02047795213668676ac5e.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Comfortable sun beds from EMU by the pool",
+     "image": "../../loggia-cdn/lodgeContent/5bc964a6b767f933568c929ef1422e58.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Hot tub for 3 people!",
+     "image": "../../loggia-cdn/lodgeContent/c14ff1e58925f42db824e65cf8a393bc.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "The swimming pool can be heated with additional 35â¬ per day upon request.",
+     "image": "../../loggia-cdn/lodgeContent/a43c9a1581b6c1ef0b5d3d07c5c9b2d1.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "A gas barbecue station from Porphyritic",
+     "image": "../../loggia-cdn/lodgeContent/4fb637aefdd44178fb5b562dba55f751.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Open plan living room with white marble from Greece",
+     "image": "../../loggia-cdn/lodgeContent/ea4e2478570f9f51eda174fd89c5e93c.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Outdoor sitting area connected to indoor area",
+     "image": "../../loggia-cdn/lodgeContent/5d7d66b6fd5c54dd54e861b38b75071c.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Indoor dining area",
+     "image": "../../loggia-cdn/lodgeContent/341ef6877c55bf3a7be341820a4fd9ed.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Smeg refrigerator",
+     "image": "../../loggia-cdn/lodgeContent/fa62c6f2a74cb7bef796eb9a1ee0edb7.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Bedroom with 2 single beds on the ground floor",
+     "image": "../../loggia-cdn/lodgeContent/9e6fc5b2b6ed77d8890851162ebb7b6e.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Bathroom with shower on the ground floor",
+     "image": "../../loggia-cdn/lodgeContent/15e97a3260044624852e287a6a828aef.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Bedroom with a king size double bed on the first floor",
+     "image": "../../loggia-cdn/lodgeContent/733c3066dc1be3e63c65b445aa16d22f.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Bedroom with a king size double bed on the first floor",
+     "image": "../../loggia-cdn/lodgeContent/42d1ecb9236a81d0d8480eb891749cda.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "The main bathroom with Jacuzzi on the first floor",
+     "image": "../../loggia-cdn/lodgeContent/471209566eec701b04a565f2c73977eb.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Our bathroom amenities are from Korres and Cocomat",
+     "image": "../../loggia-cdn/lodgeContent/caa71c9873130fbe17a0373b6b1d1717.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Welcome to Villa Melia!",
+     "image": "../../loggia-cdn/lodgeContent/9f6948a794ee40bb43402b801a8e85fe.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Communal playground area with toys, ping pong table and trampoline",
+     "image": "../../loggia-cdn/lodgeContent/c6334c6f678efa860f63dfff5127be1b.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Communal playground area with toys, ping pong table and trampoline",
+     "image": "../../loggia-cdn/lodgeContent/6065f73ccef854ea37197849c1fad8ca.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Daily Cretan Traditional Breakfast upon request with additional fee",
+     "image": "../../loggia-cdn/lodgeContent/a6c269c9c0db0c17a3729cab687da9b8.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Wine cooler",
+     "image": "../../loggia-cdn/lodgeContent/dff3487b32d4d572184a9c4943dd603a.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/49f8a7cac9860efabbadd32cccb3a706.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/9416809d27a0b8a4d881d32bfbeb6e09.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Private beach!",
+     "image": "../../loggia-cdn/lodgeContent/1d5f43e24f67bc28fb284fb9da90084d.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Private beach, Each villa has private sun beds on the crystal clear water's edge",
+     "image": "../../loggia-cdn/lodgeContent/da15b7ebf305f6734ccb84ee9c1821ca.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Each villa has private sun beds on our Private Beach!",
+     "image": "../../loggia-cdn/lodgeContent/3a28424b8c1e12e77bca27faa8c7a61c.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Enjoy amazing Cretan sea views",
+     "image": "../../loggia-cdn/lodgeContent/20f0e2cb02c05988bddcf94bae7a266b.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Vegetable garden in which you can âuseâ with our gardenerâs help and taste home grown vegetables.",
+     "image": "../../loggia-cdn/lodgeContent/8277b2a85e013ebc2580d5f175c6b548.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Secure parking space",
+     "image": "../../loggia-cdn/lodgeContent/913be088caf8e49043f70ecb126ab962.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "The perfect spot for relaxing..!",
+     "image": "../../loggia-cdn/lodgeContent/44a3fa3b14049b6e8b853a615ca43df6.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Enjoy tranquility all day long..",
+     "image": "../../loggia-cdn/lodgeContent/76d2817d435bc2e940be21d7a183ac64.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Each villa has its own outdoor area with pool & hot",
+     "image": "../../loggia-cdn/lodgeContent/47dc65d08c571df8d2e09eb267c9ebe7.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Each villa will have private lux sun beds in our private beach which is 50m away",
+     "image": "../../loggia-cdn/lodgeContent/9cc4617118b4fd1c3555c22b1666b632.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Communal playground area with toys, ping pong table and trampoline",
+     "image": "../../loggia-cdn/lodgeContent/dcaa1710d540f880647b3f3606da6320.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Thalasses Villas - Luxurious accommodation",
+     "image": "../../loggia-cdn/lodgeContent/90b4599c5b714346933c3ed5fd840b7e.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "Thalasses Villas - Luxurious accommodation",
+     "image": "../../loggia-cdn/lodgeContent/33d9a4dc91a6ceb8656f60d2e9ce3581.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    }
+   ],
+   "fancyServiceImages391": [
+    {
+     "caption": "Cook (professional chef) in the villa",
+     "image": "../../loggia-cdn/lodgeContent/f9c9b5e3ccee14fa0b1e9adda9369a69.jpg",
+     "fancyboxGroup": "fancyServiceImages391"
+    }
+   ],
+   "fancyServiceImages393": [
+    {
+     "caption": "Baby sitting",
+     "image": "../../loggia-cdn/lodgeContent/ff92de0b8a3816c7960ef57e0c803169.jpg",
+     "fancyboxGroup": "fancyServiceImages393"
+    }
+   ],
+   "fancyServiceImages1156": [
+    {
+     "caption": "Pool maintenance",
+     "image": "../../loggia-cdn/lodgeContent/367622fc62d6b70057569c40580fe7a4.jpg",
+     "fancyboxGroup": "fancyServiceImages1156"
+    }
+   ],
+   "fancyServiceImages329": [
+    {
+     "caption": "Pool Towels",
+     "image": "../../loggia-cdn/lodgeContent/fafea700c4a888003811c8139e89ec87.jpg",
+     "fancyboxGroup": "fancyServiceImages329"
+    }
+   ],
+   "fancyServiceImages402": [
+    {
+     "caption": "Daily Excursions",
+     "image": "../../loggia-cdn/lodgeContent/635d506527ac868f8d19826ccd2cd581.jpg",
+     "fancyboxGroup": "fancyServiceImages402"
+    }
+   ],
+   "fancyServiceImages405": [
+    {
+     "caption": "Diving",
+     "image": "../../loggia-cdn/lodgeContent/e9f80eb5acb93c984f034d865b59afbe.jpg",
+     "fancyboxGroup": "fancyServiceImages405"
+    }
+   ]
+  },
+  "distinctCaptions": [
+   "A gas barbecue station from Porphyritic",
+   "Baby sitting",
+   "Balcony on the first floor with sitting areas",
+   "Bathroom with shower on the ground floor",
+   "Bedroom with 2 single beds on the ground floor",
+   "Bedroom with a king size double bed on the first floor",
+   "Comfortable sun beds from EMU by the pool",
+   "Common outdoor dining area for all villas",
+   "Communal playground area with toys, ping pong table and trampoline",
+   "Cook (professional chef) in the villa",
+   "Daily Cretan Traditional Breakfast upon request with additional fee",
+   "Daily Excursions",
+   "Diving",
+   "Each villa has its own outdoor area with pool & hot",
+   "Each villa has private sun beds on our Private Beach!",
+   "Each villa will have private lux sun beds in our private beach which is 50m away",
+   "Easy access to our Private beach",
+   "Enjoy amazing Cretan sea views",
+   "Enjoy tranquility all day long..",
+   "Enjoy your drink in our balcony with sea view",
+   "Hot tub for 3 people!",
+   "Indoor dining area",
+   "Open plan living room with white marble from Greece",
+   "Our bathroom amenities are from Korres and Cocomat",
+   "Outdoor sitting area connected to indoor area",
+   "Pool Towels",
+   "Pool area with hot tub for 3 people",
+   "Pool maintenance",
+   "Private beach!",
+   "Private beach, Each villa has private sun beds on the crystal clear water's edge",
+   "Private swimming pool (The pool can be also heated)",
+   "Private swimming pool area with sun beds",
+   "Private swimming pool area with sun beds (The pool can be also heated)",
+   "Secure parking space",
+   "Smeg refrigerator",
+   "Thalasses Villas - Luxurious accommodation",
+   "The main bathroom with Jacuzzi on the first floor",
+   "The perfect spot for relaxing..!",
+   "The swimming pool can be heated with additional 35â¬ per day upon request.",
+   "The villa is designed to offer clear view to the sea from the first floor bedrooms and balcony",
+   "Vegetable garden in which you can âuseâ with our gardenerâs help and taste home grown vegetables.",
+   "Welcome to Villa Melia!",
+   "Wine cooler"
+  ]
+ },
+ "en__property__203__albums.html": {
+  "total": 81,
+  "byGroup": {
+   "fancyalbum_821": [
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/ad5fa2df16a02047795213668676ac5e.jpg",
+     "fancyboxGroup": "fancyalbum_821"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/a43c9a1581b6c1ef0b5d3d07c5c9b2d1.jpg",
+     "fancyboxGroup": "fancyalbum_821"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/6990a9daf74d1b539e8c693e7a2ac07c.jpg",
+     "fancyboxGroup": "fancyalbum_821"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/5bc964a6b767f933568c929ef1422e58.jpg",
+     "fancyboxGroup": "fancyalbum_821"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/c1cc9359ead6221c4ac0be5ea44a1b87.jpg",
+     "fancyboxGroup": "fancyalbum_821"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/c14ff1e58925f42db824e65cf8a393bc.jpg",
+     "fancyboxGroup": "fancyalbum_821"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/4fb637aefdd44178fb5b562dba55f751.jpg",
+     "fancyboxGroup": "fancyalbum_821"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/e1f660f2bac1f21fd9272cee140dd831.jpg",
+     "fancyboxGroup": "fancyalbum_821"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/569b374bc48c2e4df74e8188139edf25.jpg",
+     "fancyboxGroup": "fancyalbum_821"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/4f1f093a196959ade9e39d381d6fe1d1.jpg",
+     "fancyboxGroup": "fancyalbum_821"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/98326ad10a1b270b0a84457a95db0200.jpg",
+     "fancyboxGroup": "fancyalbum_821"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/50e09fec5ed312f11c40044b81fafc9f.jpg",
+     "fancyboxGroup": "fancyalbum_821"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/e28993c01e979c5d87952db6ae1ecb9b.jpg",
+     "fancyboxGroup": "fancyalbum_821"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/5d7d66b6fd5c54dd54e861b38b75071c.jpg",
+     "fancyboxGroup": "fancyalbum_821"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/9f6948a794ee40bb43402b801a8e85fe.jpg",
+     "fancyboxGroup": "fancyalbum_821"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/5d22149beddf038b4a7fd8805c69c942.jpg",
+     "fancyboxGroup": "fancyalbum_821"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/76d2817d435bc2e940be21d7a183ac64.jpg",
+     "fancyboxGroup": "fancyalbum_821"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/44a3fa3b14049b6e8b853a615ca43df6.jpg",
+     "fancyboxGroup": "fancyalbum_821"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/65070ce083cb1d043359d54469a98399.jpg",
+     "fancyboxGroup": "fancyalbum_821"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/840f632bd98f6003ff19532e4640498b.jpg",
+     "fancyboxGroup": "fancyalbum_821"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/47dc65d08c571df8d2e09eb267c9ebe7.jpg",
+     "fancyboxGroup": "fancyalbum_821"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/b209a35704651c2637a88ac1b4b8947c.jpg",
+     "fancyboxGroup": "fancyalbum_821"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/c6334c6f678efa860f63dfff5127be1b.jpg",
+     "fancyboxGroup": "fancyalbum_821"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/8f9169c3045e4341c159205d40bdd272.jpg",
+     "fancyboxGroup": "fancyalbum_821"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/a6c269c9c0db0c17a3729cab687da9b8.jpg",
+     "fancyboxGroup": "fancyalbum_821"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/dff3487b32d4d572184a9c4943dd603a.jpg",
+     "fancyboxGroup": "fancyalbum_821"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/c4a288277ec58c08222af68a658bcad4.jpg",
+     "fancyboxGroup": "fancyalbum_821"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/36e6cce20a997d05190bcee1e3337595.jpg",
+     "fancyboxGroup": "fancyalbum_821"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/8277b2a85e013ebc2580d5f175c6b548.jpg",
+     "fancyboxGroup": "fancyalbum_821"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/1d5f43e24f67bc28fb284fb9da90084d.jpg",
+     "fancyboxGroup": "fancyalbum_821"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/b758091968a7286ff2f5a5963125c448.jpg",
+     "fancyboxGroup": "fancyalbum_821"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/da15b7ebf305f6734ccb84ee9c1821ca.jpg",
+     "fancyboxGroup": "fancyalbum_821"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/3a28424b8c1e12e77bca27faa8c7a61c.jpg",
+     "fancyboxGroup": "fancyalbum_821"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/58e2711dd5706ea538045cac0a96bdb5.jpg",
+     "fancyboxGroup": "fancyalbum_821"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/20f0e2cb02c05988bddcf94bae7a266b.jpg",
+     "fancyboxGroup": "fancyalbum_821"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/913be088caf8e49043f70ecb126ab962.jpg",
+     "fancyboxGroup": "fancyalbum_821"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/9cc4617118b4fd1c3555c22b1666b632.jpg",
+     "fancyboxGroup": "fancyalbum_821"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/7463bd044a371f13c834b7c6f74806fc.jpg",
+     "fancyboxGroup": "fancyalbum_821"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/90b4599c5b714346933c3ed5fd840b7e.jpg",
+     "fancyboxGroup": "fancyalbum_821"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/f32cea497f782860f25da92e172548e3.jpg",
+     "fancyboxGroup": "fancyalbum_821"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/33d9a4dc91a6ceb8656f60d2e9ce3581.jpg",
+     "fancyboxGroup": "fancyalbum_821"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/472fdb51a1bd494c7a99c5b772f44ffc.jpg",
+     "fancyboxGroup": "fancyalbum_821"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/45af143e88ad1d8e970ba949977c70f6.jpg",
+     "fancyboxGroup": "fancyalbum_821"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/4c2ae3b77e31594baa206e7cbf38858c.jpg",
+     "fancyboxGroup": "fancyalbum_821"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/a80e0a9b0d6d044978edd420c2b23d19.jpg",
+     "fancyboxGroup": "fancyalbum_821"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/0335fdbe759e3994d9d1bf12d6d4078c.jpg",
+     "fancyboxGroup": "fancyalbum_821"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/1a2e29a16982c06b458087ad2db5e051.jpg",
+     "fancyboxGroup": "fancyalbum_821"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/7156ec533480940e5ae1824805d18ad2.jpg",
+     "fancyboxGroup": "fancyalbum_821"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/d950315eee77186ca4c23c47472871e0.jpg",
+     "fancyboxGroup": "fancyalbum_821"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/c093d66e479fe3e0c87e2cae8a087c6c.jpg",
+     "fancyboxGroup": "fancyalbum_821"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/14d4a6bfd23cd1ef12fbc35f7998cb13.jpg",
+     "fancyboxGroup": "fancyalbum_821"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/8ac462ab7202e4154f5abf539f8cdbb5.jpg",
+     "fancyboxGroup": "fancyalbum_821"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/ce40c7c4060298ef2a2ab91608206341.jpg",
+     "fancyboxGroup": "fancyalbum_821"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/49f8a7cac9860efabbadd32cccb3a706.jpg",
+     "fancyboxGroup": "fancyalbum_821"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/eab26317168fedc8f1021eaae734ab55.jpg",
+     "fancyboxGroup": "fancyalbum_821"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/f68a3556c04a6e5057f499d1d1d68e82.jpg",
+     "fancyboxGroup": "fancyalbum_821"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/806cedf2103ae0bc43cb84272a9edc6f.jpg",
+     "fancyboxGroup": "fancyalbum_821"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/9416809d27a0b8a4d881d32bfbeb6e09.jpg",
+     "fancyboxGroup": "fancyalbum_821"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/f6ee0c69548f179c1644b9517189adf3.jpg",
+     "fancyboxGroup": "fancyalbum_821"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/699847c839e8d0d26ae9a86790606a33.jpg",
+     "fancyboxGroup": "fancyalbum_821"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/5c89d2561b1eadfc939deaa36565ea80.jpg",
+     "fancyboxGroup": "fancyalbum_821"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/7727f0bae379634f78b150e93a8c1b41.jpg",
+     "fancyboxGroup": "fancyalbum_821"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/ce22b543ded772dcefeea152dbd12ea2.jpg",
+     "fancyboxGroup": "fancyalbum_821"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/10e74490c9819ed6fcf57b80965a22ed.jpg",
+     "fancyboxGroup": "fancyalbum_821"
+    }
+   ],
+   "fancyalbum_822": [
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/ea4e2478570f9f51eda174fd89c5e93c.jpg",
+     "fancyboxGroup": "fancyalbum_822"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/341ef6877c55bf3a7be341820a4fd9ed.jpg",
+     "fancyboxGroup": "fancyalbum_822"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/fa62c6f2a74cb7bef796eb9a1ee0edb7.jpg",
+     "fancyboxGroup": "fancyalbum_822"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/5d7d66b6fd5c54dd54e861b38b75071c.jpg",
+     "fancyboxGroup": "fancyalbum_822"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/733c3066dc1be3e63c65b445aa16d22f.jpg",
+     "fancyboxGroup": "fancyalbum_822"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/42d1ecb9236a81d0d8480eb891749cda.jpg",
+     "fancyboxGroup": "fancyalbum_822"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/5defcf9f94a540007a51f7b484290617.jpg",
+     "fancyboxGroup": "fancyalbum_822"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/8a2ce151aca939ca53caca42db53695b.jpg",
+     "fancyboxGroup": "fancyalbum_822"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/471209566eec701b04a565f2c73977eb.jpg",
+     "fancyboxGroup": "fancyalbum_822"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/8676842cd13ae0b09469fa7f51e57e65.jpg",
+     "fancyboxGroup": "fancyalbum_822"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/b5c1c1cd1d12f24601f8f11239deb0c9.jpg",
+     "fancyboxGroup": "fancyalbum_822"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/7e7b6e4d8b12c5c4c00ab89e6fc97c1d.jpg",
+     "fancyboxGroup": "fancyalbum_822"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/9e6fc5b2b6ed77d8890851162ebb7b6e.jpg",
+     "fancyboxGroup": "fancyalbum_822"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/424b68e7a1210e5d79175e383e43f5a6.jpg",
+     "fancyboxGroup": "fancyalbum_822"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/f888b5b377c52bf12810f9cba1f2aa0a.jpg",
+     "fancyboxGroup": "fancyalbum_822"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/424b26e3256393c648bfc02dff4ffa80.jpg",
+     "fancyboxGroup": "fancyalbum_822"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/15e97a3260044624852e287a6a828aef.jpg",
+     "fancyboxGroup": "fancyalbum_822"
+    }
+   ]
+  },
+  "distinctCaptions": []
+ },
+ "en__property__2142.html": {
+  "total": 46,
+  "byGroup": {
+   "fancyFeaturedImages": [
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/fe37f0f9934f8250a4711caaf6cb8c8d.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/0c52479bb31f3ca2493c565e6e13b4e0.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/8bed1111a738437b6149ddf6c10eb26b.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/d9b8e682aec968ad009251a77968f834.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/0977296d505d797ee7d4ed4ba3208a09.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/c51d37a8602e13d93391516ff8822075.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/36db30aa38086877a147f3e0921f1b41.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/afd4493db2934b5d5b6a4706320bf595.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/ec21d7215ab1b54d0a24b1f5469bf191.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/24abdd4cffe545c1409d7d106101124b.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/46af4b45d2287f5eece037050001b0a0.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/a48836426eec1eaecf6f8d070f436b6a.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/73c167e1ef9f6973a0cc108dc13ff89f.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/87bbac9cc8f7df0fabca959bab9e805a.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/06427bf0d6a590205cd61e3e5d91496b.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/970e436b84c1956f63ea183b3347f4a2.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/79416822723cb51517bc41fff7ecc789.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/fefe8ba33f56451ffde39c7e943de53b.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/451abd69db2ab9362b5e0dca78c9b2a4.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/bda41c414e133090c535f74fd1acf589.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/e68c0a8feba447c844581d6ddea9fd68.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/4cc46fc644e94d02e7e4c9acdb58521d.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/5665a07267884075bbc9e72e46ad2fc9.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/5954d5b6435a0b8ffc6a2df5bcdc88b1.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/546c2e5549372dd115f975f81c3ebf08.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/5d8cc3e95f908fa67dc3ffe2c2647b4d.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/c53672175b872bb532a4547a523399e5.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/f63c8f701bc2abca62dfcd0cf9c79209.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/090590c0ad457b1f9ff0488925fb2597.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/ef1a7075f47c618bc8bd48fd0e97e8f7.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/6e0f1136ee302710524f3eac8b3993d8.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/58bda485976388b08636e7cf49bb9c31.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/fc933705d8ca8210fcc8616433102d55.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/9aa4e786f2a577fcefebfbe93dec1683.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/59773a23ff649a618d37c833b1585474.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/4be228cfd9b145068de91534ad82d12a.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/46c1a1c5d6770b8c33d65771bf3be83d.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/349fbdb6e7b47587315da8ca3455d865.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/27326cafe2a20ed0ec3d3aa043a26dfb.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "",
+     "image": "../../loggia-cdn/lodgeContent/6b512ec281a77139b8e82c9fb4e40820.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    }
+   ],
+   "fancyServiceImages391": [
+    {
+     "caption": "Cook (professional chef) in the villa",
+     "image": "../../loggia-cdn/lodgeContent/f9c9b5e3ccee14fa0b1e9adda9369a69.jpg",
+     "fancyboxGroup": "fancyServiceImages391"
+    }
+   ],
+   "fancyServiceImages393": [
+    {
+     "caption": "Baby sitting",
+     "image": "../../loggia-cdn/lodgeContent/ff92de0b8a3816c7960ef57e0c803169.jpg",
+     "fancyboxGroup": "fancyServiceImages393"
+    }
+   ],
+   "fancyServiceImages1156": [
+    {
+     "caption": "Pool maintenance",
+     "image": "../../loggia-cdn/lodgeContent/367622fc62d6b70057569c40580fe7a4.jpg",
+     "fancyboxGroup": "fancyServiceImages1156"
+    }
+   ],
+   "fancyServiceImages329": [
+    {
+     "caption": "Pool Towels",
+     "image": "../../loggia-cdn/lodgeContent/fafea700c4a888003811c8139e89ec87.jpg",
+     "fancyboxGroup": "fancyServiceImages329"
+    }
+   ],
+   "fancyServiceImages405": [
+    {
+     "caption": "Diving",
+     "image": "../../loggia-cdn/lodgeContent/e9f80eb5acb93c984f034d865b59afbe.jpg",
+     "fancyboxGroup": "fancyServiceImages405"
+    }
+   ],
+   "fancyServiceImages402": [
+    {
+     "caption": "Daily Excursions",
+     "image": "../../loggia-cdn/lodgeContent/635d506527ac868f8d19826ccd2cd581.jpg",
+     "fancyboxGroup": "fancyServiceImages402"
+    }
+   ]
+  },
+  "distinctCaptions": [
+   "Baby sitting",
+   "Cook (professional chef) in the villa",
+   "Daily Excursions",
+   "Diving",
+   "Pool Towels",
+   "Pool maintenance"
+  ]
+ },
+ "en__property__2142__albums.html": {
+  "total": 180,
+  "byGroup": {
+   "fancyalbum_2233": [
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/651682e6148f2d8261e49cfc2bb8521f.jpg",
+     "fancyboxGroup": "fancyalbum_2233"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/00c96511f6f93530834156026a048000.jpg",
+     "fancyboxGroup": "fancyalbum_2233"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/8bed1111a738437b6149ddf6c10eb26b.jpg",
+     "fancyboxGroup": "fancyalbum_2233"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/f63c8f701bc2abca62dfcd0cf9c79209.jpg",
+     "fancyboxGroup": "fancyalbum_2233"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/be5e5d08f9604803ad587c8b85c93186.jpg",
+     "fancyboxGroup": "fancyalbum_2233"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/090590c0ad457b1f9ff0488925fb2597.jpg",
+     "fancyboxGroup": "fancyalbum_2233"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/36db30aa38086877a147f3e0921f1b41.jpg",
+     "fancyboxGroup": "fancyalbum_2233"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/ec21d7215ab1b54d0a24b1f5469bf191.jpg",
+     "fancyboxGroup": "fancyalbum_2233"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/24abdd4cffe545c1409d7d106101124b.jpg",
+     "fancyboxGroup": "fancyalbum_2233"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/717883aeec789e45f79cb6dba0c9435e.jpg",
+     "fancyboxGroup": "fancyalbum_2233"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/46af4b45d2287f5eece037050001b0a0.jpg",
+     "fancyboxGroup": "fancyalbum_2233"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/73be3cfff662535ed1dad5efcc0ad66a.jpg",
+     "fancyboxGroup": "fancyalbum_2233"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/273bb078007fb47effd845b7ddd8673a.jpg",
+     "fancyboxGroup": "fancyalbum_2233"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/6c1cdfede52996e5afa06f04175c5c9b.jpg",
+     "fancyboxGroup": "fancyalbum_2233"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/87bbac9cc8f7df0fabca959bab9e805a.jpg",
+     "fancyboxGroup": "fancyalbum_2233"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/7a84c022f0a1d47c1a0ce32609b8b622.jpg",
+     "fancyboxGroup": "fancyalbum_2233"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/2e65b435668c8b672575a3ce73a3faad.jpg",
+     "fancyboxGroup": "fancyalbum_2233"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/e2d456a39d45af7a29df9f354845a863.jpg",
+     "fancyboxGroup": "fancyalbum_2233"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/747a01983bedd5499a842aedcf960454.jpg",
+     "fancyboxGroup": "fancyalbum_2233"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/819a0840ce4f22c927617acd266f337b.jpg",
+     "fancyboxGroup": "fancyalbum_2233"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/f1657ab7c29f29d8d191c12c7735ad7b.jpg",
+     "fancyboxGroup": "fancyalbum_2233"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/2248f127f00818cb0a960262d31075ff.jpg",
+     "fancyboxGroup": "fancyalbum_2233"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/010e7a7331e84fd2fc7cf20e2c307895.jpg",
+     "fancyboxGroup": "fancyalbum_2233"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/1f6df57b962ea72ece0fa1d8b13415cf.jpg",
+     "fancyboxGroup": "fancyalbum_2233"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/04cfe615583fa7727fb9c50c360833ef.jpg",
+     "fancyboxGroup": "fancyalbum_2233"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/4be228cfd9b145068de91534ad82d12a.jpg",
+     "fancyboxGroup": "fancyalbum_2233"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/62a8933b1030c475cde347e3f28b19e6.jpg",
+     "fancyboxGroup": "fancyalbum_2233"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/e15e72268e06070d5c324d9bb5781a45.jpg",
+     "fancyboxGroup": "fancyalbum_2233"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/250e2360e31c5e84f8d83d3a5f6879c1.jpg",
+     "fancyboxGroup": "fancyalbum_2233"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/59773a23ff649a618d37c833b1585474.jpg",
+     "fancyboxGroup": "fancyalbum_2233"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/46c1a1c5d6770b8c33d65771bf3be83d.jpg",
+     "fancyboxGroup": "fancyalbum_2233"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/6b512ec281a77139b8e82c9fb4e40820.jpg",
+     "fancyboxGroup": "fancyalbum_2233"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/0f0431c27e6d2087a48df373f22c605b.jpg",
+     "fancyboxGroup": "fancyalbum_2233"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/76e73408bdc1a4f286a24bf2e69b61f6.jpg",
+     "fancyboxGroup": "fancyalbum_2233"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/27326cafe2a20ed0ec3d3aa043a26dfb.jpg",
+     "fancyboxGroup": "fancyalbum_2233"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/0c52479bb31f3ca2493c565e6e13b4e0.jpg",
+     "fancyboxGroup": "fancyalbum_2233"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/249900e22b0dac03cfe3f9481ced559a.jpg",
+     "fancyboxGroup": "fancyalbum_2233"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/87c97a44055593c41da88d15b55fee7b.jpg",
+     "fancyboxGroup": "fancyalbum_2233"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/851b3a58fc093250442351b9e6988466.jpg",
+     "fancyboxGroup": "fancyalbum_2233"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/38a94ea7975f83e359dff5d09c8036c7.jpg",
+     "fancyboxGroup": "fancyalbum_2233"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/a503f9081b0dc80aae75e81c3befff36.jpg",
+     "fancyboxGroup": "fancyalbum_2233"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/707b6c9de21b9146b9d8ba981e075dfb.jpg",
+     "fancyboxGroup": "fancyalbum_2233"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/0772006e7f414c65a58e19d7e73640ce.jpg",
+     "fancyboxGroup": "fancyalbum_2233"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/2996fe838c0e62e64c787cc9d141d459.jpg",
+     "fancyboxGroup": "fancyalbum_2233"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/ca1361013817a35395d0f33746ece2fe.jpg",
+     "fancyboxGroup": "fancyalbum_2233"
+    }
+   ],
+   "fancyalbum_2234": [
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/0977296d505d797ee7d4ed4ba3208a09.jpg",
+     "fancyboxGroup": "fancyalbum_2234"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/00c96511f6f93530834156026a048000.jpg",
+     "fancyboxGroup": "fancyalbum_2234"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/6b80e4007f7222c538bc4661bae83ff1.jpg",
+     "fancyboxGroup": "fancyalbum_2234"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/f7f97b547e1a4821234b56f97fc099d5.jpg",
+     "fancyboxGroup": "fancyalbum_2234"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/73c167e1ef9f6973a0cc108dc13ff89f.jpg",
+     "fancyboxGroup": "fancyalbum_2234"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/4cc46fc644e94d02e7e4c9acdb58521d.jpg",
+     "fancyboxGroup": "fancyalbum_2234"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/fceaf44494efd16522c03992d4ee38fc.jpg",
+     "fancyboxGroup": "fancyalbum_2234"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/0bec4a72b0e109d0ca0007c821d6387a.jpg",
+     "fancyboxGroup": "fancyalbum_2234"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/24aedfcdfa8abb3f69e69a06c2781f30.jpg",
+     "fancyboxGroup": "fancyalbum_2234"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/148581b2920a02f843c1c714b2c4ded3.jpg",
+     "fancyboxGroup": "fancyalbum_2234"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/1f0748cc15745e8ff8bb9f42e8d9286b.jpg",
+     "fancyboxGroup": "fancyalbum_2234"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/7557a981dbba55b38d91e04900c88b2e.jpg",
+     "fancyboxGroup": "fancyalbum_2234"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/33ba3765a7bdb18f93fb304416a14e0f.jpg",
+     "fancyboxGroup": "fancyalbum_2234"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/2275e5e21ea79aeaf98e92e5b39a8718.jpg",
+     "fancyboxGroup": "fancyalbum_2234"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/bda41c414e133090c535f74fd1acf589.jpg",
+     "fancyboxGroup": "fancyalbum_2234"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/e68c0a8feba447c844581d6ddea9fd68.jpg",
+     "fancyboxGroup": "fancyalbum_2234"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/185d484383267db695bc4fef7e252ced.jpg",
+     "fancyboxGroup": "fancyalbum_2234"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/3c2a22b8c5457af01264a810c4e5f6bd.jpg",
+     "fancyboxGroup": "fancyalbum_2234"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/a71558d5381f5f5a14df2ee7d35b6195.jpg",
+     "fancyboxGroup": "fancyalbum_2234"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/668a72ea15a617d5a84f341fe72369b0.jpg",
+     "fancyboxGroup": "fancyalbum_2234"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/4137cedfa17b51acdb738b9fef4403aa.jpg",
+     "fancyboxGroup": "fancyalbum_2234"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/4be228cfd9b145068de91534ad82d12a.jpg",
+     "fancyboxGroup": "fancyalbum_2234"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/e15e72268e06070d5c324d9bb5781a45.jpg",
+     "fancyboxGroup": "fancyalbum_2234"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/62a8933b1030c475cde347e3f28b19e6.jpg",
+     "fancyboxGroup": "fancyalbum_2234"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/250e2360e31c5e84f8d83d3a5f6879c1.jpg",
+     "fancyboxGroup": "fancyalbum_2234"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/59773a23ff649a618d37c833b1585474.jpg",
+     "fancyboxGroup": "fancyalbum_2234"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/46c1a1c5d6770b8c33d65771bf3be83d.jpg",
+     "fancyboxGroup": "fancyalbum_2234"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/6b512ec281a77139b8e82c9fb4e40820.jpg",
+     "fancyboxGroup": "fancyalbum_2234"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/349fbdb6e7b47587315da8ca3455d865.jpg",
+     "fancyboxGroup": "fancyalbum_2234"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/3910cd124da1aa3c6198577d64bf13b1.jpg",
+     "fancyboxGroup": "fancyalbum_2234"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/ec6215bde84a14df4902eb9d2a1c0c51.jpg",
+     "fancyboxGroup": "fancyalbum_2234"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/27326cafe2a20ed0ec3d3aa043a26dfb.jpg",
+     "fancyboxGroup": "fancyalbum_2234"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/249900e22b0dac03cfe3f9481ced559a.jpg",
+     "fancyboxGroup": "fancyalbum_2234"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/0c52479bb31f3ca2493c565e6e13b4e0.jpg",
+     "fancyboxGroup": "fancyalbum_2234"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/851b3a58fc093250442351b9e6988466.jpg",
+     "fancyboxGroup": "fancyalbum_2234"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/87c97a44055593c41da88d15b55fee7b.jpg",
+     "fancyboxGroup": "fancyalbum_2234"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/2c08b59111fa9b98bbe105a0113fea87.jpg",
+     "fancyboxGroup": "fancyalbum_2234"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/758a144c36418180fdd52885bd0871b0.jpg",
+     "fancyboxGroup": "fancyalbum_2234"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/a8f4fc845e7b7a664a4cdb811baa57d3.jpg",
+     "fancyboxGroup": "fancyalbum_2234"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/5933febbf46ba138f99d96f32e74c705.jpg",
+     "fancyboxGroup": "fancyalbum_2234"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/a4624a07c08352034e5f32370890c4c2.jpg",
+     "fancyboxGroup": "fancyalbum_2234"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/9b1cb4d7d63b20f835c46d7d7c9060ff.jpg",
+     "fancyboxGroup": "fancyalbum_2234"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/0caa903f3962f9c4e833bb7b4fc3506d.jpg",
+     "fancyboxGroup": "fancyalbum_2234"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/4a9e12ecabee688164e46c9b5e91413a.jpg",
+     "fancyboxGroup": "fancyalbum_2234"
+    }
+   ],
+   "fancyalbum_2235": [
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/ef1a7075f47c618bc8bd48fd0e97e8f7.jpg",
+     "fancyboxGroup": "fancyalbum_2235"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/00c96511f6f93530834156026a048000.jpg",
+     "fancyboxGroup": "fancyalbum_2235"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/9aa4e786f2a577fcefebfbe93dec1683.jpg",
+     "fancyboxGroup": "fancyalbum_2235"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/5d8cc3e95f908fa67dc3ffe2c2647b4d.jpg",
+     "fancyboxGroup": "fancyalbum_2235"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/99ee7129fabc577170b07a49cc337bef.jpg",
+     "fancyboxGroup": "fancyalbum_2235"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/a7c9a545c2a96c4df6078a3504163a0c.jpg",
+     "fancyboxGroup": "fancyalbum_2235"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/546c2e5549372dd115f975f81c3ebf08.jpg",
+     "fancyboxGroup": "fancyalbum_2235"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/ec21d7215ab1b54d0a24b1f5469bf191.jpg",
+     "fancyboxGroup": "fancyalbum_2235"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/1575a36d9d37d37c06e3e10bb65cbd91.jpg",
+     "fancyboxGroup": "fancyalbum_2235"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/a48836426eec1eaecf6f8d070f436b6a.jpg",
+     "fancyboxGroup": "fancyalbum_2235"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/7557a981dbba55b38d91e04900c88b2e.jpg",
+     "fancyboxGroup": "fancyalbum_2235"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/803b131e0a9829780d23a405c3c038a2.jpg",
+     "fancyboxGroup": "fancyalbum_2235"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/79416822723cb51517bc41fff7ecc789.jpg",
+     "fancyboxGroup": "fancyalbum_2235"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/fefe8ba33f56451ffde39c7e943de53b.jpg",
+     "fancyboxGroup": "fancyalbum_2235"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/6798bc64a39c7674768d68d9059e72cb.jpg",
+     "fancyboxGroup": "fancyalbum_2235"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/42bc325c17e237b6ec760b3fd236b64e.jpg",
+     "fancyboxGroup": "fancyalbum_2235"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/e47c3c155855e36b37d0a4c7be4710ee.jpg",
+     "fancyboxGroup": "fancyalbum_2235"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/bb0d0a3473ea0664a6bb8b60a18dbda7.jpg",
+     "fancyboxGroup": "fancyalbum_2235"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/3dccb1489ce8d559eb3367424549bdd5.jpg",
+     "fancyboxGroup": "fancyalbum_2235"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/3033d0e4f1d137c54e3d412d357efce5.jpg",
+     "fancyboxGroup": "fancyalbum_2235"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/d5cbc12e2acb875309457d2b8d5e850e.jpg",
+     "fancyboxGroup": "fancyalbum_2235"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/6e0f1136ee302710524f3eac8b3993d8.jpg",
+     "fancyboxGroup": "fancyalbum_2235"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/4be228cfd9b145068de91534ad82d12a.jpg",
+     "fancyboxGroup": "fancyalbum_2235"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/e15e72268e06070d5c324d9bb5781a45.jpg",
+     "fancyboxGroup": "fancyalbum_2235"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/62a8933b1030c475cde347e3f28b19e6.jpg",
+     "fancyboxGroup": "fancyalbum_2235"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/250e2360e31c5e84f8d83d3a5f6879c1.jpg",
+     "fancyboxGroup": "fancyalbum_2235"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/59773a23ff649a618d37c833b1585474.jpg",
+     "fancyboxGroup": "fancyalbum_2235"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/349fbdb6e7b47587315da8ca3455d865.jpg",
+     "fancyboxGroup": "fancyalbum_2235"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/3910cd124da1aa3c6198577d64bf13b1.jpg",
+     "fancyboxGroup": "fancyalbum_2235"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/92c36cb90b301e518e78a253634741f4.jpg",
+     "fancyboxGroup": "fancyalbum_2235"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/46c1a1c5d6770b8c33d65771bf3be83d.jpg",
+     "fancyboxGroup": "fancyalbum_2235"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/6b512ec281a77139b8e82c9fb4e40820.jpg",
+     "fancyboxGroup": "fancyalbum_2235"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/27326cafe2a20ed0ec3d3aa043a26dfb.jpg",
+     "fancyboxGroup": "fancyalbum_2235"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/851b3a58fc093250442351b9e6988466.jpg",
+     "fancyboxGroup": "fancyalbum_2235"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/249900e22b0dac03cfe3f9481ced559a.jpg",
+     "fancyboxGroup": "fancyalbum_2235"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/87c97a44055593c41da88d15b55fee7b.jpg",
+     "fancyboxGroup": "fancyalbum_2235"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/2c08b59111fa9b98bbe105a0113fea87.jpg",
+     "fancyboxGroup": "fancyalbum_2235"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/0c52479bb31f3ca2493c565e6e13b4e0.jpg",
+     "fancyboxGroup": "fancyalbum_2235"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/7608916ace0a3d4ee8f4d2e9228538b5.jpg",
+     "fancyboxGroup": "fancyalbum_2235"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/38d63b21d5b382c557b5a6aa38e1bd3f.jpg",
+     "fancyboxGroup": "fancyalbum_2235"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/d799b9d10d67161ea05daf2cb73ca8a4.jpg",
+     "fancyboxGroup": "fancyalbum_2235"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/e3caf4d1093194740eb874a626c732d3.jpg",
+     "fancyboxGroup": "fancyalbum_2235"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/b76648828c1d76b0a729a1b75607348d.jpg",
+     "fancyboxGroup": "fancyalbum_2235"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/7267000c6b98b6154897d8da41e6b06b.jpg",
+     "fancyboxGroup": "fancyalbum_2235"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/a1afb6fe1c582cf8fcffa3ba17061c98.jpg",
+     "fancyboxGroup": "fancyalbum_2235"
+    }
+   ],
+   "fancyalbum_2236": [
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/2ca8c4a089735f40816108d2cb36abec.jpg",
+     "fancyboxGroup": "fancyalbum_2236"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/c51d37a8602e13d93391516ff8822075.jpg",
+     "fancyboxGroup": "fancyalbum_2236"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/00c96511f6f93530834156026a048000.jpg",
+     "fancyboxGroup": "fancyalbum_2236"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/6b81338d847782b74e7275c7061f6ed2.jpg",
+     "fancyboxGroup": "fancyalbum_2236"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/c53672175b872bb532a4547a523399e5.jpg",
+     "fancyboxGroup": "fancyalbum_2236"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/5665a07267884075bbc9e72e46ad2fc9.jpg",
+     "fancyboxGroup": "fancyalbum_2236"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/58a94fdbd8e79d0c5a104c249517eac9.jpg",
+     "fancyboxGroup": "fancyalbum_2236"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/11fce0e88ed8d81ae341c8b742215d15.jpg",
+     "fancyboxGroup": "fancyalbum_2236"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/339e4c47e2ef1427d42aa943396e6102.jpg",
+     "fancyboxGroup": "fancyalbum_2236"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/468aeb0879b0bfdae505779b21a5af36.jpg",
+     "fancyboxGroup": "fancyalbum_2236"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/4af5ab12cf89694aba4aedf71d2a76a5.jpg",
+     "fancyboxGroup": "fancyalbum_2236"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/c5f1e71d5ecc2d3573d4684c08bf8405.jpg",
+     "fancyboxGroup": "fancyalbum_2236"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/afd4493db2934b5d5b6a4706320bf595.jpg",
+     "fancyboxGroup": "fancyalbum_2236"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/7557a981dbba55b38d91e04900c88b2e.jpg",
+     "fancyboxGroup": "fancyalbum_2236"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/ef655175a9d603d47d54adcdbe0a80a8.jpg",
+     "fancyboxGroup": "fancyalbum_2236"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/06427bf0d6a590205cd61e3e5d91496b.jpg",
+     "fancyboxGroup": "fancyalbum_2236"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/567ccfc1e8dbfaefb414156c20b3a78b.jpg",
+     "fancyboxGroup": "fancyalbum_2236"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/970e436b84c1956f63ea183b3347f4a2.jpg",
+     "fancyboxGroup": "fancyalbum_2236"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/f995d780ace3aed28822c9593deb6ffe.jpg",
+     "fancyboxGroup": "fancyalbum_2236"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/bec435ee8f485add72d83cb34c4b2a52.jpg",
+     "fancyboxGroup": "fancyalbum_2236"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/f8b7cd176a8f9f2ffdc6fa52be451da9.jpg",
+     "fancyboxGroup": "fancyalbum_2236"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/6fb9bac1bb430b75cb60dc9360366669.jpg",
+     "fancyboxGroup": "fancyalbum_2236"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/fc933705d8ca8210fcc8616433102d55.jpg",
+     "fancyboxGroup": "fancyalbum_2236"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/1c2b90ace5163843a06302d9b829eac5.jpg",
+     "fancyboxGroup": "fancyalbum_2236"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/e15e72268e06070d5c324d9bb5781a45.jpg",
+     "fancyboxGroup": "fancyalbum_2236"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/4be228cfd9b145068de91534ad82d12a.jpg",
+     "fancyboxGroup": "fancyalbum_2236"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/62a8933b1030c475cde347e3f28b19e6.jpg",
+     "fancyboxGroup": "fancyalbum_2236"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/250e2360e31c5e84f8d83d3a5f6879c1.jpg",
+     "fancyboxGroup": "fancyalbum_2236"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/59773a23ff649a618d37c833b1585474.jpg",
+     "fancyboxGroup": "fancyalbum_2236"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/46c1a1c5d6770b8c33d65771bf3be83d.jpg",
+     "fancyboxGroup": "fancyalbum_2236"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/6b512ec281a77139b8e82c9fb4e40820.jpg",
+     "fancyboxGroup": "fancyalbum_2236"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/349fbdb6e7b47587315da8ca3455d865.jpg",
+     "fancyboxGroup": "fancyalbum_2236"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/3910cd124da1aa3c6198577d64bf13b1.jpg",
+     "fancyboxGroup": "fancyalbum_2236"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/f004e776fbaecb92c20f1575e65b0696.jpg",
+     "fancyboxGroup": "fancyalbum_2236"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/27326cafe2a20ed0ec3d3aa043a26dfb.jpg",
+     "fancyboxGroup": "fancyalbum_2236"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/851b3a58fc093250442351b9e6988466.jpg",
+     "fancyboxGroup": "fancyalbum_2236"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/249900e22b0dac03cfe3f9481ced559a.jpg",
+     "fancyboxGroup": "fancyalbum_2236"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/2c08b59111fa9b98bbe105a0113fea87.jpg",
+     "fancyboxGroup": "fancyalbum_2236"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/87c97a44055593c41da88d15b55fee7b.jpg",
+     "fancyboxGroup": "fancyalbum_2236"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/0c52479bb31f3ca2493c565e6e13b4e0.jpg",
+     "fancyboxGroup": "fancyalbum_2236"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/d87531c4829fa0a005315289986c84cc.jpg",
+     "fancyboxGroup": "fancyalbum_2236"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/7f6345d1cebaac4d432897c3202f3049.jpg",
+     "fancyboxGroup": "fancyalbum_2236"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/2fb0b75edc5b7789f302b94cee2652b0.jpg",
+     "fancyboxGroup": "fancyalbum_2236"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/a579eaa474448ce96a1d6c9117e93570.jpg",
+     "fancyboxGroup": "fancyalbum_2236"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/50731df17b0aa921b97699bdd40b17d7.jpg",
+     "fancyboxGroup": "fancyalbum_2236"
+    },
+    {
+     "caption": "",
+     "image": "../../../loggia-cdn/lodgeContent/e0a61b177c8ded8b826e5349d3f2f687.jpg",
+     "fancyboxGroup": "fancyalbum_2236"
+    }
+   ]
+  },
+  "distinctCaptions": []
+ },
+ "en__thalasses-rituals-1.html": {
+  "total": 25,
+  "byGroup": {
+   "fancyFeaturedImages": [
+    {
+     "caption": "",
+     "image": "../loggia-cdn/lodgeContent/44edf69d6a05165054fd3870f558b04b-1.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "",
+     "image": "../loggia-cdn/lodgeContent/15e66d5fa985ef70fab6d032ebb7ca11-1.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "",
+     "image": "../loggia-cdn/lodgeContent/3f912b5f49b230a22a68ed14c677d3a4-1.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "",
+     "image": "../loggia-cdn/lodgeContent/11c6fd5d7fda93f4dda7a836618b3b2b-1.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "",
+     "image": "../loggia-cdn/lodgeContent/47a8c24c6146041d08e9aaa8f89a3d28-1.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "",
+     "image": "../loggia-cdn/lodgeContent/b71d5181bf15b342f3dddfb7d5b46f81-1.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "",
+     "image": "../loggia-cdn/lodgeContent/5c687ef52cec94d2b637c7baf27837e2-1.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "",
+     "image": "../loggia-cdn/lodgeContent/d3798deefff67fb38177d42483f9f97f-1.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "",
+     "image": "../loggia-cdn/lodgeContent/b949a705ec6ff1579ca94ff3f556ba2c-1.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "",
+     "image": "../loggia-cdn/lodgeContent/e35640ebfbd1861538eb078b1c75a9a2-1.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "",
+     "image": "../loggia-cdn/lodgeContent/69978ac4f31b7bb1515c57cd50a73618-1.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "",
+     "image": "../loggia-cdn/lodgeContent/88c6dfd4bbac97b4babb865b1e7583e6-1.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "",
+     "image": "../loggia-cdn/lodgeContent/883e4dbfec5ba999725f67b6dc642261-1.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "",
+     "image": "../loggia-cdn/lodgeContent/2f98f73791ff6506a014a32051d71ed6-1.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "",
+     "image": "../loggia-cdn/lodgeContent/d2aff2ccb35e31dd2198a3258bc9392e-1.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "",
+     "image": "../loggia-cdn/lodgeContent/55c268cfc8b276d55955ced646a8195b-1.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "",
+     "image": "../loggia-cdn/lodgeContent/13ba81cb69bed6a720e6f30f2f21f085-1.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "",
+     "image": "../loggia-cdn/lodgeContent/7dd55a49c6dee7caf57d7b8cc6f6b385-1.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "",
+     "image": "../loggia-cdn/lodgeContent/bd26a568584d98852c4c8e6db87c2e9a-1.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "",
+     "image": "../loggia-cdn/lodgeContent/7c7d36932446b5e0962421dc70c17c03-1.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "",
+     "image": "../loggia-cdn/lodgeContent/cfb6ca799c87b88e4baddc17fc73c7e3-1.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "",
+     "image": "../loggia-cdn/lodgeContent/bd4695827f2617c78c372293274f737b-1.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "",
+     "image": "../loggia-cdn/lodgeContent/3d658e97a0d269f749c697d96e8e2a92-1.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "",
+     "image": "../loggia-cdn/lodgeContent/7a916ea1570d17798f9d329feb5cd4ac-1.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    },
+    {
+     "caption": "",
+     "image": "../loggia-cdn/lodgeContent/fac1547c8153b91d3757c4dd15c9dd3e-1.jpg",
+     "fancyboxGroup": "fancyFeaturedImages"
+    }
+   ]
+  },
+  "distinctCaptions": []
+ },
+ "root.html": {
+  "total": 4,
+  "byGroup": {
+   "fancyArticleImage1897_2": [
+    {
+     "caption": "",
+     "image": "loggia-cdn/lodgeContent/b1bbe80a75b67db2c4370e62f6f836f3_thumb-1.jpg",
+     "fancyboxGroup": "fancyArticleImage1897_2"
+    }
+   ],
+   "fancyArticleImage3063_4": [
+    {
+     "caption": "",
+     "image": "loggia-cdn/lodgeContent/14e77715b78ae6ce96ada21da4e1c939_thumb-1.jpg",
+     "fancyboxGroup": "fancyArticleImage3063_4"
+    }
+   ],
+   "fancyArticleImage3869": [
+    {
+     "caption": "",
+     "image": "loggia-cdn/lodgeContent/df2bacefb7d7d5df11c75781c3e5249f_thumb-1.jpg",
+     "fancyboxGroup": "fancyArticleImage3869"
+    }
+   ],
+   "fancyArticleImageXs3869": [
+    {
+     "caption": "",
+     "image": "loggia-cdn/lodgeContent/df2bacefb7d7d5df11c75781c3e5249f_thumb-1.jpg",
+     "fancyboxGroup": "fancyArticleImageXs3869"
+    }
+   ]
+  },
+  "distinctCaptions": []
+ }
+}

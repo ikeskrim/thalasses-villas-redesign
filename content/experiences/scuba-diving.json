@@ -1,0 +1,46 @@
+{
+ "slug": "scuba-diving",
+ "name": "Scuba Diving",
+ "legacyUrl": "https://thalasses.com/en/scuba-diving",
+ "canonical": "scuba-diving-1.html",
+ "meta": {
+  "title": "Scuba Diving",
+  "description": "Scuba Diving",
+  "keywords": "Thalasses Villas,Scuba Diving,Experiences,Rethymno,Greece,Properties chain",
+  "ogImage": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/54095a9f31b0139695c64ad1d801083e.jpg",
+  "ogUrl": "https://thalasses.com/en/scuba-diving"
+ },
+ "sourceTaxonomy": "Experiences",
+ "categoryProposed": "Sea",
+ "shortDescription": "Crete has enchanting landscapes both on its surface and below the sea.",
+ "longDescription": "Crete has enchanting landscapes both on its surface and below the sea.\n\nThe clear blue waters of crete are so tempting to swim in the magic of these blue waters. But what happens under the surface of the sea? Would you like to find out and get a diving degree?",
+ "highlights": [],
+ "wordCount": 50,
+ "needsContent": false,
+ "brokenCta": false,
+ "images": [
+  "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/54095a9f31b0139695c64ad1d801083e.jpg"
+ ],
+ "heroImage": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/54095a9f31b0139695c64ad1d801083e.jpg",
+ "gallery": {
+  "heroImage": "https://s3-eu-central-1.amazonaws.com/loggia-cdn/lodgeContent/54095a9f31b0139695c64ad1d801083e.jpg",
+  "images": []
+ },
+ "externalLinks": [],
+ "cta": null,
+ "duration": null,
+ "price": null,
+ "todos": [
+  "META description, og:description and twitter:description are all just the page title (\"Scuba Diving\"); there is no unique SEO description in the source.",
+  "Source writes the island name in lower case mid-sentence: \"The clear blue waters of crete are so tempting...\" — should be \"Crete\". Preserved verbatim.",
+  "The sentence \"The clear blue waters of crete are so tempting to swim in the magic of these blue waters.\" is garbled/repetitive in the source and needs a rewrite.",
+  "The page ends on two rhetorical questions with no answer, no next step and no contact link — there is no way for a guest to act on it.",
+  "No dive centre / partner name, dive sites, certification agency (PADI, SSI, etc.), skill level, or minimum age is stated.",
+  "No highlights, bullets or structured list exist in the source, so highlights is empty.",
+  "No photo gallery on this page — the only page-specific image is the hero/parallax background.",
+  "No duration stated anywhere in the source page; duration left null.",
+  "No price, rate or 'from' figure stated anywhere in the source page; price left null.",
+  "No page-specific call to action exists in the source. The only CTA on the page is the site-wide booking bar (\"Book now\" -> https://thalassesvillas.reserve-online.net/), which is global chrome, so cta is null.",
+  "categoryProposed is an editorial grouping added for the redesign; the live site has no categories — confirm with the client."
+ ]
+}
