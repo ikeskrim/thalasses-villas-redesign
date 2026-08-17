@@ -192,21 +192,24 @@ test.describe("villa content parity", () => {
     test(`${v.slug} prints every spec it holds`, async ({ page }) => {
       const { specs } = readJson<{ specs: Specs }>("villas", `${v.key}.json`);
       await page.goto(`/en/villas/${v.slug}`, { waitUntil: "load" });
-      await page.waitForSelector(".villa-statement");
+      await page.waitForSelector(".d-spec-strip");
 
       // The four figures, in the approved ledger element.
-      const values = (await page.locator(".villa-ledger .ledger-spec-value").allTextContents()).map(
+      const values = (await page.locator(".d-spec-value, .d-spec-sub").allTextContents()).map(
         (s) => s.trim()
       );
+      // The spec strip carries units now ("60 m2"), so match on containment
+      // across the strip rather than on an exact cell string.
+      const joined = values.join(" | ");
       for (const n of [specs.bedrooms, specs.bathrooms, specs.maxGuests, specs.sizeSqm]) {
         if (n == null) continue;
-        expect(values, `${v.slug}: ledger is missing ${n}`).toContain(String(n));
+        expect(joined, `${v.slug}: spec strip is missing ${n}`).toContain(String(n));
       }
       // Conventions §7 — a decoration may never state a false fact.
       expect(values, `${v.slug}: a ledger figure rendered as 0`).not.toContain("0");
 
       // The prose details the capacity lock added and no page ever printed.
-      const rows = await page.locator(".villa-detail-row dd").allTextContents();
+      const rows = await page.locator(".d-detail-row dd").allTextContents();
       const printed = rows.map((s) => s.trim());
       for (const d of [
         specs.bedroomsDetail,
@@ -227,7 +230,12 @@ test.describe("villa content parity", () => {
       const beats = labels
         .map((s) => s.trim().match(/^(\d\d) — /)?.[1])
         .filter(Boolean) as string[];
-      expect(beats, `${v.slug} spine`).toEqual(["01", "02", "03", "04", "05"]);
+      // Gapless from 01, however many beats the template carries — the count is
+      // a composition decision; the absence of gaps is the rule.
+      expect(beats, `${v.slug} spine: ${beats.join(", ")}`).toEqual(
+        beats.map((_, i) => String(i + 1).padStart(2, "0"))
+      );
+      expect(beats.length, `${v.slug} has no numbered spine`).toBeGreaterThanOrEqual(5);
     }
   });
 

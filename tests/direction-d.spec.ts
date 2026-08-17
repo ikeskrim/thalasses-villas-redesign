@@ -9,7 +9,17 @@ import { expect, test } from "@playwright/test";
  * the next reviewer's eye.
  */
 
-const ROUTES = ["/", "/en/the-estate", "/en/villas/villa-eeanthe", "/styleguide"];
+const ROUTES = [
+  "/",
+  "/en/the-estate",
+  "/en/villas/villa-thoi",
+  "/en/villas/villa-persi",
+  "/en/villas/villa-eeanthe",
+  "/en/villas/villa-melia",
+  "/en/villas/villa-pueblo",
+  "/styleguide",
+];
+const VILLA_ROUTES = ROUTES.filter((r) => r.startsWith("/en/villas/"));
 const WIDTHS = [360, 390, 768, 1024, 1440, 1920];
 const CEILING = 96;
 
@@ -234,4 +244,132 @@ test.describe("D7 — text over photography is legible by construction", () => {
     });
     expect(pos, "the hero copy starts above the strong half of the scrim").toBeGreaterThan(0.45);
   });
+});
+
+test.describe("D8 — the villa template, on D", () => {
+  for (const route of VILLA_ROUTES) {
+    test(`${route} — spec strip prints only confirmed facts`, async ({ page }) => {
+      await page.setViewportSize({ width: 1440, height: 900 });
+      await page.goto(route, { waitUntil: "load" });
+      await page.waitForSelector(".d-spec-strip");
+      const values = await page.locator(".d-spec-value").allTextContents();
+      expect(values.length, "empty spec strip").toBeGreaterThan(0);
+      for (const v of values) {
+        // T-212: an unconfirmed fact is OMITTED, never printed as a placeholder.
+        expect(v.trim(), "a placeholder reached the spec strip").not.toMatch(/^[—–\-]$/);
+        expect(v.trim().length).toBeGreaterThan(0);
+      }
+      // Area, where present, carries both units — metric as the value (it is
+      // the registry figure) and imperial as a sub-note (it is arithmetic).
+      const areaCell = page.locator(".d-spec-cell--area");
+      if (await areaCell.count()) {
+        const txt = (await areaCell.innerText()).replace(/\s+/g, " ");
+        expect(txt, "metric without imperial").toMatch(/\d+ m²/);
+        expect(txt, "metric without imperial").toMatch(/[\d,]+ sq ft/);
+      }
+    });
+
+    test(`${route} — the Aman split is two lists, not one`, async ({ page }) => {
+      await page.goto(route, { waitUntil: "load" });
+      await expect(page.locator(".inventory")).toHaveCount(1);
+      await expect(page.locator(".d-includes")).toHaveCount(1);
+      const includes = await page.locator(".d-includes-label").allTextContents();
+      expect(includes.length).toBe(4);
+      // Breakfast is a bookable experience, not an inclusion. Asserting its
+      // ABSENCE, because the brief asked for it and the registry does not
+      // support it — if the owner confirms, this test is what gets updated.
+      expect(includes.join(" ").toLowerCase()).not.toContain("breakfast");
+    });
+
+    test(`${route} — cross-sell offers the other four`, async ({ page }) => {
+      await page.goto(route, { waitUntil: "load" });
+      await expect(page.locator(".d-other")).toHaveCount(4);
+      const self = route.split("/").pop();
+      const hrefs = await page.locator(".d-other").evaluateAll((els) =>
+        els.map((e) => e.getAttribute("href") ?? "")
+      );
+      expect(hrefs.some((h) => h.endsWith(self!)), "a villa cross-sells itself").toBe(false);
+    });
+  }
+
+  test("Pueblo omits rows rather than printing dashes", async ({ page }) => {
+    await page.goto("/en/villas/villa-pueblo", { waitUntil: "load" });
+    const pueblo = await page.locator(".d-spec-label").allTextContents();
+    await page.goto("/en/villas/villa-thoi", { waitUntil: "load" });
+    const thoi = await page.locator(".d-spec-label").allTextContents();
+    // Both render a strip; neither renders an empty cell. Pueblo may legitimately
+    // carry fewer, and that is the point of the rule.
+    expect(pueblo.length).toBeGreaterThan(0);
+    expect(thoi.length).toBeGreaterThan(0);
+    expect(pueblo.every((l) => l.trim().length > 0)).toBe(true);
+  });
+});
+
+/**
+ * D9 — CONTRAST, MEASURED.
+ *
+ * `.btn-primary micro` rendered phrygana on basalt at **2.27:1** on every route
+ * since the elevation pass — the single most important element on the page,
+ * illegible, and invisible as a bug because the button still looked like a
+ * button. Cause: globals.css imports every partial at the top, so its own
+ * `.micro { color: … }` cascaded after `.btn-primary`'s at equal specificity.
+ * Same trap as T-217 and T-236.
+ *
+ * Specificity fixed that instance. This measures every instance, so the cascade
+ * cannot quietly win again.
+ */
+function contrast(fg: number[], bg: number[]): number {
+  const lum = (c: number[]) => {
+    const f = (v: number) => {
+      const x = v / 255;
+      return x <= 0.03928 ? x / 12.92 : Math.pow((x + 0.055) / 1.055, 2.4);
+    };
+    return 0.2126 * f(c[0]!) + 0.7152 * f(c[1]!) + 0.0722 * f(c[2]!);
+  };
+  const [hi, lo] = [lum(fg), lum(bg)].sort((a, b) => b - a);
+  return (hi! + 0.05) / (lo! + 0.05);
+}
+
+test.describe("D9 — every call to action passes AA", () => {
+  for (const route of ROUTES) {
+    test(`CTA contrast on ${route}`, async ({ page }) => {
+      await page.setViewportSize({ width: 1440, height: 900 });
+      await page.goto(route, { waitUntil: "load" });
+
+      const ctas = await page.evaluate(() =>
+        [...document.querySelectorAll<HTMLElement>(".btn-primary, .estate-cta, .d-link, .nav-book")]
+          .filter((e) => e.offsetParent !== null || getComputedStyle(e).position === "fixed")
+          .map((e) => {
+            const cs = getComputedStyle(e);
+            let bg = cs.backgroundColor;
+            let n: HTMLElement | null = e;
+            while (n && (bg === "rgba(0, 0, 0, 0)" || bg === "transparent")) {
+              n = n.parentElement;
+              if (!n) break;
+              bg = getComputedStyle(n).backgroundColor;
+            }
+            const px = parseFloat(cs.fontSize);
+            const bold = parseInt(cs.fontWeight, 10) >= 700;
+            return {
+              label: (e.textContent ?? "").trim().slice(0, 30),
+              fg: cs.color,
+              bg,
+              large: px >= 24 || (bold && px >= 18.66),
+            };
+          })
+      );
+
+      const parse = (s: string) => (s.match(/\d+/g) ?? []).slice(0, 3).map(Number);
+      const fails: string[] = [];
+      for (const c of ctas) {
+        // A CTA over a photograph has no resolvable ground colour; those are
+        // covered by the scrim rule (D7) rather than by this one.
+        if (!/^rgba?\(/.test(c.bg) || c.bg === "rgba(0, 0, 0, 0)") continue;
+        const r = contrast(parse(c.fg), parse(c.bg));
+        const need = c.large ? 3 : 4.5;
+        if (r < need) fails.push(`"${c.label}" ${r.toFixed(2)}:1 (needs ${need}) — ${c.fg} on ${c.bg}`);
+      }
+      expect(fails, `CTAs below AA on ${route}:\n  ${fails.join("\n  ")}`).toEqual([]);
+    });
+  }
 });

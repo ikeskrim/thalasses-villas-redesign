@@ -36,7 +36,7 @@ const PAIR = [
 /** The beats to compare, addressed by selector — never by scroll offset. */
 const BEATS = [
   { key: "01-arrival", selector: ".field", label: "01 — Arrival" },
-  { key: "02-the-house", selector: ".villa-statement", label: "02 — The house" },
+  { key: "02-the-house", selector: ".d-spec-strip", label: "02 — The house" },
   { key: "03-the-rooms", selector: ".run-frame, .plates-opener", label: "03 — The rooms" },
   { key: "04-inside", selector: ".inventory", label: "04 — Inside" },
 ];
@@ -101,13 +101,14 @@ for (const w of WIDTHS) {
     // event — and at 390 that never arrived inside 60s while the same capture
     // finished in 16s at 1440. Conventions §10: a page-level heuristic measures
     // the absence of activity, never the presence of the thing being captured.
-    // Beat 02 exists on both villas, so it is the honest signal that the pane is
-    // ready to be walked.
+    // The spec strip exists on both villas, so it is the honest signal that the
+    // pane is ready to be walked. (Was `.villa-statement`, which the Direction D
+    // rebuild replaced — a capture harness pinned to markup has to move with it.)
     for (const p of PAIR) {
       await page.waitForFunction(
         (name) => {
           const f = document.getElementById(`pane-${name}`) as HTMLIFrameElement | null;
-          return Boolean(f?.contentDocument?.querySelector(".villa-statement"));
+          return Boolean(f?.contentDocument?.querySelector(".d-spec-strip"));
         },
         p.name,
         { timeout: 60_000 }

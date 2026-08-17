@@ -91,7 +91,7 @@ test.describe("villa template parity", () => {
   test("every villa CTA is a dates-only booking link with lang=en", async ({ page }) => {
     for (const v of VILLAS) {
       await page.goto(`/en/villas/${v.slug}`, { waitUntil: "load" });
-      const href = await page.locator(".villa-cta-primary").first().getAttribute("href");
+      const href = await page.locator(".d-villa-cta .btn-primary").first().getAttribute("href");
       expect(href, `${v.slug} CTA`).toContain("thalassesvillas.reserve-online.net");
       expect(href, `${v.slug} must not preselect a room — the param is inert`).not.toContain("room=");
       expect(href, `${v.slug} must force English`).toContain("lang=en");
@@ -149,27 +149,31 @@ test.describe("villa template parity", () => {
  * actually landed rather than trusting the class names.
  */
 test.describe("villa template — inherited language", () => {
-  test("beat 02 is on the deep ground and carries sea-light", async ({ page }) => {
+  test("the villa page spends exactly one dark interlude", async ({ page }) => {
+    // Direction D rebuilt the template on the light ground, so the deep passage
+    // moved from beat 02 to the "your stay includes" beat — the generosity list,
+    // set apart from the dense inventory above it. One interlude, which is what
+    // D allows, and the page is otherwise limestone throughout.
     await page.goto("/en/villas/villa-eeanthe", { waitUntil: "load" });
-    const el = page.locator(".villa-statement");
+    const el = page.locator(".d-includes");
     await expect(el).toHaveCount(1);
 
     const bg = await el.evaluate((e) => getComputedStyle(e).backgroundColor);
-    expect(bg, "beat 02 is not on pelagos").toBe("rgb(20, 83, 95)");
+    expect(bg, "the interlude is not on pelagos").toBe("rgb(20, 83, 95)");
 
-    // The sea-light is a ::before on the section; read it directly rather than
-    // inferring it from the class list.
-    const glow = await el.evaluate((e) => {
-      const s = getComputedStyle(e, "::before");
-      return { content: s.content, z: s.zIndex, name: s.animationName };
-    });
-    expect(glow.content, "no sea-light pseudo-element on beat 02").not.toBe("none");
-    expect(glow.name).toBe("sealight");
-    // z-index -1, not 0. This is the exact value T-203 turned on.
-    expect(glow.z, "sea-light must sit BEHIND the flow, not above it").toBe("-1");
+    const deep = await page.evaluate(
+      () =>
+        [...document.querySelectorAll<HTMLElement>("main section")].filter(
+          (e) => getComputedStyle(e).backgroundColor === "rgb(20, 83, 95)"
+        ).length
+    );
+    expect(deep, "more than one dark interlude on a villa page").toBe(1);
   });
 
-  test("the ghost numeral never widens the page", async ({ page }) => {
+  // RETIRED: the ghost numeral is a homepage device in Direction D and villa
+  // pages carry none. Horizontal overflow on the villa routes is covered at six
+  // widths by D4 in direction-d.spec.ts, which is stronger than this was.
+  test.skip("the ghost numeral never widens the page", async ({ page }) => {
     for (const w of [390, 1440]) {
       await page.setViewportSize({ width: w, height: 900 });
       for (const route of ["/en/villas/villa-pueblo", "/en/the-estate"]) {
@@ -245,11 +249,16 @@ test.describe("villa template — inherited language", () => {
   test("the fourth voice is spent once per page, and only there", async ({ page }) => {
     for (const slug of ["villa-thoi", "villa-pueblo"]) {
       await page.goto(`/en/villas/${slug}`, { waitUntil: "load" });
-      await expect(page.locator(".aside-italic"), `${slug}`).toHaveCount(1);
-      const style = await page
-        .locator(".aside-italic")
-        .evaluate((e) => getComputedStyle(e).fontStyle);
-      expect(style).toBe("italic");
+      // In D the accent register IS the villa lede: `body-l` in the type table
+      // is Cormorant Italic, and it was rendering in Inter until measured.
+      const lede = page.locator(".d-villa-lede");
+      await expect(lede, `${slug}`).toHaveCount(1);
+      const style = await lede.evaluate((e) => ({
+        s: getComputedStyle(e).fontStyle,
+        f: getComputedStyle(e).fontFamily.toLowerCase(),
+      }));
+      expect(style.s).toBe("italic");
+      expect(style.f).toContain("cormorant");
     }
   });
 });

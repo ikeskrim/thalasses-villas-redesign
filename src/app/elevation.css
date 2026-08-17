@@ -94,6 +94,27 @@ body.has-custom-cursor {
   background: var(--color-limestone);
   color: var(--color-basalt);
 }
+
+/*
+   TWO CLASSES, and it is not cosmetic.
+
+   Every primary CTA on this site carries `.btn-primary micro`, and `.micro`
+   sets `color: var(--color-phrygana)`. globals.css imports every partial at the
+   top of the file, so its own `.micro` rule cascades AFTER this one at equal
+   specificity — and won. The result was phrygana on basalt at **2.27:1**, on the
+   single most important element on the page, on every route, since the elevation
+   pass. Nobody saw it because the button still looked like a button.
+
+   Same trap as T-217. Raising specificity fixes it here; the contrast guard in
+   tests/direction-d.spec.ts is what stops the next one, because it measures
+   every CTA on every route rather than trusting the cascade.
+*/
+.btn-primary.micro {
+  color: var(--color-limestone);
+}
+.btn-primary--light.micro {
+  color: var(--color-basalt);
+}
 .btn-primary:focus-visible {
   outline: 2px solid var(--color-pelagos);
   outline-offset: 3px;

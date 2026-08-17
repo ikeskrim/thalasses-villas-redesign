@@ -1,16 +1,16 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { Magnetic } from "@/components/motion/Magnetic";
-import { Reveal } from "@/components/motion/Reveal";
+import { ImageReveal, Reveal } from "@/components/motion/Reveal";
 import { Inventory } from "@/components/sections/Inventory";
 import { SiteFooter } from "@/components/sections/SiteFooter";
 import { TheRun } from "@/components/sections/TheRun";
 import { BookingLedger } from "@/components/ui/BookingLedger";
 import { Clause } from "@/components/ui/Clause";
 import { Field } from "@/components/ui/Field";
-import { Ledger } from "@/components/ui/Ledger";
 import { villaCta } from "@/lib/booking";
 import {
   COLLECTION_VILLA_IDS,
@@ -18,42 +18,11 @@ import {
   getFacilitiesForVilla,
   getSite,
   getVilla,
+  localImage,
 } from "@/lib/content";
 import { buildInventory } from "@/lib/inventory";
+import { STAY_INCLUDES, VILLA_PAGE_COPY, detailRows, specStrip } from "@/lib/villa-page";
 import type { Villa } from "@/types/content";
-
-/** File key -> the clause that names this villa, and its page angle. */
-const VILLA_PAGES: Record<
-  string,
-  { gerund: string; tail: string; angle: string }
-> = {
-  "200": {
-    gerund: "Waking",
-    tail: "At sea level, ground floor",
-    angle: "Front row, single-storey, the sea at eye level.",
-  },
-  "201": {
-    gerund: "Bathing",
-    tail: "In the largest bathroom",
-    angle: "Front row, single-storey, with a Jacuzzi bath beside the shower.",
-  },
-  "202": {
-    gerund: "Waking",
-    tail: "On the upper floor, three rooms",
-    angle: "Rear row, two storeys, the sea arriving at the first-floor balcony.",
-  },
-  "203": {
-    gerund: "Stepping",
-    tail: "From bed into the pool",
-    angle: "Rear row, two storeys, the ground-floor bedroom opening onto the pool.",
-  },
-  pueblo: {
-    gerund: "Retreating",
-    tail: "Adults only, direct beach access",
-    angle:
-      "The couples' retreat. Adults only, its own terrace bar, and private access straight onto the beach.",
-  },
-};
 
 const KEY_BY_SLUG: Record<string, string> = {
   "villa-thoi": "200",
@@ -115,21 +84,42 @@ function villaJsonLd(villa: Villa) {
         ? { "@type": "GeoCoordinates", latitude: villa.map.lat, longitude: villa.map.lng }
         : undefined,
     containsPlace: villa.specs.pools
-      ? { "@type": "Accommodation", amenityFeature: { "@type": "LocationFeatureSpecification", name: "Private swimming pool", value: true } }
+      ? {
+          "@type": "Accommodation",
+          amenityFeature: {
+            "@type": "LocationFeatureSpecification",
+            name: "Private swimming pool",
+            value: true,
+          },
+        }
       : undefined,
   };
 }
 
+/**
+ * THE VILLA TEMPLATE — Direction D.
+ *
+ * Order is the Aman / One&Only consensus, tokens and composition are D's:
+ *   hero → spec strip → lede + book → gallery → amenities vs inclusions →
+ *   story beats → cross-sell → booking bar.
+ *
+ * D's rules apply verbatim and are asserted in `tests/direction-d.spec.ts`:
+ * display capped at 96px, `--section-y` between beats, names beside or below
+ * their frames, and no horizontal overflow at any width.
+ */
 export default async function VillaPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const key = KEY_BY_SLUG[slug];
   if (!key) notFound();
 
   const villa = getVilla(key);
-  const page = VILLA_PAGES[key]!;
+  const copy = VILLA_PAGE_COPY[key]!;
   const facilities = getFacilitiesForVilla(villa);
   const inventory = buildInventory(facilities);
   const cta = villaCta(villa);
+  const specs = specStrip(villa);
+  const details = detailRows(villa);
+
   const site = getSite() as {
     contact?: { addressLines?: string[]; phones?: string[]; phoneHrefs?: string[]; email?: string };
     socials?: { platform: string; url: string }[];
@@ -138,144 +128,80 @@ export default async function VillaPage({ params }: { params: Promise<{ slug: st
   };
   const bookingCfg = getBookingConfig() as unknown as { host?: string };
   const host = bookingCfg.host ?? "thalassesvillas.reserve-online.net";
+  const contact = site.contact ?? {};
 
   const runImages =
     villa.gallery.featured.length > 0
       ? villa.gallery.featured.map((f) => ({ url: f.image, caption: f.caption }))
       : villa.gallery.allImages.map((u) => ({ url: u, caption: null }));
 
-  const contact = site.contact ?? {};
-
-  /**
-   * THE SPEC LEDGER — content parity, not decoration.
-   *
-   * Until now a villa page printed exactly one of its own numbers ("Sleeping N
-   * in beds") and buried the rest in JSON-LD, where a search engine could read
-   * them and a guest could not. Bedrooms, bathrooms, floor area, the bed
-   * breakdown, the view and the distance to the water are all owner-confirmed
-   * facts sitting unrendered in the inventory. They are printed here, in the
-   * approved ledger element, straight from `villa.specs` — never re-typed.
-   *
-   * Falsy values are dropped rather than shown as 0, per Conventions §7.
-   */
-  const figures = [
-    { label: "Bedrooms", value: villa.specs.bedrooms },
-    { label: "Bathrooms", value: villa.specs.bathrooms },
-    { label: "Sleep in beds", value: villa.specs.maxGuests },
-    { label: "Square metres", value: villa.specs.sizeSqm },
-  ].filter((f): f is { label: string; value: number } => Boolean(f.value));
-
-  const detail = [
-    { label: "Bedrooms", value: villa.specs.bedroomsDetail },
-    { label: "Bathrooms", value: villa.specs.bathroomsDetail },
-    { label: "View", value: villa.specs.view },
-    { label: "The beach", value: villa.specs.distanceToBeach },
-  ].filter((d): d is { label: string; value: string } => Boolean(d.value));
+  const others = COLLECTION_VILLA_IDS.filter((k) => k !== key).map((k) => {
+    const v = getVilla(k);
+    return { villa: v, src: localImage(v.gallery.heroImage), copy: VILLA_PAGE_COPY[k]! };
+  });
 
   return (
-    <>
+    <div className="d">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(villaJsonLd(villa)) }}
       />
 
       <main id="main">
+        {/* ------------------------------------------------------ 01 HERO -- */}
         <Field
           src={villa.gallery.heroImage ?? ""}
           alt={`${villa.name}, Thalasses Villas`}
           horizonY={0.45}
-          height="88svh"
-          priority
+          height="92svh"
+          className="d-villa-hero"
         >
           <div className="canon clause-field" style={{ padding: 0 }}>
-            <p className="micro" style={{ marginBottom: "var(--spacing-step-4)" }}>
-              01 — {villa.name}
-            </p>
-            <Clause gerund={page.gerund} tail={page.tail} scale="c1" animate as="h1" />
+            <p className="micro d-eyebrow">01 — {villa.name}</p>
+            <Clause gerund={copy.gerund} tail={copy.tail} scale="c1" animate as="h1" />
           </div>
         </Field>
 
-        {/*
-          02 — THE HOUSE. The one deep passage on a villa page.
-
-          Before this the template ran limestone → limestone → ammos → limestone,
-          which is the only composition on the site with no ground change at all.
-          The estate page opens on pelagos immediately after its hero; a villa
-          now does the same, so the two read as siblings under one hand rather
-          than as two templates that happen to share tokens. It also brings the
-          atmosphere layer with it — sea-light and the ghost numeral only exist
-          on a deep ground.
-        */}
-        <section className="villa-statement on-dark">
-          <span className="ghost ghost--right" aria-hidden="true">
-            02
-          </span>
-          <div className="canon">
-            <p className="micro">02 — The house</p>
-            <div className="grid-canon villa-statement-grid">
-              <Reveal className="field-clause">
-                {/* The fourth voice, spent once per page. Still `.lede`, so the
-                    numeric-token guard keeps watching this line. */}
-                <p className="lede aside-italic villa-angle">{page.angle}</p>
-              </Reveal>
-              <Reveal className="field-prose" index={1}>
-                {villa.shortDescription ? (
-                  <p className="prose-measure villa-prose">{villa.shortDescription}</p>
-                ) : null}
-
-                <Ledger entries={figures} className="villa-ledger" />
-
-                {detail.length ? (
-                  <dl className="villa-detail">
-                    {detail.map((d) => (
-                      <div key={d.label} className="villa-detail-row">
-                        <dt className="micro">{d.label}</dt>
-                        <dd className="small">{d.value}</dd>
-                      </div>
-                    ))}
-                  </dl>
-                ) : null}
-
-                {/* Bed truths as clauses, not a table. */}
-                <div className="villa-facts clause-field">
-                  {villa.amenityFacts?.some((f) => /twin/i.test(f)) ? (
-                    <Clause
-                      gerund="Converting"
-                      tail="Twins to a double on request"
-                      scale="c4"
-                      as="p"
-                    />
-                  ) : null}
-                </div>
-              </Reveal>
-            </div>
-          </div>
-        </section>
-
-        {/* 03 — THE ROOMS. A marker, not a heading: the photography is the
-            protagonist here and a display line above it would only delay it.
-            The label rides the datum rule, in the plate-index manner. */}
-        <div className="canon villa-marker">
-          <p className="micro">03 — The rooms</p>
-          <div className="datum-rule" />
-        </div>
-        <TheRun images={runImages} villaName={villa.name} />
-
-        {/* 04 — Inside. No ghost numeral: the group rail is `position: sticky`
-            and the ghost needs `overflow: hidden` to stay inside the page. */}
-        <Inventory data={inventory} villaName={villa.name} beat="04" />
-
-        <section className="canon villa-cta">
-          <span className="ghost ghost--left" aria-hidden="true">
-            05
-          </span>
+        {/* ------------------------------------------- 02 THE SPEC STRIP -- */}
+        {/* Only what the registry confirms. Villa Pueblo simply has fewer
+            cells — no dashes, no placeholders. (T-212.) */}
+        <section className="canon d-spec">
           <Reveal>
-            <p className="micro">05 — {villa.name}</p>
-            <p style={{ marginTop: "var(--spacing-step-5)" }}>
+            <p className="micro">02 — The house</p>
+            <ul className="d-spec-strip">
+              {specs.map((s) => (
+                <li
+                  key={s.label}
+                  className={`d-spec-cell${s.sub ? " d-spec-cell--area" : ""}`}
+                >
+                  <span className="micro d-spec-label">{s.label}</span>
+                  <span className="tabular d-spec-value">{s.value}</span>
+                  {s.sub ? <span className="caption tabular d-spec-sub">{s.sub}</span> : null}
+                </li>
+              ))}
+            </ul>
+          </Reveal>
+
+          {details.length ? (
+            <Reveal index={1}>
+              <dl className="d-detail">
+                {details.map((d) => (
+                  <div key={d.label} className="d-detail-row">
+                    <dt className="micro">{d.label}</dt>
+                    <dd className="small">{d.value}</dd>
+                  </div>
+                ))}
+              </dl>
+            </Reveal>
+          ) : null}
+
+          <Reveal index={2}>
+            <p className="d-villa-lede">{copy.lede}</p>
+            <p className="d-villa-cta">
               <Magnetic>
                 <a
                   href={cta.href}
-                  className="micro estate-cta villa-cta-primary"
+                  className="btn-primary micro"
                   target={cta.kind === "availability" ? "_blank" : undefined}
                   rel={cta.kind === "availability" ? "noopener noreferrer" : undefined}
                   data-cursor="Book"
@@ -284,16 +210,87 @@ export default async function VillaPage({ params }: { params: Promise<{ slug: st
                 </a>
               </Magnetic>
               {cta.secondary ? (
-                <Link
-                  href={cta.secondary.href}
-                  className="micro villa-cta-secondary"
-                  style={{ marginLeft: "var(--spacing-step-6)" }}
-                >
+                <Link href={cta.secondary.href} className="micro d-link d-villa-cta-secondary">
                   {cta.secondary.label}
                 </Link>
               ) : null}
             </p>
           </Reveal>
+        </section>
+
+        {/* ---------------------------------------------- 03 THE GALLERY -- */}
+        <div className="canon d-villa-mark">
+          <p className="micro">03 — The rooms</p>
+          <div className="datum-rule" />
+        </div>
+        <TheRun images={runImages} villaName={villa.name} />
+
+        {/* ------------------------------- 04 AMENITIES vs WHAT'S INCLUDED */}
+        {/* The Aman split. Hard features on the left, what you are given on
+            the right — the second list reads as generosity only because
+            everything in it is verified. */}
+        <Inventory data={inventory} villaName={villa.name} beat="04" />
+
+        <section className="canon d-includes">
+          <Reveal>
+            <p className="micro">Your stay includes</p>
+            <ul className="d-includes-list">
+              {STAY_INCLUDES.map((i) => (
+                <li key={i.label} className="d-includes-item">
+                  <span className="display c4 d-includes-label">{i.label}</span>
+                  <span className="small d-includes-note">{i.note}</span>
+                </li>
+              ))}
+            </ul>
+          </Reveal>
+        </section>
+
+        {/* ------------------------------------------ 05 THE STORY BEATS -- */}
+        <section className="canon d-beats">
+          <Reveal>
+            <p className="micro">05 — {villa.name}, in detail</p>
+          </Reveal>
+          {copy.beats.map((b, i) => (
+            <Reveal key={b.title} index={i} className="d-beat">
+              <p className="micro d-beat-eyebrow">{b.eyebrow}</p>
+              <h2 className="display c3 d-beat-title">{b.title}</h2>
+              <p className="d-beat-body">{b.body}</p>
+            </Reveal>
+          ))}
+        </section>
+
+        {/* --------------------------------------------- 06 CROSS-SELL ---- */}
+        <section className="canon d-others">
+          <Reveal>
+            <p className="micro">06 — The other houses</p>
+          </Reveal>
+          <ul className="d-others-grid">
+            {others.map((o) => (
+              <li key={o.villa.id}>
+                <Link href={`/en/villas/${o.villa.slug}`} className="d-other">
+                  {o.src ? (
+                    <ImageReveal className="d-other-frame">
+                      <Image
+                        src={o.src}
+                        alt={`${o.villa.name}, Thalasses Villas`}
+                        fill
+                        sizes="(max-width: 767px) 100vw, 25vw"
+                        quality={80}
+                        loading="lazy"
+                        style={{ objectFit: "cover" }}
+                      />
+                    </ImageReveal>
+                  ) : (
+                    <span className="d-other-frame" aria-hidden="true" />
+                  )}
+                  <span className="display c4 d-other-name">{o.villa.name}</span>
+                  <span className="caption d-other-spec tabular">
+                    {o.villa.specs.bedrooms} bd · sleeps {o.villa.specs.maxGuests}
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
         </section>
       </main>
 
@@ -309,6 +306,6 @@ export default async function VillaPage({ params }: { params: Promise<{ slug: st
         operatingLicence={site.legal?.operatingLicence ?? ""}
         operatingLicenceLabel={site.legal?.operatingLicenceLabel ?? "Permission of legality"}
       />
-    </>
+    </div>
   );
 }
