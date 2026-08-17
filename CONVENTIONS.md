@@ -284,3 +284,58 @@ tree, ever, not even in an ignored file. When the enquiry form gets a mail
 provider, its key lives in **Vercel environment variables** and is read from
 `process.env`. `.gitignore` blocks `.env*`, but that block is a backstop, not
 the policy.
+
+### §13 addendum — incident response, in this order
+
+Ratified after the Maps-key incident, where the ordering was arrived at by
+accident and turned out to matter:
+
+**1. Build the instrument. 2. Baseline it against the live incident. 3. Fix.
+4. Re-measure with the same instrument.**
+
+Writing `scripts/scan-secrets.mjs` *before* redacting anything meant the scanner
+had to reproduce the finding first — 43 matches in 43 files, exit 1 — which
+proved the gate worked before it was ever asked to certify a fix. A scanner
+written after the fix can only ever report success, and you would have no way to
+know whether that is because the tree is clean or because the pattern is wrong.
+The same gate now guards every push, so the fix and the future are verified by
+one instrument rather than two.
+
+**`--force-with-lease`, never a bare `--force`.** The lease fails loudly if the
+remote moved since you last fetched. Two conversations write to this repository;
+a bare force would discard the other one's work silently and call it success.
+
+**A provider alert closes on the provider's confirmation, never on repository
+hygiene.** GitHub alert #1 stayed `open` through a complete redaction, history
+rewrite and verified force-push, because none of that revokes a key. Redacting
+and then resolving the alert would have recorded "handled" for something still
+live. The alert tracks the credential; the repository work tracks the
+repository.
+
+## 14. Numbers are allocated by the file at HEAD, never by a prompt
+
+Two conversations write to this repository, and they collided in
+`CONVENTIONS.md` at the same section number: both wrote a "§12". A document
+whose rules are cited by number cannot have two of any number.
+
+**Before claiming a convention number or a T-number: pull, then read the highest
+one in the committed file.** Not from the brief, not from a review that names a
+number, not from this session's memory of what it wrote last. The repository at
+HEAD is the single source of truth that both threads read, and it is the only
+one that has seen both.
+
+```bash
+git fetch origin && git rev-parse HEAD origin/main   # same? then read HEAD
+git show HEAD:CONVENTIONS.md | grep -oE "^## [0-9]+"
+git show HEAD:TODO.md        | grep -oE "^- \*\*T-[0-9]+"
+```
+
+If a prompt names a number that is already taken, take the next free one and say
+so in the report. The instruction was right about the rule and wrong only about
+its address.
+
+**The same check answers "is this done?"** A task's status is what the committed
+`TODO.md` says at HEAD, verified against the artefacts it claims — not what
+either conversation remembers. Where the two disagree, HEAD wins and the
+disagreement is worth reporting, because it means one thread is working from a
+stale picture.
