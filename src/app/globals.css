@@ -4,7 +4,7 @@
 @import "./elevation.css";
 @import "./patterns.css";
 @import "./atmosphere.css";
-@import "./directions.css";
+@import "./direction-d.css";
 
 /* ==========================================================================
    THALASSES VILLAS — DESIGN TOKENS
@@ -31,10 +31,37 @@
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
 
   /* Display — Marcellus 400, the only weight. Floor is 28px, enforced below. */
-  --text-c1: clamp(4rem, 12vw, 14rem);
-  --text-c2: clamp(2.75rem, 7vw, 7.5rem);
-  --text-c3: clamp(2rem, 3.4vw, 3.25rem);
-  --text-c4: clamp(1.75rem, 2.1vw, 2rem);
+  /* ---- THE DISPLAY CEILING (Direction D) -------------------------------
+     Every display size is a rem anchor + a vw coefficient, hard-clamped. The
+     rem anchor is not decoration: a pure-vw value does not respond to browser
+     zoom, which is an accessibility failure, and the clamp maximum is the
+     whole point — the two rejected rounds both failed on the same thing,
+     "υπερβολικά μεγάλα γράμματα που δεν φαίνονται". Large-but-legible beats
+     large-but-cropped. Nothing on this site may exceed 96px.
+
+       display-xl  ~88px @1440   ~48px @390   hero, estate numerals
+       display-l   ~64px @1440   ~40px @390   act titles, villa names
+       headline-m  ~44px @1440   ~32px @390   section headings, litany
+       title-s     ~26px @1440   ~22px @390   card titles, meta            */
+  --text-display-xl: clamp(2.75rem, 1.6rem + 5.4vw, 6rem);
+  --text-display-l: clamp(2.25rem, 1.5rem + 3.6vw, 4rem);
+  --text-headline-m: clamp(1.75rem, 1.3rem + 2.2vw, 2.75rem);
+  --text-title-s: clamp(1.25rem, 1.05rem + 0.9vw, 1.6rem);
+  --text-eyebrow: clamp(0.8rem, 0.75rem + 0.2vw, 0.9rem);
+  --text-body-l: clamp(1.2rem, 1.05rem + 0.6vw, 1.5rem);
+
+  /* The legacy c1–c4 register now RESOLVES to the ceiling scale, so the cap is
+     one edit rather than a rule every component has to remember. */
+  --text-c1: var(--text-display-xl);
+  --text-c2: var(--text-display-l);
+  --text-c3: var(--text-headline-m);
+  --text-c4: var(--text-title-s);
+
+  /* ---- SECTION RHYTHM — one idea per viewport --------------------------- */
+  --section-y: clamp(6rem, 4rem + 6vw, 10rem);
+  --section-y-tight: clamp(2rem, 1.5rem + 2vw, 3.5rem);
+  --plate-inset: clamp(1rem, 0.5rem + 3vw, 3rem);
+  --card-gap: clamp(1rem, 0.75rem + 1.5vw, 2rem);
 
   /* Inter — everything else. Nothing is set between 22px and 28px. */
   --text-lede: clamp(1.125rem, 1.4vw, 1.375rem);
@@ -135,25 +162,29 @@ body {
   font-style: normal;
 }
 
+/* Tracking and leading move with the size: display serif above ~40px wants
+   negative tracking and tight leading; the eyebrow register wants the opposite.
+   Leading is looser than it was, because the sizes are now capped and a capped
+   headline that still runs to two or three lines needs room between them. */
 .c1 {
-  font-size: var(--text-c1);
-  line-height: 0.87;
-  letter-spacing: -0.022em;
+  font-size: var(--text-display-xl);
+  line-height: 1.05;
+  letter-spacing: -0.025em;
 }
 .c2 {
-  font-size: var(--text-c2);
-  line-height: 0.92;
-  letter-spacing: -0.016em;
+  font-size: var(--text-display-l);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
 }
 .c3 {
-  font-size: var(--text-c3);
-  line-height: 1;
-  letter-spacing: -0.01em;
+  font-size: var(--text-headline-m);
+  line-height: 1.15;
+  letter-spacing: -0.015em;
 }
 .c4 {
-  font-size: var(--text-c4);
-  line-height: 1.08;
-  letter-spacing: -0.005em;
+  font-size: var(--text-title-s);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
 }
 
 .lede {

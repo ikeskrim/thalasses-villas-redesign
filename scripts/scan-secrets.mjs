@@ -31,9 +31,7 @@
 
 import { execSync } from "node:child_process";
 import fs from "node:fs";
-import path from "node:path";
 
-const ROOT = process.cwd();
 const STAGED = process.argv.includes("--staged");
 
 /* Nothing here is source, and all of it is regenerable or vendored. */
@@ -55,10 +53,19 @@ const PATTERNS = [
   { id: "aws-access-key-id", re: /\bAKIA[0-9A-Z]{16}\b/g },
   { id: "slack-token",       re: /\bxox[baprs]-[A-Za-z0-9-]{10,}/g },
   { id: "private-key-block", re: /-----BEGIN (?:[A-Z ]+ )?PRIVATE KEY-----/g },
+  // ---- JWTs, which is what most modern platform tokens actually are. -----
+  { id: "jwt", re: /\beyJ[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}/g },
   // ---- The catch-all, for formats nobody has thought of yet. -------------
+  // QUOTED form (source code) and UNQUOTED form (.env, YAML, shell). The
+  // quoted-only version read a real `VERCEL_OIDC_TOKEN=eyJ…` and reported the
+  // tree clean, because an env assignment has no quotes around its value.
   {
     id: "generic-assignment",
-    re: /(api[_-]?key|apikey|secret|token|password)\s*[:=]\s*['"][A-Za-z0-9_\-]{16,}['"]/gi,
+    re: /(api[_-]?key|apikey|secret|token|password)\s*[:=]\s*['"][A-Za-z0-9_\-.]{16,}['"]/gi,
+  },
+  {
+    id: "generic-assignment-bare",
+    re: /^[ \t]*(?:export[ \t]+)?[A-Za-z0-9_]*(?:API[_-]?KEY|APIKEY|SECRET|TOKEN|PASSWORD)[A-Za-z0-9_]*[ \t]*=[ \t]*[^\s"'#][^\s]{15,}/gim,
   },
 ];
 
@@ -82,28 +89,36 @@ const REDACTIONS = [/^AIZA_KEY_REDACTED$/, /_REDACTED$/];
 const mask = (s) =>
   s.length <= 12 ? s.slice(0, 3) + "…" : `${s.slice(0, 6)}…${s.slice(-4)} (len ${s.length})`;
 
+/**
+ * SCOPE: everything that can reach the repository — tracked files plus
+ * untracked files that are not ignored. Not a raw filesystem walk.
+ *
+ * The walk was wrong in both directions. `vercel` writes a real
+ * VERCEL_OIDC_TOKEN into `.env.local`; `.gitignore` blocks it, so it can never
+ * be committed — but the walk read it anyway, and once a legitimate local
+ * credential can fail `npm run verify`, the next person starts ignoring the
+ * scanner. That is a worse outcome than the file. The question that actually
+ * matters is "could this end up in a commit?", and git is what answers it.
+ *
+ * `content/raw` is tracked, so the scraped dumps are still scanned. That is the
+ * §13 requirement and it is untouched.
+ */
 function files() {
-  if (STAGED) {
-    return execSync("git diff --cached --name-only --diff-filter=ACMR", {
-      maxBuffer: 1 << 28,
-    })
-      .toString()
-      .split("\n")
-      .filter(Boolean)
-      .filter((f) => fs.existsSync(f));
-  }
-  const out = [];
-  (function walk(dir) {
-    for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
-      if (e.isDirectory()) {
-        if (SKIP_DIRS.has(e.name)) continue;
-        walk(path.join(dir, e.name));
-      } else {
-        out.push(path.relative(ROOT, path.join(dir, e.name)).split(path.sep).join("/"));
+  const cmd = STAGED
+    ? "git diff --cached --name-only --diff-filter=ACMR"
+    : "git ls-files --cached --others --exclude-standard";
+  return execSync(cmd, { maxBuffer: 1 << 28 })
+    .toString()
+    .split("\n")
+    .filter(Boolean)
+    .filter((f) => !f.split("/").some((seg) => SKIP_DIRS.has(seg)))
+    .filter((f) => {
+      try {
+        return fs.statSync(f).isFile();
+      } catch {
+        return false;
       }
-    }
-  })(ROOT);
-  return out;
+    });
 }
 
 let scanned = 0;
@@ -135,7 +150,7 @@ for (const f of files()) {
 
 console.log(
   `credential scan — ${scanned} text files scanned, ${skippedBinary} binaries skipped` +
-    (STAGED ? " (staged only)" : " (whole tree)")
+    (STAGED ? " (staged only)" : " (everything git can see)")
 );
 
 if (!findings.length) {

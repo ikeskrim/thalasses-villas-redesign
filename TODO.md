@@ -945,3 +945,30 @@ defect lives in, not at the layer the reviewer was describing.
   *Files:* `src/app/directions.css`
 
 - **T-231 — OPEN, for the owner: pick one.** These are comparison artifacts, not three finished sites — distinctness over completeness, per the brief. Whichever direction wins, the losing two routes and `directions.css` come out, and the winner is finished properly against the full convention set.
+
+---
+
+## 21. DIRECTION D — THE PRODUCTION HOMEPAGE
+
+- **T-232 — The bake-off resolved into one direction, and the comparison routes are gone.** D is the light limestone ground carrying **A's composition** (full-bleed frames as film plates, the litany as intertitles at one line per screen, one villa per viewport) and **C's confidence** (display scale, the estate's numbers as their own beat) — with every failure mode of both discarded: no 22vw cropped type, no deliberate overflow, no edge-butted stacking, no name over-and-larger than its photograph, no near-black global ground. `/a`, `/b`, `/c`, `/choose`, `directions.css` and `tests/directions.spec.ts` deleted.
+  *Files:* `src/app/page.tsx`, `src/app/direction-d.css`, `src/lib/homepage.ts`, `tests/direction-d.spec.ts`
+
+- **T-233 — The display ceiling is now structural, not a habit.** A fluid scale with rem anchors and hard clamp maxima (`display-xl` 96px, `display-l` 64px, `headline-m` 44px, `title-s` 26px), and the legacy `c1–c4` register RESOLVES to it, so the cap is one edit rather than a rule every component must remember. **The ≥1440 scale push in `atmosphere.css` is deleted** — it took c1 to 288px, which is where "scale is the cheapest luxury" stopped being true. Guarded at six widths on four routes: nothing legible above 96px. The ghost numeral is exempt by construction — `aria-hidden` and under 10% ink — and the test says so rather than special-casing a class name.
+  *Files:* `src/app/globals.css`, `src/app/atmosphere.css`, `tests/direction-d.spec.ts`
+
+- **T-234 — Rhythm tokens, and one idea per viewport.** `--section-y` / `--section-y-tight` / `--plate-inset` / `--card-gap`. Villa plates are 88svh with 150px between them, asserted: consecutive plates may never be closer than 48px, and a plate may never fill the viewport. The three acts moved onto limestone, so the deep ground is spent exactly **twice** on the page — the last litany line and the estate numbers — asserted as ≤2.
+  *Files:* `src/app/direction-d.css`, `tests/direction-d.spec.ts`
+
+- **T-235 — Five villa plates rendered as five empty rectangles, and it was my own rule I broke.** I passed `villa.gallery.heroImage` — a Loggia CDN address — straight to `next/image`. Nothing is hotlinked, so no `remotePatterns` exist and every plate painted the ammos placeholder. Worse than the blank frames: **bypassing `localImage` bypasses the owner's ruled-off list**, so a blocked frame could have walked back onto the homepage. Identical in shape to T-185. Resolved centrally in `getHomepageData` and guarded twice — no remote URL may reach an `<img>` on any route, and all five plates must actually paint.
+  *Files:* `src/lib/homepage.ts`, `src/app/page.tsx`, `tests/direction-d.spec.ts`
+
+- **T-236 — The hero scrim was computed, then found wanting, then computed properly.** The first ramp reached 0.62 at the very bottom, which left ~0.28 across the band the copy occupies; over a near-white sky that composites to ~#BABEC0 and limestone reads about **1.6:1**. The headline survived only because it happened to land on dark rock. Worst case is what has to pass: limestone needs the ground at or below sRGB ~105 for 4.5:1, which needs **alpha ≥ 0.68** — so the copy band holds 0.72, the same number `Field` already carries for the same reason. Two further failures found in the same screenshot and fixed: the clause TAIL was preveli (a deep-ground colour) over a golden sky, and the nav register sat at roughly 1.4:1 over bright sky until the bar gained a faint top scrim.
+  *Files:* `src/app/direction-d.css`, `tests/direction-d.spec.ts`
+
+- **T-237 — The credential scanner had a hole, found by accident.** `vercel` wrote a real `VERCEL_OIDC_TOKEN` into `.env.local`; the scanner read the file and reported the tree **clean**, because the generic-assignment pattern required quotes and an env assignment has none. Two fixes: JWT and unquoted-assignment patterns added, and the scope changed from a filesystem walk to `git ls-files --cached --others --exclude-standard` — what can actually reach a commit. Scanning ignored files is worse than useless: a legitimate local credential failing `npm run verify` trains people to ignore the scanner. Proven with a canary that previously passed and now exits 1.
+  *Files:* `scripts/scan-secrets.mjs`
+
+- **T-238 — The scroll odometer is retired**, asserted absent rather than deleted quietly. It was a charming gadget, and this direction's brief is explicit that confidence comes from timing and whitespace rather than devices.
+  *Files:* `tests/patterns.spec.ts`
+
+- **T-239 — OPEN, owner to verify:** the geographic scope of "the only seafront villas with helipad"; the press line (Condé Nast Traveller) now set as type above the footer rather than as a hero badge; per-villa m²/sq ft for the imperial pairing the villa-page template still needs; and the eight beach distances. None blocks the homepage.

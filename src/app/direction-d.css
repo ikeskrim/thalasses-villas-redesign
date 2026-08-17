@@ -1,0 +1,382 @@
+/* ==========================================================================
+   DIRECTION D — the production homepage
+   Light limestone ground throughout, with exactly TWO deep-pelagos interludes:
+   the last litany line, and the estate numbers. Contrast by rarity.
+
+   The rules this file exists to hold:
+     1. No display type above 96px. Ever. (Enforced in globals.css.)
+     2. One idea per viewport — every beat gets --section-y of air.
+     3. A name never sits over-and-larger than its photograph.
+     4. Nothing overflows horizontally. Not as a crop, not as a "gesture".
+   ========================================================================== */
+
+.d {
+  background: var(--color-limestone);
+}
+
+/* ---- HERO ---------------------------------------------------------------- */
+
+.d-hero {
+  position: relative;
+  height: 100svh;
+  overflow: hidden;
+}
+/*
+   THE SCRIM, COMPUTED RATHER THAN EYEBALLED.
+
+   The first version ramped to 0.62 at the very bottom, which put roughly 0.28
+   alpha across the band the copy actually occupies. Over the brightest thing a
+   golden-hour frame contains — a near-white sky at the waterline — that
+   composites to about #BABEC0, where limestone reads ~1.6:1. The headline
+   survived because it happened to fall on dark rock; the eyebrow and the clause
+   tail did not.
+
+   Worst case is what has to pass, so: what alpha does limestone need over pure
+   white? Limestone's relative luminance is 0.8098. For 4.5:1 the ground must sit
+   at or below (0.8598 / 4.5) − 0.05 = 0.141, which is about sRGB 105 — and
+   compositing basalt over white to reach 105 needs alpha ≈ 0.68.
+
+   So the copy band holds 0.72, the same number `Field` carries and for exactly
+   the same reason. The top of the frame stays at 0.06 so the photograph still
+   opens clean; the ramp does its work below the midline, where nothing but type
+   is happening. */
+.d-hero-scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgb(22 38 43 / 0.3) 0%,
+    rgb(22 38 43 / 0.12) 26%,
+    rgb(22 38 43 / 0.46) 50%,
+    rgb(22 38 43 / 0.72) 68%,
+    rgb(22 38 43 / 0.8) 100%
+  );
+}
+.d-hero-copy {
+  position: absolute;
+  inset: auto 0 0 0;
+  padding-bottom: clamp(8rem, 17vh, 12rem);
+  color: var(--color-limestone);
+  z-index: 2;
+}
+.d-eyebrow {
+  color: var(--color-preveli);
+  margin-bottom: var(--spacing-step-5);
+}
+/* The clause TAIL is preveli by default, which is a colour designed for a deep
+   ground. Over a golden-hour sky it disappeared — "UNLIMITED" was legible only
+   because you already knew it was there. On the hero it takes full limestone;
+   the tail is half the signature and it has to be readable. */
+.d-hero-copy .clause-tail {
+  color: var(--color-limestone);
+}
+
+/* THE CHROME, over a light-topped frame.
+   The nav is transparent until the hero is behind you, and D's hero opens on
+   near-white sky — so the register sat at roughly 1.4:1 and the wordmark was
+   not much better. A faint top scrim costs nothing visually and makes the bar
+   legible over any photograph, which is the only thing chrome has to be. */
+body:has(.d) .nav:not(.is-solid) {
+  background: linear-gradient(to bottom, rgb(22 38 43 / 0.42), rgb(22 38 43 / 0));
+}
+body:has(.d) .nav:not(.is-solid) .nav-link,
+body:has(.d) .nav:not(.is-solid) .nav-index {
+  color: var(--color-limestone);
+  opacity: 1;
+}
+.d-hero-lede {
+  margin-top: var(--section-y-tight);
+  font-size: var(--text-body-l);
+  line-height: 1.45;
+  max-width: 30ch;
+  color: var(--color-limestone);
+}
+
+.d-cue {
+  position: absolute;
+  left: 50%;
+  bottom: 7.5rem;
+  transform: translateX(-50%);
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-step-3);
+  color: var(--color-limestone);
+  text-decoration: none;
+  opacity: 0.8;
+}
+.d-cue:hover,
+.d-cue:focus-visible {
+  opacity: 1;
+}
+.d-cue-line {
+  display: block;
+  width: 1px;
+  height: 48px;
+  background: linear-gradient(to bottom, rgb(232 233 227 / 0.9), rgb(232 233 227 / 0));
+  transform-origin: top;
+  animation: d-breathe 2.8s var(--ease-thalasses) infinite;
+}
+@keyframes d-breathe {
+  0%, 100% { transform: scaleY(0.55); opacity: 0.5; }
+  50%      { transform: scaleY(1);    opacity: 1; }
+}
+@media (max-width: 767px) {
+  .d-cue { display: none; }
+}
+
+/* ---- 01 THE LITANY, ON LIGHT GROUND -------------------------------------- */
+/* A's intertitle idea, inverted onto limestone: dark ink, generous air, one
+   line reading at a time. The photograph stays beside it rather than under it,
+   so no scrim is needed and the type is never fighting an image. */
+
+.d .litany {
+  background: var(--color-limestone);
+}
+.d .litany-copy {
+  padding-block: var(--section-y);
+}
+.d .litany-line {
+  padding-block: var(--section-y-tight);
+}
+.d .litany-line .display {
+  font-size: var(--text-headline-m);
+  line-height: 1.15;
+  letter-spacing: -0.015em;
+}
+.d .litany-payoff {
+  margin-top: var(--section-y);
+}
+
+/* ---- 02 THE ACTS, ON LIGHT GROUND ---------------------------------------- */
+/* The three-act showcase keeps its mechanic — each act holds a full viewport,
+   which IS the one-idea-per-viewport rule — but it moves onto limestone. The
+   deep ground is now spent only twice on this page, and neither is here. */
+
+.d .acts,
+.d .acts-stack {
+  background: var(--color-limestone);
+  color: var(--color-basalt);
+}
+.d .acts::before,
+.d .acts-stack::before {
+  /* The sea-light glow is tuned for a deep ground; on limestone it reads as a
+     smudge. Off here — the atmosphere layer earns its keep on the two dark
+     interludes instead. */
+  display: none;
+}
+.d .acts .ghost,
+.d .acts-stack .ghost {
+  color: var(--color-basalt);
+  opacity: 0.035;
+}
+.d .acts-beat,
+.d .acts-tab {
+  color: var(--color-phrygana);
+}
+.d .acts-tab.is-active {
+  color: var(--color-basalt);
+}
+.d .acts-nav ol {
+  border-bottom-color: rgb(20 83 95 / 0.22);
+}
+.d .act-card {
+  color: var(--color-basalt);
+}
+.d .act-card .icon {
+  color: var(--color-pelagos);
+}
+.d .act-card-desc,
+.d .acts .ledger-inline,
+.d .acts .aside-italic {
+  color: var(--color-phrygana);
+}
+
+/* ---- 03 THE STATEMENT ---------------------------------------------------- */
+
+.d-statement {
+  padding-block: var(--section-y) var(--section-y-tight);
+}
+.d-statement-clause {
+  margin-top: var(--section-y-tight);
+}
+/* A bleed frame is still a beat: it gets air after it, never a butted edge. */
+.d-bleed {
+  margin-bottom: var(--section-y);
+}
+
+/* ---- 04 THE COLLECTION — one villa per viewport -------------------------- */
+
+.d-collection {
+  padding-block: var(--section-y) 0;
+}
+.d-collection-mark,
+.d-collection-lede {
+  max-width: var(--container-canon);
+  margin-inline: auto;
+  padding-inline: var(--page-margin);
+}
+.d-collection-lede {
+  margin-top: var(--spacing-step-4);
+  font-size: var(--text-body-l);
+  color: var(--color-phrygana);
+  max-width: 34ch;
+}
+
+.d-plate {
+  margin-top: var(--section-y);
+}
+.d-plate-link {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+/* ~88svh, not 92 — the plate needs to end before the viewport does, or the
+   next beat starts fighting it. */
+.d-plate-frame {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 88svh;
+  background: var(--color-ammos);
+}
+/* THE NAME SITS BELOW THE FRAME. Never over it, never larger than it. */
+.d-plate-copy {
+  display: grid;
+  gap: var(--spacing-step-3);
+  padding-top: var(--section-y-tight);
+}
+.d-plate-index {
+  color: var(--color-pelagos);
+}
+.d-plate-name {
+  color: var(--color-basalt);
+}
+.d-plate-link:hover .d-plate-name,
+.d-plate-link:focus-visible .d-plate-name {
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+  text-decoration-thickness: 1.5px;
+  text-decoration-color: var(--color-pelagos);
+}
+.d-plate-clause {
+  display: flex;
+  align-items: baseline;
+  gap: 1ch;
+  flex-wrap: wrap;
+  color: var(--color-basalt);
+}
+.d-plate-tail {
+  color: var(--color-phrygana);
+}
+.d-plate-spec {
+  color: var(--color-phrygana);
+}
+.d-plate-cta {
+  margin-top: var(--spacing-step-5);
+}
+/* Pueblo is a different product; it is given the space to say so. */
+.d-plate--apart {
+  margin-top: calc(var(--section-y) * 1.6);
+}
+
+.d-link {
+  color: var(--color-pelagos);
+  text-decoration: underline;
+  text-underline-offset: 0.5em;
+  text-decoration-thickness: 1.5px;
+  padding-block: var(--spacing-step-2);
+  display: inline-block;
+}
+.d-link--light {
+  color: var(--color-limestone);
+}
+
+/* ---- 05 THE ESTATE — the second and last dark interlude ----------------- */
+
+.d-numbers {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  background: var(--color-pelagos);
+  color: var(--color-limestone);
+  padding-block: var(--section-y);
+  margin-top: var(--section-y);
+}
+.d-numbers-lede {
+  margin-top: var(--spacing-step-4);
+  font-size: var(--text-body-l);
+  color: var(--color-preveli);
+  max-width: 30ch;
+}
+.d .d-ledger {
+  margin-top: var(--section-y-tight);
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: var(--card-gap);
+}
+/* C's "numbers as the hero moment" — at display-xl, which is capped at 96px,
+   so it is the largest thing on the page and still legible. */
+.d .d-ledger .ledger-spec-value {
+  font-size: var(--text-display-xl);
+  line-height: 1.05;
+  letter-spacing: -0.025em;
+  color: var(--color-limestone);
+}
+.d .d-ledger dt {
+  color: var(--color-preveli);
+}
+.d-numbers-cta {
+  margin-top: var(--section-y-tight);
+}
+
+/* ---- 06/07/08 ------------------------------------------------------------ */
+
+.d-register {
+  padding-block: var(--section-y);
+}
+.d .coastline {
+  padding-block: var(--section-y);
+}
+
+/* ---- PROOF --------------------------------------------------------------- */
+/* Off the hero. Set in the site's own type at reduced ink, not as an imported
+   colour badge — the mark is a fact, not a sticker. */
+.d-proof {
+  padding-block: var(--section-y);
+  text-align: center;
+  border-top: 1px solid rgb(20 83 95 / 0.18);
+  max-width: var(--container-canon);
+  margin-inline: auto;
+  margin-top: var(--section-y);
+}
+.d-proof-label {
+  color: var(--color-phrygana);
+}
+.d-proof-name {
+  margin-top: var(--spacing-step-4);
+  color: var(--color-basalt);
+  opacity: 0.55;
+}
+
+/* ---- Reduced motion ------------------------------------------------------ */
+@media (prefers-reduced-motion: reduce) {
+  .d-cue-line {
+    animation: none;
+    transform: scaleY(1);
+    opacity: 0.8;
+  }
+}
+
+@media (max-width: 767px) {
+  .d-hero-copy {
+    padding-bottom: clamp(10rem, 30vh, 15rem);
+  }
+  .d-plate-frame {
+    height: 68svh;
+  }
+  .d .d-ledger {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--spacing-step-6);
+  }
+}

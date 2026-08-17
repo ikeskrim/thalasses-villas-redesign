@@ -191,15 +191,12 @@
   color: var(--color-preveli);
 }
 
-/* Scale is the cheapest luxury there is. One full step up at the canon width,
-   and the biggest lines are allowed to approach the edges. */
-@media (min-width: 1440px) {
-  :root {
-    --text-c1: clamp(8rem, 15vw, 18rem);
-    --text-c2: clamp(4.5rem, 9vw, 9.5rem);
-    --text-c3: clamp(2.5rem, 4vw, 4rem);
-  }
-}
+/* REMOVED: the >=1440 scale push.
+   It took c1 to 288px and c2 to 152px, which is where "scale is the cheapest
+   luxury" stopped being true and started cropping headlines. The ceiling scale
+   in globals.css is now the single source for display size, and it is capped at
+   96px at every viewport. Scale is still doing the work — it is just no longer
+   doing it past the point of legibility. */
 
 html {
   font-feature-settings: "liga" 1, "kern" 1, "calt" 1;

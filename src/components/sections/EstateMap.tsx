@@ -56,14 +56,17 @@ export function EstateMap({
    * "06", so /en/the-estate printed a beat number belonging to a different
    * document — the first thing that goes wrong when a numbered system is copied
    * into a shared component instead of being passed to it.
+   *
+   * `null` suppresses the label entirely, for the case where the map is the
+   * second half of a beat that has already announced itself.
    */
-  beat?: string;
+  beat?: string | null;
 }) {
   const [open, setOpen] = useState<string | null>(null);
 
   return (
     <section className="estate-map canon" aria-label="The estate">
-      <p className="micro">{beat} — The Estate</p>
+      {beat === null ? null : <p className="micro">{beat} — The Estate</p>}
 
       {/*
         This section carries the whole-estate proposition now that the pinned

@@ -15,17 +15,18 @@ import { byN } from "@/lib/selects";
 import type { CollectionCell } from "@/components/sections/Collection";
 
 /**
- * ONE HOMEPAGE, THREE ART DIRECTIONS.
+ * THE HOMEPAGE'S CONTENT, RESOLVED ONCE.
  *
- * The comparison is only worth anything if the three routes differ in *design*
- * and in nothing else. So every fact, photograph, villa, price link and booking
- * URL is resolved exactly once, here, and the three pages import it.
+ * Written for the three-way bake-off so that /a /b /c could differ in design and
+ * in nothing else. The comparison routes are gone and Direction D won, but the
+ * module stays, because the property it enforces is the one that matters in
+ * production too: the page composes, it does not resolve. Facts, photographs,
+ * villas and booking URLs are looked up here, through the single resolver, and
+ * the page receives them finished.
  *
- * That is also the guard against the obvious failure mode of a bake-off: three
- * pages drifting into three slightly different sets of claims, and the owner
- * choosing a direction partly on copy he only saw on one of them.
- *
- * Every image is an A-grade select; `byN` throws on anything else.
+ * Every full-bleed frame is an A-grade select; `byN` throws on anything else.
+ * Every villa frame goes through `localImage`, which is what applies the
+ * owner's ruled-off list.
  */
 export function getHomepageData() {
   const site = getSite() as {
@@ -62,6 +63,23 @@ export function getHomepageData() {
     return { ...r, image: localImage(e?.heroImage ?? null), category: e?.categoryProposed };
   });
 
+  /**
+   * Villa hero frames RESOLVED HERE, through `localImage`, never handed to a
+   * page as a raw inventory URL.
+   *
+   * `gallery.heroImage` is a Loggia CDN address. Passing it straight to
+   * `next/image` renders nothing — no `remotePatterns` are configured, by
+   * design, because nothing is hotlinked — and the first build of this page did
+   * exactly that: five villa plates, five empty ammos rectangles. Worse than
+   * the blank frames, bypassing `localImage` also bypasses the BLOCKED set, so
+   * a ruled-off frame could have walked straight back onto the homepage. That
+   * is the T-185 failure, and the fix is the same one: resolve centrally.
+   */
+  const plates = [...front, ...rear, fifth].map((c) => ({
+    ...c,
+    src: localImage(c.villa.gallery.heroImage) ?? byN(52).path,
+  }));
+
   return {
     site,
     location,
@@ -69,7 +87,7 @@ export function getHomepageData() {
     contact: site.contact ?? {},
     estate,
     cta: estateCta(),
-    villas: { front, rear, fifth, all: [...front, ...rear, fifth] },
+    villas: { front, rear, fifth, all: plates },
     rows,
     /** The A-grade frames each direction draws from. */
     frame: {

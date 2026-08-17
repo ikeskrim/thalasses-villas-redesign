@@ -29,9 +29,10 @@ test.describe("homepage content parity", () => {
       (f) => readJson<{ name: string }>("villas", `${f}.json`).name
     ).sort();
 
-    const rendered = (
-      await page.locator(".collection-cell .collection-name").allTextContents()
-    )
+    // Direction D replaced the Collection grid with one villa per viewport.
+    // `.collection-name` travelled with the name, so the CONTENT contract is
+    // unchanged and only the container moved.
+    const rendered = (await page.locator(".collection-name").allTextContents())
       .map((s) => s.trim())
       .sort();
 

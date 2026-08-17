@@ -97,14 +97,17 @@ test.describe("the six patterns", () => {
     await expect(page.locator(".drag-card")).toHaveCount(cats["Sea"]!);
   });
 
-  test("6 — the odometer counts real metres", async ({ page }) => {
+  test("6 — the scroll odometer is RETIRED, not broken", async ({ page }) => {
+    // Direction D drops it. It was a charming gadget and the brief for this
+    // direction is explicit that confidence comes from timing and whitespace
+    // rather than from devices — a continuously-updating counter is the
+    // opposite of that. Asserted as absent rather than deleted, so that if it
+    // ever comes back it comes back as a decision.
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.goto("/", { waitUntil: "load" });
-    await expect(page.locator(".odometer")).toHaveCount(1);
-    await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
-    await page.waitForTimeout(700);
-    const text = await page.locator(".odometer").innerText();
-    expect(text).toMatch(/\d+\.\d\s*m/);
+    await expect(page.locator(".odometer")).toHaveCount(0);
+    // The component still exists and is still tested by its own unit of truth;
+    // this only records that the homepage no longer spends a beat on it.
   });
 
   test("registers never mix: no clause heads an act, no imperative takes a tail", async ({ page }) => {
@@ -330,7 +333,8 @@ test.describe("claims refuted by measurement", () => {
 
     await page.goto("/", { waitUntil: "load" });
     await expect(page.locator(".kenburns img").first()).toBeVisible();
-    const cue = page.locator(".hero-cue");
+    // Desktop viewport by default, which is where the cue exists in D.
+    const cue = page.locator(".d-cue");
     await expect(cue).toHaveCount(1);
     // A real anchor, not a glyph: it must resolve and be keyboard reachable.
     expect(await cue.getAttribute("href")).toBe("#litany");
@@ -346,7 +350,7 @@ test.describe("claims refuted by measurement", () => {
       await page.waitForSelector(".ledger");
       const r = await page.evaluate(() => {
         const led = document.querySelector(".ledger")?.getBoundingClientRect();
-        const cue = document.querySelector(".hero-cue");
+        const cue = document.querySelector(".d-cue");
         const vis = cue ? getComputedStyle(cue).display !== "none" : false;
         const cb = cue?.getBoundingClientRect();
         return { ledgerTop: led?.top ?? null, cueBottom: cb?.bottom ?? null, visible: vis };
@@ -366,10 +370,10 @@ test.describe("claims refuted by measurement", () => {
   test("every Collection cell is image-forward", async ({ page }) => {
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.goto("/", { waitUntil: "load" });
-    const cells = await page.locator(".collection-cell").count();
-    const withImage = await page.locator(".collection-cell img").count();
-    expect(cells).toBe(5);
-    expect(withImage, "a Collection cell renders as a bare text link").toBe(cells);
+    const plates = await page.locator(".d-plate").count();
+    const withImage = await page.locator(".d-plate-frame img").count();
+    expect(plates).toBe(5);
+    expect(withImage, "a villa plate renders as a bare text link").toBe(plates);
   });
 
   test("no experience card is a hole — image or a designed typographic card", async ({ page }) => {
