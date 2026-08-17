@@ -928,3 +928,20 @@ defect lives in, not at the layer the reviewer was describing.
   *Files:* `tests/patterns.spec.ts`
 
 - **T-227 — OPEN, for the owner: the nav register and the beat spine are two numbered systems on one page.** The nav reads `01 The Villas / 02 The Estate / 03 Experiences / 04 Weddings / 05 Location`; the page now reads `01 — What a stay here is` … `08 — Weddings`. Both are set in the same letterspaced micro register, so "02" means two different things depending on where you look. Two of the five nav entries point at other pages, so the two systems cannot simply be reconciled by renumbering. **Not fixed unilaterally** — dropping the nav's numerals, or restyling them, touches every page and is a design decision. Recommendation: drop the numerals from the nav and keep numbering for the page spine alone.
+
+---
+
+## 20. THREE ART DIRECTIONS — THE BAKE-OFF
+
+- **T-228 — Owner rejected the design language after three refinement rounds. Method changed to options, not adjectives.** Three complete art directions of the homepage at `/a`, `/b`, `/c`, indexed from `/choose`. **Skins and compositions, not three codebases:** every fact, photograph, villa, figure and booking URL resolves once in `src/lib/homepage.ts` and all three import it; the components (`Field`, `Clause`, `Ledger`, `Collection`, `EstateMap`, `DragRegister`, `CoastLine`, `Litany`, `KenBurns`, `BookingLedger`, `SiteFooter`) are reused unchanged. What differs is CSS scoped under `.dir-a/.dir-b/.dir-c` and the order and scale of the beats.
+  **A — Night Cinema:** near-black / white / one grey, colour only inside the photographs, full-bleed frames butted edge to edge with a single line over each; the litany becomes intertitles and the five villas become five plates. **B — Light Editorial:** the limestone system at full strength — type one step up, photography interrupting prose rather than following it, rhythm tightened so scale carries emphasis instead of air. **C — Bold Immersive:** scale contrast as the organising idea — 22vw type cropping its own frame, the estate's numbers as the loudest beat, villa names set larger than the photographs they sit on.
+  Marked `noindex` and excluded from search. Production `/` is untouched.
+  *Files:* `src/lib/homepage.ts`, `src/app/{a,b,c,choose}/page.tsx`, `src/app/directions.css`, `tests/directions.spec.ts`
+
+- **T-229 — The bake-off guard.** A comparison is worthless if the three drift apart on content, and equally worthless if they are not visibly distinct. Both are asserted: each route states the locked capacity table and all five villa names, books against the real engine dates-only with `lang=en`, renders no ruled-off frame, and does not scroll sideways at 390 or 1440 — **and** a test fails if all three share a ground colour or a hero type scale.
+  *Files:* `tests/directions.spec.ts`
+
+- **T-230 — Three legibility defects found by looking, fixed before shipping.** (a) The first pass restyled the shared nav with `mix-blend-mode: difference`, which turned the wordmark mid-grey against A's bright sky and put the booking affordance below AA — replaced with explicit light chrome over its own scrim. (b) C's ghost button was white type on a bright frame and could not be read — it keeps its secondary role by ground and weight, not by transparency. (c) On a phone, C's 26vw hero type and its lede were landing on top of each other; the type moved to the upper third and the copy now clears the 230px booking bar. All three were visible only in a screenshot.
+  *Files:* `src/app/directions.css`
+
+- **T-231 — OPEN, for the owner: pick one.** These are comparison artifacts, not three finished sites — distinctness over completeness, per the brief. Whichever direction wins, the losing two routes and `directions.css` come out, and the winner is finished properly against the full convention set.
