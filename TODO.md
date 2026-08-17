@@ -972,3 +972,10 @@ defect lives in, not at the layer the reviewer was describing.
   *Files:* `tests/patterns.spec.ts`
 
 - **T-239 — OPEN, owner to verify:** the geographic scope of "the only seafront villas with helipad"; the press line (Condé Nast Traveller) now set as type above the footer rather than as a hero badge; per-villa m²/sq ft for the imperial pairing the villa-page template still needs; and the eight beach distances. None blocks the homepage.
+
+---
+
+## 22. OVERNIGHT BATCH — DIRECTION D EVERYWHERE
+
+- **T-240 — DEPLOY.md written; the stale-pipeline claim is dead.** The pipeline has been live throughout: `git connect` done, auto-deploy on `main`, protection disabled, team `domisi`, no env vars, `noindex` on by design until the domain move. I told the owner twice to run `vercel login` / `link` / `git connect` / `--prod`; all four were already done. The error came from reading `npx vercel whoami` → `Logged out`, which reports the **local CLI's** auth on one machine and says nothing about a **server-side** GitHub↔Vercel link. Codified as `CONVENTIONS.md` §15, and `noindex`'s launch-day sequencing is recorded so nobody "fixes" it early and splits the client's own rankings.
+  *Files:* `DEPLOY.md`, `CONVENTIONS.md`

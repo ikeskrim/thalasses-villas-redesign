@@ -339,3 +339,29 @@ its address.
 either conversation remembers. Where the two disagree, HEAD wins and the
 disagreement is worth reporting, because it means one thread is working from a
 stale picture.
+
+## 15. Infrastructure state is read from DEPLOY.md at HEAD, never assumed
+
+Two consecutive sessions told the owner "Vercel is not connected — run
+`vercel login`, `link`, `git connect`, `--prod`." It was connected the whole
+time. Auto-deploy on `main` was live, protection was off, the team was `domisi`,
+and every push had been building.
+
+The claim came from `npx vercel whoami` returning `Logged out`. **That is the
+local CLI's auth state on one machine.** The GitHub↔Vercel integration is a
+server-side link between two accounts; a logged-out terminal says nothing about
+it. The instrument was adjacent to the question and its answer was reported as
+if it settled it — §12 again, in a new costume.
+
+**The rule.** Before stating anything about the pipeline — is it deployed, where
+does it deploy, what environment variables exist, is it indexed — read
+`DEPLOY.md` at HEAD. If `DEPLOY.md` does not answer it, say that it is unknown
+and what would answer it. Never infer it from a CLI's local state, from a
+previous session's report, or from this session's memory.
+
+**And keep it current.** `DEPLOY.md` is updated in the same commit as any change
+to the repository, deploy branch, team, protection, env vars, domain or indexing
+flag. A stale infrastructure note is worse than none, because it gets believed.
+
+Corollary, standing: **never instruct the owner to run a setup command for
+infrastructure that is already set up.** Pushing to `main` is the deploy.
