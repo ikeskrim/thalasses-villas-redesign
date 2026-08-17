@@ -43,7 +43,7 @@ export function EstateMap({
   ledger,
   ctaLabel,
   ctaHref,
-  beat = "06",
+  beat = "05",
 }: {
   image: string;
   alt: string;

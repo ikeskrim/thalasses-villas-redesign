@@ -56,7 +56,7 @@ export const LITANY: LitanyLine[] = [
 /* ── Pattern 2 — the three acts ─────────────────────────────────────────── */
 export const ACTS: Act[] = [
   {
-    eyebrow: "01 — Arrival",
+    eyebrow: "Act one",
     title: "Arrive in private.",
     image: byN(41).path,
     alt: byN(41).alt,
@@ -88,7 +88,7 @@ export const ACTS: Act[] = [
     ],
   },
   {
-    eyebrow: "02 — The stay",
+    eyebrow: "Act two",
     title: "Live unlimited.",
     image: byN(29).path,
     alt: byN(29).alt,
@@ -118,7 +118,7 @@ export const ACTS: Act[] = [
     ],
   },
   {
-    eyebrow: "03 — Together",
+    eyebrow: "Act three",
     title: "Gather as one.",
     image: byN(31).path,
     alt: byN(31).alt,

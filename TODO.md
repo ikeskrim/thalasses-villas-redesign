@@ -898,3 +898,33 @@ Added when the design system was built. Items T-148 onward.
 
 - **T-220 — reCAPTCHA site keys and GA/GTM ids judged public by design, and registered as such.** Two reCAPTCHA *site* keys, one UA property, three GA4 measurement ids and one GTM container id live in the captured old site under `content/raw/`, `content/raw-booking/`, `content/raw-chh/` and `content/text/`. All are values a browser must receive to work; the reCAPTCHA **secret** key is the credential and appears nowhere here. Listed with reasons in `SECURITY-NOTES.md` §2 so a future scanner alert on any of them is answerable in one line. They match no current pattern; if one ever does, the fix is an exact-value entry in `PUBLIC_BY_DESIGN`, never a loosened regex.
   *Files:* `SECURITY-NOTES.md`, `scripts/scan-secrets.mjs`
+
+---
+
+## 19. THE DIRECTIVE AUDIT — measured before built
+
+A section-by-section critique arrived with eleven or so findings. Five were
+confirmed by measurement against HEAD, three were refuted, and one was worse
+than reported. Everything below was measured first; nothing was accepted on
+description. Conventions §12 in spirit: an instrument pointed at the layer the
+defect lives in, not at the layer the reviewer was describing.
+
+- **T-221 — CONFIRMED, and worse than reported: the numbered spine was incoherent.** Reported as "two Arrival beats". Measured: `01 — Arrival`, `02 — The stay`, `03 — Together`, `04 — Arrival`, `05`, `06`, `07`, **[08 missing]**, `09`. Three sections carried no number at all (hero, litany, location) and beat 08 did not exist. **Root cause the critique did not reach:** the three act *eyebrows* in `home-data.ts` were written as beat numbers (`"01 — Arrival"`), so three acts inside one beat each claimed a beat, and the helipad beat collided with act one. Acts are now named (`Act one/two/three`), the acts section carries a single beat label, and the spine runs 01–08 gapless with every section labelled and no repeated name. Guarded by a gapless/unique/named assertion.
+  *Files:* `src/app/home-data.ts`, `src/app/page.tsx`, `src/components/sections/{Litany,ActShowcase,Collection,EstateMap,CoastLine}.tsx`, `tests/patterns.spec.ts`
+
+- **T-222 — CONFIRMED, but it is an ACCESSIBILITY bug, not a visual one.** Reported as the litany "repeated inline as a concatenated run-on string with doubled full stops". Located precisely: a single `.sr-only` paragraph in `Litany.tsx` joining already-terminated lines with `". "`, producing `"…is up.. The gate…"`. Invisible on screen; heard twice, malformed, by anyone using a screen reader — and it is what a text-extraction pass of the page surfaces, which is how the reviewer met it. Deleted rather than repaired: every line is already in the `<ul>` at full text, so the paragraph was pure duplication. Guarded two ways — no doubled full stop in rendered text, and the first litany line appears exactly once.
+  *Files:* `src/components/sections/Litany.tsx`, `tests/patterns.spec.ts`
+
+- **T-223 — CONFIRMED: eight of eleven beaches rendered as an em dash.** `{b.distance ?? "—"}` printed a placeholder for every beach the inventory has no distance for — Ammoudaki, Damnoni, Klisidi, Schinaria, Triopetra, Agios Pavlos, Preveli, Plakias. Inventing the eight is not available; nothing in the registry states them. So the layout stops asking: beaches WITH a confirmed distance keep the measured two-column treatment, the rest are set as a named run under "Further south". The split is computed from the data, so when the owner supplies distances they simply move columns. Guarded: no distance cell may be an em dash or empty.
+  *Files:* `src/components/sections/CoastLine.tsx`, `src/app/patterns.css`, `tests/patterns.spec.ts`
+
+- **T-224 — CONFIRMED, and not in the critique: `/#experiences` pointed at nothing.** The site nav has linked to `/#experiences` on every page since the nav shipped, and no element carried that id. A dead anchor in persistent chrome. Guarded by a test that resolves **every** in-page anchor on the homepage.
+  *Files:* `src/app/page.tsx`, `tests/patterns.spec.ts`
+
+- **T-225 — CONFIRMED: no scroll cue.** Added as a real anchor to `#litany` — keyboard- and tap-operable, not a decorative glyph. **Then I introduced a defect fixing it:** at `bottom: 2rem` it sat underneath the sticky booking ledger at every width — 62px of overlap at 768/1440, 198px at 390. Measured, not noticed: the first screenshot showed the label and hid the hairline. Offset is now a `--ledger-clearance` token, the cue is not rendered below 768 (the ledger is 230px of an 844px viewport there — the bottom edge is already broken by real chrome), and a test asserts the cue never intersects the ledger at 390/768/1440.
+  *Files:* `src/app/page.tsx`, `src/app/elevation.css`, `tests/patterns.spec.ts`
+
+- **T-226 — THREE CLAIMS REFUTED BY MEASUREMENT, now asserted in the opposite direction.** (a) *"No preloader"* — there is one; it renders at 674–1081ms with the wordmark and dismisses inside ~1.8s, which is why a late look misses it. (b) *"A static image with no motion"* — the hero is `KenBurns`, a 20s 1.0→1.06 push. (c) *"The Collection reads as a text-link list"* — all five cells are image-forward; 5 cells, 5 images. A fourth claim was half right: two experience cards carry no photograph, but they already get a designed typographic treatment rather than a hole — and the two are Bike Tours and Cretan Cuisine, whose only images the owner ruled off, not the four cards named in the critique. Each is now a test, so the next reader of this page gets a measurement rather than an argument.
+  *Files:* `tests/patterns.spec.ts`
+
+- **T-227 — OPEN, for the owner: the nav register and the beat spine are two numbered systems on one page.** The nav reads `01 The Villas / 02 The Estate / 03 Experiences / 04 Weddings / 05 Location`; the page now reads `01 — What a stay here is` … `08 — Weddings`. Both are set in the same letterspaced micro register, so "02" means two different things depending on where you look. Two of the five nav entries point at other pages, so the two systems cannot simply be reconciled by renumbering. **Not fixed unilaterally** — dropping the nav's numerals, or restyling them, touches every page and is a design decision. Recommendation: drop the numerals from the nav and keep numbering for the page spine alone.

@@ -67,9 +67,9 @@ export function Collection({
 }) {
   return (
     <section className="canon collection">
-      <span className="ghost ghost--left" aria-hidden="true">05</span>
+      <span className="ghost ghost--left" aria-hidden="true">04</span>
       <Reveal>
-        <p className="micro">05 — The Collection</p>
+        <p className="micro">04 — The Collection</p>
         <div className="clause-field" style={{ marginTop: "var(--spacing-step-4)" }}>
           <Clause gerund="Choosing" tail="One of five" scale="c2" as="h2" />
         </div>

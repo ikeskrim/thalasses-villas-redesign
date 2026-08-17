@@ -645,3 +645,38 @@
     display: none;
   }
 }
+
+/* The beat label for the acts, and for the litany. Both sections previously
+   carried no number, which left the page's spine with two silent beats and a
+   gap at 08. */
+.acts-beat {
+  padding-top: var(--spacing-step-7);
+  color: var(--color-preveli);
+}
+.acts-sticky .acts-beat {
+  flex: none;
+  padding-bottom: var(--spacing-step-3);
+}
+.acts-sticky .acts-nav {
+  padding-top: var(--spacing-step-3);
+}
+.acts-stack .acts-beat {
+  padding-block: var(--spacing-step-8) var(--spacing-step-5);
+}
+.litany-beat {
+  margin-bottom: var(--spacing-step-7);
+  color: var(--color-phrygana);
+}
+
+/* The coast line's "further south" run — the beaches whose distance the
+   inventory does not state, set as a sentence instead of a column of dashes. */
+.coastline-further {
+  margin-top: var(--spacing-step-6);
+  color: var(--color-phrygana);
+  max-width: 42ch;
+}
+.coastline-further-label {
+  display: block;
+  margin-bottom: var(--spacing-step-3);
+  color: var(--color-basalt);
+}

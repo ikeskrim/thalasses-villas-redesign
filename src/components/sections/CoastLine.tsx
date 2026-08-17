@@ -25,10 +25,15 @@ export function CoastLine({
   entries: CoastEntry[];
   beaches: { name: string; distance: string | null }[];
 }) {
+  const measured = beaches.filter(
+    (b): b is { name: string; distance: string } => Boolean(b.distance)
+  );
+  const unmeasured = beaches.filter((b) => !b.distance);
+
   return (
-    <section className="canon coastline">
+    <section className="canon coastline" id="location">
       <Reveal>
-        <p className="micro">Location</p>
+        <p className="micro">07 — Location</p>
         <div className="clause-field" style={{ marginTop: "var(--spacing-step-4)" }}>
           <Clause gerund="Wandering" tail="South, forty minutes" scale="c2" as="h2" />
         </div>
@@ -50,16 +55,38 @@ export function CoastLine({
           </dl>
         </Reveal>
 
+        {/*
+          THE BLANKS.
+
+          Eight of the eleven beaches in the inventory carry no distance, and the
+          old markup printed `—` for each of them: a column of dashes that reads
+          as missing data rather than as a design. Inventing the eight distances
+          is not available — nothing in the registry states them.
+
+          So the layout stops asking. Beaches WITH a confirmed distance keep the
+          measured two-column treatment; the rest become what they honestly are —
+          a list of names, set as a sentence. Absence is no longer rendered as a
+          hole, and not one figure was invented to close it.
+
+          When the owner supplies the distances they simply move columns: the
+          split is computed from the data, not hard-coded.
+        */}
         <Reveal className="coastline-col" index={1}>
           <p className="micro coastline-heading">Beaches we send you to</p>
           <dl className="coastline-list">
-            {beaches.map((b) => (
+            {measured.map((b) => (
               <div key={b.name} className="coastline-entry">
                 <dt className="small coastline-name">{b.name}</dt>
-                <dd className="tabular coastline-value">{b.distance ?? "—"}</dd>
+                <dd className="tabular coastline-value">{b.distance}</dd>
               </div>
             ))}
           </dl>
+          {unmeasured.length ? (
+            <p className="small coastline-further">
+              <span className="micro coastline-further-label">Further south</span>
+              {unmeasured.map((b) => b.name).join(" · ")}
+            </p>
+          ) : null}
         </Reveal>
       </div>
     </section>

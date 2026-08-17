@@ -210,3 +210,176 @@ test.describe("T-203 — the pin must stay pinned", () => {
     }
   });
 });
+
+/**
+ * THE DIRECTIVE AUDIT (T-221 – T-225).
+ *
+ * Five defects confirmed by measurement against a section-by-section critique.
+ * Three further claims in the same critique were refuted by measurement and are
+ * asserted here in the opposite direction, so that a future reviewer reading the
+ * same page gets a test rather than an argument.
+ */
+test.describe("the numbered spine", () => {
+  test("homepage beats are gapless, unique, and every section carries one", async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto("/", { waitUntil: "load" });
+    await page.waitForSelector(".litany-beat");
+
+    const labels = (await page.locator("main .micro").allTextContents())
+      .map((s) => s.replace(/\s+/g, " ").trim())
+      .filter((s) => /^\d\d — /.test(s));
+
+    const numbers = labels.map((s) => s.slice(0, 2));
+
+    // Gapless 01..N — beat 08 was simply missing, and Location carried no label.
+    expect(numbers, `beat numbers: ${labels.join(" | ")}`).toEqual(
+      numbers.map((_, i) => String(i + 1).padStart(2, "0"))
+    );
+    expect(new Set(numbers).size, "a beat number is used twice").toBe(numbers.length);
+
+    // The collision that started it: the helipad beat and act one both read
+    // "Arrival", because the act EYEBROWS were claiming beat numbers.
+    const names = labels.map((s) => s.slice(5).toLowerCase());
+    expect(new Set(names).size, `two beats share a name: ${names.join(" | ")}`).toBe(names.length);
+  });
+
+  test("every in-page nav anchor resolves to a real element", async ({ page }) => {
+    // The nav linked to /#experiences and nothing carried that id.
+    await page.goto("/", { waitUntil: "load" });
+    const dead = await page.evaluate(() =>
+      [...document.querySelectorAll<HTMLAnchorElement>('a[href*="#"]')]
+        .map((a) => a.getAttribute("href") ?? "")
+        .filter((h) => h.includes("#") && !h.startsWith("http"))
+        .map((h) => h.slice(h.indexOf("#") + 1))
+        .filter((id) => id && id !== "main" && !document.getElementById(id))
+    );
+    expect([...new Set(dead)], "nav anchors pointing at nothing").toEqual([]);
+  });
+});
+
+test.describe("copy defects found by reading, not by looking", () => {
+  test("no doubled full stop anywhere in the rendered page", async ({ page }) => {
+    // An .sr-only paragraph joined already-terminated litany lines with ". ",
+    // producing "…is up.. The gate…". Invisible on screen, audible to a reader.
+    for (const route of ["/", "/en/the-estate", "/en/villas/villa-eeanthe"]) {
+      await page.goto(route, { waitUntil: "load" });
+      const bad = await page.evaluate(() => {
+        // SCRIPT and STYLE text is not rendered text. Next embeds the whole RSC
+        // flight payload in a <script> in the body, so a naive TreeWalker reads
+        // every string in the page twice — which is exactly the false "the
+        // litany is duplicated" reading this suite exists to settle.
+        const out: string[] = [];
+        const w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, {
+          acceptNode: (n) =>
+            /^(SCRIPT|STYLE|TEMPLATE|NOSCRIPT)$/.test(n.parentElement?.tagName ?? "")
+              ? NodeFilter.FILTER_REJECT
+              : NodeFilter.FILTER_ACCEPT,
+        });
+        let n: Node | null;
+        while ((n = w.nextNode())) {
+          const v = n.nodeValue ?? "";
+          if (/\w\.\.(\s|$)/.test(v)) out.push(v.trim().slice(0, 90));
+        }
+        return out;
+      });
+      expect(bad, `doubled full stop on ${route}`).toEqual([]);
+    }
+  });
+
+  test("the litany is announced once, not twice", async ({ page }) => {
+    await page.goto("/", { waitUntil: "load" });
+    const occurrences = await page.evaluate(() => {
+      let n = 0;
+      const w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, {
+        acceptNode: (t) =>
+          /^(SCRIPT|STYLE|TEMPLATE|NOSCRIPT)$/.test(t.parentElement?.tagName ?? "")
+            ? NodeFilter.FILTER_REJECT
+            : NodeFilter.FILTER_ACCEPT,
+      });
+      let t: Node | null;
+      while ((t = w.nextNode())) if (/before anyone else is up/.test(t.nodeValue ?? "")) n++;
+      return n;
+    });
+    expect(occurrences, "the first litany line is announced more than once").toBe(1);
+  });
+
+  test("no distance is rendered as a blank dash", async ({ page }) => {
+    // Eight of eleven beaches have no distance in the inventory. The old markup
+    // printed "—" for each, which reads as missing data; they are a named run now.
+    await page.goto("/", { waitUntil: "load" });
+    const values = await page.locator(".coastline-value").allTextContents();
+    expect(values.length).toBeGreaterThan(0);
+    for (const v of values) {
+      expect(v.trim(), "a distance rendered as an em dash placeholder").not.toMatch(/^[—–-]$/);
+      expect(v.trim().length, "an empty distance cell").toBeGreaterThan(0);
+    }
+  });
+});
+
+test.describe("claims refuted by measurement", () => {
+  test("the hero has a preloader, ambient motion and a scroll cue", async ({ page }) => {
+    await page.goto("/", { waitUntil: "commit" });
+    // The preloader is real and session-scoped; it dismisses inside ~1.8s, which
+    // is why a late look does not find it.
+    let sawPreloader = false;
+    for (let i = 0; i < 12 && !sawPreloader; i++) {
+      sawPreloader = await page.evaluate(() => !!document.querySelector("[class*='preload']"));
+      if (!sawPreloader) await page.waitForTimeout(150);
+    }
+    expect(sawPreloader, "no preloader rendered on first paint").toBe(true);
+
+    await page.goto("/", { waitUntil: "load" });
+    await expect(page.locator(".kenburns img").first()).toBeVisible();
+    const cue = page.locator(".hero-cue");
+    await expect(cue).toHaveCount(1);
+    // A real anchor, not a glyph: it must resolve and be keyboard reachable.
+    expect(await cue.getAttribute("href")).toBe("#litany");
+    await expect(page.locator("#litany")).toHaveCount(1);
+  });
+
+  test("the scroll cue never sits underneath the booking bar", async ({ page }) => {
+    // The first version did, at every width: 62px of overlap on desktop, 198px
+    // on a phone. The clearance is a token; this is what keeps it honest.
+    for (const width of [390, 768, 1440]) {
+      await page.setViewportSize({ width, height: 844 });
+      await page.goto("/", { waitUntil: "load" });
+      await page.waitForSelector(".ledger");
+      const r = await page.evaluate(() => {
+        const led = document.querySelector(".ledger")?.getBoundingClientRect();
+        const cue = document.querySelector(".hero-cue");
+        const vis = cue ? getComputedStyle(cue).display !== "none" : false;
+        const cb = cue?.getBoundingClientRect();
+        return { ledgerTop: led?.top ?? null, cueBottom: cb?.bottom ?? null, visible: vis };
+      });
+      if (width < 768) {
+        expect(r.visible, "the cue should not render on a phone").toBe(false);
+        continue;
+      }
+      expect(r.visible, `no scroll cue at ${width}`).toBe(true);
+      expect(
+        r.cueBottom!,
+        `cue overlaps the booking bar by ${Math.round(r.cueBottom! - r.ledgerTop!)}px at ${width}`
+      ).toBeLessThanOrEqual(r.ledgerTop!);
+    }
+  });
+
+  test("every Collection cell is image-forward", async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto("/", { waitUntil: "load" });
+    const cells = await page.locator(".collection-cell").count();
+    const withImage = await page.locator(".collection-cell img").count();
+    expect(cells).toBe(5);
+    expect(withImage, "a Collection cell renders as a bare text link").toBe(cells);
+  });
+
+  test("no experience card is a hole — image or a designed typographic card", async ({ page }) => {
+    await page.goto("/", { waitUntil: "load" });
+    await page.waitForSelector(".drag-card");
+    const holes = await page.evaluate(() =>
+      [...document.querySelectorAll(".drag-card")]
+        .filter((c) => !c.querySelector("img") && !c.querySelector(".drag-card-figure--typographic"))
+        .map((c) => (c.textContent ?? "").trim().slice(0, 40))
+    );
+    expect(holes, "an experience card has neither a photograph nor the no-image treatment").toEqual([]);
+  });
+});

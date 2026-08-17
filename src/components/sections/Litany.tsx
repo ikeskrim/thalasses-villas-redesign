@@ -57,10 +57,8 @@ export function Litany({
     return () => io.disconnect();
   }, [lines.length]);
 
-  const current = lines[active] ?? lines[0];
-
   return (
-    <section className="litany" aria-label="What a stay here is">
+    <section id="litany" className="litany" aria-label="What a stay here is">
       <div className="litany-media" aria-hidden="true">
         {lines.map((l, i) => (
           <motion.div
@@ -84,6 +82,10 @@ export function Litany({
       </div>
 
       <div className="litany-copy">
+        {/* The litany had no beat label at all, which is half of why the spine
+            read as inconsistent: three sections were unnumbered and one number
+            was missing entirely. */}
+        <p className="micro litany-beat">01 — What a stay here is</p>
         <ol className="litany-list">
           {lines.map((l, i) => (
             <li
@@ -105,8 +107,23 @@ export function Litany({
         </p>
       </div>
 
-      {/* Screen readers get the whole litany as one list, not a moving target. */}
-      <p className="sr-only">{`${lines.map((l) => l.text).join(". ")}. ${current?.alt ?? ""}`}</p>
+      {/*
+        There WAS an `.sr-only` paragraph here repeating the whole litany, on the
+        theory that a screen reader needed the lines as one block rather than as
+        a "moving target". It was wrong twice over.
+
+        It duplicated: every line is already in the <ul> above at full text — the
+        active state is opacity, not content — so a screen reader read the litany
+        once from the list and then again from the paragraph.
+
+        And it was malformed: the lines are written already terminated ("…before
+        anyone else is up."), and it joined them with ". ", producing "…is up..
+        The gate that closes behind you.." — a doubled full stop on every line.
+        Invisible on screen, audible to anyone using a reader, and it is what a
+        text-extraction pass of this page surfaces.
+
+        Deleted rather than repaired. The list is the accessible version.
+      */}
     </section>
   );
 }

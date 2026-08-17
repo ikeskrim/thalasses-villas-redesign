@@ -105,3 +105,6 @@ public/images/_chh/*
 !public/images/_chh/Villa-Melia-16_result.webp
 !public/images/_chh/Villa-Melia-17_result.webp
 !public/images/_chh/Villa-Melia-22_result.webp
+
+.vercel
+.env*

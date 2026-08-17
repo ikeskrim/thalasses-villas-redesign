@@ -89,7 +89,7 @@ export default function Home() {
       <Preloader />
 
       <main id="main">
-        {/* 01 — Hero. Ken Burns until the owner's MP4 lands; the video slot is
+        {/* Hero — the title card, deliberately unnumbered. Ken Burns until the owner's MP4 lands; the video slot is
             a content swap, not a code change. */}
         <section className="hero">
           <KenBurns src={hero.path} alt={hero.alt} width={hero.w} height={hero.h} objectPosition="50% 54%" />
@@ -110,32 +110,47 @@ export default function Home() {
               <span className="micro hero-proof-text">Condé Nast Traveller</span>
             </p>
           </div>
+
+          {/*
+            THE SCROLL CUE. Confirmed missing by measurement, and it is the one
+            hero omission that costs comprehension rather than atmosphere: a
+            full-bleed 100svh photograph with no edge gives a first-time visitor
+            nothing to say the page continues.
+
+            A real anchor, not a decorative glyph — it works by keyboard and by
+            tap, and it lands on the litany, which is the page's next argument.
+            The hairline breathes; under reduced motion it simply sits still.
+          */}
+          <a href="#litany" className="hero-cue micro" aria-label="Scroll to the next section">
+            <span className="hero-cue-label">Scroll</span>
+            <span className="hero-cue-line" aria-hidden="true" />
+          </a>
         </section>
 
-        {/* 02 — The litany */}
+        {/* 01 — The litany */}
         <Litany lines={LITANY} payoffGerund="Living" payoffTail="Whatever that means to you" />
 
-        {/* 03 — The three acts, pinned */}
+        {/* 02 — The three acts, pinned. ONE beat containing three acts. */}
         <ActsSection acts={ACTS} />
 
-        {/* 04 — THE SIGNAL. Restored to a standalone beat at full scale by
+        {/* 03 — THE SIGNAL. Restored to a standalone beat at full scale by
             owner ruling: a card grid is where facts live, a beat is where icons
             live, and "the only seafront villas with a helipad" is an icon.
             Spent once, at maximum size. Its Act I slot went to secure parking. */}
         <Field src={helipadFrame.path} alt={helipadFrame.alt} height="90svh" className="letterbox">
           <div className="canon clause-field" style={{ padding: 0 }}>
-            <p className="micro">04 — Arrival</p>
+            <p className="micro">03 — Arrival</p>
             <Clause gerund="Landing" tail="The only seafront villas with helipad" scale="c1" as="h2" />
-            <span className="ghost ghost--right" aria-hidden="true">04</span>
+            <span className="ghost ghost--right" aria-hidden="true">03</span>
           </div>
         </Field>
 
-        {/* 05 — The Collection, with the datum geometry intact */}
+        {/* 04 — The Collection, with the datum geometry intact */}
         <div id="collection">
           <Collection front={front} rear={rear} fifth={fifth} />
         </div>
 
-        {/* 06 — The estate map */}
+        {/* 05 — The estate map */}
         <EstateMap
           image={mapFrame.path}
           alt={mapFrame.alt}
@@ -151,26 +166,26 @@ export default function Home() {
           ctaHref={cta.href}
         />
 
-        {/* 07 — The Register, with filter chips */}
-        <section className="beat beat--wide" style={{ position: "relative", overflow: "hidden" }}>
-          <span className="ghost ghost--right" aria-hidden="true">07</span>
-          <p className="micro">07 — Experiences</p>
+        {/* 06 — The Register, with filter chips */}
+        <section id="experiences" className="beat beat--wide" style={{ position: "relative", overflow: "hidden" }}>
+          <span className="ghost ghost--right" aria-hidden="true">06</span>
+          <p className="micro">06 — Experiences</p>
           <div className="clause-field">
             <Clause gerund="Asking" tail="For any of the following" scale="c2" as="h2" />
           </div>
           <DragRegister rows={rows} />
         </section>
 
-        {/* 08 — Location */}
+        {/* 07 — Location */}
         <CoastLine
           entries={location.distances ?? []}
           beaches={(location.nearby ?? []).map((n) => ({ name: n.name, distance: n.distance }))}
         />
 
-        {/* 09 — Weddings */}
+        {/* 08 — Weddings */}
         <Field src={weddingFrame.path} alt={weddingFrame.alt} height="92svh">
           <div className="canon clause-field" style={{ padding: 0 }}>
-            <p className="micro">09 — Weddings &amp; Events</p>
+            <p className="micro">08 — Weddings &amp; Events</p>
             <Clause gerund="Marrying" tail="On sand, beside the water" scale="c2" as="h2" />
             <p className="beat-cta">
               <Magnetic>

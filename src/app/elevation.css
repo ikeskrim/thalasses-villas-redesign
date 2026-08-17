@@ -359,3 +359,64 @@ body.has-custom-cursor {
   text-align: center;
   color: var(--color-phrygana);
 }
+
+/* ==========================================================================
+   THE HERO SCROLL CUE
+   A 100svh photograph with no edge gives a first-time visitor no signal that
+   the page continues. A real anchor, keyboard- and tap-operable, not a glyph.
+   ========================================================================== */
+/*
+   THE CLEARANCE. The booking ledger is sticky at the bottom of the viewport, so
+   on the hero screen it is always there: measured 94px at >=768 and 230px at
+   390. The first version of this cue sat at `bottom: 2rem` and was underneath
+   it at every width — 62px of overlap on desktop, 198px on a phone.
+
+   The offset is a token rather than a literal so the number is declared once,
+   and `tests/patterns.spec.ts` asserts the cue never intersects the ledger at
+   390 / 768 / 1440 — so if the ledger ever grows, a test fails rather than the
+   cue quietly sliding back underneath it.
+*/
+.hero-cue {
+  --ledger-clearance: 7.5rem;
+  position: absolute;
+  left: 50%;
+  bottom: var(--ledger-clearance);
+  transform: translateX(-50%);
+  z-index: 4;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-step-3);
+  color: var(--color-limestone);
+  text-decoration: none;
+  opacity: 0.78;
+  transition: opacity 0.4s var(--ease-thalasses);
+}
+.hero-cue:hover,
+.hero-cue:focus-visible {
+  opacity: 1;
+}
+.hero-cue-line {
+  display: block;
+  width: 1px;
+  height: 56px;
+  background: linear-gradient(to bottom, rgb(232 233 227 / 0.9), rgb(232 233 227 / 0));
+  transform-origin: top;
+  animation: cue-breathe 2.8s var(--ease-thalasses) infinite;
+}
+@keyframes cue-breathe {
+  0%, 100% { transform: scaleY(0.55); opacity: 0.55; }
+  50%      { transform: scaleY(1);    opacity: 1; }
+}
+/*
+   Not rendered on a phone. The ledger is 230px of an 844px viewport there — the
+   bottom edge is already broken by real chrome, so the page visibly continues
+   without help, and a second bottom-anchored element is clutter rather than
+   signal. The cue exists for the case it was written for: a large, uninterrupted
+   full-bleed frame.
+*/
+@media (max-width: 767px) {
+  .hero-cue {
+    display: none;
+  }
+}

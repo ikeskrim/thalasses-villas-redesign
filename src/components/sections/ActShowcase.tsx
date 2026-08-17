@@ -65,6 +65,11 @@ export function ActShowcase({ acts }: { acts: Act[] }) {
   return (
     <div ref={ref} className="acts" style={{ height: `${acts.length * 100}svh` }}>
       <div className="acts-sticky">
+        {/* ONE beat, three acts. The act eyebrows used to read "01 — Arrival",
+            "02 — The stay", "03 — Together" — beat numbers, for things that are
+            not beats — which is how the helipad beat ended up as a second
+            "04 — Arrival". The beat number lives here now; the acts are named. */}
+        <p className="micro acts-beat canon">02 — In three acts</p>
         {/* Selector — real buttons, keyboard operable, three cues on the active one. */}
         <nav className="acts-nav canon" aria-label="Capabilities">
           <ol>
@@ -136,6 +141,7 @@ export function ActShowcase({ acts }: { acts: Act[] }) {
 export function ActStack({ acts }: { acts: Act[] }) {
   return (
     <div className="acts-stack">
+      <p className="micro acts-beat canon">02 — In three acts</p>
       {acts.map((a, i) => (
         <article key={a.title} className="act act--stacked">
           <div className="act-media">
