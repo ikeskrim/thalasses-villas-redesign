@@ -215,7 +215,7 @@ harness. Serve the harness from a route the app does not serve
 *The through-line, and it is the same one as T-203b, §9 and §10:* an instrument
 that shares an assumption with its subject can confirm the aim, never the target.
 
-## 12. Scraped third-party content is untrusted input, and it gets scanned
+## 13. Scraped third-party content is untrusted input, and it gets scanned
 
 **A live Google Maps API key reached a public repository inside 43 scraped HTML
 files.** GitHub's secret scanning caught it. My own pre-commit gates did not.

@@ -4,7 +4,7 @@
  *
  * Written after a live Google Maps API key reached a public repository inside
  * 43 scraped HTML files. Two things went wrong at once and this script fixes
- * both (CONVENTIONS.md §12):
+ * both (CONVENTIONS.md §13):
  *
  *   1. The pattern list had no Google format. It covered sk-, ghp_/gho_, AKIA,
  *      xox*-, and PEM headers, and it held for every one of those — but a

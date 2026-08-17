@@ -12,7 +12,7 @@ npm run scan:secrets
 
 It walks the **entire tree** — including the scraped HTML under `content/raw/`
 and any text under `public/` — and exits non-zero on any credential-class match.
-It is also wired into `npm run verify`. The reasoning is `CONVENTIONS.md` §12.
+It is also wired into `npm run verify`. The reasoning is `CONVENTIONS.md` §13.
 
 ---
 
@@ -43,7 +43,7 @@ missing. The pattern list had no Google format. And `content/raw/` was not being
 scanned at all, because scraped dumps were being treated as data rather than as
 text that can hold a secret — which is precisely backwards, since third-party
 HTML lifted off a live production server is the likeliest carrier in the whole
-project. Both are now `CONVENTIONS.md` §12.
+project. Both are now `CONVENTIONS.md` §13.
 
 ---
 
