@@ -2,7 +2,7 @@
   "name": "thalasses-villas-redesign",
   "version": "0.1.0",
   "private": true,
-  "description": "Thalasses Villas — luxury villa collection, Pigianos Kampos, Rethymno, Crete. Standalone redesign.",
+  "description": "Thalasses Villas \u2014 luxury villa collection, Pigianos Kampos, Rethymno, Crete. Standalone redesign.",
   "scripts": {
     "dev": "next dev -p 3005",
     "build": "next build",
@@ -14,8 +14,9 @@
     "qa:overflow": "playwright test --grep \"overflow\"",
     "qa:parity": "playwright test tests/parity.spec.ts",
     "qa": "playwright test",
-    "verify": "npm run scan:secrets && npm run typecheck && npm run lint && npm run build && npm run qa",
-    "scan:secrets": "node scripts/scan-secrets.mjs"
+    "verify": "npm run scan:secrets && npm run typecheck && npm run lint && npm run build && npm run qa:fast && npm run qa:screens",
+    "scan:secrets": "node scripts/scan-secrets.mjs",
+    "qa:fast": "playwright test --grep-invert \"screenshot\""
   },
   "dependencies": {
     "framer-motion": "^13.0.0",

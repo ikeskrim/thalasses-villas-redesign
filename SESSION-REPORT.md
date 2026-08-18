@@ -3,7 +3,7 @@
 **Read this first. It is written at HEAD and updated as each task lands, so it
 is the truthful position — not a plan, not a memory.**
 
-Last updated: 2026-08-18, after `overnight/2b` (`ccb9896`).
+Last updated: after `overnight/3`.
 
 ---
 
@@ -14,7 +14,7 @@ Last updated: 2026-08-18, after `overnight/2b` (`ccb9896`).
 | **0 — DEPLOY.md** | **DONE** — `6987cd1` |
 | **1 — Villa template on D** | **DONE** — `03f62e1`, `10b0d39` |
 | **2 — Estate page on D** | **DONE** — `86a6594`, `ccb9896` |
-| 3 — Content pages onto D | **NOT STARTED** |
+| 3 — Content pages onto D | **DONE** — `overnight/3` |
 | 4 — Pelagos page transitions | **NOT STARTED** |
 | 5 — Copy pass to the voice rules | **NOT STARTED** |
 | 6 — SEO migration | **NOT STARTED** |
@@ -43,11 +43,11 @@ than to someone else's.
 ### Routes that exist at HEAD
 
 `/` · `/en/the-estate` · `/en/villas/{thoi,persi,eeanthe,melia,pueblo}` ·
-`/styleguide`
+`/en/experiences` + 21 detail pages · `/en/weddings` · `/en/location` ·
+`/en/careers` · `/en/contact` · `/en/terms` · `/styleguide`
 
-Not built: experiences, weddings, location, careers, contact, terms, gallery,
-404, `/el`. No redirect map wired, no sitemap or robots, no axe integration, no
-walkthrough videos.
+Not built: gallery, 404, `/el`. No redirect map wired, no sitemap or robots, no
+axe integration, no walkthrough videos.
 
 ---
 

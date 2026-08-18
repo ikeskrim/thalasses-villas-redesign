@@ -665,3 +665,188 @@ body:has(.d) .nav:not(.is-solid) .nav-index {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
+
+/* ==========================================================================
+   CONTENT PAGES ON D
+   ========================================================================== */
+
+.d-pagehead {
+  padding-block: calc(var(--section-y) + 4rem) var(--section-y-tight);
+}
+.d-pagehead-title {
+  margin-top: var(--spacing-step-4);
+  color: var(--color-basalt);
+}
+.d-pagehead .d-villa-lede {
+  margin-top: var(--section-y-tight);
+}
+
+/* The draft mark. Plain on purpose — a badge that looks designed reads as a
+   feature rather than as an admission. */
+.d-draft {
+  display: inline-block;
+  margin-top: var(--section-y-tight);
+  padding: var(--spacing-step-2) var(--spacing-step-4);
+  border: 1px dashed rgb(20 83 95 / 0.5);
+  color: var(--color-pelagos);
+}
+
+/* ---- Experiences --------------------------------------------------------- */
+.d-exp-hero {
+  padding-top: 5rem;
+}
+.d-exp-frame {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 68svh;
+  background: var(--color-ammos);
+}
+.d-exp-body {
+  padding-block: var(--section-y);
+}
+.d-exp-text {
+  line-height: 1.7;
+  color: var(--color-basalt);
+}
+.d-exp-text + .d-exp-text {
+  margin-top: var(--section-y-tight);
+}
+.d-exp-mark {
+  display: block;
+  margin-top: var(--section-y);
+  color: var(--color-pelagos);
+}
+.d-exp-body > * + * {
+  margin-top: var(--section-y-tight);
+}
+.d-other-frame--typographic {
+  display: block;
+  background: var(--color-ammos);
+}
+
+/* ---- Terms --------------------------------------------------------------- */
+.d-terms-notice {
+  padding-block: var(--section-y-tight);
+}
+.d-terms-notice p {
+  max-width: 68ch;
+  padding: var(--spacing-step-5);
+  background: var(--color-ammos);
+  color: var(--color-basalt);
+}
+.d-terms {
+  padding-block: var(--section-y-tight) var(--section-y);
+}
+.d-terms-section {
+  margin-top: var(--section-y-tight);
+  max-width: 72ch;
+}
+.d-terms-heading {
+  margin-top: var(--section-y-tight);
+  color: var(--color-basalt);
+}
+.d-terms-p,
+.d-terms-list {
+  margin-top: var(--spacing-step-4);
+  color: var(--color-phrygana);
+  line-height: 1.7;
+}
+.d-terms-list {
+  padding-left: 1.2em;
+}
+/* The proposed correction is MARKED, not silently substituted. */
+.d-terms-fix {
+  background: rgb(20 83 95 / 0.1);
+  color: var(--color-pelagos);
+  padding: 0 0.15em;
+  border-bottom: 1px dashed var(--color-pelagos);
+}
+
+/* ---- Contact + the enquiry form ------------------------------------------ */
+.d-contact {
+  padding-block: var(--section-y);
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+  gap: clamp(2rem, 6vw, 6rem);
+  align-items: start;
+}
+.d-contact-address {
+  font-style: normal;
+  display: grid;
+  gap: var(--spacing-step-1);
+  margin-top: var(--spacing-step-4);
+  color: var(--color-phrygana);
+}
+.d-contact-list {
+  list-style: none;
+  margin-top: var(--spacing-step-4);
+  display: grid;
+  gap: var(--spacing-step-2);
+}
+.d-contact-details .d-exp-mark:first-child {
+  margin-top: 0;
+}
+
+.d-form {
+  display: grid;
+  gap: var(--section-y-tight);
+}
+.d-field {
+  display: grid;
+  gap: var(--spacing-step-3);
+}
+.d-field input,
+.d-field textarea {
+  font: inherit;
+  color: var(--color-basalt);
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid rgb(20 83 95 / 0.35);
+  padding: var(--spacing-step-3) 0;
+}
+.d-field input:focus-visible,
+.d-field textarea:focus-visible {
+  outline: 2px solid var(--color-pelagos);
+  outline-offset: 3px;
+}
+.d-field-error {
+  color: #8a2b20;
+}
+.d-form-errors {
+  border-left: 3px solid #8a2b20;
+  padding: var(--spacing-step-4);
+  background: rgb(138 43 32 / 0.06);
+}
+.d-form-errors:focus-visible {
+  outline: 2px solid var(--color-pelagos);
+  outline-offset: 2px;
+}
+.d-form-errors ul {
+  margin-top: var(--spacing-step-2);
+  padding-left: 1.2em;
+}
+.d-form-consent,
+.d-form-stub {
+  color: var(--color-phrygana);
+  max-width: 56ch;
+}
+.d-form-sent {
+  padding: var(--section-y-tight);
+  background: var(--color-ammos);
+}
+/* Visually hidden, still focusable-by-bots, never display:none. */
+.d-honey {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+@media (max-width: 1023px) {
+  .d-contact {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

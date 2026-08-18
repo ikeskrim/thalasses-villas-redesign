@@ -149,7 +149,7 @@ export function SiteNav({
 export const NAV_ENTRIES: NavEntry[] = [
   { n: "01", label: "The Villas", href: "/#collection" },
   { n: "02", label: "The Estate", href: "/en/the-estate" },
-  { n: "03", label: "Experiences", href: "/#experiences" },
+  { n: "03", label: "Experiences", href: "/en/experiences" },
   { n: "04", label: "Weddings", href: "/en/weddings" },
-  { n: "05", label: "Location", href: "/#location" },
+  { n: "05", label: "Location", href: "/en/location" },
 ];
