@@ -3,7 +3,7 @@
 **Read this first. It is written at HEAD and updated as each task lands, so it
 is the truthful position — not a plan, not a memory.**
 
-Last updated: after `overnight/10`.
+Last updated: after `overnight/17`.
 
 ---
 
@@ -28,7 +28,7 @@ Last updated: after `overnight/10`.
 | 14 — Enquiry form UI | **DONE** — `overnight/14` |
 | 15 — T-189 Greek face verdict | **NOT STARTED** |
 | 16 — OG images and SEO extras | **NOT STARTED** |
-| 17 — Handoff documentation | **NOT STARTED** |
+| 17 — Handoff documentation | **DONE** — `overnight/17` |
 | 18 — Taste-audit polish loop | **NOT STARTED** |
 | 19 — Webkit smoke + final sweep | **NOT STARTED** |
 | 20–27 — Night two queue | **NOT STARTED** |
