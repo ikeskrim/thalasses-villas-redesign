@@ -1,5 +1,6 @@
 import "server-only";
 
+import { getVerifiedFacts } from "@/lib/content";
 import type { Villa } from "@/types/content";
 
 /**
@@ -175,28 +176,43 @@ export const VILLA_PAGE_COPY: Record<string, VillaPageCopy> = {
 };
 
 /**
- * "Your stay includes" — the Aman split, and it is only generous if it is true.
+ * "Your stay includes" — DERIVED from the registry, not typed alongside it.
  *
- * `content/verified-facts.json` states exactly three included services; the
- * private beach is separately confirmed. That is the whole list.
+ * The registry states exactly THREE included services in
+ * `verified-facts.json.includedServices`. The private beach is a fourth item on
+ * this list and is deliberately a different kind of thing: a property feature,
+ * confirmed by every villa's `specs.distanceToBeach` ("50 m from a private
+ * beach") rather than by the services array. So the rendered list is
+ * **three services + one feature = four items**, and the two counts in the
+ * project record refer to those two different things.
+ *
+ * It is derived here so the count cannot drift from the registry again: adding
+ * a service to `includedServices` adds a row, and nothing else has to be
+ * touched.
  *
  * BREAKFAST IS NOT INCLUDED — owner-confirmed, 2026-08-18. It carries an extra
- * charge. This list is CLOSED at these four and does not grow without another
- * owner ruling.
- *
- * The standing copy rule that follows from it: wherever breakfast appears — the
- * amenity card, an experience blurb, anywhere — it is phrased as **available on
- * request, extra charge**. Never "included", never "complimentary", and never a
- * bare mention next to inclusions where a reader would infer it. "Breakfast on
- * the Beach" stays what it is: a bookable experience.
+ * charge. Wherever breakfast appears — the amenity card, an experience blurb,
+ * anywhere — it is phrased as **available on request, extra charge**. Never
+ * "included", never "complimentary", and never a bare mention beside these rows
+ * where a reader would infer it. "Breakfast on the Beach" stays a bookable
+ * experience.
  */
-export const STAY_INCLUDES: { label: string; note: string }[] = [
-  { label: "Cleaning every 3 days", note: "Included, not charged as an extra." },
-  { label: "Daily reception desk", note: "On the estate, every day of your stay." },
-  { label: "A Holiday Advisor and concierge", note: "Someone who knows the island, not a call centre." },
-  { label: "The private beach", note: "Golden sand fifty metres from the door, for the five houses only." },
-];
+const SERVICE_NOTES: Record<string, string> = {
+  "Cleaning every 3 days": "Included, not charged as an extra.",
+  "Daily reception desk": "On the estate, every day of your stay.",
+  "Holiday Advisor and concierge": "Someone who knows the island, not a call centre.",
+};
 
+export function stayIncludes(): { label: string; note: string }[] {
+  const services = getVerifiedFacts().includedServices ?? [];
+  return [
+    ...services.map((label) => ({ label, note: SERVICE_NOTES[label] ?? "" })),
+    {
+      label: "The private beach",
+      note: "Golden sand fifty metres from the door, for the five houses only.",
+    },
+  ];
+}
 export interface SpecCell {
   label: string;
   value: string;

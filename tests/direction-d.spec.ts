@@ -1,4 +1,6 @@
 import { expect, test } from "@playwright/test";
+import fs from "node:fs";
+import path from "node:path";
 
 /**
  * DIRECTION D — the four rules, asserted.
@@ -273,8 +275,27 @@ test.describe("D8 — the villa template, on D", () => {
       await page.goto(route, { waitUntil: "load" });
       await expect(page.locator(".inventory")).toHaveCount(1);
       await expect(page.locator(".d-includes")).toHaveCount(1);
+      // THE TRUE COUNT, read from the registry rather than asserted as a
+      // literal: `verified-facts.json.includedServices` states THREE services,
+      // and the private beach is a fourth row of a different kind — a property
+      // feature confirmed by every villa's `specs.distanceToBeach`. Three plus
+      // one. Two earlier report lines said "exactly three" and "the four
+      // inclusions"; both were true about different things, and this is what
+      // stops that ambiguity recurring.
+      const facts = JSON.parse(
+        fs.readFileSync(path.join(process.cwd(), "content", "verified-facts.json"), "utf-8")
+      ) as { includedServices?: string[] };
+      const services = facts.includedServices ?? [];
+      expect(services.length, "the registry's service count moved").toBe(3);
+
       const includes = await page.locator(".d-includes-label").allTextContents();
-      expect(includes.length).toBe(4);
+      expect(includes.length, "three registry services plus the private beach").toBe(
+        services.length + 1
+      );
+      for (const svc of services) {
+        expect(includes.join(" | "), `registry service missing: ${svc}`).toContain(svc);
+      }
+      expect(includes.join(" | ")).toContain("private beach");
       // OWNER-CONFIRMED 2026-08-18: breakfast is NOT included; it carries an
       // extra charge. This list is closed at four. The assertion is permanent,
       // not provisional — it stops a future copy pass from quietly implying

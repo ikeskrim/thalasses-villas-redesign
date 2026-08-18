@@ -21,7 +21,7 @@ import {
   localImage,
 } from "@/lib/content";
 import { buildInventory } from "@/lib/inventory";
-import { STAY_INCLUDES, VILLA_PAGE_COPY, detailRows, specStrip } from "@/lib/villa-page";
+import { VILLA_PAGE_COPY, detailRows, specStrip, stayIncludes } from "@/lib/villa-page";
 import type { Villa } from "@/types/content";
 
 const KEY_BY_SLUG: Record<string, string> = {
@@ -235,7 +235,7 @@ export default async function VillaPage({ params }: { params: Promise<{ slug: st
           <Reveal>
             <p className="micro">Your stay includes</p>
             <ul className="d-includes-list">
-              {STAY_INCLUDES.map((i) => (
+              {stayIncludes().map((i) => (
                 <li key={i.label} className="d-includes-item">
                   <span className="display c4 d-includes-label">{i.label}</span>
                   <span className="small d-includes-note">{i.note}</span>

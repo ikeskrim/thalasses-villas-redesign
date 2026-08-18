@@ -13,7 +13,7 @@ import { HOTSPOTS } from "@/app/home-data";
 import { estateCta } from "@/lib/booking";
 import { getEstate, getEstateVillas, getSite } from "@/lib/content";
 import { byN } from "@/lib/selects";
-import { squareFeet } from "@/lib/villa-page";
+import { squareFeet, stayIncludes } from "@/lib/villa-page";
 
 export const metadata: Metadata = {
   title: "The Entire Estate",
@@ -32,17 +32,6 @@ const FACTS = {
   diningSeats: 18,
   distanceToBeach: "about 50 m",
 };
-
-/**
- * The same four inclusions the villa pages carry, at estate scale.
- * Breakfast is NOT among them — owner-confirmed, extra charge (T-245).
- */
-const INCLUDED = [
-  { label: "Cleaning every 3 days", note: "Across all four houses, included." },
-  { label: "Daily reception desk", note: "On the estate, every day of your stay." },
-  { label: "A Holiday Advisor and concierge", note: "Someone who knows the island." },
-  { label: "The private beach", note: "Golden sand, fifty metres from every door." },
-];
 
 const OUTDOOR = [
   "A private pool for each villa, heatable on advance request",
@@ -220,7 +209,7 @@ export default function EstatePage() {
           <Reveal>
             <p className="micro">Your stay includes</p>
             <ul className="d-includes-list">
-              {INCLUDED.map((i) => (
+              {stayIncludes().map((i) => (
                 <li key={i.label} className="d-includes-item">
                   <span className="display c4 d-includes-label">{i.label}</span>
                   <span className="small d-includes-note">{i.note}</span>

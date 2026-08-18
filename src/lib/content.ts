@@ -79,6 +79,19 @@ export function getVillaBySlug(slug: string): Villa | undefined {
   return getAllVillas().find((v) => v.slug === slug);
 }
 
+/* -------------------------------------------------------- verified facts -- */
+
+export interface VerifiedFacts {
+  includedServices?: string[];
+  distances?: { name: string; value: string; note?: string }[];
+  [k: string]: unknown;
+}
+
+/** The owner-confirmed fact registry. Read, never re-typed. */
+export function getVerifiedFacts(): VerifiedFacts {
+  return readJson<VerifiedFacts>("verified-facts.json");
+}
+
 /* ------------------------------------------------------------ facilities -- */
 
 /**
