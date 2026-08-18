@@ -850,3 +850,69 @@ body:has(.d) .nav:not(.is-solid) .nav-index {
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+/* ==========================================================================
+   THE PELAGOS WIPE — route transitions
+   A controlled overlay, not the native View Transitions API: this Next version
+   has no `experimental.viewTransition`, so the browser is never told when the
+   new DOM commits. See RouteTransition.tsx for the full reasoning. The
+   ::view-transition-* rules are kept below, unused, ready for the day the flag
+   lands.
+   ========================================================================== */
+
+.d-wipe {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  pointer-events: none;
+  background: var(--color-pelagos);
+  transform-origin: bottom;
+  animation: d-wipe 0.52s var(--ease-thalasses) both;
+}
+@keyframes d-wipe {
+  0% {
+    transform: scaleY(0);
+    transform-origin: bottom;
+  }
+  45% {
+    transform: scaleY(1);
+    transform-origin: bottom;
+  }
+  55% {
+    transform: scaleY(1);
+    transform-origin: top;
+  }
+  100% {
+    transform: scaleY(0);
+    transform-origin: top;
+  }
+}
+
+/* Ready for the native path. Inert until Next can drive it. */
+@keyframes d-wipe-in {
+  from { clip-path: inset(0 0 100% 0); }
+  to   { clip-path: inset(0 0 0 0); }
+}
+::view-transition-new(root) {
+  animation: d-wipe-in 0.52s var(--ease-thalasses) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .d-wipe {
+    display: none;
+  }
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none;
+  }
+}
+
+/* `#main` takes focus after a route change and must not draw a ring for it —
+   the ring belongs to keyboard intent, not to arriving somewhere. */
+main:focus {
+  outline: none;
+}
+main:focus-visible {
+  outline: 2px solid var(--color-pelagos);
+  outline-offset: -4px;
+}

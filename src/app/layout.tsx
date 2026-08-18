@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 
 import { CustomCursor } from "@/components/motion/CustomCursor";
+import { RouteTransition } from "@/components/motion/RouteTransition";
 import { SmoothScroll } from "@/components/motion/SmoothScroll";
 import { NAV_ENTRIES, SiteNav } from "@/components/ui/SiteNav";
 
@@ -126,6 +127,7 @@ export default function RootLayout({
         */}
         <SmoothScroll />
         <CustomCursor />
+        <RouteTransition />
         <SiteNav entries={NAV_ENTRIES} bookHref={BOOK_HREF} />
         {children}
       </body>

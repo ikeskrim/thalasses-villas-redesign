@@ -7,6 +7,12 @@ import type { NextConfig } from "next";
  */
 const nextConfig: NextConfig = {
   reactStrictMode: true,
+  // NOTE: `experimental.viewTransition` was tried here and this Next version
+  // rejects it as an invalid key — there is no such option in its config
+  // schema. The route wipe is therefore a controlled overlay
+  // (components/motion/RouteTransition.tsx) rather than the native API. When
+  // the flag exists, delete the overlay and the ::view-transition-* rules in
+  // direction-d.css take over unchanged.
   images: {
     formats: ["image/avif", "image/webp"],
     // Matches the breakpoints in DESIGN-PLAN.md (360 / 768 / 1024 / 1440 / 1920).

@@ -395,3 +395,57 @@ test.describe("D9 — every call to action passes AA", () => {
     });
   }
 });
+
+/**
+ * D10 — THE ROUTE TRANSITION MAY NEVER COST THE HAND-OFF.
+ *
+ * A client-side navigation does not move focus by default, which strands a
+ * keyboard or screen-reader user on the previous page's last focused element —
+ * they tab onward and land in the middle of a document they never heard the
+ * start of. The wipe is decoration; this is the part that matters.
+ */
+test.describe("D10 — page transitions", () => {
+  test("focus lands on the new page's #main after navigating", async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto("/", { waitUntil: "load" });
+
+    // Navigate the way a keyboard user would: activate a real link.
+    await page.locator('.nav-register a[href="/en/the-estate"]').click();
+    await page.waitForURL("**/en/the-estate");
+    await page.waitForTimeout(400);
+
+    const landed = await page.evaluate(() => ({
+      id: document.activeElement?.id ?? "",
+      tag: document.activeElement?.tagName ?? "",
+      path: location.pathname,
+    }));
+    expect(landed.path).toContain("/en/the-estate");
+    expect(landed.id, `focus was left on <${landed.tag}> instead of #main`).toBe("main");
+  });
+
+  test("the wipe cleans itself up and never blocks the page", async ({ page }) => {
+    await page.goto("/", { waitUntil: "load" });
+    await page.locator('.nav-register a[href="/en/experiences"]').click();
+    await page.waitForURL("**/en/experiences");
+    // Well past the 520ms animation.
+    await page.waitForTimeout(1400);
+    const left = await page.locator(".d-wipe").count();
+    expect(left, "a wipe sheet is still in the DOM after the animation").toBe(0);
+    // And the page beneath it is interactive.
+    await expect(page.locator("main h1")).toBeVisible();
+  });
+
+  test("reduced motion navigates with no sheet at all", async ({ browser }) => {
+    const ctx = await browser.newContext({ reducedMotion: "reduce" });
+    const page = await ctx.newPage();
+    await page.goto("/", { waitUntil: "load" });
+    await page.locator('.nav-register a[href="/en/location"]').click();
+    await page.waitForURL("**/en/location");
+    expect(await page.locator(".d-wipe").count()).toBe(0);
+    // The focus hand-off is an accessibility behaviour and still happens.
+    await page.waitForTimeout(300);
+    const id = await page.evaluate(() => document.activeElement?.id ?? "");
+    expect(id, "reduced motion dropped the focus hand-off").toBe("main");
+    await ctx.close();
+  });
+});

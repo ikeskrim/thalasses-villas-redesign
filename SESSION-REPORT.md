@@ -3,7 +3,7 @@
 **Read this first. It is written at HEAD and updated as each task lands, so it
 is the truthful position — not a plan, not a memory.**
 
-Last updated: after `overnight/3`.
+Last updated: after `overnight/4`.
 
 ---
 
@@ -15,7 +15,7 @@ Last updated: after `overnight/3`.
 | **1 — Villa template on D** | **DONE** — `03f62e1`, `10b0d39` |
 | **2 — Estate page on D** | **DONE** — `86a6594`, `ccb9896` |
 | 3 — Content pages onto D | **DONE** — `overnight/3` |
-| 4 — Pelagos page transitions | **NOT STARTED** |
+| 4 — Pelagos page transitions | **DONE** — `overnight/4` |
 | 5 — Copy pass to the voice rules | **NOT STARTED** |
 | 6 — SEO migration | **NOT STARTED** |
 | 7 — Full QA + evidence | **NOT STARTED** |
