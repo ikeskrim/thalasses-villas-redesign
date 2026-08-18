@@ -27,6 +27,7 @@ const ROUTES = [
   "/en/experiences",
   "/en/experiences/private-helipad",
   "/en/weddings",
+  "/en/gallery",
   "/en/location",
   "/en/careers",
   "/en/contact",

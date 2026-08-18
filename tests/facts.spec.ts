@@ -112,6 +112,7 @@ const ROUTES = [
   "/en/villas/villa-pueblo",
   "/en/experiences",
   "/en/weddings",
+  "/en/gallery",
   "/en/location",
   "/en/careers",
   "/en/contact",

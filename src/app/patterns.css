@@ -623,7 +623,12 @@
   display: none;
 }
 
-@media (max-width: 1023px) {
+/* 1199, not 1023. Adding the Gallery as a sixth register entry pushed the bar
+   past 1024 and the fixed-layer guard (T-213) caught it immediately — the
+   document-level overflow check still passed, because a fixed element
+   contributes nothing to documentElement.scrollWidth. The register collapses to
+   the Menu toggle a breakpoint earlier now; six entries need the room. */
+@media (max-width: 1199px) {
   .nav-register {
     display: none;
   }
@@ -659,7 +664,7 @@
     display: inline;
   }
 }
-@media (min-width: 1024px) {
+@media (min-width: 1200px) {
   .nav-panel {
     display: none;
   }

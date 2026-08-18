@@ -1,4 +1,18 @@
 import { expect, test } from "@playwright/test";
+import fs from "node:fs";
+import path from "node:path";
+
+/**
+ * The register count is DERIVED from the component that defines it, not typed
+ * here. It was hard-coded at five, and adding the Gallery as a sixth entry
+ * failed four tests that had nothing to do with the change — the ratified
+ * derive-don't-type rule (T-248) applies to tests as much as to content.
+ */
+const NAV_COUNT = (
+  fs
+    .readFileSync(path.join(process.cwd(), "src", "components", "ui", "SiteNav.tsx"), "utf-8")
+    .match(/\{ n: "\d\d", label:/g) ?? []
+).length;
 
 const ROUTES = ["/", "/en/the-estate", "/en/villas/villa-eeanthe", "/en/villas/villa-pueblo"];
 
@@ -22,7 +36,8 @@ test.describe("navigation", () => {
       await page.goto(route, { waitUntil: "load" });
 
       await expect(page.locator(".nav")).toHaveCount(1);
-      await expect(page.locator(".nav-register li")).toHaveCount(5);
+      expect(NAV_COUNT, "no nav entries found in SiteNav.tsx").toBeGreaterThan(3);
+      await expect(page.locator(".nav-register li")).toHaveCount(NAV_COUNT);
 
       // The booking affordance is always reachable, never behind the toggle.
       const book = page.locator(".nav-book");
@@ -95,7 +110,7 @@ test.describe("navigation", () => {
    * So the fixed layer gets its own measurement, in its own coordinate space:
    * every interactive child of the bar must lie inside the viewport.
    */
-  for (const width of [320, 360, 390, 430, 768, 1024, 1440]) {
+  for (const width of [320, 360, 390, 430, 768, 1024, 1200, 1440, 1920]) {
     test(`every nav control is inside the viewport @ ${width}`, async ({ page }) => {
       await page.setViewportSize({ width, height: 800 });
       await page.goto("/en/villas/villa-eeanthe", { waitUntil: "load" });

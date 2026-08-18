@@ -151,5 +151,6 @@ export const NAV_ENTRIES: NavEntry[] = [
   { n: "02", label: "The Estate", href: "/en/the-estate" },
   { n: "03", label: "Experiences", href: "/en/experiences" },
   { n: "04", label: "Weddings", href: "/en/weddings" },
-  { n: "05", label: "Location", href: "/en/location" },
+  { n: "05", label: "Gallery", href: "/en/gallery" },
+  { n: "06", label: "Location", href: "/en/location" },
 ];

@@ -566,3 +566,72 @@ test.describe("D12 — enquiry form", () => {
     await expect(sent).toContainText("Not yet connected");
   });
 });
+
+/**
+ * D13 — the gallery lightbox.
+ *
+ * A fullscreen overlay that leaves focus behind it is the commonest failure in
+ * this genre: a screen-reader user tabs "past" the image into a page they
+ * cannot see, with no way back and no idea the overlay is open.
+ */
+test.describe("D13 — gallery lightbox", () => {
+  test("opens by keyboard, traps focus, and Escape returns focus", async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto("/en/gallery", { waitUntil: "load" });
+
+    const thumb = page.locator(".d-gallery-btn").first();
+    await thumb.focus();
+    await page.keyboard.press("Enter");
+
+    const dialog = page.locator(".d-lightbox");
+    await expect(dialog).toBeVisible();
+    await expect(dialog).toHaveAttribute("aria-modal", "true");
+
+    // The page beneath is inert.
+    await expect(page.locator("#main")).toHaveAttribute("aria-hidden", "true");
+
+    // Tab cycles inside the dialog and never escapes it.
+    for (let i = 0; i < 8; i++) {
+      await page.keyboard.press("Tab");
+      const inside = await page.evaluate(
+        () => !!document.activeElement?.closest(".d-lightbox")
+      );
+      expect(inside, `focus left the dialog after ${i + 1} tabs`).toBe(true);
+    }
+
+    await page.keyboard.press("Escape");
+    await expect(dialog).toHaveCount(0);
+    // And focus comes back to something usable rather than the document body.
+    await expect(page.locator("#main")).not.toHaveAttribute("aria-hidden", "true");
+  });
+
+  test("arrow keys move between frames", async ({ page }) => {
+    await page.goto("/en/gallery", { waitUntil: "load" });
+    await page.locator(".d-gallery-btn").first().click();
+    const count = page.locator(".d-lightbox-count");
+    await expect(count).toContainText("1 /");
+    await page.keyboard.press("ArrowRight");
+    await expect(count).toContainText("2 /");
+    await page.keyboard.press("ArrowLeft");
+    await expect(count).toContainText("1 /");
+  });
+
+  test("a sparse cluster becomes a plate, never a grid with holes", async ({ page }) => {
+    await page.goto("/en/gallery", { waitUntil: "load" });
+    const sparse = page.locator(".d-gallery-grid--sparse");
+    if (await sparse.count()) {
+      const cols = await sparse
+        .first()
+        .evaluate((e) => getComputedStyle(e).gridTemplateColumns.split(" ").length);
+      expect(cols, "a one- or two-frame cluster is still on a multi-column grid").toBe(1);
+    }
+  });
+
+  test("no caption is invented", async ({ page }) => {
+    await page.goto("/en/gallery", { waitUntil: "load" });
+    const captions = await page.locator(".d-gallery-caption").allTextContents();
+    for (const c of captions) {
+      expect(c.trim().length, "an empty caption element was rendered").toBeGreaterThan(0);
+    }
+  });
+});

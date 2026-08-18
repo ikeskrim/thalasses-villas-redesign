@@ -938,3 +938,116 @@ main:focus-visible {
 .d-error main {
   padding-block: var(--section-y);
 }
+
+/* ==========================================================================
+   THE GALLERY
+   Clusters with air between them; inside a cluster the frames breathe against
+   each other. One-idea-per-viewport applies BETWEEN clusters — a gallery whose
+   every frame is its own screen is a slideshow.
+   ========================================================================== */
+
+.d-gallery-cluster {
+  padding-block: var(--section-y) 0;
+}
+.d-gallery-grid {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--card-gap);
+  margin-top: var(--section-y-tight);
+}
+/* LOW-IMAGE DISCIPLINE: one or two frames become large plates, never a grid
+   with holes. The layout is a function of the count. */
+.d-gallery-grid--sparse {
+  grid-template-columns: minmax(0, 1fr);
+  max-width: 70%;
+}
+.d-gallery-cell {
+  min-width: 0;
+}
+.d-gallery-btn {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: zoom-in;
+}
+.d-gallery-btn:focus-visible {
+  outline: 2px solid var(--color-pelagos);
+  outline-offset: 4px;
+}
+.d-gallery-frame {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  background: var(--color-ammos);
+}
+.d-gallery-grid--sparse .d-gallery-frame {
+  aspect-ratio: 3 / 2;
+}
+.d-gallery-caption {
+  margin-top: var(--spacing-step-3);
+  color: var(--color-phrygana);
+}
+
+/* ---- The lightbox -------------------------------------------------------- */
+.d-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: rgb(10 12 13 / 0.97);
+  color: var(--color-limestone);
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+}
+.d-lightbox-bar,
+.d-lightbox-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-step-5);
+  padding: var(--spacing-step-5) var(--page-margin);
+}
+.d-lightbox-stage {
+  position: relative;
+  min-height: 0;
+}
+.d-lightbox-btn {
+  background: none;
+  border: 1px solid rgb(232 233 227 / 0.5);
+  color: var(--color-limestone);
+  padding: 10px 20px;
+  cursor: pointer;
+}
+.d-lightbox-btn:hover,
+.d-lightbox-btn:focus-visible {
+  background: var(--color-limestone);
+  color: #0a0c0d;
+}
+.d-lightbox-btn:focus-visible {
+  outline: 2px solid var(--color-limestone);
+  outline-offset: 3px;
+}
+.d-lightbox-count,
+.d-lightbox-caption {
+  color: rgb(232 233 227 / 0.8);
+}
+.d-lightbox-caption {
+  text-align: center;
+  max-width: 60ch;
+}
+
+@media (max-width: 767px) {
+  .d-gallery-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .d-gallery-grid--sparse {
+    max-width: none;
+  }
+  .d-lightbox-foot {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
