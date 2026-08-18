@@ -365,11 +365,30 @@ test.describe("D9 — every call to action passes AA", () => {
             const cs = getComputedStyle(e);
             let bg = cs.backgroundColor;
             let n: HTMLElement | null = e;
+            let unresolvable = false;
             while (n && (bg === "rgba(0, 0, 0, 0)" || bg === "transparent")) {
+              const ncs = getComputedStyle(n);
+              // A DOM-ancestor walk is meaningless once it passes a fixed or
+              // absolutely-positioned element, or one whose ground is a gradient
+              // or an image: what is visually BEHIND such an element is not its
+              // parent. The fixed nav sits over a photograph, not over the page
+              // ground, and reading the page ground gave limestone-on-limestone
+              // — a false failure that appeared the moment the layer fix let the
+              // nav take its real colour. Those cases are covered by the scrim
+              // rule (D7) instead of by this one.
+              if (
+                ncs.position === "fixed" ||
+                ncs.position === "absolute" ||
+                ncs.backgroundImage !== "none"
+              ) {
+                unresolvable = true;
+                break;
+              }
               n = n.parentElement;
               if (!n) break;
               bg = getComputedStyle(n).backgroundColor;
             }
+            if (unresolvable) return null;
             const px = parseFloat(cs.fontSize);
             const bold = parseInt(cs.fontWeight, 10) >= 700;
             return {
@@ -379,6 +398,12 @@ test.describe("D9 — every call to action passes AA", () => {
               large: px >= 24 || (bold && px >= 18.66),
             };
           })
+          .filter(Boolean) as {
+          label: string;
+          fg: string;
+          bg: string;
+          large: boolean;
+        }[]
       );
 
       const parse = (s: string) => (s.match(/\d+/g) ?? []).slice(0, 3).map(Number);

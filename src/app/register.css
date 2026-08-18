@@ -1,0 +1,80 @@
+/* ==========================================================================
+   THE TYPOGRAPHIC REGISTER
+   Display scale, the micro register, body sizes. Moved OUT of globals.css and
+   into its own cascade layer for one reason, documented in CONVENTIONS §16:
+   these rules are single-class and they used to sit AFTER every component
+   partial, so `.micro { color: … }` silently beat `.btn-primary { color: … }`
+   at equal specificity. Three separate CTA contrast failures came from that one
+   fact. In a layer below `components`, it cannot happen again — regardless of
+   which file is imported first.
+   ========================================================================== */
+
+/* ==========================================================================
+   TYPE PRIMITIVES
+   ========================================================================== */
+
+.display {
+  font-family: var(--font-display);
+  /* Marcellus has one weight and no italic. Hierarchy comes from scale,
+     space, case and tracking — the typeface physically cannot shout. */
+  font-weight: 400;
+  font-style: normal;
+}
+
+/* Tracking and leading move with the size: display serif above ~40px wants
+   negative tracking and tight leading; the eyebrow register wants the opposite.
+   Leading is looser than it was, because the sizes are now capped and a capped
+   headline that still runs to two or three lines needs room between them. */
+.c1 {
+  font-size: var(--text-display-xl);
+  line-height: 1.05;
+  letter-spacing: -0.025em;
+}
+.c2 {
+  font-size: var(--text-display-l);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+.c3 {
+  font-size: var(--text-headline-m);
+  line-height: 1.15;
+  letter-spacing: -0.015em;
+}
+.c4 {
+  font-size: var(--text-title-s);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+.lede {
+  font-size: var(--text-lede);
+  line-height: 1.45;
+  letter-spacing: -0.006em;
+  max-width: 46ch;
+}
+.prose-measure {
+  max-width: 62ch;
+}
+.small {
+  font-size: var(--text-small);
+  line-height: 1.62;
+}
+.caption {
+  font-size: var(--text-caption);
+  line-height: 1.5;
+  letter-spacing: 0.01em;
+}
+
+/* Micro-labels: four permitted uses, no fifth. 12px floor. */
+.micro {
+  font-family: var(--font-sans);
+  font-size: var(--text-tail);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-phrygana);
+}
+.on-dark .micro {
+  color: var(--color-preveli);
+}

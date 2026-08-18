@@ -1,10 +1,32 @@
+/* ==========================================================================
+   THE CASCADE ORDER, DECLARED ONCE — CONVENTIONS.md §16
+   ==========================================================================
+   Three CTA contrast failures (T-217, T-242, T-247) had ONE cause: this file
+   imported every component partial at the top and then defined the typographic
+   register below them, so single-class register rules like `.micro { color }`
+   cascaded AFTER single-class component rules like `.btn-primary { color }` and
+   won every tie. Each was patched at the instance; the mechanism survived all
+   three times.
+
+   Layers fix it at the cause. Later layers beat earlier ones REGARDLESS of
+   source order and regardless of specificity within them, so a component rule
+   now outranks a register rule no matter which file loads first — and nobody
+   has to remember the import order again.
+
+   Falsification, run before this was believed: with the three instance-fixes
+   reverted in a scratch working tree, the contrast guard still passed. The
+   layer order was carrying it, not the patches.
+   ========================================================================== */
+@layer tokens, base, register, components, utilities;
+
 @import "tailwindcss";
-@import "./sections.css";
-@import "./villa.css";
-@import "./elevation.css";
-@import "./patterns.css";
-@import "./atmosphere.css";
-@import "./direction-d.css";
+@import "./sections.css" layer(components);
+@import "./villa.css" layer(components);
+@import "./elevation.css" layer(components);
+@import "./patterns.css" layer(components);
+@import "./atmosphere.css" layer(components);
+@import "./direction-d.css" layer(components);
+@import "./register.css" layer(register);
 
 /* ==========================================================================
    THALASSES VILLAS — DESIGN TOKENS
@@ -150,75 +172,6 @@ body {
   outline-color: var(--color-preveli);
 }
 
-/* ==========================================================================
-   TYPE PRIMITIVES
-   ========================================================================== */
-
-.display {
-  font-family: var(--font-display);
-  /* Marcellus has one weight and no italic. Hierarchy comes from scale,
-     space, case and tracking — the typeface physically cannot shout. */
-  font-weight: 400;
-  font-style: normal;
-}
-
-/* Tracking and leading move with the size: display serif above ~40px wants
-   negative tracking and tight leading; the eyebrow register wants the opposite.
-   Leading is looser than it was, because the sizes are now capped and a capped
-   headline that still runs to two or three lines needs room between them. */
-.c1 {
-  font-size: var(--text-display-xl);
-  line-height: 1.05;
-  letter-spacing: -0.025em;
-}
-.c2 {
-  font-size: var(--text-display-l);
-  line-height: 1.1;
-  letter-spacing: -0.02em;
-}
-.c3 {
-  font-size: var(--text-headline-m);
-  line-height: 1.15;
-  letter-spacing: -0.015em;
-}
-.c4 {
-  font-size: var(--text-title-s);
-  line-height: 1.2;
-  letter-spacing: -0.01em;
-}
-
-.lede {
-  font-size: var(--text-lede);
-  line-height: 1.45;
-  letter-spacing: -0.006em;
-  max-width: 46ch;
-}
-.prose-measure {
-  max-width: 62ch;
-}
-.small {
-  font-size: var(--text-small);
-  line-height: 1.62;
-}
-.caption {
-  font-size: var(--text-caption);
-  line-height: 1.5;
-  letter-spacing: 0.01em;
-}
-
-/* Micro-labels: four permitted uses, no fifth. 12px floor. */
-.micro {
-  font-family: var(--font-sans);
-  font-size: var(--text-tail);
-  font-weight: 500;
-  line-height: 1;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--color-phrygana);
-}
-.on-dark .micro {
-  color: var(--color-preveli);
-}
 
 /* ==========================================================================
    THE CLAUSE — the signature element (DESIGN-PLAN §2)

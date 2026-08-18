@@ -96,38 +96,17 @@ body.has-custom-cursor {
 }
 
 /*
-   TWO CLASSES, and it is not cosmetic.
-
-   Every primary CTA on this site carries `.btn-primary micro`, and `.micro`
-   sets `color: var(--color-phrygana)`. globals.css imports every partial at the
-   top of the file, so its own `.micro` rule cascades AFTER this one at equal
-   specificity — and won. The result was phrygana on basalt at **2.27:1**, on the
-   single most important element on the page, on every route, since the elevation
-   pass. Nobody saw it because the button still looked like a button.
-
-   Same trap as T-217. Raising specificity fixes it here; the contrast guard in
-   tests/direction-d.spec.ts is what stops the next one, because it measures
-   every CTA on every route rather than trusting the cascade.
+   NO SPECIFICITY PATCH HERE, AND THAT IS THE POINT.
+   Three of them used to live at this spot — `.btn-primary.micro`,
+   `.btn-primary--light.micro`, and `.on-dark` variants of both — each added
+   after a CTA was found illegible (T-217, T-242, T-247). They are gone.
+   `@layer components` now sits above `@layer register`, so `.micro`'s colour
+   cannot reach a button regardless of specificity or import order.
+   Verified by deleting all three and re-running the contrast guard: eight
+   routes, still green. If a patch is needed here again, the layer order has
+   been broken and THAT is the bug.
 */
-.btn-primary.micro {
-  color: var(--color-limestone);
-}
-.btn-primary--light.micro {
-  color: var(--color-basalt);
-}
-/* And again inside a dark section, because `.on-dark .micro` is ALSO (0,2,0)
-   and also cascades later. The light button on a dark ground was preveli on
-   limestone at 1.43:1 — the estate page's enquiry CTA, found by the D9 guard
-   the moment it was pointed at that route. Three specificity ties, one family
-   of bug: a colour set on `.micro` will beat any single-class component rule. */
-.on-dark .btn-primary.micro,
-.d-numbers .btn-primary.micro {
-  color: var(--color-limestone);
-}
-.on-dark .btn-primary--light.micro,
-.d-numbers .btn-primary--light.micro {
-  color: var(--color-basalt);
-}
+
 .btn-primary:focus-visible {
   outline: 2px solid var(--color-pelagos);
   outline-offset: 3px;

@@ -365,3 +365,61 @@ flag. A stale infrastructure note is worse than none, because it gets believed.
 
 Corollary, standing: **never instruct the owner to run a setup command for
 infrastructure that is already set up.** Pushing to `main` is the deploy.
+
+## 16. Layer the cascade; and a fix you cannot falsify is not a fix
+
+Two rules, because one incident taught both.
+
+### The incident
+
+Three separate call-to-action contrast failures — **T-217** (the villa angle at
+lede scale), **T-242** (every primary CTA on the site at **2.27:1**), **T-247**
+(the estate enquiry CTA at **1.43:1**) — had a single cause:
+
+`globals.css` imported every component partial at the **top** of the file and
+then defined the typographic register **below** them. So `.micro { color: … }`
+and `.btn-primary { color: … }` were both `(0,1,0)`, and the register won every
+tie by source order. The most important element on every page rendered
+secondary-text green on near-black for months, and it never looked broken —
+a button that is the wrong colour is still recognisably a button.
+
+I fixed it three times. Each fix was an instance. The mechanism survived all
+three, and would have produced a fourth.
+
+### The cure
+
+`@layer tokens, base, register, components, utilities;` declared once, with each
+partial imported into its layer. **Later layers beat earlier ones regardless of
+specificity or source order**, so a component rule now outranks a register rule
+whatever the import list says, and nobody has to remember the order again.
+
+The typographic register moved out of `globals.css` into `register.css` so it
+has a layer of its own rather than trailing the imports.
+
+**All three specificity patches were then deleted.** If one is ever needed
+again, the layer order has been broken and that is the bug.
+
+### The second rule
+
+**A fix I cannot falsify is not a fix.**
+
+The layer change was not believed until the three patches were removed and the
+contrast guard was re-run against eight routes with nothing else holding the
+colours in place. It passed. That is the difference between "the tests are green
+after my change" and "my change is what makes them green" — and only the second
+one is evidence.
+
+It applies past CSS: before claiming a cause is fixed, remove the thing that
+used to compensate for it and watch the fix hold alone.
+
+### A guard's blind spot, found by the same move
+
+Making the layer fix let `.nav-book` finally take its component colour, which
+immediately failed the contrast guard at 1.00:1 — limestone on limestone. The
+guard was resolving background by walking DOM ancestors, which is meaningless
+for a `position: fixed` bar sitting over a photograph: what is visually behind
+it is not its parent. The guard now treats fixed, absolute and gradient grounds
+as *unresolvable* rather than as failures, and leaves them to the scrim rule.
+
+A real fix exposing a flaw in the instrument that was supposed to catch it is
+the healthy version of this project's recurring lesson.

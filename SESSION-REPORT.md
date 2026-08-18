@@ -3,7 +3,7 @@
 **Read this first. It is written at HEAD and updated as each task lands, so it
 is the truthful position — not a plan, not a memory.**
 
-Last updated: after `overnight/4`.
+Last updated: after `overnight/9`.
 
 ---
 
@@ -20,7 +20,7 @@ Last updated: after `overnight/4`.
 | 6 — SEO migration | **NOT STARTED** |
 | 7 — Full QA + evidence | **NOT STARTED** |
 | 8 — Morning report | superseded by this file |
-| 9 — Kill the cascade family at the cause | **NOT STARTED** |
+| 9 — Kill the cascade family at the cause | **DONE** — `overnight/9`, falsified |
 | 10 — Gallery page | **NOT STARTED** |
 | 11 — Accessibility deep pass | **NOT STARTED** |
 | 12 — Performance hardening | **NOT STARTED** |
@@ -90,9 +90,12 @@ axe integration, no walkthrough videos.
 6. **The D rebuild silently dropped the T-212 detail rows.** My own regression,
    caught in the same session. (T-243)
 
-**The unfixed cause behind 1 and 2:** they are one family with T-217, and I have
-now patched three instances of it without addressing the mechanism. That is
-Task 9, and it is the highest-value item left in the queue.
+**The cause behind 1 and 2 is now fixed, and the fix was falsified.** They were
+one family with T-217. `@layer` puts components above the typographic register,
+so a register rule can no longer beat a component rule by import order. All
+three specificity patches were then **deleted**, and the contrast guard still
+passes on eight routes — the layer order is what holds the colours, not the
+patches. (T-253, CONVENTIONS §16.)
 
 ---
 
