@@ -1047,3 +1047,20 @@ defect lives in, not at the layer the reviewer was describing.
   Extended to **twelve routes** and ten Direction D selectors, then **verified by counting the strings it actually reads per route** — 117 on the homepage, 9 to 39 on the new pages — rather than by trusting the pass. No fabrications found in the new copy.
   Voice rules recorded as `CONVENTIONS.md` §17, including the standing obligation: adding a page means adding its route, adding a copy class means adding its selector.
   *Files:* `tests/facts.spec.ts`, `CONVENTIONS.md`
+
+- **T-258 — The 301 map is wired, DERIVED from `content/url-map.md`.** `scripts/build-redirects.mjs` parses the map at build time into `src/generated/redirects.json`, which `next.config.ts` reads. Hand-copying it would have created a second source that drifts from the document the owner edits — the same resolution as the inclusions count (T-248). 51 redirects installed, **13 skipped and every one reported**, because a legacy URL silently dropped is a lost ranking:
+  · `/` would loop (this build serves English at the root)
+  · four template rows (`/en/property/<id>/…`) — Next rejects the entire config if one placeholder gets through
+  · **eight fragment sources** (`/en/index-1.htm#category571`) — a fragment is never sent to the server, so no server redirect can honour them; they belong in the launch runbook as client-side handling
+  Also: `sitemap.ts` derived from the inventory, and `robots.ts` disallowing everything with the launch-day ordering written in.
+  *Files:* `scripts/build-redirects.mjs`, `next.config.ts`, `src/app/{sitemap,robots}.ts`, `package.json`
+
+- **T-259 — The redirect harness (Task 23, pulled forward) found real damage immediately.** Every installed redirect is driven through the built app and its status and target asserted. It caught three classes of defect on first run:
+  · **the map's proposed targets no longer match the built routes** — written in Phase 0 before the slugs settled. Fifteen dead targets: five per-villa gallery routes that do not exist, four amenity pages, and four experience slugs that drifted (`private-chef` → `chef-in-villa`, `organic-farm` → `biological-garden`, `private-boat-trip` → `boat-trip`, `water-sports` → no equivalent)
+  · **a redirect LOOP** — `/en/thalasses-rituals` is both a source and a target in the map, so it points at itself. Worse than a 404: a 404 loses one page, a loop hangs the request
+  · trailing-slash normalisation happening *before* the redirect table, so `/en/` never matched its rule
+  Rather than assert an empty list (shipping red) or delete the check (losing the information), the fifteen are tracked in `content/redirect-gaps.json` with a reason and a closing move each, and the test asserts the dead set is **exactly** that set — an existing gap cannot be forgotten and a new one cannot appear unnoticed.
+  *Files:* `tests/redirects.spec.ts`, `content/redirect-gaps.json`
+
+- **T-260 — The suite runs in three shards, and that is a real limit not a workaround.** It kept dying around test 118 with an aborted worker and no failure message. Cause measured, not guessed: every route is a page over 20,000px tall carrying up to 144 photographs, and ~120 in one worker exhausts the machine. Two genuine reductions first — the curation tests stopped scroll-walking 20,000px to populate `currentSrc` when `next/image` puts every `src` in the server markup anyway (cheaper *and* stricter, since it catches a blocked hash that is never scrolled into view) — then three sequential shards. **232 passing, exit 0.** No assertion weakened.
+  *Files:* `package.json`, `playwright.config.ts`, `tests/parity.spec.ts`, `tests/direction-d.spec.ts`

@@ -1,0 +1,326 @@
+{
+  "redirects": [
+    {
+      "source": "/en/index-1.htm",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/en/property/200.html",
+      "destination": "/en/villas/villa-thoi",
+      "permanent": true
+    },
+    {
+      "source": "/en/property/201.html",
+      "destination": "/en/villas/villa-persi",
+      "permanent": true
+    },
+    {
+      "source": "/en/property/202.html",
+      "destination": "/en/villas/villa-eeanthe",
+      "permanent": true
+    },
+    {
+      "source": "/en/property/203.html",
+      "destination": "/en/villas/villa-melia",
+      "permanent": true
+    },
+    {
+      "source": "/en/property/2142.html",
+      "destination": "/en/the-estate",
+      "permanent": true
+    },
+    {
+      "source": "/en/property/200/albums.html",
+      "destination": "/en/villas/villa-thoi/gallery",
+      "permanent": true
+    },
+    {
+      "source": "/en/property/201/albums.html",
+      "destination": "/en/villas/villa-persi/gallery",
+      "permanent": true
+    },
+    {
+      "source": "/en/property/202/albums.html",
+      "destination": "/en/villas/villa-eeanthe/gallery",
+      "permanent": true
+    },
+    {
+      "source": "/en/property/203/albums.html",
+      "destination": "/en/villas/villa-melia/gallery",
+      "permanent": true
+    },
+    {
+      "source": "/en/property/2142/albums.html",
+      "destination": "/en/the-estate/gallery",
+      "permanent": true
+    },
+    {
+      "source": "/en/property/200/map.html",
+      "destination": "/en/villas/villa-thoi#location",
+      "permanent": true
+    },
+    {
+      "source": "/en/property/201/map.html",
+      "destination": "/en/villas/villa-persi#location",
+      "permanent": true
+    },
+    {
+      "source": "/en/property/202/map.html",
+      "destination": "/en/villas/villa-eeanthe#location",
+      "permanent": true
+    },
+    {
+      "source": "/en/property/203/map.html",
+      "destination": "/en/villas/villa-melia#location",
+      "permanent": true
+    },
+    {
+      "source": "/en/property/2142/map.html",
+      "destination": "/en/the-estate#location",
+      "permanent": true
+    },
+    {
+      "source": "/en/villa-pueblo-1.html",
+      "destination": "/en/villas/villa-pueblo",
+      "permanent": true
+    },
+    {
+      "source": "/en/thalasses-rituals-1.html",
+      "destination": "/en/thalasses-rituals",
+      "permanent": true
+    },
+    {
+      "source": "/en/article/1899-1.html",
+      "destination": "/en/amenities/sitting-outdoor-area",
+      "permanent": true
+    },
+    {
+      "source": "/en/terms-and-conditions-1.html",
+      "destination": "/en/terms",
+      "permanent": true
+    },
+    {
+      "source": "/en/bike-tours-1.html",
+      "destination": "/en/experiences/bike-tours",
+      "permanent": true
+    },
+    {
+      "source": "/en/biological-garden-1.html",
+      "destination": "/en/experiences/organic-farm",
+      "permanent": true
+    },
+    {
+      "source": "/en/boat-trip-1.html",
+      "destination": "/en/experiences/private-boat-trip",
+      "permanent": true
+    },
+    {
+      "source": "/en/breakfast-on-the-beach-1.html",
+      "destination": "/en/experiences/breakfast-on-the-beach",
+      "permanent": true
+    },
+    {
+      "source": "/en/chauffeur-1.html",
+      "destination": "/en/experiences/chauffeur",
+      "permanent": true
+    },
+    {
+      "source": "/en/chef-in-villa-1.html",
+      "destination": "/en/experiences/private-chef",
+      "permanent": true
+    },
+    {
+      "source": "/en/dream-weadding-on-the-beach-1.html",
+      "destination": "/en/experiences/dream-wedding-on-the-beach",
+      "permanent": true
+    },
+    {
+      "source": "/en/exclusive-tour-1.html",
+      "destination": "/en/experiences/exclusive-tour",
+      "permanent": true
+    },
+    {
+      "source": "/en/hiking-1.html",
+      "destination": "/en/experiences/hiking",
+      "permanent": true
+    },
+    {
+      "source": "/en/jeep-safari-1.html",
+      "destination": "/en/experiences/jeep-safari",
+      "permanent": true
+    },
+    {
+      "source": "/en/jet-ski-safari-1.html",
+      "destination": "/en/experiences/water-sports",
+      "permanent": true
+    },
+    {
+      "source": "/en/learn-the-secrets-of-cretan-cuisine-1.html",
+      "destination": "/en/experiences/learn-the-secrets-of-cretan-cuisine",
+      "permanent": true
+    },
+    {
+      "source": "/en/massage-1.html",
+      "destination": "/en/experiences/massage",
+      "permanent": true
+    },
+    {
+      "source": "/en/personal-trainer-1.html",
+      "destination": "/en/experiences/personal-trainer",
+      "permanent": true
+    },
+    {
+      "source": "/en/private-helipad-1.html",
+      "destination": "/en/experiences/private-helipad",
+      "permanent": true
+    },
+    {
+      "source": "/en/quad-safari-1.html",
+      "destination": "/en/experiences/quad-safari",
+      "permanent": true
+    },
+    {
+      "source": "/en/running-1.html",
+      "destination": "/en/experiences/running",
+      "permanent": true
+    },
+    {
+      "source": "/en/scuba-diving-1.html",
+      "destination": "/en/experiences/scuba-diving",
+      "permanent": true
+    },
+    {
+      "source": "/en/therapist-1.html",
+      "destination": "/en/experiences/therapist",
+      "permanent": true
+    },
+    {
+      "source": "/en/wine-production-1.html",
+      "destination": "/en/experiences/wine-production",
+      "permanent": true
+    },
+    {
+      "source": "/en/wine-tasting-1.html",
+      "destination": "/en/experiences/wine-tasting",
+      "permanent": true
+    },
+    {
+      "source": "/en",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/en/villa-pueblo",
+      "destination": "/en/villas/villa-pueblo",
+      "permanent": true
+    },
+    {
+      "source": "/en/thalasses-rituals",
+      "destination": "/en/thalasses-rituals",
+      "permanent": true
+    },
+    {
+      "source": "/en/terms-and-conditions",
+      "destination": "/en/terms",
+      "permanent": true
+    },
+    {
+      "source": "/en/article/1899",
+      "destination": "/en/amenities/sitting-outdoor-area",
+      "permanent": true
+    },
+    {
+      "source": "/en/page/modal/article/1896",
+      "destination": "/en/amenities/private-beach",
+      "permanent": true
+    },
+    {
+      "source": "/en/page/modal/article/1898",
+      "destination": "/en/location",
+      "permanent": true
+    },
+    {
+      "source": "/en/page/modal/article/3795",
+      "destination": "/en/amenities/doctor",
+      "permanent": true
+    },
+    {
+      "source": "/en/page/modal/article/3796",
+      "destination": "/en/amenities/babysitter",
+      "permanent": true
+    },
+    {
+      "source": "/en/page/modal/article/3869",
+      "destination": "/en/careers",
+      "permanent": true
+    }
+  ],
+  "skipped": [
+    {
+      "from": "/",
+      "to": "/en",
+      "why": "root is served directly in this build; installing it would loop"
+    },
+    {
+      "from": "/en/index-1.htm#category571",
+      "to": "/en/amenities",
+      "why": "source is a fragment; a server redirect cannot see it (handle client-side)"
+    },
+    {
+      "from": "/en/index-1.htm#category570",
+      "to": "/en/location",
+      "why": "source is a fragment; a server redirect cannot see it (handle client-side)"
+    },
+    {
+      "from": "/en/index-1.htm#category1139",
+      "to": "/en/experiences",
+      "why": "source is a fragment; a server redirect cannot see it (handle client-side)"
+    },
+    {
+      "from": "/en/index-1.htm#category1158",
+      "to": "/en/careers",
+      "why": "source is a fragment; a server redirect cannot see it (handle client-side)"
+    },
+    {
+      "from": "/en/index-1.htm#featured_gallery",
+      "to": "/en/villas",
+      "why": "source is a fragment; a server redirect cannot see it (handle client-side)"
+    },
+    {
+      "from": "/en/index-1.htm#contact",
+      "to": "/en/contact",
+      "why": "source is a fragment; a server redirect cannot see it (handle client-side)"
+    },
+    {
+      "from": "/en/index-1.htm#overview",
+      "to": "/en",
+      "why": "source is a fragment; a server redirect cannot see it (handle client-side)"
+    },
+    {
+      "from": "/en/index-1.htm?x=1",
+      "to": "/en",
+      "why": "source is a template or not a literal path"
+    },
+    {
+      "from": "/en/property/<id>",
+      "to": "/en/villas/<slug>` (2142 → `/en/the-estate`)",
+      "why": "source is a template or not a literal path"
+    },
+    {
+      "from": "/en/property/<id>/albums",
+      "to": "/en/villas/<slug>/gallery` (2142 → `/en/the-estate/gallery`)",
+      "why": "source is a template or not a literal path"
+    },
+    {
+      "from": "/en/property/<id>/map",
+      "to": "/en/villas/<slug>#location` (2142 → `/en/the-estate#location",
+      "why": "source is a template or not a literal path"
+    },
+    {
+      "from": "/en/<experience>",
+      "to": "/en/experiences/<slug>",
+      "why": "source is a template or not a literal path"
+    }
+  ]
+}

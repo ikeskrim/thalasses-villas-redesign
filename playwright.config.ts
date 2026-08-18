@@ -1,8 +1,16 @@
 import { defineConfig, devices } from "@playwright/test";
 
 /**
- * QA harness. Two jobs, both of which a clean `next build` demonstrably fails
- * to catch:
+ * QA harness.
+ *
+ * RUN IT SHARDED — `npm run qa` — not as a single `playwright test`.
+ * Every route here is a page over twenty thousand pixels tall carrying up to a
+ * hundred and forty photographs, and roughly a hundred and twenty of them in
+ * one worker exhausts the machine. The suite then dies with an aborted worker
+ * and no failure message, which is indistinguishable from flakiness and is
+ * nothing of the kind. Three shards, run in sequence, each in its own process.
+ *
+ * Two jobs, both of which a clean `next build` demonstrably fails to catch:
  *  - qa:overflow — asserts document.scrollWidth === clientWidth at every
  *    breakpoint. The Clause tail is allowed to overrun its section, and the
  *    only thing standing between that and a horizontal page scroll is a single

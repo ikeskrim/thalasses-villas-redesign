@@ -281,15 +281,19 @@ test.describe("curation rulings", () => {
   for (const route of ROUTES) {
     test(`no ruled-off image renders on ${route}`, async ({ page }) => {
       await page.goto(route, { waitUntil: "load" });
-      await page.evaluate(async () => {
-        const step = Math.round(window.innerHeight * 0.9);
-        for (let y = 0; y <= document.body.scrollHeight; y += step) {
-          window.scrollTo(0, y);
-          await new Promise((r) => setTimeout(r, 120));
-        }
-      });
+      /*
+       * NO SCROLL-WALK. It was here to force lazy images to load so that
+       * `currentSrc` was populated — but `next/image` puts every `src` in the
+       * server markup regardless of loading state, so the walk bought nothing
+       * and cost everything: these routes are twenty thousand pixels tall with
+       * a hundred photographs, and walking seven of them exhausted the runner's
+       * memory mid-suite. Reading the markup is both cheaper and stricter, since
+       * it catches a blocked hash that is present but never scrolled into view.
+       */
       const srcs = await page.evaluate(() =>
-        [...document.querySelectorAll("img")].map((i) => decodeURIComponent(i.currentSrc || i.src))
+        [...document.querySelectorAll("img")].map((i) =>
+          decodeURIComponent(i.getAttribute("src") ?? "")
+        )
       );
       const html = await page.content();
       for (const h of BLOCKED_HASHES) {

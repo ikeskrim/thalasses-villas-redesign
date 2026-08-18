@@ -180,16 +180,11 @@ test.describe("D6 — every image goes through the single resolver", () => {
     for (const route of ROUTES) {
       await page.setViewportSize({ width: 1440, height: 900 });
       await page.goto(route, { waitUntil: "load" });
-      await page.evaluate(async () => {
-        const s = Math.round(window.innerHeight * 0.85);
-        for (let y = 0; y <= document.body.scrollHeight; y += s) {
-          window.scrollTo(0, y);
-          await new Promise((r) => setTimeout(r, 90));
-        }
-      });
+      // Markup, not a scroll-walk — see the note in parity.spec.ts. Every `src`
+      // is in the server HTML whether or not it has been scrolled to.
       const bad = await page.evaluate(() =>
         [...document.querySelectorAll("img")]
-          .map((i) => decodeURIComponent(i.currentSrc || i.getAttribute("src") || ""))
+          .map((i) => decodeURIComponent(i.getAttribute("src") || ""))
           .filter((u) => /loggia-cdn|amazonaws\.com|^https?:\/\/(?!localhost)/.test(u))
       );
       expect(bad, `${route} renders a remote inventory URL: ${bad.join(", ")}`).toEqual([]);

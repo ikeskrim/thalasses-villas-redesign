@@ -3,7 +3,7 @@
 **Read this first. It is written at HEAD and updated as each task lands, so it
 is the truthful position — not a plan, not a memory.**
 
-Last updated: after `overnight/5`.
+Last updated: after `overnight/6`.
 
 ---
 
@@ -17,7 +17,7 @@ Last updated: after `overnight/5`.
 | 3 — Content pages onto D | **DONE** — `overnight/3` |
 | 4 — Pelagos page transitions | **DONE** — `overnight/4` |
 | 5 — Copy pass to the voice rules | **DONE** — `overnight/5` |
-| 6 — SEO migration | **NOT STARTED** |
+| 6 — SEO migration | **PARTIAL** — 301 map, sitemap, robots done; OG images are Task 16 |
 | 7 — Full QA + evidence | **NOT STARTED** |
 | 8 — Morning report | superseded by this file |
 | 9 — Kill the cascade family at the cause | **DONE** — `overnight/9`, falsified |
@@ -55,7 +55,7 @@ axe integration, no walkthrough videos.
 
 - **Pipeline:** auto-deploys on every push to `main`, team `domisi`,
   protection off, `noindex` on by design. See `DEPLOY.md`.
-- **Tests:** 170 passing, 1 skipped, in **one process, exit 0**. Scan, typecheck,
+- **Tests:** **232 passing, 1 skipped**, run as three shards (`npm run qa`). Scan, typecheck,
   lint clean at HEAD. (The count fell from 197 because the 30 screenshot tests
   left the suite — see below. No assertion was weakened.)
 - **Evidence:** `qa/walkthrough/` stills and `qa/video/` clips, produced by
