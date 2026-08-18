@@ -81,7 +81,10 @@ test.describe("homepage content parity", () => {
     }
     await expect(page.locator(".estate-map-cta a")).toHaveCount(1);
     await page.goto("/en/the-estate", { waitUntil: "load" });
-    const full = (await page.locator(".estate-figure-value").allTextContents()).map((s) => s.trim());
+    // Direction D replaced the bespoke figures block with the shared Ledger.
+    const full = (await page.locator(".d-ledger .ledger-spec-value").allTextContents()).map((s) =>
+      s.trim()
+    );
     for (const v of ["9", "6", "18", "4", "240"]) {
       expect(full, `estate figure ${v} missing from /en/the-estate`).toContain(v);
     }
@@ -243,7 +246,11 @@ test.describe("villa content parity", () => {
     await page.goto("/en/the-estate", { waitUntil: "load" });
     const labels = await page.locator("main .micro").allTextContents();
     const beats = labels.map((s) => s.trim().match(/^(\d\d) — /)?.[1]).filter(Boolean) as string[];
-    expect(beats).toEqual(["01", "02", "03", "04", "05"]);
+    // Gapless from 01, whatever the template's beat count is.
+    expect(beats, `estate spine: ${beats.join(", ")}`).toEqual(
+      beats.map((_, i) => String(i + 1).padStart(2, "0"))
+    );
+    expect(beats.length).toBeGreaterThanOrEqual(5);
     // The map component hard-coded the homepage's beat number for a while.
     expect(labels.map((s) => s.trim())).not.toContain("06 — The Estate");
   });

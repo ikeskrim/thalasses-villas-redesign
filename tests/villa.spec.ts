@@ -107,7 +107,7 @@ test.describe("villa template parity", () => {
     expect(body).not.toContain("cannot be booked");
     expect(body).not.toContain("booking unavailable");
 
-    const figures = await page.locator(".estate-figure-value").allTextContents();
+    const figures = await page.locator(".d-ledger .ledger-spec-value").allTextContents();
     for (const v of ["9", "6", "18", "4", "240"]) expect(figures).toContain(v);
   });
 

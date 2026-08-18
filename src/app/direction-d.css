@@ -592,3 +592,76 @@ body:has(.d) .nav:not(.is-solid) .nav-index {
     gap: var(--spacing-step-2);
   }
 }
+
+/* ==========================================================================
+   THE ESTATE PAGE ON D
+   ========================================================================== */
+
+/* Six figures, not five — the estate also carries "at one table". */
+.d .d-ledger--six {
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+}
+.d-numbers-sub {
+  margin-top: var(--section-y-tight);
+  color: var(--color-preveli);
+}
+
+.d-estate-detail,
+.d-estate-lists,
+.d-estate-close {
+  padding-block: var(--section-y);
+}
+.d-estate-villas {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--card-gap);
+  margin-top: var(--section-y-tight);
+}
+.d-estate-villa {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+  padding-top: var(--spacing-step-4);
+  border-top: 1px solid rgb(20 83 95 / 0.22);
+}
+.d-estate-villa-name {
+  display: block;
+  color: var(--color-basalt);
+}
+.d-estate-villa:hover .d-estate-villa-name,
+.d-estate-villa:focus-visible .d-estate-villa-name {
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+  text-decoration-color: var(--color-pelagos);
+}
+.d-estate-villa-spec {
+  display: block;
+  margin-top: var(--spacing-step-2);
+  color: var(--color-phrygana);
+}
+.d-estate-list {
+  list-style: none;
+  margin-top: var(--section-y-tight);
+  max-width: 62ch;
+  border-top: 1px solid rgb(20 83 95 / 0.2);
+}
+.d-estate-list li {
+  padding-block: var(--spacing-step-4);
+  border-bottom: 1px solid rgb(20 83 95 / 0.2);
+  color: var(--color-basalt);
+}
+
+@media (max-width: 1023px) {
+  .d .d-ledger--six {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .d-estate-villas {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 767px) {
+  .d .d-ledger--six {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

@@ -115,6 +115,19 @@ body.has-custom-cursor {
 .btn-primary--light.micro {
   color: var(--color-basalt);
 }
+/* And again inside a dark section, because `.on-dark .micro` is ALSO (0,2,0)
+   and also cascades later. The light button on a dark ground was preveli on
+   limestone at 1.43:1 — the estate page's enquiry CTA, found by the D9 guard
+   the moment it was pointed at that route. Three specificity ties, one family
+   of bug: a colour set on `.micro` will beat any single-class component rule. */
+.on-dark .btn-primary.micro,
+.d-numbers .btn-primary.micro {
+  color: var(--color-limestone);
+}
+.on-dark .btn-primary--light.micro,
+.d-numbers .btn-primary--light.micro {
+  color: var(--color-basalt);
+}
 .btn-primary:focus-visible {
   outline: 2px solid var(--color-pelagos);
   outline-offset: 3px;

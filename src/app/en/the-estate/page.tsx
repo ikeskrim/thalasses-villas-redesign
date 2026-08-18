@@ -1,17 +1,19 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
+import { Magnetic } from "@/components/motion/Magnetic";
 import { Reveal } from "@/components/motion/Reveal";
+import { EstateMap } from "@/components/sections/EstateMap";
 import { SiteFooter } from "@/components/sections/SiteFooter";
 import { TheRun } from "@/components/sections/TheRun";
 import { Clause } from "@/components/ui/Clause";
-import { EstateMap } from "@/components/sections/EstateMap";
 import { Field } from "@/components/ui/Field";
 import { Ledger } from "@/components/ui/Ledger";
-import { byN } from "@/lib/selects";
 import { HOTSPOTS } from "@/app/home-data";
 import { estateCta } from "@/lib/booking";
 import { getEstate, getEstateVillas, getSite } from "@/lib/content";
+import { byN } from "@/lib/selects";
+import { squareFeet } from "@/lib/villa-page";
 
 export const metadata: Metadata = {
   title: "The Entire Estate",
@@ -20,7 +22,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "/en/the-estate" },
 };
 
-/** Owner-confirmed facts. Nothing on this page is estimated. */
+/** Owner-confirmed. Nothing on this page is estimated. */
 const FACTS = {
   bedrooms: 9,
   bathrooms: 6,
@@ -31,10 +33,15 @@ const FACTS = {
   distanceToBeach: "about 50 m",
 };
 
-const SERVICES = [
-  "Cleaning every three days",
-  "A reception desk, daily",
-  "A Holiday Advisor and concierge",
+/**
+ * The same four inclusions the villa pages carry, at estate scale.
+ * Breakfast is NOT among them — owner-confirmed, extra charge (T-245).
+ */
+const INCLUDED = [
+  { label: "Cleaning every 3 days", note: "Across all four houses, included." },
+  { label: "Daily reception desk", note: "On the estate, every day of your stay." },
+  { label: "A Holiday Advisor and concierge", note: "Someone who knows the island." },
+  { label: "The private beach", note: "Golden sand, fifty metres from every door." },
 ];
 
 const OUTDOOR = [
@@ -53,7 +60,6 @@ function estateJsonLd() {
     description:
       "Four seafront villas taken together as one house, with a private beach in Pigianos Kampos, Rethymno, Crete.",
     numberOfRooms: FACTS.bedrooms,
-    petsAllowed: undefined,
     address: {
       "@type": "PostalAddress",
       streetAddress: "Pigianos Kampos area",
@@ -69,6 +75,18 @@ function estateJsonLd() {
   };
 }
 
+/**
+ * THE ESTATE PAGE — Direction D.
+ *
+ * The villa template's logic at estate scale, and the one page where the
+ * proposition IS the arithmetic: four houses that add up to something none of
+ * them is alone. So the numbers take the beat, on this page's single dark
+ * interlude, and the map gets full depth beneath them.
+ *
+ * Enquiry-only throughout, by design and not by omission. A full buyout is
+ * arranged in conversation; there is no dates-only deep link for it, and the
+ * page never implies one is missing.
+ */
 export default function EstatePage() {
   const estate = getEstate();
   const villas = getEstateVillas();
@@ -82,12 +100,12 @@ export default function EstatePage() {
   const contact = site.contact ?? {};
 
   const figures = [
-    { value: FACTS.bedrooms, label: "Bedrooms" },
-    { value: FACTS.bathrooms, label: "Bathrooms" },
-    { value: FACTS.sleeps, label: "Sleep in beds" },
-    { value: FACTS.pools, label: "Private pools" },
-    { value: FACTS.sizeSqm, label: "Square metres" },
-    { value: FACTS.diningSeats, label: "At one table" },
+    { label: "Bedrooms", value: FACTS.bedrooms },
+    { label: "Bathrooms", value: FACTS.bathrooms },
+    { label: "Sleep in beds", value: FACTS.sleeps },
+    { label: "Private pools", value: FACTS.pools },
+    { label: "Square metres", value: FACTS.sizeSqm },
+    { label: "At one table", value: FACTS.diningSeats },
   ];
 
   const runImages = estate.gallery.featured.length
@@ -95,133 +113,150 @@ export default function EstatePage() {
     : estate.gallery.allImages.map((u) => ({ url: u, caption: null }));
 
   return (
-    <>
+    <div className="d">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(estateJsonLd()) }}
       />
 
       <main id="main">
+        {/* ----------------------------------------------------- 01 HERO --- */}
         <Field
           src={estate.gallery.heroImage ?? ""}
           alt="The four villas of Thalasses Villas seen together from the sea"
           horizonY={0.42}
           height="92svh"
-          priority
+          className="d-villa-hero"
         >
           <div className="canon clause-field" style={{ padding: 0 }}>
-            <p className="micro" style={{ marginBottom: "var(--spacing-step-4)" }}>
-              01 — The Entire Estate
-            </p>
+            <p className="micro d-eyebrow">01 — The Entire Estate</p>
             <Clause gerund="Gathering" tail="All four, one gate" scale="c1" animate as="h1" />
           </div>
         </Field>
 
-        <section className="estate on-dark">
+        {/* ------------------------------ 02 THE NUMBERS — dark interlude --- */}
+        {/* This page's one deep passage, spent where the argument is. */}
+        <section className="d-numbers on-dark">
           <span className="ghost ghost--right" aria-hidden="true">
             02
           </span>
           <div className="canon">
-            <p className="micro">02 — Taken together</p>
             <Reveal>
-              <p className="lede estate-lede">
-                Four villas taken together as one house, {FACTS.distanceToBeach} from the water,
-                with a private beach of golden sand, four private pools and a table that seats{" "}
-                {FACTS.diningSeats} under the evening sun.
+              <p className="micro">02 — Taken as one house</p>
+              <p className="d-numbers-lede">
+                Four villas behind a single gate, {FACTS.distanceToBeach} from the water, with a
+                table that seats {FACTS.diningSeats} under the evening sun.
               </p>
             </Reveal>
-
-            {/* The inherited ledger component, not a bespoke block. */}
+            <Ledger entries={figures} className="d-ledger d-ledger--six" />
             <Reveal index={1}>
-              <Ledger entries={figures.map((f) => ({ label: f.label, value: f.value }))} />
-              <dl className="estate-figures" hidden>
-                {figures.map((f) => (
-                  <div key={f.label} className="estate-figure">
-                    <dt className="micro">{f.label}</dt>
-                    <dd className="display c3 tabular estate-figure-value">{f.value}</dd>
-                  </div>
-                ))}
-              </dl>
-            </Reveal>
-
-            {/* Concierge, by design. Never framed as a booking that is missing. */}
-            <Reveal index={2}>
-              <p className="estate-cta-row">
-                <Link href={cta.href} className="micro estate-cta">
-                  {cta.label}
-                </Link>
+              <p className="d-numbers-sub small">
+                {FACTS.sizeSqm} m² · {squareFeet(FACTS.sizeSqm)} sq ft across the four houses.
               </p>
-              <p className="small estate-concierge">
-                A full buyout is arranged in conversation, not in a booking form — so that arrival
-                times, the chef, the table and the beach are all settled before you land.
+              <p className="d-numbers-cta">
+                <Magnetic>
+                  <Link
+                    href={cta.href}
+                    className="btn-primary btn-primary--light micro"
+                    data-cursor="Enquire"
+                  >
+                    {cta.label}
+                  </Link>
+                </Magnetic>
               </p>
             </Reveal>
           </div>
         </section>
 
-        <section className="canon estate-detail">
-          <p className="micro">03 — The four villas</p>
-          <div className="grid-canon">
-            <Reveal className="field-clause clause-field">
-              <Clause gerund="Sharing" tail="One gate, one beach" scale="c2" as="h2" />
-            </Reveal>
-            <Reveal className="field-prose" index={1}>
-              <p className="micro">The four villas</p>
-              <ul className="small estate-villa-list">
-                {villas.map((v) => (
-                  <li key={v.id}>
-                    <Link href={`/en/villas/${v.slug}`} className="estate-villa-link">
-                      {v.name}
-                    </Link>
-                    <span className="tabular estate-villa-spec">
+        {/* ------------------------------------------- 03 THE FOUR HOUSES -- */}
+        <section className="canon d-estate-detail">
+          <Reveal>
+            <p className="micro">03 — The four houses</p>
+            <p className="d-villa-lede">
+              Each has its own pool, its own terrace and its own front door. Together they are one
+              address, and one arrival.
+            </p>
+          </Reveal>
+          <Reveal index={1}>
+            <ul className="d-estate-villas">
+              {villas.map((v) => (
+                <li key={v.id}>
+                  <Link href={`/en/villas/${v.slug}`} className="d-estate-villa">
+                    <span className="display c4 d-estate-villa-name">{v.name}</span>
+                    <span className="caption tabular d-estate-villa-spec">
                       {v.specs.bedrooms} bd · {v.specs.bathrooms} ba · sleeps {v.specs.maxGuests}
                     </span>
-                  </li>
-                ))}
-              </ul>
-
-              <p className="micro" style={{ marginTop: "var(--spacing-step-7)" }}>
-                Outdoors
-              </p>
-              <ul className="small estate-list">
-                {OUTDOOR.map((o) => (
-                  <li key={o}>{o}</li>
-                ))}
-              </ul>
-
-              <p className="micro" style={{ marginTop: "var(--spacing-step-7)" }}>
-                Included, at no charge
-              </p>
-              <ul className="small estate-list">
-                {SERVICES.map((s) => (
-                  <li key={s}>{s}</li>
-                ))}
-              </ul>
-            </Reveal>
-          </div>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </Reveal>
         </section>
 
-        {/*
-          The estate map at full depth. The homepage carries an abbreviated
-          version; this page is where it belongs, because the whole proposition
-          here IS the geography — which house sits where, and how far the water
-          is from each door.
-        */}
+        {/* ------------------------------------------------- 04 THE MAP ---- */}
         <EstateMap
           image={byN(42).path}
           alt={byN(42).alt}
           hotspots={HOTSPOTS}
-          ledger={figures.map((f) => ({ label: f.label, value: f.value }))}
+          ledger={figures.slice(0, 5)}
           ctaLabel={cta.label}
           ctaHref={cta.href}
           beat="04"
         />
 
-        <div className="canon villa-marker">
-          <p className="micro">05 — The rooms</p>
+        {/* -------------------------------------------------- 05 OUTDOORS -- */}
+        <section className="canon d-estate-lists">
+          <Reveal>
+            <p className="micro">05 — Outdoors</p>
+            <ul className="small d-estate-list">
+              {OUTDOOR.map((o) => (
+                <li key={o}>{o}</li>
+              ))}
+            </ul>
+          </Reveal>
+        </section>
+
+        <section className="canon d-includes">
+          <Reveal>
+            <p className="micro">Your stay includes</p>
+            <ul className="d-includes-list">
+              {INCLUDED.map((i) => (
+                <li key={i.label} className="d-includes-item">
+                  <span className="display c4 d-includes-label">{i.label}</span>
+                  <span className="small d-includes-note">{i.note}</span>
+                </li>
+              ))}
+            </ul>
+          </Reveal>
+        </section>
+
+        {/* -------------------------------------------------- 06 THE ROOMS - */}
+        <div className="canon d-villa-mark">
+          <p className="micro">06 — The rooms</p>
           <div className="datum-rule" />
         </div>
         <TheRun images={runImages} villaName="The Entire Estate" />
+
+        {/* --------------------------------------------------- 07 ENQUIRE -- */}
+        <section className="canon d-estate-close">
+          <Reveal>
+            <p className="micro">07 — The whole estate</p>
+            <div className="clause-field d-statement-clause">
+              <Clause gerund="Taking" tail="The whole place, one party" scale="c2" as="h2" />
+            </div>
+            <p className="d-villa-lede">
+              A full buyout is arranged in conversation, not in a booking form — so that arrival
+              times, the chef, the table and the beach are settled before you land.
+            </p>
+            <p className="d-villa-cta">
+              <Magnetic>
+                <Link href={cta.href} className="btn-primary micro" data-cursor="Enquire">
+                  {cta.label}
+                </Link>
+              </Magnetic>
+            </p>
+          </Reveal>
+        </section>
       </main>
 
       <SiteFooter
@@ -234,6 +269,6 @@ export default function EstatePage() {
         operatingLicence={site.legal?.operatingLicence ?? ""}
         operatingLicenceLabel={site.legal?.operatingLicenceLabel ?? "Permission of legality"}
       />
-    </>
+    </div>
   );
 }
