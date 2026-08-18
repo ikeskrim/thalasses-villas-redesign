@@ -71,8 +71,13 @@ export default function Home() {
               <div className="clause-field">
                 <Clause gerund="Living" tail="Unlimited" scale="c1" animate as="h1" />
               </div>
+              {/* Working default per the directive. Names the offer in the
+                  first second — seafront, private, Crete — rather than opening
+                  on brand abstraction. Flagged, not asserted: the owner has not
+                  signed off this line. (T-256) */}
               <p className="d-hero-lede">
-                Five seafront villas, one private beach fifty metres from the door.
+                Five seafront villas, one private beach fifty metres from the door, on the north
+                coast of Crete.
               </p>
             </div>
             <a href="#litany" className="d-cue micro" aria-label="Scroll to the next section">

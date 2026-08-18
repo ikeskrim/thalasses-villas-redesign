@@ -423,3 +423,42 @@ as *unresolvable* rather than as failures, and leaves them to the scrim rule.
 
 A real fix exposing a flaw in the instrument that was supposed to catch it is
 the healthy version of this project's recurring lesson.
+
+## 17. The voice, and what compiles against the registry
+
+Six rules, and one mechanism that enforces the sixth.
+
+1. **Understatement over hyperbole.** No "stunning", "luxurious", "paradise".
+   Luxury is implied by specifics — a table for eighteen, a beach with no one
+   else's towels on it — and undermined by adjectives claiming it.
+2. **Concrete nouns, sensory verbs.** Swim, gate, light, salt, sand.
+3. **Short declaratives, plus one long lyrical sentence per beat.** The rhythm
+   is the effect; uniform sentence length reads as a brochure.
+4. **Second person, present tense.** "Your terrace", not "the guest's terrace".
+5. **The signature clause is never closed** by terminal punctuation; act titles
+   always are. Two registers, and mixing them dissolves both.
+6. **Every factual claim is verified or visibly flagged.** Never silently
+   asserted.
+
+### The mechanism behind rule 6
+
+`tests/facts.spec.ts` scans every string in the display register across **all
+twelve routes** and fails the build on any digit, number-word or claim-word
+("only", "first", "largest", "unique") that does not resolve against
+`content/`. Three fabrications reached a rendered page before it existed, and
+all three were caught by a human reading a screenshot.
+
+**The selector list is part of the guard, not decoration.** When Direction D
+introduced new copy classes the guard was still reading four routes of an
+eleven-route site and reporting the whole thing clean — an instrument that
+passes because it never reached its subject, which is this project's most
+frequent failure by a distance. Adding a page means adding its route; adding a
+copy class means adding its selector. Verified by counting the strings the guard
+actually reads per route, not by trusting a green result.
+
+### Draft copy
+
+Anything not yet approved is marked **where it is read** — the `Draft`
+component — not only in a TODO file the owner will never open. The badge is
+deliberately plain: one that looks designed reads as a feature rather than as an
+admission.

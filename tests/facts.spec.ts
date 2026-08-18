@@ -23,6 +23,19 @@ const CONTENT = path.join(ROOT, "content");
 
 /** Everything a reader sees at display scale, plus card and ledger copy. */
 const DISPLAY_SELECTORS = [
+  // Direction D selectors. Without these the guard was reading four routes of
+  // an eleven-route site and reporting the whole thing clean — the same shape
+  // as every other instrument failure here, so the list grows with the site.
+  ".d-hero-lede",
+  ".d-villa-lede",
+  ".d-exp-text",
+  ".d-pagehead-title",
+  ".d-numbers-lede",
+  ".d-collection-lede",
+  ".d-beat-body",
+  ".d-plate-spec",
+  ".d-spec-value",
+  ".d-includes-note",
   ".display",
   ".act-title",
   ".act-card-title",
@@ -89,7 +102,20 @@ const NON_FACTUAL = [
   "a space of your own",
 ];
 
-const ROUTES = ["/", "/en/the-estate", "/en/villas/villa-thoi", "/en/villas/villa-pueblo"];
+const ROUTES = [
+  "/",
+  "/en/the-estate",
+  "/en/villas/villa-thoi",
+  "/en/villas/villa-persi",
+  "/en/villas/villa-eeanthe",
+  "/en/villas/villa-melia",
+  "/en/villas/villa-pueblo",
+  "/en/experiences",
+  "/en/weddings",
+  "/en/location",
+  "/en/careers",
+  "/en/contact",
+];
 
 test.describe("fact guard", () => {
   const registry = buildRegistry();

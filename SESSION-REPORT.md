@@ -3,7 +3,7 @@
 **Read this first. It is written at HEAD and updated as each task lands, so it
 is the truthful position — not a plan, not a memory.**
 
-Last updated: after `overnight/9b`.
+Last updated: after `overnight/5`.
 
 ---
 
@@ -16,7 +16,7 @@ Last updated: after `overnight/9b`.
 | **2 — Estate page on D** | **DONE** — `86a6594`, `ccb9896` |
 | 3 — Content pages onto D | **DONE** — `overnight/3` |
 | 4 — Pelagos page transitions | **DONE** — `overnight/4` |
-| 5 — Copy pass to the voice rules | **NOT STARTED** |
+| 5 — Copy pass to the voice rules | **DONE** — `overnight/5` |
 | 6 — SEO migration | **NOT STARTED** |
 | 7 — Full QA + evidence | **NOT STARTED** |
 | 8 — Morning report | superseded by this file |
@@ -109,7 +109,7 @@ patches. (T-253, CONVENTIONS §16.)
 
 - T-212 — Villa Pueblo's bathroom detail, view, distance, and a `specsConfirmed` flag
 - The geographic scope of the "only seafront villas with helipad" claim
-- The hero sub-line, shipping as a working default
+- The hero sub-line, shipping as a working default: "Five seafront villas, one private beach fifty metres from the door, on the north coast of Crete."
 - The eight beach distances
 - The hero MP4
 - The three quarantined frames in `qa/curation/owner-review/`

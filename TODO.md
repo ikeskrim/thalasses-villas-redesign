@@ -1039,3 +1039,11 @@ defect lives in, not at the layer the reviewer was describing.
 - **T-255 — Walkthrough VIDEO, so the owner can review motion.** The standing gap: every review so far has been stills, and the animation has never been seen. `npm run capture` records a scripted slow scroll — reading pace, not test pace, so the scroll-driven reveals actually fire — at 1440 and 390 into `qa/video/`, alongside tiled stills in `qa/walkthrough/`.
   **Partial at this commit:** 12 of 24 combinations, 62 stills and 12 clips. The run exceeded its process budget partway through; re-running completes it. Also worth flagging: this evidence is ~65 MB and regenerates on every run, in a repository already carrying 390 MB of photography. Worth pruning after review rather than accumulating.
   *Files:* `scripts/capture.mjs`, `qa/walkthrough/`, `qa/video/`
+
+- **T-256 — Hero sub-line shipped as the working default, flagged not asserted.** "Five seafront villas, one private beach fifty metres from the door, on the north coast of Crete." It names the offer in the first second — seafront, private, Crete — instead of opening on brand abstraction. **The owner has not signed this line off;** it is recorded here and in the report as awaiting confirmation, and the code comment says so at the point of use.
+  *Files:* `src/app/page.tsx`
+
+- **T-257 — The fact guard was reading four routes of an eleven-route site.** Direction D added six pages and a set of new copy classes, and none of them were in the guard's selector list or route list — so it scanned `/`, the estate and two villas, found nothing wrong, and reported the site clean. Green because it never reached its subject: the same failure this project has now hit with `networkidle`, the credential scanner, the Stop hook and the contrast guard.
+  Extended to **twelve routes** and ten Direction D selectors, then **verified by counting the strings it actually reads per route** — 117 on the homepage, 9 to 39 on the new pages — rather than by trusting the pass. No fabrications found in the new copy.
+  Voice rules recorded as `CONVENTIONS.md` §17, including the standing obligation: adding a page means adding its route, adding a copy class means adding its selector.
+  *Files:* `tests/facts.spec.ts`, `CONVENTIONS.md`
