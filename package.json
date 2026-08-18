@@ -10,13 +10,14 @@
     "lint": "eslint .",
     "format": "prettier --write \"**/*.{ts,tsx,css,md,json}\"",
     "typecheck": "tsc --noEmit",
-    "qa:screens": "playwright test --grep \"screenshot\"",
     "qa:overflow": "playwright test --grep \"overflow\"",
     "qa:parity": "playwright test tests/parity.spec.ts",
     "qa": "playwright test",
-    "verify": "npm run scan:secrets && npm run typecheck && npm run lint && npm run build && npm run qa:fast && npm run qa:screens",
+    "verify": "npm run scan:secrets && npm run typecheck && npm run lint && npm run build && npm run qa",
     "scan:secrets": "node scripts/scan-secrets.mjs",
-    "qa:fast": "playwright test --grep-invert \"screenshot\""
+    "qa:fast": "playwright test",
+    "capture": "node scripts/capture.mjs",
+    "capture:stills": "node scripts/capture.mjs --stills"
   },
   "dependencies": {
     "framer-motion": "^13.0.0",

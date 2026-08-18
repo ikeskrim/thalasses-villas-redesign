@@ -3,7 +3,7 @@
 **Read this first. It is written at HEAD and updated as each task lands, so it
 is the truthful position — not a plan, not a memory.**
 
-Last updated: after `overnight/9`.
+Last updated: after `overnight/9b`.
 
 ---
 
@@ -55,7 +55,13 @@ axe integration, no walkthrough videos.
 
 - **Pipeline:** auto-deploys on every push to `main`, team `domisi`,
   protection off, `noindex` on by design. See `DEPLOY.md`.
-- **Tests:** 197 passing, 1 skipped. Scan, typecheck, lint clean at HEAD.
+- **Tests:** 170 passing, 1 skipped, in **one process, exit 0**. Scan, typecheck,
+  lint clean at HEAD. (The count fell from 197 because the 30 screenshot tests
+  left the suite — see below. No assertion was weakened.)
+- **Evidence:** `qa/walkthrough/` stills and `qa/video/` clips, produced by
+  `npm run capture`. **Partial at this commit** — 12 of 24 route/width
+  combinations; the run exceeded its process budget partway. Re-run the command
+  to complete it.
 - **Direction D** is the site's language: light limestone ground, display capped
   at 96px, `--section-y` rhythm, one idea per viewport, one or two dark
   interludes per page.

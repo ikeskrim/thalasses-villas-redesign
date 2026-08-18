@@ -1,6 +1,4 @@
 import { expect, test } from "@playwright/test";
-import fs from "node:fs";
-import path from "node:path";
 
 /** The five breakpoints named in DESIGN-PLAN §5.4. */
 const BREAKPOINTS = [
@@ -22,11 +20,18 @@ const ROUTES = [
   { name: "villa-pueblo", path: "/en/villas/villa-pueblo" },
 ];
 
-const SHOT_DIR = path.join(process.cwd(), "qa", "screens");
-
-test.beforeAll(() => {
-  fs.mkdirSync(SHOT_DIR, { recursive: true });
-});
+/*
+ * SCREENSHOTS LEFT THIS FILE — see scripts/capture.mjs.
+ *
+ * They were killing the runner, and the reason was structural rather than
+ * flaky: evidence generation is not a correctness gate. A screenshot proves
+ * nothing about behaviour; it exists so a person can look at it. Keeping it
+ * here meant a memory ceiling could fail a build with nothing wrong in it —
+ * the homepage is 22,165px tall and the estate page loads 144 photographs.
+ *
+ * Assertions stay here and stay cheap. Evidence is produced by a script that
+ * launches a fresh browser per route so memory is released between them.
+ */
 
 for (const route of ROUTES) {
   for (const bp of BREAKPOINTS) {
@@ -51,33 +56,6 @@ for (const route of ROUTES) {
       ).toBe(metrics.clientWidth);
     });
 
-    test(`screenshot — ${route.name} @ ${bp.name}`, async ({ page }) => {
-      await page.setViewportSize({ width: bp.width, height: bp.height });
-      await page.goto(route.path, { waitUntil: "load" });
-
-      /*
-       * Walk the page in viewport-sized steps rather than jumping to the end.
-       * Scroll reveals use whileInView + once, so anything skipped over never
-       * fires and would be captured in its initial (invisible) state — which is
-       * precisely how the first full-page screenshots came back with blank
-       * Collection, Register and Coast Line sections.
-       */
-      await page.evaluate(async () => {
-        const step = Math.round(window.innerHeight * 0.8);
-        const end = document.body.scrollHeight;
-        for (let y = 0; y <= end; y += step) {
-          window.scrollTo(0, y);
-          await new Promise((r) => setTimeout(r, 260));
-        }
-        window.scrollTo(0, 0);
-      });
-      await page.waitForTimeout(1400);
-
-      await page.screenshot({
-        path: path.join(SHOT_DIR, `${route.name}-${bp.name}.png`),
-        fullPage: true,
-      });
-    });
   }
 }
 
