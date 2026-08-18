@@ -58,15 +58,23 @@
 .litany-list {
   list-style: none;
 }
+/*
+   HIERARCHY BY COLOUR, NOT BY OPACITY.
+   The inactive lines used to sit at `opacity: 0.34`, which put phrygana on
+   limestone at roughly 1.35:1 — axe flagged it as a serious colour-contrast
+   violation and it is right: these lines are CONTENT, not decoration, and a
+   reader is expected to read them.
+   Getting back to 4.5:1 with opacity alone needs about 0.9, at which point
+   there is no dimming left. So the recede is carried by colour instead:
+   phrygana (5.63:1) stepping to basalt for the active line. Both pass AA, the
+   hierarchy still reads, and the device survives intact. */
 .litany-line {
   padding-block: var(--spacing-step-6);
   color: var(--color-phrygana);
-  opacity: 0.34;
-  transition: opacity 0.6s var(--ease-thalasses), color 0.6s var(--ease-thalasses);
+  transition: color 0.6s var(--ease-thalasses);
   max-width: 22ch;
 }
 .litany-line.is-active {
-  opacity: 1;
   color: var(--color-basalt);
 }
 .litany-payoff {
@@ -89,8 +97,7 @@
   }
   .litany-line {
     padding-block: var(--spacing-step-5);
-    /* No scroll-driven dimming on touch — every line reads at full ink. */
-    opacity: 1;
+    /* No scroll-driven recede on touch — every line reads at full ink. */
     color: var(--color-basalt);
   }
 }
@@ -387,6 +394,18 @@
   background: var(--color-basalt);
   border-color: var(--color-basalt);
   color: var(--color-limestone);
+}
+/*
+   THE CASCADE FAMILY, ONE LAST VARIANT — and the layer fix does not reach it.
+   `@layer` made component rules outrank register rules, which fixed every case
+   where the SAME element carried both. It cannot help when the register class
+   is on a CHILD: `.chip.is-active` colours the button, and the `.micro` span
+   inside it sets its own colour, so the child stayed phrygana on basalt at
+   2.27:1. Inheritance is the fix — a label inside a coloured control has no
+   business choosing its own ink. */
+.chip .micro,
+.chip .chip-count {
+  color: inherit;
 }
 .chip:disabled {
   opacity: 0.35;

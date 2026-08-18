@@ -171,9 +171,15 @@ body:has(.d) .nav:not(.is-solid) .nav-index {
   color: var(--color-basalt);
   opacity: 0.035;
 }
+/* Same fix as the litany: the inactive tab used `opacity: 0.6`, which put
+   phrygana on limestone below AA. axe flagged it; axe is right — a tab label is
+   content and it is meant to be read before you click it. The recede is colour
+   only, and BOTH values pass. The active tab keeps its other two cues (an
+   underline and aria-current), so the state was never carried by colour alone. */
 .d .acts-beat,
 .d .acts-tab {
   color: var(--color-phrygana);
+  opacity: 1;
 }
 .d .acts-tab.is-active {
   color: var(--color-basalt);

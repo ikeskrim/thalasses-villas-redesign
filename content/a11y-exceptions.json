@@ -1,0 +1,21 @@
+{
+  "_comment": [
+    "ACCEPTED axe FINDINGS, each with a reason.",
+    "",
+    "tests/a11y.spec.ts asserts the violation set is EXACTLY this set, so an",
+    "accepted finding cannot be forgotten and a NEW one cannot appear unnoticed.",
+    "Nothing is silenced by disabling a rule — colour-contrast in particular",
+    "stays on, because this project has been burned by it three times.",
+    "",
+    "Adding an entry here is a decision that needs a defence, not a way past a",
+    "red test."
+  ],
+  "accepted": [
+    {
+      "rule": "color-contrast",
+      "selector": ".ghost",
+      "reason": "The ghost numeral is decorative texture at 5% ink, aria-hidden, carrying no information a reader needs — the beat number it echoes is printed legibly beside it in the micro register. WCAG 1.4.3 exempts incidental text that is pure decoration. Raising it to 4.5:1 would make it a second, competing headline, which is the opposite of what it is for.",
+      "alternative": "the same number is stated in full contrast in the beat label on every section that carries a ghost"
+    }
+  ]
+}
