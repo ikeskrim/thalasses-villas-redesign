@@ -469,3 +469,42 @@ test.describe("D10 — page transitions", () => {
     await ctx.close();
   });
 });
+
+/**
+ * D11 — the states a visitor reaches when something is wrong.
+ *
+ * A luxury site usually drops its voice exactly here and shows a wireframe.
+ * These assert that the 404 keeps the register, offers a way onward, and is
+ * genuinely a 404 to a crawler — a soft 404 that returns 200 tells Google the
+ * page exists, which is how a migration keeps dead URLs in the index.
+ */
+test.describe("D11 — error and edge states", () => {
+  test("a garbage route renders the branded 404 with a real 404 status", async ({ page }) => {
+    const res = await page.goto("/en/villas/this-villa-does-not-exist", { waitUntil: "load" });
+    expect(res?.status(), "soft 404 — a crawler will treat this page as real").toBe(404);
+    await expect(page.locator("h1")).toBeVisible();
+    const body = await page.locator("main").innerText();
+    expect(body).toContain("not here");
+    // Two ways onward, not a dead end.
+    await expect(page.locator('main a[href="/"]')).toHaveCount(1);
+    await expect(page.locator('main a[href="/en/contact"]')).toHaveCount(1);
+  });
+
+  test("the 404 is noindex", async ({ page }) => {
+    await page.goto("/nonsense-route-xyz", { waitUntil: "load" });
+    const robots = await page.locator('meta[name="robots"]').first().getAttribute("content");
+    expect(robots ?? "").toContain("noindex");
+  });
+
+  test("the 404 keeps the brand register rather than dropping to a wireframe", async ({ page }) => {
+    await page.goto("/nonsense-route-xyz", { waitUntil: "load" });
+    // The signature clause, the photography, and the limestone ground. The
+    // count is "at least one", not "exactly one" — the footer carries a clause
+    // too, and asserting an exact number here measures the footer rather than
+    // the 404.
+    expect(await page.locator("main .clause").count()).toBeGreaterThanOrEqual(1);
+    expect(await page.locator("main .field img").count()).toBeGreaterThanOrEqual(1);
+    const bg = await page.locator(".d").first().evaluate((e) => getComputedStyle(e).backgroundColor);
+    expect(bg).toBe("rgb(232, 233, 227)");
+  });
+});

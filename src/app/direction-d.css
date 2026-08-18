@@ -916,3 +916,19 @@ main:focus-visible {
   outline: 2px solid var(--color-pelagos);
   outline-offset: -4px;
 }
+
+/* ---- Error and edge states ---------------------------------------------- */
+/* The loading state is the ground, held — never white, never a spinner. */
+.d-loading {
+  min-height: 100svh;
+  background: var(--color-limestone);
+}
+.d-error {
+  min-height: 100svh;
+  background: var(--color-limestone);
+  display: flex;
+  align-items: center;
+}
+.d-error main {
+  padding-block: var(--section-y);
+}

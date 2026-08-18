@@ -3,7 +3,7 @@
 **Read this first. It is written at HEAD and updated as each task lands, so it
 is the truthful position — not a plan, not a memory.**
 
-Last updated: after `overnight/7`.
+Last updated: after `overnight/13`.
 
 ---
 
@@ -24,7 +24,7 @@ Last updated: after `overnight/7`.
 | 10 — Gallery page | **NOT STARTED** |
 | 11 — Accessibility deep pass | **NOT STARTED** |
 | 12 — Performance hardening | **MEASURED, within budget** — see numbers |
-| 13 — Error and edge states | **NOT STARTED** |
+| 13 — Error and edge states | **DONE** — `overnight/13` |
 | 14 — Enquiry form UI | **NOT STARTED** |
 | 15 — T-189 Greek face verdict | **NOT STARTED** |
 | 16 — OG images and SEO extras | **NOT STARTED** |
@@ -55,7 +55,7 @@ axe integration, no walkthrough videos.
 
 - **Pipeline:** auto-deploys on every push to `main`, team `domisi`,
   protection off, `noindex` on by design. See `DEPLOY.md`.
-- **Tests:** **232 passing, 1 skipped**, run as three shards (`npm run qa`). Scan, typecheck,
+- **Tests:** **235 passing, 1 skipped**, run as three shards (`npm run qa`). Scan, typecheck,
   lint clean at HEAD. (The count fell from 197 because the 30 screenshot tests
   left the suite — see below. No assertion was weakened.)
 - **Core Web Vitals, measured** (`npm run perf`) — mobile 390x844, CPU 4x,

@@ -7,6 +7,18 @@ import { ImageReveal, Reveal } from "@/components/motion/Reveal";
 import { Draft, PageHead, PageShell } from "@/components/sections/PageShell";
 import { getAllExperiences, getExperience, localImage } from "@/lib/content";
 
+/**
+ * SOFT-404 FIX. Without this, an unknown slug rendered the not-found boundary
+ * with a **200 status** — measured, not assumed. A soft 404 tells a crawler the
+ * page exists, which after a domain move is precisely how dead URLs stay in the
+ * index and the migration leaks authority.
+ *
+ * The slug set is fully enumerable from the inventory, so anything outside it
+ * is a genuine 404 and should be refused at the routing layer rather than
+ * rendered and then apologised for.
+ */
+export const dynamicParams = false;
+
 export function generateStaticParams() {
   return getAllExperiences().map((e) => ({ slug: e.slug }));
 }
