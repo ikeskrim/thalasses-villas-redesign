@@ -992,3 +992,6 @@ defect lives in, not at the layer the reviewer was describing.
 
 - **T-244 — The accent register was unused on villa pages.** D's type table assigns `body-l` to Cormorant Italic for leads and pull-quotes; the villa lede was rendering in Inter. It is the accent now — one lyrical sentence per beat, which is the voice rule — and the test measures the computed font family rather than a class name.
   *Files:* `src/app/direction-d.css`, `tests/villa.spec.ts`
+
+- **T-245 — OWNER-CONFIRMED, CLOSED: breakfast is not included.** It carries an extra charge. The overnight default (omit it, assert its absence) was correct and is now permanent: "Your stay includes" is **closed at the four registry inclusions** and does not grow without another ruling. **Standing copy rule:** wherever breakfast appears — the amenity card, an experience blurb, anywhere — it is phrased as *available on request, extra charge*. Never "included", never "complimentary", and never a bare mention beside the inclusions where a reader would infer it. "Breakfast on the Beach" remains a bookable experience, which is how it was already built.
+  *Files:* `src/lib/villa-page.ts`, `tests/direction-d.spec.ts`

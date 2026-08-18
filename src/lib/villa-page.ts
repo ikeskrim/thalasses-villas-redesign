@@ -177,11 +177,18 @@ export const VILLA_PAGE_COPY: Record<string, VillaPageCopy> = {
 /**
  * "Your stay includes" — the Aman split, and it is only generous if it is true.
  *
- * `content/verified-facts.json` states exactly three included services. The
- * private beach is separately confirmed. **Breakfast is deliberately absent:**
- * "Breakfast on the Beach" exists in the inventory as a bookable EXPERIENCE, not
- * as an inclusion, and listing an experience under "included" would be inventing
- * a commercial term. If the owner confirms it is included, it goes in here.
+ * `content/verified-facts.json` states exactly three included services; the
+ * private beach is separately confirmed. That is the whole list.
+ *
+ * BREAKFAST IS NOT INCLUDED — owner-confirmed, 2026-08-18. It carries an extra
+ * charge. This list is CLOSED at these four and does not grow without another
+ * owner ruling.
+ *
+ * The standing copy rule that follows from it: wherever breakfast appears — the
+ * amenity card, an experience blurb, anywhere — it is phrased as **available on
+ * request, extra charge**. Never "included", never "complimentary", and never a
+ * bare mention next to inclusions where a reader would infer it. "Breakfast on
+ * the Beach" stays what it is: a bookable experience.
  */
 export const STAY_INCLUDES: { label: string; note: string }[] = [
   { label: "Cleaning every 3 days", note: "Included, not charged as an extra." },

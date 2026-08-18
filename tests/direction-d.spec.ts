@@ -275,9 +275,10 @@ test.describe("D8 — the villa template, on D", () => {
       await expect(page.locator(".d-includes")).toHaveCount(1);
       const includes = await page.locator(".d-includes-label").allTextContents();
       expect(includes.length).toBe(4);
-      // Breakfast is a bookable experience, not an inclusion. Asserting its
-      // ABSENCE, because the brief asked for it and the registry does not
-      // support it — if the owner confirms, this test is what gets updated.
+      // OWNER-CONFIRMED 2026-08-18: breakfast is NOT included; it carries an
+      // extra charge. This list is closed at four. The assertion is permanent,
+      // not provisional — it stops a future copy pass from quietly implying
+      // an inclusion that would be a false commercial term.
       expect(includes.join(" ").toLowerCase()).not.toContain("breakfast");
     });
 
