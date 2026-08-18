@@ -105,7 +105,11 @@ export default async function ExperiencePage({
 
         <Reveal index={2}>
           <p className="d-villa-cta">
-            <Link href="/en/contact" className="btn-primary micro" data-cursor="Enquire">
+            <Link
+              href={`/en/contact?enquiry=${encodeURIComponent(e.name)}`}
+              className="btn-primary micro"
+              data-cursor="Enquire"
+            >
               Ask us to arrange it
             </Link>
           </p>

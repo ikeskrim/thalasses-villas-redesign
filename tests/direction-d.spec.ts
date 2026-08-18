@@ -508,3 +508,61 @@ test.describe("D11 — error and edge states", () => {
     expect(bg).toBe("rgb(232, 233, 227)");
   });
 });
+
+/**
+ * D12 — the enquiry form. UI and validation only; no provider is wired.
+ */
+test.describe("D12 — enquiry form", () => {
+  test("validation is accessible: errors announced, summary takes focus", async ({ page }) => {
+    await page.goto("/en/contact", { waitUntil: "load" });
+    await page.locator(".d-form button[type=submit]").click();
+
+    const summary = page.locator("#enquiry-errors");
+    await expect(summary).toBeVisible();
+    await expect(summary).toHaveAttribute("role", "alert");
+    await expect(summary).toBeFocused();
+
+    // Every invalid field is marked AND described, not just coloured.
+    for (const id of ["f-name", "f-email", "f-message"]) {
+      const field = page.locator(`#${id}`);
+      await expect(field).toHaveAttribute("aria-invalid", "true");
+      const describedBy = await field.getAttribute("aria-describedby");
+      expect(describedBy, `${id} has no error association`).toBeTruthy();
+      await expect(page.locator(`#${describedBy}`)).toBeVisible();
+    }
+  });
+
+  test("the honeypot is hidden from people but present for bots", async ({ page }) => {
+    await page.goto("/en/contact", { waitUntil: "load" });
+    const honey = page.locator("#f-company");
+    await expect(honey).toHaveCount(1);
+    // Out of the tab order, and NOT display:none — a bot reads the DOM, and a
+    // hidden-but-focusable field would trap a keyboard user in an invisible input.
+    await expect(honey).toHaveAttribute("tabindex", "-1");
+    const display = await honey.evaluate((e) => getComputedStyle(e).display);
+    expect(display).not.toBe("none");
+  });
+
+  test("every enquiry CTA carries what it was about", async ({ page }) => {
+    // The owner should know which villa prompted the note without asking.
+    await page.goto("/en/contact?villa=villa-eeanthe", { waitUntil: "load" });
+    await expect(page.locator("#f-subject")).toHaveValue("Villa Eeanthe");
+
+    await page.goto("/en/contact?enquiry=estate", { waitUntil: "load" });
+    await expect(page.locator("#f-subject")).toHaveValue("The Entire Estate");
+  });
+
+  test("the success state admits it did not send", async ({ page }) => {
+    await page.goto("/en/contact", { waitUntil: "load" });
+    await page.fill("#f-name", "A Guest");
+    await page.fill("#f-email", "guest@example.com");
+    await page.fill("#f-message", "Six of us, first week of June.");
+    await page.locator(".d-form button[type=submit]").click();
+
+    const sent = page.locator(".d-form-sent");
+    await expect(sent).toBeVisible();
+    await expect(sent).toHaveAttribute("role", "status");
+    // A form that silently discards an enquiry is worse than one that says so.
+    await expect(sent).toContainText("Not yet connected");
+  });
+});

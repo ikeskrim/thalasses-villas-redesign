@@ -48,6 +48,18 @@ at a layer adjacent to the one the question was about, and its answer was
 reported as though it settled the question. The correct instrument here is the
 Vercel dashboard, or the owner — not `whoami`.
 
+### The one environment variable that will exist
+
+When the enquiry form is connected to a mail provider, it needs exactly one:
+
+| Name | Where | Notes |
+|---|---|---|
+| `RESEND_API_KEY` | Vercel → Project → Settings → Environment Variables | Server-side only. **Never** `NEXT_PUBLIC_`-prefixed — that would ship the key to every browser. Never in a file in this tree, not even an ignored one |
+
+Until it exists the form validates and shows its success state, and says
+plainly that it is not connected. A form that silently discards an enquiry is
+worse than one that admits it cannot send yet.
+
 ---
 
 ## Search indexing — OFF, on purpose

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 /**
  * THE ENQUIRY FORM — UI AND VALIDATION ONLY.
@@ -31,6 +31,21 @@ export function EnquiryForm({
 }) {
   const [errors, setErrors] = useState<Errors>({});
   const [sent, setSent] = useState(false);
+  const summaryRef = useRef<HTMLDivElement>(null);
+
+  /*
+   * Focus the error summary AFTER React has rendered it.
+   *
+   * The first version called `document.getElementById(...).focus()` inside the
+   * submit handler, immediately after `setErrors`. React had not rendered the
+   * summary yet, so the element did not exist and the focus call silently did
+   * nothing — a screen-reader user submitting an empty form got an alert with
+   * no landing point, which is the whole reason the summary exists. Caught by
+   * asserting focus rather than asserting the summary was visible.
+   */
+  useEffect(() => {
+    if (Object.keys(errors).length) summaryRef.current?.focus();
+  }, [errors]);
 
   function validate(form: HTMLFormElement): Errors {
     const data = new FormData(form);
@@ -57,10 +72,7 @@ export function EnquiryForm({
 
     const next = validate(form);
     setErrors(next);
-    if (Object.keys(next).length) {
-      document.getElementById("enquiry-errors")?.focus();
-      return;
-    }
+    if (Object.keys(next).length) return; // focus is handled after render
     setSent(true);
   }
 
@@ -86,7 +98,13 @@ export function EnquiryForm({
       <p className="micro d-exp-mark">Send a note</p>
 
       {errorList.length ? (
-        <div id="enquiry-errors" className="d-form-errors" role="alert" tabIndex={-1}>
+        <div
+          id="enquiry-errors"
+          ref={summaryRef}
+          className="d-form-errors"
+          role="alert"
+          tabIndex={-1}
+        >
           <p className="small">
             {errorList.length === 1
               ? "One field needs attention:"
