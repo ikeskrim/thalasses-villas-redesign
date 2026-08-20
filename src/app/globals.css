@@ -16,8 +16,27 @@
    Falsification, run before this was believed: with the three instance-fixes
    reverted in a scratch working tree, the contrast guard still passed. The
    layer order was carrying it, not the patches.
+
+   AND THEN THE SAME MECHANISM CAME BACK, WITH ITS POLARITY REVERSED.
+
+   Putting every partial into `components` left this file's OWN rules — the
+   Clause, the Field, `.on-dark`, the canon grid — sitting OUTSIDE every layer.
+   Unlayered declarations beat ALL layers, regardless of specificity, so those
+   rules quietly began outranking the partials written to override them.
+
+   The casualty found first: `.d-hero-copy .clause-tail { color: limestone }` in
+   direction-d.css was dead. The hero's own signature word, "UNLIMITED", was
+   rendering in dark olive phrygana on a dark scrimmed photograph at roughly
+   1.6:1 — and axe never flagged it, because axe declines to compute contrast
+   over a background image and reports "incomplete" rather than a violation.
+
+   So this file's rules go in `primitives`: above `register`, exactly as they
+   were, and BELOW `components`, so a partial can override a primitive. Nothing
+   in this codebase is unlayered any more, which is what makes the rule simple
+   enough to keep: the cascade is decided by the line at the top of this file
+   and by nothing else.
    ========================================================================== */
-@layer tokens, base, register, components, utilities;
+@layer tokens, base, register, primitives, components, utilities;
 
 @import "tailwindcss";
 @import "./sections.css" layer(components);
@@ -27,6 +46,9 @@
 @import "./atmosphere.css" layer(components);
 @import "./direction-d.css" layer(components);
 @import "./register.css" layer(register);
+
+@layer primitives {
+
 
 /* ==========================================================================
    THALASSES VILLAS — DESIGN TOKENS
@@ -198,6 +220,30 @@ body {
   text-transform: uppercase;
   white-space: nowrap;
   color: var(--color-phrygana);
+  /* THE ONE PART OF THE CLAUSE THAT WAS NEVER LETTERSPACED.
+
+     This rule declared no tracking, and `letter-spacing` is inherited — as a
+     COMPUTED PIXEL VALUE, not as an em. So every tail on the site took whatever
+     the display above it was set to: zero on the hero, and **-1.28px** on the
+     litany payoff, where a 12px capital label sat inside a 64px line tracked at
+     -0.02em. That is -0.107em on capitals. The label looked condensed and
+     slightly broken beside type that looked correct, and no rule anywhere said
+     anything was wrong.
+
+     Sixty instances, one cause, one line. +0.14em is the letterspaced register
+     from the Direction D type table — deliberately below `.micro`'s +0.22em,
+     because a tail is running text ("THE ONLY SEAFRONT VILLAS WITH HELIPAD"),
+     not a three-word eyebrow, and 0.22em would push the longest of them past a
+     390px viewport. */
+  letter-spacing: 0.14em;
+}
+@media (max-width: 1023px) {
+  /* `nowrap` plus open tracking runs the longest tails past a phone viewport,
+     and `.clause-field` is `overflow: hidden` — so they would not spill, they
+     would silently lose their last words. Two lines is the honest answer. */
+  .clause-tail {
+    white-space: normal;
+  }
 }
 .on-dark .clause-tail {
   color: var(--color-preveli);
@@ -320,4 +366,5 @@ body {
     transform: none !important;
     will-change: auto;
   }
+}
 }

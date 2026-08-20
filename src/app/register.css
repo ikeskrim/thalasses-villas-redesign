@@ -25,6 +25,48 @@
    negative tracking and tight leading; the eyebrow register wants the opposite.
    Leading is looser than it was, because the sizes are now capped and a capped
    headline that still runs to two or three lines needs room between them. */
+/* --------------------------------------------------------------------------
+   NO WIDOWS IN DISPLAY TYPE.
+
+   A 96px headline whose last line is one lonely word is the single clearest
+   tell that a page was typed rather than typeset, and the taste audit found
+   twenty-four of them across the site: "One gate, the whole estate behind / it",
+   "Holiday Advisor and / concierge", "Fifty metres, and a pool of your / own".
+
+   `text-wrap: balance` is the cure, and it is applied HERE — once, to the
+   register — rather than as twenty-four rewrites of copy that is correct as
+   written. The browser evens the line lengths instead, so the fix survives an
+   edit to the words, a change of viewport, and translation into Greek, none of
+   which a hand-broken line does.
+
+   Body copy gets `pretty` instead: it does not rebalance the whole paragraph
+   (which would be wrong for long prose) and only prevents the last line
+   stranding a single word.
+
+   Both degrade to normal wrapping where unsupported, which is exactly what the
+   site did before, so there is no fallback to write.
+   -------------------------------------------------------------------------- */
+.c1,
+.c2,
+.c3,
+.c4,
+h1,
+h2,
+h3 {
+  text-wrap: balance;
+}
+
+/* A register class is frequently applied to a SPAN inside a block — the
+   litany's five lines are `<li><span class="display c3">`, the drag register's
+   card names are the same shape. Line breaking happens on the BLOCK, not on an
+   inline child, so `text-wrap` set on the span has no effect at all: after the
+   rule above landed, sixteen widows disappeared and eight survived, and every
+   survivor was one of these spans. `:has()` reaches the block that actually
+   owns the lines. */
+:is(p, li, div, figure, figcaption, blockquote, td, th):has(> :is(.c1, .c2, .c3, .c4)) {
+  text-wrap: balance;
+}
+
 .c1 {
   font-size: var(--text-display-xl);
   line-height: 1.05;
@@ -51,6 +93,12 @@
   line-height: 1.45;
   letter-spacing: -0.006em;
   max-width: 46ch;
+  text-wrap: pretty;
+}
+p,
+.small,
+.caption {
+  text-wrap: pretty;
 }
 .prose-measure {
   max-width: 62ch;

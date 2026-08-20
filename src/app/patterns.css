@@ -72,6 +72,24 @@
   padding-block: var(--spacing-step-6);
   color: var(--color-phrygana);
   transition: color 0.6s var(--ease-thalasses);
+}
+/* THE MEASURE BELONGS TO THE TYPE, NOT TO ITS CONTAINER.
+
+   `max-width: 22ch` sat on this `<li>`, which inherits 17px body type, while
+   the intertitle inside it is 44px. `ch` is one zero-width in the element's OWN
+   font, so the browser computed 236px for a line written to run to about 780px
+   — 40% of its intended measure, inside a 590px column with 354px standing
+   empty beside it. Every line shattered: "A beach / with no / one else's /
+   towels on it."
+
+   Nothing could see it. The page did not overflow, the contrast was fine, the
+   spacing was on-system and the type was exactly the right size. It took
+   looking at the page, and then measuring what the eye had objected to.
+
+   Putting the measure on the display span resolves `ch` against the 44px serif
+   that actually sets the line. `tests/measure.spec.ts` now guards the class. */
+.litany-line .display {
+  display: block;
   max-width: 22ch;
 }
 .litany-line.is-active {

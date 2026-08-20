@@ -462,3 +462,35 @@ Anything not yet approved is marked **where it is read** — the `Draft`
 component — not only in a TODO file the owner will never open. The badge is
 deliberately plain: one that looks designed reads as a feature rather than as an
 admission.
+
+## 18. An audit is not finished when it says zero
+
+A detector that reports nothing has two possible explanations, and they are not
+equally likely: the subject is clean, or the instrument never reached it. This
+project has now met the second five separate times — a Stop hook resolving a
+percent-encoded path, `test.skip()` reporting "30 skipped" as green,
+`vercel whoami` answering a different question than the one asked, a contrast
+guard walking DOM ancestors of a `position: fixed` element, and a taste audit
+printing twenty-six connection failures above the words "0 findings".
+
+So two rules, both learned expensively.
+
+**Every instrument asserts it found its subject.** A discovery step that returns
+an empty set fails loudly rather than letting every downstream assertion pass
+vacuously. Route tables assert their own length; a script that could not reach a
+page exits non-zero and says which pages were never looked at, because a finding
+count is not a clean bill of health for pages nobody opened.
+
+**A detector is never tuned until it agrees with the page.** The first run of
+the taste audit reported 174 findings and almost all of them were the
+instrument's fault: it read a `columns: 3` flow as an 858px collision, descended
+into an `aria-hidden` honeypot, counted a nav register as six ideas per
+viewport, and measured box gaps on a design that carries its air as padding
+INSIDE each beat. Every one of those was corrected by fixing what the detector
+measured — not by raising a threshold until the number went down.
+
+The distinction matters because both moves make the report say zero, and only
+one of them is true. When a finding is real but deliberate, it is written up in
+`qa/taste/ACCEPTED.md` with the reason, and the detector goes on reporting it.
+A page whose exceptions are recorded is maintained; a page whose exceptions were
+tuned out of the tool is unexamined and looks identical.

@@ -3,7 +3,7 @@
 **Read this first. It is written at HEAD and updated as each task lands, so it
 is the truthful position — not a plan, not a memory.**
 
-Last updated: after `overnight/16`.
+Last updated: after `overnight/18`.
 
 ---
 
@@ -29,7 +29,7 @@ Last updated: after `overnight/16`.
 | 15 — T-189 Greek face verdict | **DONE** — `overnight/15` |
 | 16 — OG images and SEO extras | **DONE** — `overnight/16`, falsified |
 | 17 — Handoff documentation | **DONE** — `overnight/17` |
-| 18 — Taste-audit polish loop | **NOT STARTED** |
+| 18 — Taste-audit polish loop | **DONE** — `overnight/18`, falsified |
 | 19 — Webkit smoke + final sweep | **NOT STARTED** |
 | 20–27 — Night two queue | **NOT STARTED** |
 
@@ -55,7 +55,7 @@ axe integration, no walkthrough videos.
 
 - **Pipeline:** auto-deploys on every push to `main`, team `domisi`,
   protection off, `noindex` on by design. See `DEPLOY.md`.
-- **Tests:** **337 passing, 1 skipped**, run as three shards (`npm run qa`). Scan, typecheck
+- **Tests:** **341 passing, 1 skipped**, run as three shards (`npm run qa`). Scan, typecheck
   and lint clean at HEAD — **lint was not, until this task**: two React
   correctness errors had arrived with an earlier commit while this line still
   claimed clean. Found by running the gate instead of trusting the record, and
@@ -91,6 +91,32 @@ axe integration, no walkthrough videos.
 | Villa page spends one dark interlude, on the generosity list | D permits one or two per page; the template had none and read flat over a long scroll |
 | Estate figures moved to the shared `Ledger` | The estate and the villas now print figures through one component instead of two |
 | Scroll odometer retired | A gadget; D's brief is explicit that confidence comes from timing and whitespace |
+
+---
+
+### The taste audit
+
+`npm run taste` measures the mechanical half of "more expensive, or just more?"
+across thirteen routes at 1440 and 390 — widows, collisions, congestion,
+off-system spacing, `ch` measures resolving against the wrong font, and small
+capitals set without tracking. `npm run look <route> <selector> <width>`
+photographs one element for the half that has to be judged by eye.
+
+At HEAD: **collisions 0, off-system 0, measure 0, tracking 0**, two widows and
+one congestion, all three reviewed and recorded in `qa/taste/ACCEPTED.md` with
+reasons. Three of those categories were not zero when the audit was first run.
+
+The audit found three things no existing guard could see, because none of them
+overflows, misreports contrast, or uses the wrong size:
+
+1. **The hero's own word was invisible.** "UNLIMITED" rendered in dark olive on
+   a dark photograph at ~1.6:1, because the fix for T-242 left `globals.css`
+   unlayered and unlayered rules beat every layer. axe could not catch it — it
+   declines to compute contrast over a background image. (T-274)
+2. **Every homepage intertitle was set at 40% of its measure**, because
+   `max-width: 22ch` sat on a 17px `<li>` wrapping 44px type. (T-276)
+3. **Sixty Clause tails carried no tracking**, and the litany's carried
+   **-0.107em**, inherited as pixels from the display above it. (T-277)
 
 ---
 
@@ -136,11 +162,19 @@ supplies a frame; nothing in the code needs to change.
 8. **The lightbox flashed the previously-viewed frame on every open**, because
    it synced its index to the prop in an effect rather than during render.
    (T-273)
-9. **The contrast guard for the share cards was itself wrong**, and failed all
+10. **The contrast guard for the share cards was itself wrong**, and failed all
    twenty-nine correct cards at 2.2:1: a thin light stroke never reaches its
    full colour, so the classifier missed the 21px eyebrow entirely and measured
    its own antialiasing as ground. Rewritten with a structurally glyph-free
    measurement beside the classifier. (T-272)
+11. **The hero tail was dead CSS at ~1.6:1** — the cascade family a fourth time,
+    now guarded at the source: nothing in this codebase is unlayered. (T-274)
+12. **The litany measure resolved `ch` against 17px while setting 44px type**,
+    making every intertitle 40% of its intended width. (T-276)
+13. **Sixty Clause tails inherited display tracking**, one at -0.107em on
+    capitals. One cause, one line. (T-277)
+14. **Twenty-four widows in display type**, killed in the register with
+    `text-wrap: balance` rather than by rewriting correct copy. (T-278)
 
 **The cause behind 1 and 2 is now fixed, and the fix was falsified.** They were
 one family with T-217. `@layer` puts components above the typographic register,
