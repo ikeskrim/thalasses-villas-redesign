@@ -33,7 +33,19 @@ export default defineConfig({
     trace: "off",
     screenshot: "off",
   },
-  projects: [{ name: "chromium", use: { ...devices["Desktop Chrome"] } }],
+  projects: [
+    { name: "chromium", use: { ...devices["Desktop Chrome"] } },
+    /*
+     * THE SECOND ENGINE. Selected by `npm run qa:webkit`, which runs only
+     * tests/smoke.spec.ts — deliberately not a second full suite.
+     *
+     * Chromium is not what a guest on a Greek beach is holding. This site
+     * leans on cascade layers, `:has()`, `text-wrap: balance` and `svh`, and
+     * every one of those is a place where a page can be correct in one engine
+     * and wrong in another with nothing in the Chromium run to say so.
+     */
+    { name: "webkit", use: { ...devices["Desktop Safari"] }, testMatch: /smoke\.spec\.ts/ },
+  ],
   webServer: {
     command: "npm run start",
     url: `http://localhost:${PORT}`,

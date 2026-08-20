@@ -3,7 +3,7 @@
 **Read this first. It is written at HEAD and updated as each task lands, so it
 is the truthful position — not a plan, not a memory.**
 
-Last updated: after `overnight/18`.
+Last updated: after `overnight/19`.
 
 ---
 
@@ -30,7 +30,7 @@ Last updated: after `overnight/18`.
 | 16 — OG images and SEO extras | **DONE** — `overnight/16`, falsified |
 | 17 — Handoff documentation | **DONE** — `overnight/17` |
 | 18 — Taste-audit polish loop | **DONE** — `overnight/18`, falsified |
-| 19 — Webkit smoke + final sweep | **NOT STARTED** |
+| 19 — Webkit smoke + final sweep | **DONE** — `overnight/19` |
 | 20–27 — Night two queue | **NOT STARTED** |
 
 **A correction worth naming.** The previous message closed with "Continuing with
@@ -55,7 +55,9 @@ axe integration, no walkthrough videos.
 
 - **Pipeline:** auto-deploys on every push to `main`, team `domisi`,
   protection off, `noindex` on by design. See `DEPLOY.md`.
-- **Tests:** **341 passing, 1 skipped**, run as three shards (`npm run qa`). Scan, typecheck
+- **Tests:** **369 passing, 1 skipped**, run as three shards (`npm run qa`), which
+  now covers **both engines** — Chromium for everything, and WebKit 26.5 for a
+  fourteen-test smoke run (`npm run qa:webkit`). Scan, typecheck
   and lint clean at HEAD — **lint was not, until this task**: two React
   correctness errors had arrived with an earlier commit while this line still
   claimed clean. Found by running the gate instead of trusting the record, and
@@ -194,3 +196,82 @@ patches. (T-253, CONVENTIONS §16.)
 - The hero MP4
 - The three quarantined frames in `qa/curation/owner-review/`
 - The Google Cloud console: restrict or rotate the legacy Maps key (alert #1 stays open until confirmed)
+
+---
+
+## What this build is, and what it is not
+
+Written last, deliberately. Everything above says what was done; this says what
+it is worth, including where it is thin.
+
+### What is actually proven
+
+- **Both engines render it.** Chromium for the full suite, and WebKit 26.5 for
+  a smoke run across ten routes at 390 / 768 / 1440: every page serves 200, none
+  scrolls sideways, none logs a console error or a failed request, the display
+  face resolves rather than falling back, cascade layers apply, every booking
+  link reaches the real engine with `lang=en`, and the operating licence is on
+  the page. Every feature this design leans on — `@layer`, `:has()`,
+  `text-wrap: balance` and `pretty`, `svh`, `content-visibility`, `color-mix()`
+  — is supported in both.
+- **Content parity with the legacy site**, asserted against the Phase 0
+  inventory rather than eyeballed.
+- **Accessibility to AA**, axe across eleven routes with one documented
+  exception, plus keyboard, focus and heading-structure assertions.
+- **Core Web Vitals inside budget** on four routes.
+- **No credential of any kind in the repository**, scanned over everything git
+  can see before every push.
+
+### What is NOT proven, and should not be claimed
+
+- **A smoke run is not a suite.** WebKit was checked for the failures that are
+  catastrophic and silent; it was not checked for the enquiry form, the gallery
+  lightbox, the route transitions, the hotspot map or the scroll-driven litany.
+  Those pass on Chromium only.
+- **No Firefox. No real device.** WebKit-the-engine is not Safari-the-browser,
+  and neither is an iPhone in sunlight. Nothing here has been opened on a phone.
+- **The performance numbers are lab numbers** — localhost with synthetic
+  throttling. Real-field CrUX data will differ and only field data decides.
+- **axe cannot see contrast over a photograph.** It reports "incomplete", not a
+  violation, and that blind spot already hid a real defect for the length of
+  this project: the hero's own word was rendering at roughly 1.6:1 (T-274). The
+  taste audit covers some of that gap; it does not close it.
+- **The taste audit is the mechanical half only.** "More expensive, or just
+  more?" is a judgement, and the person who has to make it has not seen this
+  yet.
+
+### What is deliberately unfinished
+
+- **The enquiry form is not wired.** It validates, and says so in plain words on
+  the page. It needs `RESEND_API_KEY` in Vercel — server-side, never
+  `NEXT_PUBLIC_`-prefixed — and a developer to connect the send.
+- **`noindex` is on, by design.** Indexing is the LAST step of the launch
+  runbook, after the domain moves and the redirects are verified against it.
+- **Fifteen redirect gaps remain, and one of them is a loop.** The harness is
+  the pre-DNS gate; `LAUNCH.md` §1.
+- **The terms name another company seven times.** The correction is shown
+  visibly and the page states that legal review is pending. Do not launch with
+  that notice still on the page without a decision.
+- **`/el` does not exist.** The display face for it is decided on evidence and
+  recommended (`qa/greek-face/VERDICT.md`); nothing ships until the owner, who
+  reads Greek natively, agrees.
+- **Two experience share cards carry no photograph**, because their hero frames
+  are ruled off. They fall back to the plain ground, which is the designed
+  behaviour, and become photographic the moment a frame is supplied.
+
+### The thing worth knowing about how this was built
+
+Five times in this project, an instrument reported success because it never
+reached its subject: a hook resolving a percent-encoded path, `test.skip()`
+reporting "30 skipped" as green, `vercel whoami` answering a different question,
+a contrast guard walking DOM ancestors of a fixed element, and a taste audit
+printing "0 findings" above twenty-six connection failures. Two more reported
+failure for the same reason — a classifier that missed a thin light stroke, and
+a collision detector reading a multi-column flow.
+
+None of those was a hard bug. Every one of them was a tool that looked like it
+was working. That is why the guards in this repository assert that they found
+their subject before they assert anything about it, and why `CONVENTIONS.md`
+§16 and §18 say what they say. It is the single most useful thing to carry
+forward from this build.
+

@@ -24,7 +24,8 @@
     "qa:3": "playwright test --shard=3/3",
     "perf": "node scripts/perf.mjs",
     "taste": "node scripts/taste-audit.mjs",
-    "look": "node scripts/look.mjs"
+    "look": "node scripts/look.mjs",
+    "qa:webkit": "playwright test --project=webkit"
   },
   "dependencies": {
     "framer-motion": "^13.0.0",
