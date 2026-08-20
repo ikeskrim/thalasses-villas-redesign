@@ -482,6 +482,34 @@ body:has(.d) .nav:not(.is-solid) .nav-index {
   display: block;
   color: var(--color-limestone);
 }
+/* THE RECOVERED-PARTNER BLOCK, on the LIGHT ground.
+
+   It borrows the includes LAYOUT and none of its colours. The first version
+   reused `.d-includes-label` and `.d-includes-note` directly, and both are
+   written for the dark interlude — limestone and preveli — so seven labels
+   rendered limestone-on-limestone and vanished completely.
+
+   axe did not catch it, because the block is below the fold and ships at
+   `opacity: 0` until scrolled. That blind spot is now closed in
+   `tests/a11y.spec.ts`; this is the regression that revealed it. */
+.d-recovered-list {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: var(--section-y-tight) var(--card-gap);
+  margin-top: var(--section-y-tight);
+}
+.d-recovered-label {
+  display: block;
+  color: var(--color-basalt);
+}
+.d-recovered-note {
+  display: block;
+  margin-top: var(--spacing-step-3);
+  color: var(--color-phrygana);
+  max-width: 34ch;
+}
+
 .d-includes-note {
   display: block;
   margin-top: var(--spacing-step-3);
@@ -690,6 +718,9 @@ body:has(.d) .nav:not(.is-solid) .nav-index {
 /* The draft mark. Plain on purpose — a badge that looks designed reads as a
    feature rather than as an admission. */
 .d-draft {
+  /* A URL or a filename in a provenance mark is one unbreakable token, and at
+     +0.22em tracking it will run off a phone. Found the hard way (T-282). */
+  overflow-wrap: anywhere;
   display: inline-block;
   margin-top: var(--section-y-tight);
   padding: var(--spacing-step-2) var(--spacing-step-4);

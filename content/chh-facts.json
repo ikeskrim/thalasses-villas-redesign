@@ -1,0 +1,368 @@
+{
+  "source": "creteholidayhome.com/accommodation/thalasses-villas/ (Phase 0 capture)",
+  "capturedFile": "content/raw-chh/https___creteholidayhome.com_accommodation_thalasses-villas_.txt",
+  "ownerConfirmed": false,
+  "note": "Third party writing about a first party. Nothing here is merged into content/villas/*.json. Regenerate with `node scripts/extract-chh.mjs`.",
+  "figures": {
+    "bedrooms": 9,
+    "maxGuests": 18,
+    "pools": 4,
+    "bathrooms": 6,
+    "indoorAreaSqm": 240
+  },
+  "distances": [
+    {
+      "from": "Heraklion",
+      "to": "Airport",
+      "km": 72.8
+    },
+    {
+      "from": "Heraklion",
+      "to": "Port",
+      "km": 73.5
+    },
+    {
+      "from": "Chania",
+      "to": "Airport",
+      "km": 77.4
+    },
+    {
+      "from": "Chania",
+      "to": "Port",
+      "km": 61.2
+    }
+  ],
+  "policies": {
+    "smoking": "Only Outdoors",
+    "languagesSpoken": "Greek, English"
+  },
+  "amenities": {
+    "Popular": [
+      {
+        "name": "Essentials",
+        "gloss": "Towels, bed sheets, soap, toilet paper, and pillows"
+      },
+      {
+        "name": "Air conditioning",
+        "gloss": null
+      },
+      {
+        "name": "Cooking basics",
+        "gloss": "Pots and pans, oil, salt and pepper"
+      },
+      {
+        "name": "Dishes and silverware",
+        "gloss": "Bowls, chopsticks, plates, cups, etc."
+      },
+      {
+        "name": "Hair dryer",
+        "gloss": null
+      },
+      {
+        "name": "Hot tub",
+        "gloss": null
+      },
+      {
+        "name": "Kitchen",
+        "gloss": "Space where guests can cook their own meals"
+      },
+      {
+        "name": "Pool",
+        "gloss": null
+      },
+      {
+        "name": "TV",
+        "gloss": "Standard cable."
+      },
+      {
+        "name": "Washer",
+        "gloss": null
+      },
+      {
+        "name": "Wifi",
+        "gloss": null
+      }
+    ],
+    "Bathroom": [
+      {
+        "name": "Body soap",
+        "gloss": null
+      },
+      {
+        "name": "Hair dryer",
+        "gloss": null
+      },
+      {
+        "name": "Hot water",
+        "gloss": null
+      },
+      {
+        "name": "Shampoo",
+        "gloss": null
+      }
+    ],
+    "Bedroom and laundry": [
+      {
+        "name": "Essentials",
+        "gloss": "Towels, bed sheets, soap, toilet paper, and pillows"
+      },
+      {
+        "name": "Bed linens",
+        "gloss": null
+      },
+      {
+        "name": "Drying rack for clothing",
+        "gloss": null
+      },
+      {
+        "name": "Extra pillows and blankets",
+        "gloss": null
+      },
+      {
+        "name": "Hangers",
+        "gloss": null
+      },
+      {
+        "name": "Iron",
+        "gloss": null
+      },
+      {
+        "name": "Mosquito net",
+        "gloss": null
+      },
+      {
+        "name": "Room-darkening shades",
+        "gloss": null
+      },
+      {
+        "name": "Safe",
+        "gloss": null
+      },
+      {
+        "name": "Washer",
+        "gloss": null
+      }
+    ],
+    "Entertainment": [
+      {
+        "name": "Sound system",
+        "gloss": null
+      }
+    ],
+    "Family": [
+      {
+        "name": "Babysitter recommendations",
+        "gloss": null
+      },
+      {
+        "name": "Board games",
+        "gloss": null
+      },
+      {
+        "name": "Children’s books and toys",
+        "gloss": null
+      },
+      {
+        "name": "High chair",
+        "gloss": null
+      },
+      {
+        "name": "Pack ’n play/Travel crib",
+        "gloss": null
+      }
+    ],
+    "Heating and cooling": [
+      {
+        "name": "Air conditioning",
+        "gloss": null
+      }
+    ],
+    "Home safety": [
+      {
+        "name": "Fire extinguisher",
+        "gloss": null
+      },
+      {
+        "name": "First aid kit",
+        "gloss": null
+      }
+    ],
+    "Internet and office": [
+      {
+        "name": "Wifi",
+        "gloss": null
+      }
+    ],
+    "Kitchen and dining": [
+      {
+        "name": "Baking sheet",
+        "gloss": null
+      },
+      {
+        "name": "Barbecue utensils",
+        "gloss": "Guests have a desk or table that’s used just for working, along with a comfortable chair."
+      },
+      {
+        "name": "Blender",
+        "gloss": null
+      },
+      {
+        "name": "Coffee maker",
+        "gloss": null
+      },
+      {
+        "name": "Cooking basics",
+        "gloss": "Pots and pans, oil, salt and pepper."
+      },
+      {
+        "name": "Dining table",
+        "gloss": null
+      },
+      {
+        "name": "Dishes and silverware",
+        "gloss": "Bowls, chopsticks, plates, cups, etc."
+      },
+      {
+        "name": "Dishwasher",
+        "gloss": null
+      },
+      {
+        "name": "Hot water kettle",
+        "gloss": null
+      },
+      {
+        "name": "Kitchen",
+        "gloss": "Space where guests can cook their own meals."
+      },
+      {
+        "name": "Microwave",
+        "gloss": null
+      },
+      {
+        "name": "Oven",
+        "gloss": null
+      },
+      {
+        "name": "Refrigerator",
+        "gloss": null
+      },
+      {
+        "name": "Stove",
+        "gloss": null
+      },
+      {
+        "name": "Toaster",
+        "gloss": null
+      },
+      {
+        "name": "Wine glasses",
+        "gloss": null
+      }
+    ],
+    "Location features": [
+      {
+        "name": "Beach access",
+        "gloss": "Guests can enjoy a nearby beach."
+      },
+      {
+        "name": "Private entrance",
+        "gloss": "Separate street or building entrance."
+      },
+      {
+        "name": "Waterfront",
+        "gloss": "Right next to a body of water."
+      }
+    ],
+    "Outdoor": [
+      {
+        "name": "Backyard",
+        "gloss": "An open space on the property usually covered in grass."
+      },
+      {
+        "name": "BBQ grill",
+        "gloss": null
+      },
+      {
+        "name": "Beach essentials",
+        "gloss": "Beach towels, umbrella, beach blanket, snorkeling gear"
+      },
+      {
+        "name": "Bikes",
+        "gloss": null
+      },
+      {
+        "name": "Outdoor dining area",
+        "gloss": null
+      },
+      {
+        "name": "Outdoor furniture",
+        "gloss": null
+      },
+      {
+        "name": "Patio or balcony",
+        "gloss": null
+      }
+    ],
+    "Parking and facilities": [
+      {
+        "name": "Free parking on premises",
+        "gloss": null
+      },
+      {
+        "name": "Hot tub",
+        "gloss": null
+      },
+      {
+        "name": "Pool",
+        "gloss": null
+      }
+    ]
+  },
+  "prose": {
+    "poolHeating": "can be heated upon advance request with an additional daily charge",
+    "poolHeatingNotice": "requires at least one week advance notice",
+    "poolAlarm": "pool contains a pool alarm system for child safety",
+    "playground": "safe organised playground for children",
+    "vegetableGarden": "vegetable garden in which you can “use” with our gardener",
+    "diningTable18": "dining table for 18 people",
+    "sunbeds": "private sunbeds on the crystal clear water’s edge",
+    "bedConversion": "single beds in twin rooms can be transformed to be a double",
+    "receptionDesk": "daily operating reception desk",
+    "cleaning": "cleaning every 3 days",
+    "concierge": "Holiday Advisor & concierge",
+    "helipad": "only seafront villas with private helipad",
+    "beachArea": "sandy stretch of beach on the east side of Rethymno in an area called"
+  },
+  "reconciliation": [
+    {
+      "fact": "bedrooms",
+      "chh": 9,
+      "registry": 9,
+      "verdict": "CORROBORATES"
+    },
+    {
+      "fact": "maxGuests",
+      "chh": 18,
+      "registry": 18,
+      "verdict": "CORROBORATES"
+    },
+    {
+      "fact": "pools",
+      "chh": 4,
+      "registry": 4,
+      "verdict": "CORROBORATES"
+    },
+    {
+      "fact": "bathrooms",
+      "chh": 6,
+      "registry": 6,
+      "verdict": "CORROBORATES"
+    },
+    {
+      "fact": "indoorAreaSqm",
+      "chh": 240,
+      "registry": 240,
+      "verdict": "CORROBORATES"
+    }
+  ]
+}

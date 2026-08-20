@@ -3,7 +3,7 @@
 **Read this first. It is written at HEAD and updated as each task lands, so it
 is the truthful position — not a plan, not a memory.**
 
-Last updated: after `overnight/20`.
+Last updated: after `overnight/21`.
 
 ---
 
@@ -32,7 +32,7 @@ Last updated: after `overnight/20`.
 | 18 — Taste-audit polish loop | **DONE** — `overnight/18`, falsified |
 | 19 — Webkit smoke + final sweep | **DONE** — `overnight/19` |
 | 20 — /el locale scaffold | **DONE** — `overnight/20` |
-| 21 — CHH re-admission + Weddings | **NOT STARTED** |
+| 21 — CHH re-admission | **DONE** — `overnight/21`, falsified |
 | 22 — Villa pages deepened | **NOT STARTED** |
 | 23 — Redirect verification harness | **DONE** — pulled forward, T-259 |
 | 24 — Content-parity certification | **NOT STARTED** |
@@ -227,7 +227,9 @@ it is worth, including where it is thin.
 - **Content parity with the legacy site**, asserted against the Phase 0
   inventory rather than eyeballed.
 - **Accessibility to AA**, axe across eleven routes with one documented
-  exception, plus keyboard, focus and heading-structure assertions.
+  exception, plus keyboard, focus and heading-structure assertions. **The audit
+  now scrolls before it runs** — until T-283 it was checking only what painted
+  on load, which on the estate was 569 nodes instead of 636.
 - **Core Web Vitals inside budget** on four routes.
 - **No credential of any kind in the repository**, scanned over everything git
   can see before every push.
@@ -242,6 +244,10 @@ it is worth, including where it is thin.
   and neither is an iPhone in sunlight. Nothing here has been opened on a phone.
 - **The performance numbers are lab numbers** — localhost with synthetic
   throttling. Real-field CrUX data will differ and only field data decides.
+- **axe could not see below the fold at all until T-283.** Every revealed
+  section ships at `opacity: 0` and axe skips invisible elements, so the audit
+  was checking the top of each page. Fixed, guarded and falsified — but every
+  accessibility statement made before that commit was narrower than it sounded.
 - **axe cannot see contrast over a photograph.** It reports "incomplete", not a
   violation, and that blind spot already hid a real defect for the length of
   this project: the hero's own word was rendering at roughly 1.6:1 (T-274). The

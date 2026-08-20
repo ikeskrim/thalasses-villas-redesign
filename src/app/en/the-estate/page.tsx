@@ -15,6 +15,8 @@ import { getEstate, getEstateVillas, getSite } from "@/lib/content";
 import { byN } from "@/lib/selects";
 import { squareFeet, stayIncludes } from "@/lib/villa-page";
 import { alternatesFor } from "@/lib/locale";
+import { CHH_MARK, partnerPolicies, recoveredFromPartner } from "@/lib/chh";
+import { Draft } from "@/components/sections/PageShell";
 
 export const metadata: Metadata = {
   title: "The Entire Estate",
@@ -97,6 +99,10 @@ export default function EstatePage() {
     { label: "Square metres", value: FACTS.sizeSqm },
     { label: "At one table", value: FACTS.diningSeats },
   ];
+
+  /* Recovered partner material, resolved once — see src/lib/chh.ts. */
+  const recovered = recoveredFromPartner();
+  const policies = partnerPolicies();
 
   const runImages = estate.gallery.featured.length
     ? estate.gallery.featured.map((f) => ({ url: f.image, caption: f.caption }))
@@ -220,17 +226,59 @@ export default function EstatePage() {
           </Reveal>
         </section>
 
-        {/* -------------------------------------------------- 06 THE ROOMS - */}
+        {/* --------------------------------- 06 RECOVERED FROM THE PARTNER -- */}
+        {/*
+          Content the site has never carried, recovered from the Phase 0 capture
+          of the manager's own page about this property (T-282).
+
+          It is MARKED, and deliberately so. The same page states every figure in
+          the owner's locked capacity table and states them exactly — which is
+          why it is worth reading, and not why it is authoritative about a pool
+          alarm. A third party agreeing about bedroom counts earns a hearing, not
+          a byline.
+
+          Shown rather than hidden because that is this project's convention for
+          recovered-but-unconfirmed material, and because the owner cannot
+          confirm what he cannot see. Each line stops rendering if its source
+          phrase leaves the capture — see `src/lib/chh.ts`.
+        */}
+        {recovered.length > 0 ? (
+          <section className="canon d-estate-lists">
+            <Reveal>
+              <p className="micro">06 — Also on the property</p>
+              <ul className="d-recovered-list">
+                {recovered.map((r) => (
+                  <li key={r.key}>
+                    <span className="display c4 d-recovered-label">{r.label}</span>
+                    <span className="small d-recovered-note">{r.note}</span>
+                  </li>
+                ))}
+              </ul>
+              {policies.length > 0 ? (
+                <ul className="small d-estate-list" style={{ marginTop: "var(--section-y-tight)" }}>
+                  {policies.map((p) => (
+                    <li key={p.label}>
+                      {p.label}: {p.value}
+                    </li>
+                  ))}
+                </ul>
+              ) : null}
+              <Draft what={CHH_MARK} />
+            </Reveal>
+          </section>
+        ) : null}
+
+        {/* -------------------------------------------------- 07 THE ROOMS - */}
         <div className="canon d-villa-mark">
-          <p className="micro">06 — The rooms</p>
+          <p className="micro">07 — The rooms</p>
           <div className="datum-rule" />
         </div>
         <TheRun images={runImages} villaName="The Entire Estate" />
 
-        {/* --------------------------------------------------- 07 ENQUIRE -- */}
+        {/* --------------------------------------------------- 08 ENQUIRE -- */}
         <section className="canon d-estate-close">
           <Reveal>
-            <p className="micro">07 — The whole estate</p>
+            <p className="micro">08 — The whole estate</p>
             <div className="clause-field d-statement-clause">
               <Clause gerund="Taking" tail="The whole place, one party" scale="c2" as="h2" />
             </div>

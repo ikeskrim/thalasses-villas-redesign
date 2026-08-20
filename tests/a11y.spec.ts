@@ -39,7 +39,35 @@ const ROUTES = [
  * switch off first and the one this project has already been burned by three
  * times.
  */
+/**
+ * REVEAL THE PAGE BEFORE AUDITING IT.
+ *
+ * Framer Motion serialises its `initial` state into the server HTML, so every
+ * scroll-revealed section on this site ships as `opacity: 0` and stays that way
+ * until it enters the viewport. **axe skips elements it considers invisible.**
+ *
+ * So for the length of this project the accessibility audit was checking the
+ * top of each page and calling it the page. Measured, not assumed: on the
+ * estate, axe saw 569 nodes as-loaded and 636 after a scroll, and found 1
+ * colour-contrast violation instead of 8.
+ *
+ * The seventh instrument in this project to report success without reaching its
+ * subject (CONVENTIONS §18), and the most consequential: it is the guard the
+ * whole accessibility claim rests on.
+ */
+async function reveal(page: import("@playwright/test").Page) {
+  const total = await page.evaluate(() => document.body.scrollHeight);
+  const step = 600;
+  for (let y = 0; y <= total; y += step) {
+    await page.evaluate((v) => window.scrollTo(0, v), y);
+    await page.waitForTimeout(45);
+  }
+  await page.evaluate(() => window.scrollTo(0, 0));
+  await page.waitForTimeout(400);
+}
+
 async function runAxe(page: import("@playwright/test").Page) {
+  await reveal(page);
   await page.addScriptTag({ content: AXE });
   return page.evaluate(async () => {
     // @ts-expect-error injected global
@@ -67,6 +95,44 @@ test.describe("axe-core", () => {
       await page.setViewportSize({ width: 1440, height: 900 });
       await page.goto(route, { waitUntil: "load" });
       const violations = await runAxe(page);
+
+      /*
+       * The guard on the guard. If a future change makes `reveal()` a no-op —
+       * or the reveal mechanism changes shape — this audit quietly shrinks back
+       * to the top of the page and keeps passing. So assert that nothing on the
+       * page is still sitting at opacity 0 after the scroll.
+       */
+      const stillHidden = await page.evaluate(
+        () =>
+          [...document.querySelectorAll("main *")].filter((el) => {
+            const cs = getComputedStyle(el);
+            if (cs.opacity !== "0") return false;
+            const r = el.getBoundingClientRect();
+            if (r.width <= 4 || r.height <= 4) return false;
+
+            /*
+             * Faded on purpose does not count. Two things on this site sit at
+             * opacity 0 by design and are correct: the litany's cross-fading
+             * frames, of which exactly one is visible at a time, and the
+             * inactive panel of the acts tab set. Both are decorative or
+             * `aria-hidden`, and neither is content anyone is expected to read.
+             *
+             * What this is looking for is TEXT a reader is expected to read
+             * that axe cannot see — so text is the test, and an aria-hidden
+             * ancestor is the exemption.
+             */
+            if (!(el.textContent || "").trim()) return false;
+            for (let n: Element | null = el; n; n = n.parentElement) {
+              if (n.getAttribute("aria-hidden") === "true") return false;
+            }
+            return true;
+          }).length
+      );
+      expect(
+        stillHidden,
+        `${route}: ${stillHidden} elements are still at opacity 0 after the reveal — ` +
+          `axe cannot see them and this audit is only checking part of the page`
+      ).toBe(0);
 
       /*
        * Accepted findings are filtered by an EXPLICIT allowlist in
