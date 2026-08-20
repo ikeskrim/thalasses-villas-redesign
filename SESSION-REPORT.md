@@ -3,7 +3,7 @@
 **Read this first. It is written at HEAD and updated as each task lands, so it
 is the truthful position — not a plan, not a memory.**
 
-Last updated: after `overnight/13b`.
+Last updated: after `overnight/15`.
 
 ---
 
@@ -26,7 +26,7 @@ Last updated: after `overnight/13b`.
 | 12 — Performance hardening | **MEASURED, within budget** — see numbers |
 | 13 — Error and edge states | **DONE** — `overnight/13`, class guard `overnight/13b` |
 | 14 — Enquiry form UI | **DONE** — `overnight/14` |
-| 15 — T-189 Greek face verdict | **NOT STARTED** |
+| 15 — T-189 Greek face verdict | **DONE** — `overnight/15` |
 | 16 — OG images and SEO extras | **NOT STARTED** |
 | 17 — Handoff documentation | **DONE** — `overnight/17` |
 | 18 — Taste-audit polish loop | **NOT STARTED** |

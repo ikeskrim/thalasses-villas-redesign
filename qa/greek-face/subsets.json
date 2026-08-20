@@ -1,0 +1,119 @@
+[
+  {
+    "name": "GFS Didot",
+    "subsets": [
+      "greek-ext",
+      "greek",
+      "vietnamese",
+      "latin"
+    ],
+    "greek": [
+      {
+        "label": "greek-ext",
+        "url": "https://fonts.gstatic.com/s/gfsdidot/v18/Jqzh5TybZ9vZMWFssvwSHO3HJSA.woff2",
+        "range": "U+1F00-1FFF",
+        "bytes": 8968,
+        "file": "qa/greek-face/fonts/gfs-didot-greek-ext.woff2",
+        "sig": "wOF2"
+      },
+      {
+        "label": "greek",
+        "url": "https://fonts.gstatic.com/s/gfsdidot/v18/Jqzh5TybZ9vZMWFssvwSE-3HJSA.woff2",
+        "range": "U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF",
+        "bytes": 7192,
+        "file": "qa/greek-face/fonts/gfs-didot-greek.woff2",
+        "sig": "wOF2"
+      }
+    ]
+  },
+  {
+    "name": "EB Garamond",
+    "subsets": [
+      "cyrillic-ext",
+      "cyrillic",
+      "greek-ext",
+      "greek",
+      "vietnamese",
+      "latin-ext",
+      "latin"
+    ],
+    "greek": [
+      {
+        "label": "greek-ext",
+        "url": "https://fonts.gstatic.com/s/ebgaramond/v33/SlGDmQSNjdsmc35JDF1K5E55YMjF_7DPuGi-6_RkCI9_S6w.woff2",
+        "range": "U+1F00-1FFF",
+        "bytes": 6464,
+        "file": "qa/greek-face/fonts/eb-garamond-greek-ext.woff2",
+        "sig": "wOF2"
+      },
+      {
+        "label": "greek",
+        "url": "https://fonts.gstatic.com/s/ebgaramond/v33/SlGDmQSNjdsmc35JDF1K5E55YMjF_7DPuGi-6_RkB49_S6w.woff2",
+        "range": "U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF",
+        "bytes": 10752,
+        "file": "qa/greek-face/fonts/eb-garamond-greek.woff2",
+        "sig": "wOF2"
+      }
+    ]
+  },
+  {
+    "name": "Noto Serif Display",
+    "subsets": [
+      "cyrillic-ext",
+      "cyrillic",
+      "greek-ext",
+      "greek",
+      "vietnamese",
+      "latin-ext",
+      "latin"
+    ],
+    "greek": [
+      {
+        "label": "greek-ext",
+        "url": "https://fonts.gstatic.com/s/notoserifdisplay/v29/buERppa9f8_vkXaZLAgP0G5Wi6QmA1QaeYah2sovLCDq_ZgLyt3idQfktOG-PVpd4ugBYjQNhg.woff2",
+        "range": "U+1F00-1FFF",
+        "bytes": 5428,
+        "file": "qa/greek-face/fonts/noto-serif-display-greek-ext.woff2",
+        "sig": "wOF2"
+      },
+      {
+        "label": "greek",
+        "url": "https://fonts.gstatic.com/s/notoserifdisplay/v29/buERppa9f8_vkXaZLAgP0G5Wi6QmA1QaeYah2sovLCDq_ZgLyt3idQfktOG-PVpd4ugOYjQNhg.woff2",
+        "range": "U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF",
+        "bytes": 9732,
+        "file": "qa/greek-face/fonts/noto-serif-display-greek.woff2",
+        "sig": "wOF2"
+      }
+    ]
+  },
+  {
+    "name": "Literata",
+    "subsets": [
+      "cyrillic-ext",
+      "cyrillic",
+      "greek-ext",
+      "greek",
+      "vietnamese",
+      "latin-ext",
+      "latin"
+    ],
+    "greek": [
+      {
+        "label": "greek-ext",
+        "url": "https://fonts.gstatic.com/s/literata/v40/or3PQ6P12-iJxAIgLa78DkrbXsDgk0oVDaDPYLanFLHpPf2TbBG_J_3WTFCW.woff2",
+        "range": "U+1F00-1FFF",
+        "bytes": 5980,
+        "file": "qa/greek-face/fonts/literata-greek-ext.woff2",
+        "sig": "wOF2"
+      },
+      {
+        "label": "greek",
+        "url": "https://fonts.gstatic.com/s/literata/v40/or3PQ6P12-iJxAIgLa78DkrbXsDgk0oVDaDPYLanFLHpPf2TbBG_J_LWTFCW.woff2",
+        "range": "U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF",
+        "bytes": 8128,
+        "file": "qa/greek-face/fonts/literata-greek.woff2",
+        "sig": "wOF2"
+      }
+    ]
+  }
+]
