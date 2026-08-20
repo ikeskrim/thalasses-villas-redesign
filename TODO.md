@@ -1194,3 +1194,8 @@ defect lives in, not at the layer the reviewer was describing.
   Fixed by revealing the page before auditing, and **guarded on the guard**: the suite now asserts that no text-carrying element outside an `aria-hidden` subtree is still at `opacity: 0` afterwards, so a future change that makes the reveal a no-op turns red instead of quietly shrinking the audit. The exemptions are precise — the litany's four cross-fading frames and the inactive acts panel are faded on purpose, carry no readable text, and are `aria-hidden`.
   **Falsified:** disabling the reveal leaves eight to nine text elements invisible to axe on every route, and the suite goes red.
   *Files:* `tests/a11y.spec.ts`, `CONVENTIONS.md` §18
+
+- **T-284 — The wedding venue had figures and an inventory and printed neither.** `rituals.json` has carried three bedrooms, three bathrooms, twelve in beds, 97 m², a pool and **43 features the legacy site displayed** since Phase 0. The weddings page showed a hero, a one-line description, a photograph run and an enquiry CTA — and none of it. Exactly the T-212 class: a registry fact that reaches no page, invisible because nothing on screen looks wrong.
+  Both are read through the **same functions the villa template uses** — `specStrip()` and `buildInventory()` — so the venue and the houses can never disagree about how a figure is derived or how an item is filtered. Unresolved ids and empty groups are omitted rather than dashed, as everywhere else.
+  Rendered and counted: 3 / 3 / 12 / 1 pool / 97 m² with 1,044 sq ft as the sub-note, and **43 items in three groups** — Living, Playing, Guarding — matching the 43 the legacy site displayed exactly. The spine runs 01–06 gapless (T-221).
+  *Files:* `src/app/en/weddings/page.tsx`

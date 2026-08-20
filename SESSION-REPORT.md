@@ -3,7 +3,7 @@
 **Read this first. It is written at HEAD and updated as each task lands, so it
 is the truthful position — not a plan, not a memory.**
 
-Last updated: after `overnight/21`.
+Last updated: after `overnight/21b`.
 
 ---
 
@@ -32,7 +32,7 @@ Last updated: after `overnight/21`.
 | 18 — Taste-audit polish loop | **DONE** — `overnight/18`, falsified |
 | 19 — Webkit smoke + final sweep | **DONE** — `overnight/19` |
 | 20 — /el locale scaffold | **DONE** — `overnight/20` |
-| 21 — CHH re-admission | **DONE** — `overnight/21`, falsified |
+| 21 — CHH re-admission + Weddings | **DONE** — `overnight/21`, `overnight/21b` |
 | 22 — Villa pages deepened | **NOT STARTED** |
 | 23 — Redirect verification harness | **DONE** — pulled forward, T-259 |
 | 24 — Content-parity certification | **NOT STARTED** |
