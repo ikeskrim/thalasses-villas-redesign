@@ -24,6 +24,14 @@ export const metadata: Metadata = {
   title: "Thalasses Villas — Living Unlimited",
   description:
     "Five seafront villas in Pigianos Kampos, Rethymno, Crete, with a private beach fifty metres from the door.",
+  /*
+   * The last route without one. Every other page declares its canonical; the
+   * homepage is the one an old address is most likely to reach by a redirect
+   * chain, so it is the one that most needs to name itself. The hreflang
+   * scaffolding that will sit beside this is in `layout.tsx`, commented until
+   * /el exists.
+   */
+  alternates: { canonical: "/" },
 };
 
 /**

@@ -108,3 +108,6 @@ public/images/_chh/*
 
 .vercel
 .env*
+
+# Test-run logs. Transient, and one of them has already been staged by accident.
+*.log

@@ -69,6 +69,23 @@ const cormorantItalic = localFont({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://thalasses.com"),
+  /*
+   * HREFLANG SCAFFOLDING — deliberately commented out, not deleted.
+   *
+   * Declaring an alternate for a locale that does not exist tells a search
+   * engine to look for a page that will 404, which is worse than declaring
+   * nothing. It goes live in the same change that ships /el, and the T-189
+   * verdict (qa/greek-face/VERDICT.md) is the decision that gates it.
+   *
+   * alternates: {
+   *   canonical: "/",
+   *   languages: {
+   *     "en": "/",
+   *     "el": "/el",
+   *     "x-default": "/",
+   *   },
+   * },
+   */
   title: {
     default: "Thalasses Villas",
     template: "%s — Thalasses Villas",

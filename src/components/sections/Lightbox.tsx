@@ -39,9 +39,23 @@ export function Lightbox({
   const dialogRef = useRef<HTMLDivElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
 
-  useEffect(() => {
+  /*
+   * Which frame is showing follows `openAt` when the overlay opens, and then
+   * moves on its own as the reader arrows through the set. That is derived
+   * state, and it is adjusted DURING render against the previous prop rather
+   * than in an effect.
+   *
+   * The effect version rendered the overlay once on the old frame before
+   * correcting itself — a visible flash of the previously-viewed photograph on
+   * every open, and a cascading second render each time. This is React's
+   * documented pattern for a prop-driven reset: React discards the in-progress
+   * output and re-renders immediately, so nothing wrong ever reaches the screen.
+   */
+  const [lastOpenAt, setLastOpenAt] = useState(openAt);
+  if (openAt !== lastOpenAt) {
+    setLastOpenAt(openAt);
     if (openAt !== null) setIndex(openAt);
-  }, [openAt]);
+  }
 
   const move = useCallback(
     (delta: number) => setIndex((i) => (i + delta + frames.length) % frames.length),

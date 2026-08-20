@@ -3,7 +3,7 @@
 **Read this first. It is written at HEAD and updated as each task lands, so it
 is the truthful position — not a plan, not a memory.**
 
-Last updated: after `overnight/15`.
+Last updated: after `overnight/16`.
 
 ---
 
@@ -17,7 +17,7 @@ Last updated: after `overnight/15`.
 | 3 — Content pages onto D | **DONE** — `overnight/3` |
 | 4 — Pelagos page transitions | **DONE** — `overnight/4` |
 | 5 — Copy pass to the voice rules | **DONE** — `overnight/5` |
-| 6 — SEO migration | **PARTIAL** — 301 map, sitemap, robots done; OG images are Task 16 |
+| 6 — SEO migration | **DONE** — 301 map, sitemap, robots; OG images landed in Task 16 |
 | 7 — Full QA + evidence | **DONE** — `overnight/7` |
 | 8 — Morning report | superseded by this file |
 | 9 — Kill the cascade family at the cause | **DONE** — `overnight/9`, falsified |
@@ -27,7 +27,7 @@ Last updated: after `overnight/15`.
 | 13 — Error and edge states | **DONE** — `overnight/13`, class guard `overnight/13b` |
 | 14 — Enquiry form UI | **DONE** — `overnight/14` |
 | 15 — T-189 Greek face verdict | **DONE** — `overnight/15` |
-| 16 — OG images and SEO extras | **NOT STARTED** |
+| 16 — OG images and SEO extras | **DONE** — `overnight/16`, falsified |
 | 17 — Handoff documentation | **DONE** — `overnight/17` |
 | 18 — Taste-audit polish loop | **NOT STARTED** |
 | 19 — Webkit smoke + final sweep | **NOT STARTED** |
@@ -55,9 +55,11 @@ axe integration, no walkthrough videos.
 
 - **Pipeline:** auto-deploys on every push to `main`, team `domisi`,
   protection off, `noindex` on by design. See `DEPLOY.md`.
-- **Tests:** **269 passing, 1 skipped**, run as three shards (`npm run qa`). Scan, typecheck,
-  lint clean at HEAD. (The count fell from 197 because the 30 screenshot tests
-  left the suite — see below. No assertion was weakened.)
+- **Tests:** **337 passing, 1 skipped**, run as three shards (`npm run qa`). Scan, typecheck
+  and lint clean at HEAD — **lint was not, until this task**: two React
+  correctness errors had arrived with an earlier commit while this line still
+  claimed clean. Found by running the gate instead of trusting the record, and
+  fixed (T-273).
 - **Core Web Vitals, measured** (`npm run perf`) — mobile 390x844, CPU 4x,
   Slow-4G, PerformanceObserver reading the same entries Lighthouse does:
 
@@ -92,6 +94,26 @@ axe integration, no walkthrough videos.
 
 ---
 
+### The share cards
+
+Twenty-nine OpenGraph cards, one per route that has its own subject: the
+homepage, the estate, weddings, five villas and twenty-one experiences. Built at
+build time from the real photography and the real type system, so they cannot
+drift from the brand the way a hand-made JPEG does.
+
+Every card is **measured, not asserted**. `tests/og-card.spec.ts` decodes each
+rendered PNG and computes the actual contrast under the copy. Worst case at
+HEAD: **6.71:1**, against an AA floor of 4.5. Dropping the veil turns
+twenty-seven of them red, so the guard is load-bearing (§16).
+
+**Two experience cards carry no photograph** — `bike-tours` and
+`learn-the-secrets-of-cretan-cuisine` — because their hero frames are on the
+ruled-off list. They fall back to the plain basalt ground, which is the designed
+behaviour and not a defect. Both become photographic the moment the owner
+supplies a frame; nothing in the code needs to change.
+
+---
+
 ## Defects found and fixed this run
 
 1. **Every primary CTA on the site was 2.27:1** and had been since the elevation
@@ -108,6 +130,17 @@ axe integration, no walkthrough videos.
    generic pattern required quotes and an env assignment has none. (T-237)
 6. **The D rebuild silently dropped the T-212 detail rows.** My own regression,
    caught in the same session. (T-243)
+7. **The gallery's cluster offsets were accumulated by a counter mutated during
+   render**, which Strict Mode's double render would have desynchronised — every
+   lightbox opening on the wrong photograph. (T-273)
+8. **The lightbox flashed the previously-viewed frame on every open**, because
+   it synced its index to the prop in an effect rather than during render.
+   (T-273)
+9. **The contrast guard for the share cards was itself wrong**, and failed all
+   twenty-nine correct cards at 2.2:1: a thin light stroke never reaches its
+   full colour, so the classifier missed the 21px eyebrow entirely and measured
+   its own antialiasing as ground. Rewritten with a structurally glyph-free
+   measurement beside the classifier. (T-272)
 
 **The cause behind 1 and 2 is now fixed, and the fix was falsified.** They were
 one family with T-217. `@layer` puts components above the typographic register,

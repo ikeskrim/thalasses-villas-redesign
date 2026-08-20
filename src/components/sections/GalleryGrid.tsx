@@ -31,13 +31,25 @@ export interface Cluster {
 export function GalleryGrid({ clusters }: { clusters: Cluster[] }) {
   const all = clusters.flatMap((c) => c.frames);
   const [open, setOpen] = useState<number | null>(null);
-  let running = 0;
+
+  /*
+   * Each cluster's offset into the flattened `all` array, computed BEFORE the
+   * JSX rather than accumulated by a counter inside `.map()`.
+   *
+   * The counter version worked, and would keep working right up until React
+   * rendered this component twice without remounting it — Strict Mode does
+   * exactly that, and `reactStrictMode` is on. The second pass would start from
+   * whatever the first pass left behind and every lightbox would open on the
+   * wrong photograph. A pure derivation cannot drift that way.
+   */
+  const offsets = clusters.map((_, i) =>
+    clusters.slice(0, i).reduce((n, c) => n + c.frames.length, 0)
+  );
 
   return (
     <>
-      {clusters.map((cluster) => {
-        const start = running;
-        running += cluster.frames.length;
+      {clusters.map((cluster, ci) => {
+        const start = offsets[ci]!;
         const sparse = cluster.frames.length <= 2;
 
         return (
