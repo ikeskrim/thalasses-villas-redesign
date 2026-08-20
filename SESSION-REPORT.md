@@ -3,7 +3,7 @@
 **Read this first. It is written at HEAD and updated as each task lands, so it
 is the truthful position — not a plan, not a memory.**
 
-Last updated: after `overnight/19`.
+Last updated: after `overnight/20`.
 
 ---
 
@@ -31,7 +31,14 @@ Last updated: after `overnight/19`.
 | 17 — Handoff documentation | **DONE** — `overnight/17` |
 | 18 — Taste-audit polish loop | **DONE** — `overnight/18`, falsified |
 | 19 — Webkit smoke + final sweep | **DONE** — `overnight/19` |
-| 20–27 — Night two queue | **NOT STARTED** |
+| 20 — /el locale scaffold | **DONE** — `overnight/20` |
+| 21 — CHH re-admission + Weddings | **NOT STARTED** |
+| 22 — Villa pages deepened | **NOT STARTED** |
+| 23 — Redirect verification harness | **DONE** — pulled forward, T-259 |
+| 24 — Content-parity certification | **NOT STARTED** |
+| 25 — Suite consolidation | **NOT STARTED** |
+| 26 — Dependencies & security refresh | **NOT STARTED** |
+| 27 — Second taste-audit loop | **NOT STARTED** |
 
 **A correction worth naming.** The previous message closed with "Continuing with
 Task 3." That was intent, not work: the turn ended before any of it happened, and
@@ -46,8 +53,11 @@ than to someone else's.
 `/en/experiences` + 21 detail pages · `/en/weddings` · `/en/location` ·
 `/en/careers` · `/en/contact` · `/en/terms` · `/styleguide`
 
-Not built: `/el`. No redirect map wired, no sitemap or robots, no
-axe integration, no walkthrough videos.
+`/el` deliberately does **not** exist and is asserted to 404 — the legacy site is
+English-only, so there is no Greek copy to ship and inventing it is not
+available. The plumbing is built and flag-gated (`src/lib/locale.ts`).
+
+
 
 ---
 

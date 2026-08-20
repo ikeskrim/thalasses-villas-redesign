@@ -9,12 +9,13 @@ import { Clause } from "@/components/ui/Clause";
 import { Field } from "@/components/ui/Field";
 import { getVilla, getExperience } from "@/lib/content";
 import { byN } from "@/lib/selects";
+import { alternatesFor } from "@/lib/locale";
 
 export const metadata: Metadata = {
   title: "Weddings & Events",
   description:
     "Marrying on sand, beside the water — Thalasses Rituals, the wedding and events venue at Thalasses Villas, Rethymno, Crete.",
-  alternates: { canonical: "/en/weddings" },
+  alternates: alternatesFor("/en/weddings"),
 };
 
 /**

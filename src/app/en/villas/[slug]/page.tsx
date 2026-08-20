@@ -23,6 +23,7 @@ import {
 import { buildInventory } from "@/lib/inventory";
 import { VILLA_PAGE_COPY, detailRows, specStrip, stayIncludes } from "@/lib/villa-page";
 import type { Villa } from "@/types/content";
+import { alternatesFor } from "@/lib/locale";
 
 const KEY_BY_SLUG: Record<string, string> = {
   "villa-thoi": "200",
@@ -60,7 +61,7 @@ export async function generateMetadata({
   return {
     title: villa.name,
     description: villa.meta.description ?? undefined,
-    alternates: { canonical: `/en/villas/${villa.slug}` },
+    alternates: alternatesFor(`/en/villas/${villa.slug}`),
     openGraph: {
       title: villa.meta.title ?? villa.name,
       description: villa.meta.description ?? undefined,

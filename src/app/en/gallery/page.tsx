@@ -4,12 +4,13 @@ import { GalleryGrid, type Cluster } from "@/components/sections/GalleryGrid";
 import { PageHead, PageShell } from "@/components/sections/PageShell";
 import { COLLECTION_VILLA_IDS, getVilla, localImage } from "@/lib/content";
 import { SELECTS } from "@/lib/selects";
+import { alternatesFor } from "@/lib/locale";
 
 export const metadata: Metadata = {
   title: "Gallery",
   description:
     "The photography of Thalasses Villas — the estate, the beach, and the five houses, in the golden hour.",
-  alternates: { canonical: "/en/gallery" },
+  alternates: alternatesFor("/en/gallery"),
 };
 
 /**

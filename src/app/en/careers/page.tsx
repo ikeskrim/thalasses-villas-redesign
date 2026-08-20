@@ -3,11 +3,12 @@ import type { Metadata } from "next";
 import { Reveal } from "@/components/motion/Reveal";
 import { Draft, PageHead, PageShell } from "@/components/sections/PageShell";
 import { getSite } from "@/lib/content";
+import { alternatesFor } from "@/lib/locale";
 
 export const metadata: Metadata = {
   title: "Careers",
   description: "Become part of the team at Thalasses Villas, Rethymno, Crete.",
-  alternates: { canonical: "/en/careers" },
+  alternates: alternatesFor("/en/careers"),
 };
 
 /**

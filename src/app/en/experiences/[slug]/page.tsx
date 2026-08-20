@@ -6,6 +6,7 @@ import { notFound } from "next/navigation";
 import { ImageReveal, Reveal } from "@/components/motion/Reveal";
 import { Draft, PageHead, PageShell } from "@/components/sections/PageShell";
 import { getAllExperiences, getExperience, localImage } from "@/lib/content";
+import { alternatesFor } from "@/lib/locale";
 
 /**
  * SOFT-404 FIX. Without this, an unknown slug rendered the not-found boundary
@@ -34,7 +35,7 @@ export async function generateMetadata({
   return {
     title: e.name,
     description: e.meta?.description ?? e.shortDescription ?? undefined,
-    alternates: { canonical: `/en/experiences/${e.slug}` },
+    alternates: alternatesFor(`/en/experiences/${e.slug}`),
   };
 }
 

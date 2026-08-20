@@ -14,12 +14,13 @@ import { estateCta } from "@/lib/booking";
 import { getEstate, getEstateVillas, getSite } from "@/lib/content";
 import { byN } from "@/lib/selects";
 import { squareFeet, stayIncludes } from "@/lib/villa-page";
+import { alternatesFor } from "@/lib/locale";
 
 export const metadata: Metadata = {
   title: "The Entire Estate",
   description:
     "Four villas taken together as one house — 9 bedrooms, 6 bathrooms, sleeping 18 in beds, with four private pools and a private beach fifty metres from the door.",
-  alternates: { canonical: "/en/the-estate" },
+  alternates: alternatesFor("/en/the-estate"),
 };
 
 /** Owner-confirmed. Nothing on this page is estimated. */

@@ -23,6 +23,23 @@ Direction D's one-idea-per-viewport rule is about pacing a sales narrative. A
 legal document is not that, and the exception is deliberate rather than an
 oversight the guard happened to catch.
 
+## congestion — the experience detail page opens with three beats at 390
+
+`header.d-pagehead / section.d-exp-body / section.d-others`, 390 only.
+
+Accepted, and it is the two-tier policy visible in the layout. `bike-tours` has
+one sentence of copy in the whole registry. Three beats fit in one phone
+viewport because there is not enough content to fill three, and the only ways to
+"fix" it are to invent copy about a real property or to pad the page with
+whitespace until it looks full. Neither is available.
+
+This finding will disappear on its own the day the owner supplies copy. Until
+then it is an accurate description of a thin page, honestly built.
+
+**Not a finding, but visible in the same shot:** the page opens with no
+photograph, because `bike-tours`'s hero frame is on the ruled-off list. Same
+cause as the two plain OG cards, same fix — a frame from the owner.
+
 ## widow — two litany lines end on a single word at 1440
 
 `The table, set for eighteen.` and `The last of the light, from your own terrace.`

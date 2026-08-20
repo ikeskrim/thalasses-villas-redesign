@@ -3,11 +3,12 @@ import type { Metadata } from "next";
 import { Reveal } from "@/components/motion/Reveal";
 import { PageHead, PageShell } from "@/components/sections/PageShell";
 import { getTerms } from "@/lib/content";
+import { alternatesFor } from "@/lib/locale";
 
 export const metadata: Metadata = {
   title: "Terms and Conditions",
   robots: { index: false, follow: true },
-  alternates: { canonical: "/en/terms" },
+  alternates: alternatesFor("/en/terms"),
 };
 
 /**

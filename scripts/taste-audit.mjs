@@ -39,6 +39,29 @@ const BASE = process.env.CAPTURE_BASE ?? "http://localhost:3005";
 const ONLY = process.argv[2];
 const OUT = path.join(process.cwd(), "qa", "taste");
 
+/**
+ * The experience route is DERIVED from the registry, never typed.
+ *
+ * It was typed, as `/en/experiences/private-chef`, and that slug does not
+ * exist — the real one is `chef-in-villa`. So every walkthrough still labelled
+ * "experience-detail", and every taste-audit pass over that route, was
+ * photographing and auditing the **404 page**, and reporting it clean. A
+ * `page.goto` does not throw on a 404; it loads the not-found boundary and
+ * returns happily, so nothing said a word.
+ */
+function firstExperienceSlug() {
+  const dir = path.join(process.cwd(), "content", "experiences");
+  const slugs = fs
+    .readdirSync(dir)
+    .filter((f) => f.endsWith(".json"))
+    .map((f) => JSON.parse(fs.readFileSync(path.join(dir, f), "utf-8")).slug)
+    .filter(Boolean)
+    .sort();
+  if (!slugs.length) throw new Error("no experiences in the registry — nothing to audit");
+  return slugs[0];
+}
+const EXPERIENCE = firstExperienceSlug();
+
 const ROUTES = [
   ["home", "/"],
   ["estate", "/en/the-estate"],
@@ -47,7 +70,7 @@ const ROUTES = [
   ["villa-pueblo", "/en/villas/villa-pueblo"],
   ["gallery", "/en/gallery"],
   ["experiences", "/en/experiences"],
-  ["experience-detail", "/en/experiences/private-chef"],
+  ["experience-detail", `/en/experiences/${EXPERIENCE}`],
   ["weddings", "/en/weddings"],
   ["location", "/en/location"],
   ["careers", "/en/careers"],
@@ -530,7 +553,16 @@ for (const [name, route] of ROUTES) {
     const browser = await chromium.launch();
     const page = await browser.newPage({ viewport: { width: w, height: h } });
     try {
-      await page.goto(BASE + route, { waitUntil: "load", timeout: 90_000 });
+      const res = await page.goto(BASE + route, { waitUntil: "load", timeout: 90_000 });
+      /*
+       * A 404 LOADS. `page.goto` resolves happily on a not-found boundary, so a
+       * route list with one wrong slug in it audits the error page and reports
+       * it clean — which is exactly what happened for a whole night with
+       * `private-chef`. The status is the only thing that knows.
+       */
+      if (!res || res.status() !== 200) {
+        throw new Error(`served ${res ? res.status() : "nothing"}, not 200`);
+      }
       /* Scroll the whole page once so every reveal has fired before measuring. */
       const total = await page.evaluate(() => document.body.scrollHeight);
       for (let y = 0; y <= total; y += Math.round(h * 0.7)) {

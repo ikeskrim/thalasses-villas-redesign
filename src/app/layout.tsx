@@ -70,21 +70,16 @@ const cormorantItalic = localFont({
 export const metadata: Metadata = {
   metadataBase: new URL("https://thalasses.com"),
   /*
-   * HREFLANG SCAFFOLDING — deliberately commented out, not deleted.
+   * Alternates are DERIVED per route from `src/lib/locale.ts`, never written
+   * here — a metadataBase and a title template are site-wide facts, and a
+   * canonical is not.
    *
-   * Declaring an alternate for a locale that does not exist tells a search
-   * engine to look for a page that will 404, which is worse than declaring
-   * nothing. It goes live in the same change that ships /el, and the T-189
-   * verdict (qa/greek-face/VERDICT.md) is the decision that gates it.
-   *
-   * alternates: {
-   *   canonical: "/",
-   *   languages: {
-   *     "en": "/",
-   *     "el": "/el",
-   *     "x-default": "/",
-   *   },
-   * },
+   * This block used to hold a commented-out `languages` map waiting for /el.
+   * It is gone because commented code is a plan, not a mechanism: it would have
+   * had to be uncommented in ten files on the same day, and the day someone
+   * missed one is the day a crawler is told to fetch a page that 404s.
+   * `alternatesFor()` emits nothing extra while one locale is published and the
+   * full set the moment a second one is, with no edit to any page.
    */
   title: {
     default: "Thalasses Villas",

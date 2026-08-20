@@ -31,6 +31,29 @@ const STILLS_ONLY = process.argv.includes("--stills");
 const SHOTS = path.join(process.cwd(), "qa", "walkthrough");
 const VIDEO = path.join(process.cwd(), "qa", "video");
 
+/**
+ * The experience route is DERIVED from the registry, never typed.
+ *
+ * It was typed, as `/en/experiences/private-chef`, and that slug does not
+ * exist — the real one is `chef-in-villa`. So every walkthrough still labelled
+ * "experience-detail", and every taste-audit pass over that route, was
+ * photographing and auditing the **404 page**, and reporting it clean. A
+ * `page.goto` does not throw on a 404; it loads the not-found boundary and
+ * returns happily, so nothing said a word.
+ */
+function firstExperienceSlug() {
+  const dir = path.join(process.cwd(), "content", "experiences");
+  const slugs = fs
+    .readdirSync(dir)
+    .filter((f) => f.endsWith(".json"))
+    .map((f) => JSON.parse(fs.readFileSync(path.join(dir, f), "utf-8")).slug)
+    .filter(Boolean)
+    .sort();
+  if (!slugs.length) throw new Error("no experiences in the registry — nothing to audit");
+  return slugs[0];
+}
+const EXPERIENCE = firstExperienceSlug();
+
 const ROUTES = [
   ["home", "/"],
   ["estate", "/en/the-estate"],
@@ -38,7 +61,7 @@ const ROUTES = [
   ["villa-eeanthe", "/en/villas/villa-eeanthe"],
   ["villa-pueblo", "/en/villas/villa-pueblo"],
   ["experiences", "/en/experiences"],
-  ["experience-detail", "/en/experiences/private-chef"],
+  ["experience-detail", `/en/experiences/${EXPERIENCE}`],
   ["weddings", "/en/weddings"],
   ["location", "/en/location"],
   ["careers", "/en/careers"],
@@ -90,7 +113,12 @@ for (const [name, route] of ROUTES) {
     const page = await ctx.newPage();
 
     try {
-      await page.goto(BASE + route, { waitUntil: "load", timeout: 90_000 });
+      const res = await page.goto(BASE + route, { waitUntil: "load", timeout: 90_000 });
+      /* A 404 loads. Evidence of the not-found page filed under a route name is
+         worse than no evidence, because it looks like evidence. */
+      if (!res || res.status() !== 200) {
+        throw new Error(`served ${res ? res.status() : "nothing"}, not 200`);
+      }
       await page.waitForTimeout(2200);
 
       // A scripted SLOW scroll: this is the take the owner watches, so it moves

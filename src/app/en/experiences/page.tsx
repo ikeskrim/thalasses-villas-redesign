@@ -3,12 +3,13 @@ import type { Metadata } from "next";
 import { DragRegister } from "@/components/sections/DragRegister";
 import { PageHead, PageShell } from "@/components/sections/PageShell";
 import { getHomepageData } from "@/lib/homepage";
+import { alternatesFor } from "@/lib/locale";
 
 export const metadata: Metadata = {
   title: "Experiences",
   description:
     "Twenty-one things we arrange at Thalasses Villas — on the sea, on the land, at the table, and at the door.",
-  alternates: { canonical: "/en/experiences" },
+  alternates: alternatesFor("/en/experiences"),
 };
 
 /**

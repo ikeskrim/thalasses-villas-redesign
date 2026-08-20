@@ -18,6 +18,7 @@ import { Field } from "@/components/ui/Field";
 import { Ledger } from "@/components/ui/Ledger";
 import { villaCta } from "@/lib/booking";
 import { getHomepageData } from "@/lib/homepage";
+import { alternatesFor } from "@/lib/locale";
 import { ACTS, HOTSPOTS, LITANY } from "./home-data";
 
 export const metadata: Metadata = {
@@ -31,7 +32,7 @@ export const metadata: Metadata = {
    * scaffolding that will sit beside this is in `layout.tsx`, commented until
    * /el exists.
    */
-  alternates: { canonical: "/" },
+  alternates: alternatesFor("/"),
 };
 
 /**

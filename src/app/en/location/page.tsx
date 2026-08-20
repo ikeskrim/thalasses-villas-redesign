@@ -5,12 +5,13 @@ import { PageHead, PageShell } from "@/components/sections/PageShell";
 import { Field } from "@/components/ui/Field";
 import { getLocation } from "@/lib/content";
 import { byN } from "@/lib/selects";
+import { alternatesFor } from "@/lib/locale";
 
 export const metadata: Metadata = {
   title: "Location & Beaches",
   description:
     "Pigianos Kampos, Rethymno, on the north coast of Crete — with a private beach fifty metres from the door and the south coast forty minutes away.",
-  alternates: { canonical: "/en/location" },
+  alternates: alternatesFor("/en/location"),
 };
 
 /**

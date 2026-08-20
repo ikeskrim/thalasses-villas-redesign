@@ -4,11 +4,12 @@ import { Reveal } from "@/components/motion/Reveal";
 import { PageHead, PageShell } from "@/components/sections/PageShell";
 import { EnquiryForm } from "@/components/ui/EnquiryForm";
 import { COLLECTION_VILLA_IDS, getVilla, getSite } from "@/lib/content";
+import { alternatesFor } from "@/lib/locale";
 
 export const metadata: Metadata = {
   title: "Contact",
   description: "Talk to Thalasses Villas — Pigianos Kampos, Rethymno, Crete.",
-  alternates: { canonical: "/en/contact" },
+  alternates: alternatesFor("/en/contact"),
 };
 
 /**
