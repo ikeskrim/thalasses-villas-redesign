@@ -27,7 +27,8 @@
     "look": "node scripts/look.mjs",
     "qa:webkit": "playwright test --project=webkit",
     "coverage": "node scripts/registry-coverage.mjs",
-    "chh": "node scripts/extract-chh.mjs"
+    "chh": "node scripts/extract-chh.mjs",
+    "parity": "node scripts/parity-certificate.mjs"
   },
   "dependencies": {
     "framer-motion": "^13.0.0",
