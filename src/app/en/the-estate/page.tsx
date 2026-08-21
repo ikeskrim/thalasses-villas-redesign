@@ -13,7 +13,13 @@ import { HOTSPOTS } from "@/app/home-data";
 import { estateCta } from "@/lib/booking";
 import { getEstate, getEstateVillas, getSite } from "@/lib/content";
 import { byN } from "@/lib/selects";
-import { practicalNotes, squareFeet, stayIncludes, villaServices } from "@/lib/villa-page";
+import {
+  practicalNotes,
+  splitSharedTail,
+  squareFeet,
+  stayIncludes,
+  villaServices,
+} from "@/lib/villa-page";
 import { alternatesFor } from "@/lib/locale";
 import { CHH_MARK, partnerPolicies, recoveredFromPartner } from "@/lib/chh";
 import { Draft } from "@/components/sections/PageShell";
@@ -110,9 +116,25 @@ export default function EstatePage() {
    * with Eeanthe's bathroom the day the two lists diverge in order, and they
    * already differ in both order and length.
    */
-  const included = Object.fromEntries(
+  const includedRaw = Object.fromEntries(
     (estate.includedVillas ?? []).map((v) => [v.name, v.description])
   ) as Record<string, string | null>;
+
+  /*
+   * The four descriptions end in the same twelve words. Printed side by side
+   * that repetition is louder than the difference, and four paragraphs that
+   * look identical make four houses look interchangeable — the opposite of what
+   * this page is for. The shared tail is computed across exactly the four being
+   * rendered (never including Pueblo, whose entry is different prose and would
+   * collapse the common suffix to nothing), stated once below the list, and
+   * each house shows only what is its own. Nothing is lost; everything appears
+   * once. (T-295.)
+   */
+  const split = splitSharedTail(villas.map((v) => includedRaw[v.name]));
+  const included: Record<string, string> = {};
+  villas.forEach((v, i) => {
+    if (split.unique[i]) included[v.name] = split.unique[i]!;
+  });
 
   /* The estate's OWN registry facts, which are a different thing entirely. */
   const notes = practicalNotes(estate);
@@ -228,6 +250,11 @@ export default function EstatePage() {
                 </li>
               ))}
             </ul>
+            {split.shared ? (
+              <p className="caption d-estate-shared">
+                Every house also has a {split.shared.charAt(0).toLowerCase() + split.shared.slice(1)}.
+              </p>
+            ) : null}
           </Reveal>
         </section>
 

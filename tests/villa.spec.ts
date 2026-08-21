@@ -307,3 +307,47 @@ test.describe("gallery slot architecture (T-192)", () => {
     expect(run + sheet).toBe(eeanthe.gallery.featured.length);
   });
 });
+
+test.describe("the estate's four houses (T-295)", () => {
+  test("no house detail is cut inside a parenthetical", async ({ page }) => {
+    /*
+     * The first version of `splitSharedTail` compared word by word and shipped
+     * this to the page: "1 bathroom (shower" under Villa Thoi, and "Every house
+     * also has a cabin), living room with HDTV…" underneath it. Three of the
+     * four descriptions end "(Jacuzzi bath and shower cabin)" and one ends
+     * "(shower cabin)", so "cabin)," was a common trailing WORD and the cut
+     * landed inside a bracket — splitting one fact across two sentences and
+     * inventing a third that meant nothing.
+     *
+     * Balanced brackets is the cheap, exact test for that whole class.
+     */
+    await page.goto("/en/the-estate");
+    const details = await page.locator(".d-estate-villa-detail").allTextContents();
+    expect(details.length, "no house details rendered — nothing is being checked").toBeGreaterThan(3);
+
+    for (const d of details) {
+      const open = (d.match(/\(/g) ?? []).length;
+      const close = (d.match(/\)/g) ?? []).length;
+      expect(open, `unbalanced brackets in "${d}"`).toBe(close);
+      expect(d.trim().endsWith(","), `"${d}" ends on a dangling comma`).toBe(false);
+    }
+
+    const shared = await page.locator(".d-estate-shared").textContent();
+    if (shared) {
+      const open = (shared.match(/\(/g) ?? []).length;
+      const close = (shared.match(/\)/g) ?? []).length;
+      expect(open, `unbalanced brackets in the shared line: "${shared}"`).toBe(close);
+      expect(shared.trim().endsWith("."), "the shared line is not a complete sentence").toBe(true);
+    }
+  });
+
+  test("each house shows something the others do not", async ({ page }) => {
+    /*
+     * The point of the beat. If every detail line were identical the split has
+     * hoisted the wrong thing, or nothing, and four houses read as one.
+     */
+    await page.goto("/en/the-estate");
+    const details = await page.locator(".d-estate-villa-detail").allTextContents();
+    expect(new Set(details.map((d) => d.trim())).size, "every house reads the same").toBeGreaterThan(1);
+  });
+});

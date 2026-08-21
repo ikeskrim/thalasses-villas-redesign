@@ -363,3 +363,89 @@ export function villaServices(villa: Villa): string[] {
   }
   return out;
 }
+
+/**
+ * SPLIT WHAT FOUR HOUSES SHARE FROM WHAT DISTINGUISHES THEM.
+ *
+ * The estate page prints each house's own contents, and the registry writes
+ * them as four near-identical sentences ending in the same twelve words:
+ * "…living room with HDTV and Nintendo Wii, fully equipped kitchen and dining
+ * area". Set side by side, the repetition is louder than the difference — four
+ * paragraphs that look the same make four houses look interchangeable, which is
+ * the opposite of what an estate page is for, and it reads as filler.
+ *
+ * What actually differs is a bathroom type and a bed count, and both are buried
+ * in the middle of the boilerplate.
+ *
+ * So the shared tail is COMPUTED across exactly the descriptions being rendered
+ * — never typed, and never computed across a set that includes Villa Pueblo,
+ * whose entry is different prose entirely and would collapse the common suffix
+ * to nothing. The shared part is stated once; each house shows only its own.
+ *
+ * Nothing is deleted: every word still appears on the page, once.
+ */
+export function splitSharedTail(descriptions: (string | null | undefined)[]): {
+  shared: string | null;
+  unique: string[];
+} {
+  const list = descriptions.map((d) => (d ?? "").trim()).filter(Boolean);
+  if (list.length < 2) return { shared: null, unique: list };
+
+  /*
+   * SPLIT ON CLAUSES, NOT ON WORDS.
+   *
+   * The first version compared word by word and produced this, verbatim, on the
+   * live page: "1 bathroom (shower" under Villa Thoi, and "Every house also has
+   * a cabin), living room with HDTV…" underneath. Three of the four end
+   * "(Jacuzzi bath and shower cabin)" and one ends "(shower cabin)", so
+   * "cabin)," is a common trailing WORD — and the cut landed inside a
+   * parenthetical, splitting one fact across two sentences and inventing a
+   * third that means nothing.
+   *
+   * These descriptions are comma-separated lists of facts, so the only cut that
+   * can be safely made is between facts. Commas inside parentheses are not
+   * separators, so the split is depth-aware, and the result is checked for
+   * balanced brackets before it is trusted.
+   */
+  const clauses = (text: string) => {
+    const out: string[] = [];
+    let depth = 0;
+    let buf = "";
+    for (const ch of text) {
+      if (ch === "(") depth++;
+      if (ch === ")") depth = Math.max(0, depth - 1);
+      if (ch === "," && depth === 0) {
+        out.push(buf.trim());
+        buf = "";
+        continue;
+      }
+      buf += ch;
+    }
+    if (buf.trim()) out.push(buf.trim());
+    return out;
+  };
+
+  const parts = list.map(clauses);
+  let k = 0;
+  for (;;) {
+    const c = parts[0]![parts[0]!.length - 1 - k];
+    if (c === undefined) break;
+    if (!parts.every((ps) => ps[ps.length - 1 - k] === c)) break;
+    k++;
+  }
+  /* One shared clause out of four is not boilerplate worth hoisting. */
+  if (k < 2) return { shared: null, unique: list };
+  /* And never hoist everything — a house with nothing of its own left to say
+     would render a name, a spec line and a blank. */
+  if (parts.some((ps) => ps.length - k < 1)) return { shared: null, unique: list };
+
+  const balanced = (t: string) => (t.match(/\(/g) ?? []).length === (t.match(/\)/g) ?? []).length;
+
+  const shared = parts[0]!.slice(parts[0]!.length - k).join(", ");
+  const unique = parts.map((ps) => ps.slice(0, ps.length - k).join(", "));
+  if (!balanced(shared) || unique.some((u) => !balanced(u))) {
+    return { shared: null, unique: list };
+  }
+
+  return { shared: shared.charAt(0).toUpperCase() + shared.slice(1), unique };
+}

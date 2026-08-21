@@ -1130,3 +1130,11 @@ main:focus-visible {
   color: var(--color-phrygana);
   max-width: 52ch;
 }
+
+/* What all four houses share, said once under the list rather than four times
+   inside it (T-295). Quiet: it is the part that does NOT distinguish them. */
+.d-estate-shared {
+  margin-top: var(--section-y-tight);
+  color: var(--color-phrygana);
+  max-width: 62ch;
+}

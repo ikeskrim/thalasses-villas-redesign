@@ -3,7 +3,7 @@
 **Read this first. It is written at HEAD and updated as each task lands, so it
 is the truthful position — not a plan, not a memory.**
 
-Last updated: after `overnight/26`.
+Last updated: after `overnight/27`.
 
 ---
 
@@ -38,7 +38,7 @@ Last updated: after `overnight/26`.
 | 24 — Content-parity certification | **DONE** — `overnight/24`, falsified |
 | 25 — Suite consolidation | **DONE** — `overnight/25` |
 | 26 — Dependencies & security refresh | **DONE** — `overnight/26` |
-| 27 — Second taste-audit loop | **NOT STARTED** |
+| 27 — Second taste-audit loop | **DONE** — `overnight/27` |
 
 **A correction worth naming.** The previous message closed with "Continuing with
 Task 3." That was intent, not work: the turn ended before any of it happened, and
@@ -65,7 +65,7 @@ available. The plumbing is built and flag-gated (`src/lib/locale.ts`).
 
 - **Pipeline:** auto-deploys on every push to `main`, team `domisi`,
   protection off, `noindex` on by design. See `DEPLOY.md`.
-- **Tests:** **398 passing, 1 skipped**, run as three shards (`npm run qa`), which
+- **Tests:** **400 passing, 1 skipped**, run as three shards (`npm run qa`), which
   covers **both engines** — Chromium for everything, and WebKit 26.5 for a
   fourteen-test smoke run (`npm run qa:webkit`). Scan, typecheck
   and lint clean at HEAD — **lint was not, until this task**: two React
