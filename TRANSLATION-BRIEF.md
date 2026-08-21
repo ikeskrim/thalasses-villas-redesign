@@ -15,16 +15,16 @@ need to quote for the work and do it correctly.
 
 ## Scope
 
-**1123 distinct strings, 7630 words**, across 11 routes.
+**1125 distinct strings, 7636 words**, across 11 routes.
 
 | route | strings | words | left alone |
 |---|---|---|---|
-| `/` | 204 | 959 | 24 |
+| `/` | 205 | 962 | 24 |
 | `/en/the-estate` | 129 | 576 | 12 |
 | `/en/villas/villa-thoi` | 186 | 613 | 13 |
 | `/en/villas/villa-pueblo` | 121 | 318 | 13 |
 | `/en/gallery` | 68 | 396 | 10 |
-| `/en/experiences` | 77 | 444 | 6 |
+| `/en/experiences` | 78 | 447 | 6 |
 | `/en/weddings` | 106 | 499 | 8 |
 | `/en/location` | 54 | 145 | 18 |
 | `/en/careers` | 40 | 120 | 6 |

@@ -3,7 +3,18 @@
 **Read this first. It is written at HEAD and updated as each task lands, so it
 is the truthful position — not a plan, not a memory.**
 
-Last updated: after `overnight/30`.
+# QUEUE COMPLETE
+
+**Tasks 0 through 30 are done.** Every one is committed and pushed, each with its
+own `overnight/N` commit, and HEAD is green on the full gate: credential scan,
+typecheck, lint, build, `npm audit`, and 414 tests across two engines.
+
+Nothing below is a plan. What remains is named in three places and nowhere else:
+**open engineering work** (the homepage's hydration cost), **the owner-pending
+list** (facts and photographs only he can confirm), and **`LAUNCH.md`** (a
+runbook, owner-triggered, that does nothing by itself).
+
+Last updated: after `overnight/31` — the closing QA cycle.
 
 ---
 
@@ -104,10 +115,10 @@ available. The plumbing is built and flag-gated (`src/lib/locale.ts`).
   `npm run parity`. None of them is a test: a screenshot proves nothing about
   behaviour, and until T-291 two of these were in the suite, dirtying the tree
   on every run.
-- **Evidence:** `qa/walkthrough/` stills and `qa/video/` clips, produced by
-  `npm run capture`. **Partial at this commit** — 12 of 24 route/width
-  combinations; the run exceeded its process budget partway. Re-run the command
-  to complete it.
+- **Evidence: complete.** `npm run capture` produced **120 stills and all 24
+  route/width video clips** in the closing cycle — the previous run had managed
+  12 of 24 — and `npm run capture:composites` produced the 18 composites. On
+  disk, not in git (T-302): regenerable evidence is not committed.
 - **Direction D** is the site's language: light limestone ground, display capped
   at 96px, `--section-y` rhythm, one idea per viewport, one or two dark
   interludes per page.
@@ -385,4 +396,67 @@ was working. That is why the guards in this repository assert that they found
 their subject before they assert anything about it, and why `CONVENTIONS.md`
 §16 and §18 say what they say. It is the single most useful thing to carry
 forward from this build.
+
+---
+
+## The closing QA cycle, in full
+
+Run at HEAD, in this order, after the last task landed.
+
+| # | check | result |
+|---|---|---|
+| 1 | credential scan | **CLEAN** — 366 text files, nothing credential-class |
+| 2 | typecheck | clean |
+| 3 | lint | clean |
+| 4 | build | 69 static pages, compiled in 835ms |
+| 5 | `npm audit` | **0 vulnerabilities** |
+| 6 | full suite, both engines | **414 passed, 1 skipped** |
+| 7 | Core Web Vitals | LCP and CLS pass everywhere; **three routes over the long-task budget** |
+| 8 | link crawl | 35 destinations, **0 broken**, 0 dead fragments |
+| 9 | taste audit | 5 findings, **all accepted with written reasons** |
+| 10 | registry coverage | 145 of 191 facts on a page |
+| 11 | parity certificate | **5 of 6 domains complete** |
+| 12 | weight | 304 MB tracked, down from 471 MB |
+| 13 | translation brief | 1,125 strings, 7,636 words |
+
+**Line 7 got worse during the cycle, and it is reported worse.** The homepage read
+275ms when Task 26 measured it and 323ms here; the estate crossed the budget for
+the first time. This is the same machine that produced 248ms from the *pre-tonight*
+source three hours ago, and nothing in the intervening work touched the homepage's
+client bundle. It is host load, and the honest thing to say is that **a lab
+long-task figure on this machine is not stable enough to certify against** —
+which is itself the finding. LCP and CLS, which are stable, pass everywhere with
+room to spare.
+
+The budget was not moved to make any of it pass. Reducing the homepage's
+hydration cost stays on the open-work list, where a real number from field CrUX
+can settle it.
+
+## What the run cost, and what it caught
+
+Thirty-one commits. The defects worth naming are the ones **no existing guard
+could see**, because each one is a class rather than an instance:
+
+- The hero's own word, "UNLIMITED", rendering at ~1.6:1 on the first screen —
+  dead CSS caused by the fix for three earlier contrast failures (T-274).
+- The accessibility audit checking only what painted on load, for the length of
+  the project (T-283).
+- Every homepage intertitle set at 40% of its measure (T-276).
+- Sixty Clause tails carrying no tracking, one at −0.107em (T-277).
+- 83 recovered facts on no page, including the only price in the inventory
+  (T-285).
+- Eleven experience pages indexable and unreachable (T-297).
+- A redirect **loop** in the pre-DNS map, closed with the other fourteen gaps
+  (T-299).
+- 104.6 MB of byte-identical duplicate photographs (T-301).
+
+And seven times, an instrument reported success without reaching its subject —
+a hook resolving a percent-encoded path, `test.skip()` reporting "30 skipped" as
+green, `vercel whoami` answering a different question, a contrast guard walking
+DOM ancestors of a fixed element, a taste audit printing "0 findings" above
+twenty-six connection failures, two capture tools pointed at a 404 for a whole
+night, and axe skipping everything below the fold. **None of them was a hard
+bug. Every one of them was a tool that looked like it was working.** That is
+what `CONVENTIONS.md` §16 and §18 exist for, and it is the most useful thing to
+carry out of this build.
 
