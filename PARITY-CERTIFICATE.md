@@ -9,7 +9,7 @@ answers whether that held.
 
 ---
 
-## 4 of 6 domains complete
+## 5 of 6 domains complete
 
 | domain | present | total | |
 |---|---|---|---|
@@ -17,19 +17,18 @@ answers whether that held.
 | Experiences | 21 | 21 | complete |
 | Legacy text captures | 42 | 42 | complete |
 | Photography | 862 | 862 | complete |
-| Legacy URLs | 36 | 51 | **15 outstanding** |
+| Legacy URLs | 51 | 51 | complete |
 | Registry facts on a page | 145 | 191 | **46 outstanding** |
 
 **There is no single overall percentage here on purpose.** Summing the domains
-gives 1113 of 1174, which reads as 94.8% — and 862 of those
+gives 1128 of 1174, which reads as 96.1% — and 862 of those
 items are photographs, every one of them present, so the aggregate drowns
-61 real gaps in a sea of
+46 real gaps in a sea of
 JPEGs. A number that cannot get worse when a redirect breaks is not a
 measurement of parity.
 
-### 2 shortfalls, every one named
+### 1 shortfalls, every one named
 
-- 15 redirect targets do not resolve
 - 46 registry facts do not appear on any page
 
 **None of these is a deletion.** Each is content that exists in the repository and has not yet been given a place on a page, or a route that has not been built. The distinction matters: nothing recovered in Phase 0 has been lost, and the gaps above are work, not damage.
@@ -61,11 +60,11 @@ measurement of parity.
 - 10 frames are deliberately ruled off and cannot render anywhere: `localImage()` returns null for them (T-185).
 - Every exclusion carries a written reason in `content/excluded-images.json`.
 
-## Legacy URLs — 36 of 51
+## Legacy URLs — 51 of 51
 
 - 51 legacy addresses are mapped in `content/url-map.md` and installed by `next.config.ts`.
 - Every one is driven through the built app by `tests/redirects.spec.ts`, which asserts the status and the destination.
-- **15 point at routes that do not exist yet.** Listed in `content/redirect-gaps.json`; closing them is the pre-DNS gate in `LAUNCH.md` §1.
+- No gaps.
 
 ## Registry facts on a page — 145 of 191
 

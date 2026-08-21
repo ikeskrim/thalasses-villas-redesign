@@ -1138,3 +1138,13 @@ main:focus-visible {
   color: var(--color-phrygana);
   max-width: 62ch;
 }
+
+/* The way in to a compact experience's own page (T-297). Quiet and small: the
+   panel above it already carries the copy, so this is a door, not a claim. */
+.drag-card-more {
+  display: inline-block;
+  margin-top: var(--spacing-step-4);
+  color: var(--color-pelagos);
+  text-decoration: underline;
+  text-underline-offset: 0.35em;
+}

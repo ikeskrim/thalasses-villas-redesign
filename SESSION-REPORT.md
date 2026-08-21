@@ -3,7 +3,7 @@
 **Read this first. It is written at HEAD and updated as each task lands, so it
 is the truthful position — not a plan, not a memory.**
 
-Last updated: after `overnight/28`.
+Last updated: after `overnight/29`.
 
 ---
 
@@ -40,6 +40,7 @@ Last updated: after `overnight/28`.
 | 26 — Dependencies & security refresh | **DONE** — `overnight/26` |
 | 27 — Second taste-audit loop | **DONE** — `overnight/27` |
 | 28 — Greek pass | **DONE** — `overnight/28`; the premise did not hold, see below |
+| 29 — Launch dress rehearsal | **DONE** — `overnight/29`; all 15 redirect gaps closed |
 
 **A correction worth naming.** The previous message closed with "Continuing with
 Task 3." That was intent, not work: the turn ended before any of it happened, and
@@ -67,7 +68,7 @@ available. The plumbing is built and flag-gated (`src/lib/locale.ts`).
 
 - **Pipeline:** auto-deploys on every push to `main`, team `domisi`,
   protection off, `noindex` on by design. See `DEPLOY.md`.
-- **Tests:** **400 passing, 1 skipped**, run as three shards (`npm run qa`), which
+- **Tests:** **403 passing, 1 skipped**, run as three shards (`npm run qa`), which
   covers **both engines** — Chromium for everything, and WebKit 26.5 for a
   fourteen-test smoke run (`npm run qa:webkit`). Scan, typecheck
   and lint clean at HEAD — **lint was not, until this task**: two React
@@ -259,12 +260,18 @@ patches. (T-253, CONVENTIONS §16.)
   fix is deferral or reduction, not a larger budget.
 - **46 registry facts still reach no page** — `qa/coverage/REGISTRY-COVERAGE.md`
   lists each one. Most are legacy prose the copy pass replaced deliberately.
-- **15 redirect targets do not resolve**, one of them a loop. The pre-DNS gate
-  in `LAUNCH.md` §1.
+- ~~15 redirect targets do not resolve~~ — **all closed (T-299), including the
+  loop. Legacy URLs now read 51/51.** The pre-DNS gate in `LAUNCH.md` §1 is a
+  verification step rather than a blocker.
 
 ---
 
 ## Waiting only on the owner
+
+- The legacy `/en/jet-ski-safari-1.html` was titled **"Water Sports"** and there
+  is no combined water-sports page in the inventory. The redirect now lands on
+  `/en/experiences/jet-ski-safari`, the nearest real thing. If that page covered
+  more than jet skis, the destination should change (T-299).
 
 - T-212 — Villa Pueblo's bathroom detail, view, distance, and a `specsConfirmed` flag
 - The geographic scope of the "only seafront villas with helipad" claim

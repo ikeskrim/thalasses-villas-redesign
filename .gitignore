@@ -121,3 +121,7 @@ qa/taste/findings.json
 # Registry-coverage evidence. The markdown report is the readable record and is
 # committed; the machine mirror regenerates with `npm run coverage`.
 qa/coverage/coverage.json
+
+# Link-crawl evidence. The markdown report is the readable record; the machine
+# mirror regenerates with `npm run crawl`.
+qa/crawl/crawl.json

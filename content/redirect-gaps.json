@@ -1,93 +1,43 @@
 {
   "_comment": [
-    "REDIRECT TARGETS THAT DO NOT YET RESOLVE.",
+    "REDIRECT TARGETS THAT DO NOT RESOLVE.",
     "",
-    "The 301 map in content/url-map.md proposed these routes during Phase 0,",
-    "before the slugs and the information architecture settled. Every one is a",
-    "legacy URL that WILL 404 after the domain move unless it is closed, so the",
-    "list is tracked here rather than left as a silent 404.",
+    "The 301 map in content/url-map.md proposed routes during Phase 0, before the",
+    "slugs and the information architecture settled. Any target that does not",
+    "resolve is tracked here with a reason and a closing move, and",
+    "tests/redirects.spec.ts asserts that the dead set is EXACTLY this set — an",
+    "existing gap cannot be forgotten, and a new one cannot appear unnoticed.",
     "",
-    "tests/redirects.spec.ts asserts the dead set is EXACTLY this set \u2014 so an",
-    "existing gap cannot be forgotten and a NEW gap cannot appear unnoticed.",
-    "Closing one means deleting its line here and watching the test go green.",
+    "ALL FIFTEEN ARE NOW CLOSED (T-299). None of them was closed by building a",
+    "route to satisfy the map; every one was repointed at a page that already",
+    "exists and already carries the content:",
     "",
-    "This file is the pre-DNS gate referenced by LAUNCH.md."
+    "  5 x per-villa and per-estate /gallery sub-pages -> the villa or estate page,",
+    "      which carries that property's own photographs.",
+    "  4 x /en/amenities/* -> the estate page or the location page. Per-amenity",
+    "      pages were never built; the amenities live in the inventories.",
+    "  5 x experience slug drift -> the inventory's own slug",
+    "      (organic-farm -> biological-garden, private-boat-trip -> boat-trip,",
+    "      private-chef -> chef-in-villa, dream-wedding -> dream-weadding,",
+    "      water-sports -> jet-ski-safari).",
+    "  1 x /en/thalasses-rituals -> /en/weddings. THIS ONE WAS A LOOP, not a 404:",
+    "      the path was both a source and a target, so it pointed at itself. A 404",
+    "      loses a page; a loop hangs the browser. D1a moved the venue to the",
+    "      Weddings route, so the URL follows the content.",
+    "",
+    "ONE OWNER QUESTION SURVIVES THE CLOSURE, and it is not a gap because the",
+    "redirect now resolves — it is a question about whether it resolves to the",
+    "RIGHT page. It has moved to the owner-pending list in SESSION-REPORT.md:",
+    "",
+    "  /en/jet-ski-safari-1.html was titled 'Water Sports' on the legacy site and",
+    "  there is no combined water-sports page in the inventory. It now lands on",
+    "  /en/experiences/jet-ski-safari, which is the nearest real thing. If the",
+    "  legacy page covered more than jet skis, the destination should change.",
+    "",
+    "Eight rows remain UNINSTALLABLE rather than dead, and are reported by",
+    "`npm run redirects` on every run: three are fragment sources (a server",
+    "redirect cannot see a #hash) and five are template rows describing a pattern",
+    "rather than a literal path. Both classes are covered by LAUNCH.md §2."
   ],
-  "gaps": [
-    {
-      "target": "/en/villas/villa-thoi/gallery",
-      "why": "Per-villa gallery sub-pages are not built. Task 10 covers the Gallery; the map assumed one per villa.",
-      "closes": "build the route, or repoint the map at the villa page anchor"
-    },
-    {
-      "target": "/en/villas/villa-persi/gallery",
-      "why": "As above.",
-      "closes": "build the route, or repoint the map"
-    },
-    {
-      "target": "/en/villas/villa-eeanthe/gallery",
-      "why": "As above.",
-      "closes": "build the route, or repoint the map"
-    },
-    {
-      "target": "/en/villas/villa-melia/gallery",
-      "why": "As above.",
-      "closes": "build the route, or repoint the map"
-    },
-    {
-      "target": "/en/the-estate/gallery",
-      "why": "As above, for the estate.",
-      "closes": "build the route, or repoint the map"
-    },
-    {
-      "target": "/en/thalasses-rituals",
-      "why": "D1a moved Thalasses Rituals out of the villa collection and made it the Weddings venue; the map still names the old route. WORSE THAN A 404: this route is both a redirect source and a redirect target in the map, so it points at itself and the request loops. A 404 loses one page; a loop hangs the browser.",
-      "closes": "repoint the map at /en/weddings \u2014 the content moved, so the URL should follow"
-    },
-    {
-      "target": "/en/amenities/sitting-outdoor-area",
-      "why": "Per-amenity pages are not built. The amenities live inside each villa's Inventory instead.",
-      "closes": "repoint at the villa inventory, or build amenity pages"
-    },
-    {
-      "target": "/en/amenities/private-beach",
-      "why": "As above.",
-      "closes": "repoint at /en/location, which carries the beach"
-    },
-    {
-      "target": "/en/amenities/doctor",
-      "why": "As above.",
-      "closes": "repoint at /en/location, which carries the distances"
-    },
-    {
-      "target": "/en/amenities/babysitter",
-      "why": "As above.",
-      "closes": "repoint at the villa inventory"
-    },
-    {
-      "target": "/en/experiences/organic-farm",
-      "why": "Slug drift. The inventory calls it `biological-garden`.",
-      "closes": "repoint the map at /en/experiences/biological-garden"
-    },
-    {
-      "target": "/en/experiences/private-boat-trip",
-      "why": "Slug drift. The inventory calls it `boat-trip`.",
-      "closes": "repoint at /en/experiences/boat-trip"
-    },
-    {
-      "target": "/en/experiences/private-chef",
-      "why": "Slug drift. The inventory calls it `chef-in-villa`.",
-      "closes": "repoint at /en/experiences/chef-in-villa"
-    },
-    {
-      "target": "/en/experiences/dream-wedding-on-the-beach",
-      "why": "Slug drift, and the inventory carries a typo from the legacy site: `dream-weadding-on-the-beach`. The typo is preserved in content because it is the real legacy slug.",
-      "closes": "repoint at the real slug; decide separately whether to correct the typo in the new URL and redirect the old one"
-    },
-    {
-      "target": "/en/experiences/water-sports",
-      "why": "Slug drift. The nearest inventory entry is `jet-ski-safari`; there is no combined water-sports page.",
-      "closes": "repoint at /en/experiences/jet-ski-safari, or confirm with the owner what the legacy page contained"
-    }
-  ]
+  "gaps": []
 }

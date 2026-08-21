@@ -180,6 +180,30 @@ export function DragRegister({ rows }: DragRegisterProps) {
                 </button>
                 <div id={`drag-${row.slug}`} className="drag-card-panel" hidden={!isOpen}>
                   {row.line ? <p className="caption">{row.line}</p> : null}
+                  {/*
+                    EVERY EXPERIENCE HAS A PAGE, SO EVERY EXPERIENCE NEEDS A WAY
+                    IN.
+
+                    The two-tier register is right: fourteen of the twenty-one
+                    have under forty words and expanding in place is a better
+                    read than a page of white space. But all twenty-one are
+                    ROUTED, sitemapped and given a share card, and the link
+                    crawl found that only ten were reachable from anywhere on
+                    the site — the other eleven existed, were indexable, and
+                    could not be navigated to.
+
+                    A page a crawler can index and a visitor cannot reach is the
+                    worst of both: thin content in the index, and a dead end for
+                    anyone who arrives on it from a legacy URL. The register
+                    keeps its shape; the page keeps its way in. (T-297.)
+                  */}
+                  <Link
+                    href={`/en/experiences/${row.slug}`}
+                    className="micro drag-card-more"
+                    data-cursor="View"
+                  >
+                    Open the page
+                  </Link>
                 </div>
               </>
             )}

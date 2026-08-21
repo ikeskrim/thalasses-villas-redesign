@@ -32,27 +32,27 @@
     },
     {
       "source": "/en/property/200/albums.html",
-      "destination": "/en/villas/villa-thoi/gallery",
+      "destination": "/en/villas/villa-thoi",
       "permanent": true
     },
     {
       "source": "/en/property/201/albums.html",
-      "destination": "/en/villas/villa-persi/gallery",
+      "destination": "/en/villas/villa-persi",
       "permanent": true
     },
     {
       "source": "/en/property/202/albums.html",
-      "destination": "/en/villas/villa-eeanthe/gallery",
+      "destination": "/en/villas/villa-eeanthe",
       "permanent": true
     },
     {
       "source": "/en/property/203/albums.html",
-      "destination": "/en/villas/villa-melia/gallery",
+      "destination": "/en/villas/villa-melia",
       "permanent": true
     },
     {
       "source": "/en/property/2142/albums.html",
-      "destination": "/en/the-estate/gallery",
+      "destination": "/en/the-estate",
       "permanent": true
     },
     {
@@ -87,12 +87,12 @@
     },
     {
       "source": "/en/thalasses-rituals-1.html",
-      "destination": "/en/thalasses-rituals",
+      "destination": "/en/weddings",
       "permanent": true
     },
     {
       "source": "/en/article/1899-1.html",
-      "destination": "/en/amenities/sitting-outdoor-area",
+      "destination": "/en/the-estate",
       "permanent": true
     },
     {
@@ -107,12 +107,12 @@
     },
     {
       "source": "/en/biological-garden-1.html",
-      "destination": "/en/experiences/organic-farm",
+      "destination": "/en/experiences/biological-garden",
       "permanent": true
     },
     {
       "source": "/en/boat-trip-1.html",
-      "destination": "/en/experiences/private-boat-trip",
+      "destination": "/en/experiences/boat-trip",
       "permanent": true
     },
     {
@@ -127,12 +127,12 @@
     },
     {
       "source": "/en/chef-in-villa-1.html",
-      "destination": "/en/experiences/private-chef",
+      "destination": "/en/experiences/chef-in-villa",
       "permanent": true
     },
     {
       "source": "/en/dream-weadding-on-the-beach-1.html",
-      "destination": "/en/experiences/dream-wedding-on-the-beach",
+      "destination": "/en/experiences/dream-weadding-on-the-beach",
       "permanent": true
     },
     {
@@ -152,7 +152,7 @@
     },
     {
       "source": "/en/jet-ski-safari-1.html",
-      "destination": "/en/experiences/water-sports",
+      "destination": "/en/experiences/jet-ski-safari",
       "permanent": true
     },
     {
@@ -217,7 +217,7 @@
     },
     {
       "source": "/en/thalasses-rituals",
-      "destination": "/en/thalasses-rituals",
+      "destination": "/en/weddings",
       "permanent": true
     },
     {
@@ -227,12 +227,12 @@
     },
     {
       "source": "/en/article/1899",
-      "destination": "/en/amenities/sitting-outdoor-area",
+      "destination": "/en/the-estate",
       "permanent": true
     },
     {
       "source": "/en/page/modal/article/1896",
-      "destination": "/en/amenities/private-beach",
+      "destination": "/en/location",
       "permanent": true
     },
     {
@@ -242,12 +242,12 @@
     },
     {
       "source": "/en/page/modal/article/3795",
-      "destination": "/en/amenities/doctor",
+      "destination": "/en/location",
       "permanent": true
     },
     {
       "source": "/en/page/modal/article/3796",
-      "destination": "/en/amenities/babysitter",
+      "destination": "/en/the-estate",
       "permanent": true
     },
     {
@@ -309,7 +309,7 @@
     },
     {
       "from": "/en/property/<id>/albums",
-      "to": "/en/villas/<slug>/gallery` (2142 → `/en/the-estate/gallery`)",
+      "to": "/en/villas/<slug>/gallery` (2142 → `/en/the-estate`)",
       "why": "source is a template or not a literal path"
     },
     {

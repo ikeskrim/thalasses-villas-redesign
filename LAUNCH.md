@@ -11,24 +11,29 @@ the pipeline, not this file and not anyone's memory.
 
 ## Before the day
 
-### 1. Close the redirect gaps — this is the gate
+### 1. The redirect gaps are CLOSED — verify, do not re-derive
 
-`content/redirect-gaps.json` lists every old address that currently points at a
-page which does not exist. **Fifteen at the time of writing.** Each one is a URL
-Google knows about today and will drop after the move.
+**All fifteen were closed in the dress rehearsal (T-299), and `content/redirect-gaps.json` is empty.** The parity certificate reads **Legacy URLs 51 / 51**.
+
+None was closed by building a route to satisfy the map. Every one was repointed at a page that already exists and already carries the content — five `/gallery` sub-pages to their villa or estate page, four `/en/amenities/*` to the estate or location page, five experience slugs to the inventory's own slug, and `/en/thalasses-rituals` to `/en/weddings`.
+
+**That last one was a redirect LOOP, not a 404** — the path was both a source and a target, so it pointed at itself. A 404 loses a page; a loop hangs the browser.
+
+Still run the harness before DNS moves. It is fast, and it is the difference between believing the map and knowing it:
 
 ```bash
 npm run redirects && npx playwright test tests/redirects.spec.ts
 ```
 
-The harness drives every redirect through the built app and asserts its status
-and destination. **It must be green before DNS changes**, and the gap file must
-be empty or consciously accepted line by line.
+It drives every installed redirect through the built app and asserts its status and destination, and it asserts the dead set is **exactly** the tracked set — so a gap cannot be forgotten and a new one cannot appear unnoticed.
 
-Among them is a genuine redirect **loop** — `/en/thalasses-rituals` is both a
-source and a target in the map. A 404 loses one page; a loop hangs the browser.
+**One owner question survives the closure.** It is not a gap, because the redirect resolves; it is a question about whether it resolves to the right page. `/en/jet-ski-safari-1.html` was titled *"Water Sports"* on the legacy site and there is no combined water-sports page in the inventory. It now lands on `/en/experiences/jet-ski-safari`, the nearest real thing. If the legacy page covered more than jet skis, change the destination.
 
-### 2. Decide the eight fragment redirects
+### 2. Decide the fragment and template rows
+
+`npm run redirects` reports these on every run and they are **uninstallable rather than dead** — three fragment sources (a server redirect cannot see a `#hash`) and five template rows that describe a pattern rather than a literal path.
+
+
 
 Eight legacy addresses are anchors on the old single-page homepage
 (`/en/index-1.htm#category571`). **A fragment never reaches the server**, so no
@@ -92,8 +97,31 @@ There is a test for it, but look with your eyes on the live domain.
 
 ### 5. Only now, allow indexing
 
-Edit `src/app/robots.ts`: replace the blanket `disallow: "/"` with your live
-rules. Remove the `noindex` from the comparison-only routes if any remain.
+**This has been rehearsed. It works, and this is exactly what it produces.**
+
+In `src/app/robots.ts`, replace the blanket rule:
+
+```
+    rules: { userAgent: "*", disallow: "/" },
+```
+
+with:
+
+```
+    rules: { userAgent: "*", allow: "/", disallow: ["/styleguide"] },
+```
+
+Rebuild and `curl https://thalasses.com/robots.txt`. It must read exactly:
+
+```
+User-Agent: *
+Allow: /
+Disallow: /styleguide
+
+Sitemap: https://thalasses.com/sitemap.xml
+```
+
+The sitemap already carries **35 URLs, every one of them reachable and none of them a 404** — asserted by `tests/sitemap.spec.ts`, which also asserts that every route on disk is either sitemapped or excluded with a written reason. `/styleguide` is the only exclusion.
 
 Push. Update `DEPLOY.md` in the same commit.
 
