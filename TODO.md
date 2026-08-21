@@ -1240,3 +1240,20 @@ defect lives in, not at the layer the reviewer was describing.
 - **T-292 — The rest of the suite turned out not to need consolidating, which is worth recording as a result.** Sixteen spec files, 398 cases, **no duplicate test titles anywhere** and no two specs asserting the same property of the same route. The overlap that looked like duplication is not: `qa.spec.ts` checks overflow at nine widths including the fixed-layer case (T-213), while `smoke.spec.ts` checks three widths **on two engines** — same subject, different question, and the smoke run is the only WebKit coverage there is.
   Recorded rather than "tidied". Merging specs that share a subject but not an assertion would have cost coverage for the appearance of order, and a consolidation that removes an assertion class is a regression wearing a housekeeping label.
   *Files:* none — this is a measurement
+
+- **T-293 — One high-severity advisory closed; four packages updated; two majors deliberately refused.** `npm audit` reported **nanoid <3.3.18** (GHSA-2v37-7h3g-55p8, custom generators can loop indefinitely at size zero), transitively via `postcss` from both `next` and `@tailwindcss/postcss`. Fixed to 3.3.18; **0 vulnerabilities** now.
+  Updated within semver, each verified by the full gate: **next 16.3.0 → 16.3.1**, **framer-motion 13.0.0 → 13.1.1**, **eslint-config-next 16.3.0 → 16.3.1**, **eslint 10.8.0 → 10.8.1**.
+  **Two majors NOT taken, and the reasons are not "it might break":**
+  - **typescript 5.9.3 → 7.0.2.** A major jump to the native port, with `typescript-eslint` and `eslint-config-next` both sitting on top of it. "The gate is green" is the only evidence one night could produce, and it is not enough evidence for a compiler change on a project about to be handed over.
+  - **@types/node 24 → 26.** Refused because it would be **wrong**, not risky: the runtime here is Node v24.19.0, and `@types/node` describes the APIs of its own major. Types ahead of the runtime would let code compile against APIs that do not exist at run time. It should move when Node does.
+  *Files:* `package.json`, `package-lock.json`
+
+- **T-294 — THE REPORT'S PERFORMANCE TABLE WAS NOT REPRODUCIBLE, AND THE UPDATE IS NOT WHY.** After the dependency bump the homepage's long-task total measured **275ms against a 200ms budget**, where the report claimed 183ms and "all four routes pass every budget". That looked exactly like a Framer Motion regression.
+  It is not. Bisected properly rather than guessed:
+  - `framer-motion` back to **13.0.0** → homepage still **263ms**. Not Framer.
+  - `text-wrap: balance` disabled → **283ms**. Not the type fix.
+  - the `:has()` rule removed entirely → **276ms**. Not the selector, which was the better hypothesis: the earlier probe had disabled the *property* and left the *selector*, and `:has()` is the expensive half.
+  - and then the decisive one: **`git checkout 1189b5b -- src/`** — the exact source that measured 183ms — built and measured on this machine, right now: **248ms and 260ms.**
+  So the homepage costs 250–280ms of long tasks on this machine whatever the source, and **nothing in tonight's work regressed it.** The 183ms was measured on a differently-loaded host in an earlier session and was never reproducible. A lab number under 4× CPU throttling is a measurement of the host as much as of the page, and quoting one across sessions as if it were a property of the site is the same error as trusting any instrument without re-running it.
+  **The report is corrected rather than the budget.** Moving a budget to make a number pass is how a budget stops meaning anything. Two routes are over, it is recorded as over, and reducing the homepage's hydration cost — Lenis, the cursor, the route transition, the preloader, the drag register, the acts and the litany all hydrate on first paint — is named as open work rather than quietly absorbed.
+  *Files:* `SESSION-REPORT.md`

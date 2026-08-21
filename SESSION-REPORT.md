@@ -3,7 +3,7 @@
 **Read this first. It is written at HEAD and updated as each task lands, so it
 is the truthful position — not a plan, not a memory.**
 
-Last updated: after `overnight/25`.
+Last updated: after `overnight/26`.
 
 ---
 
@@ -37,7 +37,7 @@ Last updated: after `overnight/25`.
 | 23 — Redirect verification harness | **DONE** — pulled forward, T-259 |
 | 24 — Content-parity certification | **DONE** — `overnight/24`, falsified |
 | 25 — Suite consolidation | **DONE** — `overnight/25` |
-| 26 — Dependencies & security refresh | **NOT STARTED** |
+| 26 — Dependencies & security refresh | **DONE** — `overnight/26` |
 | 27 — Second taste-audit loop | **NOT STARTED** |
 
 **A correction worth naming.** The previous message closed with "Continuing with
@@ -77,14 +77,23 @@ available. The plumbing is built and flag-gated (`src/lib/locale.ts`).
 
   | route | LCP | CLS | long-task | transfer |
   |---|---|---|---|---|
-  | homepage | 1052ms | 0.001 | 183ms | 426 KB |
-  | villa (104 photos) | 996ms | 0.023 | 137ms | 387 KB |
-  | estate | 1020ms | 0 | 91ms | 390 KB |
-  | experiences | 952ms | 0 | 93ms | 383 KB |
+  | homepage | 1052ms | 0.001 | **275ms — OVER** | 430 KB |
+  | villa (104 photos) | 1076ms | 0.023 | **207ms — OVER** | 391 KB |
+  | estate | 1056ms | 0 | 187ms | 394 KB |
+  | experiences | 944ms | 0 | 120ms | 393 KB |
 
-  Budgets LCP <= 2500ms, CLS <= 0.1, long-task <= 200ms. **All four routes pass
-  every budget.** These are lab numbers against localhost with synthetic
-  throttling — real-field CrUX data will differ, and only field data decides.
+  Budgets LCP <= 2500ms, CLS <= 0.1, long-task <= 200ms. **LCP and CLS pass
+  everywhere with room to spare. Two routes are over the long-task budget.**
+
+  This table previously read 183ms for the homepage and claimed all four routes
+  passed. That number was never reproducible. Bisected rather than guessed
+  (T-294): reverting Framer Motion, disabling `text-wrap: balance`, and removing
+  the `:has()` rule each left it at 263–283ms — and building the **exact source
+  that produced 183ms** on this machine now gives 248ms. The host, not the page.
+
+  **The budget was not moved to make the number pass.** A lab figure under 4×
+  CPU throttling measures the machine as much as the site; only field CrUX data
+  decides. Reducing the homepage's hydration cost is named as open work below.
 - **Evidence lives outside the gate.** `npm run capture` (walkthrough stills and
   video), `npm run capture:composites` (the pinned acts, Eeanthe/Pueblo side by
   side, the nav in both states), `npm run taste`, `npm run coverage`,
@@ -235,6 +244,21 @@ so a register rule can no longer beat a component rule by import order. All
 three specificity patches were then **deleted**, and the contrast guard still
 passes on eight routes — the layer order is what holds the colours, not the
 patches. (T-253, CONVENTIONS §16.)
+
+---
+
+## Open engineering work, named rather than absorbed
+
+- **The homepage hydrates too much on first paint.** Lenis, the contextual
+  cursor, the route transition, the preloader, the drag register, the acts and
+  the litany are all client components mounted at load, and together they cost
+  250–280ms of long tasks at mobile settings. Nothing is broken and nothing
+  regressed; it is simply more main-thread work than the budget allows, and the
+  fix is deferral or reduction, not a larger budget.
+- **46 registry facts still reach no page** — `qa/coverage/REGISTRY-COVERAGE.md`
+  lists each one. Most are legacy prose the copy pass replaced deliberately.
+- **15 redirect targets do not resolve**, one of them a loop. The pre-DNS gate
+  in `LAUNCH.md` §1.
 
 ---
 
