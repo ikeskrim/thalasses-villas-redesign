@@ -3,7 +3,7 @@
 **Read this first. It is written at HEAD and updated as each task lands, so it
 is the truthful position — not a plan, not a memory.**
 
-Last updated: after `overnight/27`.
+Last updated: after `overnight/28`.
 
 ---
 
@@ -39,6 +39,7 @@ Last updated: after `overnight/27`.
 | 25 — Suite consolidation | **DONE** — `overnight/25` |
 | 26 — Dependencies & security refresh | **DONE** — `overnight/26` |
 | 27 — Second taste-audit loop | **DONE** — `overnight/27` |
+| 28 — Greek pass | **DONE** — `overnight/28`; the premise did not hold, see below |
 
 **A correction worth naming.** The previous message closed with "Continuing with
 Task 3." That was intent, not work: the turn ended before any of it happened, and
@@ -53,7 +54,8 @@ than to someone else's.
 `/en/experiences` + 21 detail pages · `/en/weddings` · `/en/location` ·
 `/en/careers` · `/en/contact` · `/en/terms` · `/styleguide`
 
-`/el` deliberately does **not** exist and is asserted to 404 — the legacy site is
+`/el` deliberately does **not** exist, and `TRANSLATION-BRIEF.md` (1,123
+strings, 7,630 words) is what a translator would need to quote for it and is asserted to 404 — the legacy site is
 English-only, so there is no Greek copy to ship and inventing it is not
 available. The plumbing is built and flag-gated (`src/lib/locale.ts`).
 

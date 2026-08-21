@@ -29,7 +29,8 @@
     "coverage": "node scripts/registry-coverage.mjs",
     "chh": "node scripts/extract-chh.mjs",
     "parity": "node scripts/parity-certificate.mjs",
-    "capture:composites": "node scripts/capture-composites.mjs"
+    "capture:composites": "node scripts/capture-composites.mjs",
+    "brief": "node scripts/translation-brief.mjs"
   },
   "dependencies": {
     "framer-motion": "^13.1.1",
