@@ -125,3 +125,28 @@ qa/coverage/coverage.json
 # Link-crawl evidence. The markdown report is the readable record; the machine
 # mirror regenerates with `npm run crawl`.
 qa/crawl/crawl.json
+
+# ---------------------------------------------------------------------------
+# EVIDENCE THAT REGENERATES, AND EVIDENCE THAT IS SPENT.
+#
+# A rule rather than a list of exceptions (T-302):
+#
+#   REGENERABLE evidence does not belong in git. `npm run capture`,
+#   `npm run capture:composites` and `npm run taste` rebuild it in minutes from
+#   the source that is committed, and carrying it doubles the repository for
+#   pictures anyone can make again.
+#
+#   SPENT evidence does not belong in git either. The A/B/C bake-off screenshots
+#   recorded a decision the owner has since made — Direction D — and the
+#   decision itself lives in the documents.
+#
+#   DECISION evidence STAYS: qa/greek-face (the T-189 verdict the owner has not
+#   ruled on yet), qa/curation (frames awaiting an owner ruling), and every
+#   markdown report. Small, and each one is waiting on a person.
+# ---------------------------------------------------------------------------
+qa/video/
+qa/acts/
+qa/phase3/
+qa/directions/
+qa/direction-d/
+qa/directive/

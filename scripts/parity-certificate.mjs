@@ -107,12 +107,18 @@ const shortfalls = [];
     ? fs.readdirSync(path.join(ROOT, "public", "images", "_chh")).length
     : 0;
   const excluded = readJson(CONTENT, "excluded-images.json");
+  const aliasCount = exists(CONTENT, "image-aliases.json")
+    ? Object.keys(readJson(CONTENT, "image-aliases.json").aliases ?? {}).length
+    : 0;
   sections.push({
     title: "Photography",
     have: pool + chh,
     total: pool + chh,
     detail: [
       `${pool} frames re-hosted from the Loggia CDN, ${chh} from the partner's library — **nothing is hotlinked**.`,
+      aliasCount
+        ? `**This count fell by ${aliasCount} and nothing was lost.** The legacy CDN served the same photograph under many hashes — one of them under ten — and the duplicates were byte-identical. ${aliasCount} addresses now resolve to a shared file through \`content/image-aliases.json\`; \`content/\` was not rewritten, so the Phase 0 record of which URL served which frame is intact (T-301).`
+        : "No duplicate addresses.",
       `${excluded.length} frames are deliberately ruled off and cannot render anywhere: \`localImage()\` returns null for them (T-185).`,
       "Every exclusion carries a written reason in `content/excluded-images.json`.",
     ],

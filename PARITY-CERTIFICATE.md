@@ -16,12 +16,12 @@ answers whether that held.
 | Villas and venues | 7 | 7 | complete |
 | Experiences | 21 | 21 | complete |
 | Legacy text captures | 42 | 42 | complete |
-| Photography | 862 | 862 | complete |
+| Photography | 704 | 704 | complete |
 | Legacy URLs | 51 | 51 | complete |
 | Registry facts on a page | 145 | 191 | **46 outstanding** |
 
 **There is no single overall percentage here on purpose.** Summing the domains
-gives 1128 of 1174, which reads as 96.1% — and 862 of those
+gives 970 of 1016, which reads as 95.5% — and 862 of those
 items are photographs, every one of them present, so the aggregate drowns
 46 real gaps in a sea of
 JPEGs. A number that cannot get worse when a redirect breaks is not a
@@ -54,9 +54,10 @@ measurement of parity.
 - 42 legacy pages captured in `content/text/` and retained in the repository.
 - Their prose was reorganised by the Direction D copy pass, not deleted — the captures remain the source of record.
 
-## Photography — 862 of 862
+## Photography — 704 of 704
 
-- 694 frames re-hosted from the Loggia CDN, 168 from the partner's library — **nothing is hotlinked**.
+- 537 frames re-hosted from the Loggia CDN, 167 from the partner's library — **nothing is hotlinked**.
+- **This count fell by 159 and nothing was lost.** The legacy CDN served the same photograph under many hashes — one of them under ten — and the duplicates were byte-identical. 159 addresses now resolve to a shared file through `content/image-aliases.json`; `content/` was not rewritten, so the Phase 0 record of which URL served which frame is intact (T-301).
 - 10 frames are deliberately ruled off and cannot render anywhere: `localImage()` returns null for them (T-185).
 - Every exclusion carries a written reason in `content/excluded-images.json`.
 

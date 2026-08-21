@@ -3,7 +3,7 @@
 **Read this first. It is written at HEAD and updated as each task lands, so it
 is the truthful position — not a plan, not a memory.**
 
-Last updated: after `overnight/29`.
+Last updated: after `overnight/30`.
 
 ---
 
@@ -41,6 +41,7 @@ Last updated: after `overnight/29`.
 | 27 — Second taste-audit loop | **DONE** — `overnight/27` |
 | 28 — Greek pass | **DONE** — `overnight/28`; the premise did not hold, see below |
 | 29 — Launch dress rehearsal | **DONE** — `overnight/29`; all 15 redirect gaps closed |
+| 30 — Media & repo weight | **DONE** — `overnight/30`; 471 MB → 304 MB tracked |
 
 **A correction worth naming.** The previous message closed with "Continuing with
 Task 3." That was intent, not work: the turn ended before any of it happened, and
@@ -68,7 +69,7 @@ available. The plumbing is built and flag-gated (`src/lib/locale.ts`).
 
 - **Pipeline:** auto-deploys on every push to `main`, team `domisi`,
   protection off, `noindex` on by design. See `DEPLOY.md`.
-- **Tests:** **403 passing, 1 skipped**, run as three shards (`npm run qa`), which
+- **Tests:** **414 passing, 1 skipped**, run as three shards (`npm run qa`), which
   covers **both engines** — Chromium for everything, and WebKit 26.5 for a
   fourteen-test smoke run (`npm run qa:webkit`). Scan, typecheck
   and lint clean at HEAD — **lint was not, until this task**: two React
@@ -121,6 +122,26 @@ available. The plumbing is built and flag-gated (`src/lib/locale.ts`).
 | Villa page spends one dark interlude, on the generosity list | D permits one or two per page; the template had none and read flat over a long scroll |
 | Estate figures moved to the shared `Ledger` | The estate and the villas now print figures through one component instead of two |
 | Scroll odometer retired | A gadget; D's brief is explicit that confidence comes from timing and whitespace |
+
+---
+
+### Weight
+
+**471 MB → 304 MB tracked.** `npm run weight` measures it from what git tracks,
+not from what is on disk.
+
+- **104.6 MB of byte-identical duplicate photographs removed.** The legacy CDN
+  served the same frame under many hashes — one under ten. `content/` was NOT
+  rewritten to a canonical hash: that a photograph was published under ten URLs
+  is a fact about the old site. The record stays, the bytes went, and every
+  legacy address resolves through `content/image-aliases.json` (T-301).
+- **62 MB of evidence left git**, on a rule rather than a list: regenerable
+  evidence and spent evidence are not committed; evidence waiting on an owner
+  ruling is (T-302).
+- **The packed history is unchanged**, and deliberately so. Shallow clones — what
+  a Vercel build does — get the smaller tree today. Removing the old blobs needs
+  a history rewrite, which breaks every existing clone of a public repository
+  (T-303).
 
 ---
 

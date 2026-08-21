@@ -1292,3 +1292,22 @@ defect lives in, not at the layer the reviewer was describing.
   Flipped it for real, built, served, read `robots.txt`, and reverted. The runbook now carries **the exact two lines to change and the exact output they produce**, so on the day nobody is composing a robots rule under pressure against a live domain.
   Verified in the same pass: the sitemap carries **35 URLs, every one reachable, none a 404**, and the comparison routes `/a`, `/b`, `/c` and `/choose` are gone — 404, absent from the sitemap, and unreachable from any page.
   *Files:* `LAUNCH.md`, `scripts/link-crawl.mjs`
+
+- **T-301 — The legacy CDN served one photograph under ten names. 104.6 MB of byte-identical duplicates.** 872 files in `public/images` and **713 of them distinct** — 64 duplicate groups, 159 redundant files, in a repository that was 445 MB packed.
+  The obvious fix — rewrite every reference to a canonical hash and delete the rest — would edit `content/`, and **`content/` is the Phase 0 record of what the legacy site served.** That a photograph was published under ten URLs is itself a fact about the old site. This project does not edit the record to tidy the repository.
+  So the record stays and the bytes go: `npm run dedupe` writes `content/image-aliases.json`, `localImage()` consults it, and the redundant files are deleted. Every legacy address still resolves — through the resolver rather than through a duplicate file. The canonical file in each group is chosen by sorted name, so the map is identical on every machine and every run.
+  **The alias is applied LAST, after the blocked check.** Otherwise a ruled-off frame could be reached through one of its duplicate addresses — T-185 for a third time, through a door nobody thought to lock.
+  `tests/images.spec.ts` guards it from both ends: every alias target exists, no alias chains or points at itself, no deleted duplicate has come back, and — checked against the **rendered pages** on nine routes, with everything scrolled into view — no image request 404s and every `/images/` src fetches 200. A resolver returning a tidy path to nothing would satisfy any check that only reads JSON.
+  *Files:* `scripts/dedupe-images.mjs`, `content/image-aliases.json`, `src/lib/content.ts`, `tests/images.spec.ts`
+
+- **T-302 — 62 MB of evidence was in git, and evidence now follows a rule instead of a habit.** Three rules, not a list of exceptions:
+  **Regenerable evidence is not committed.** `npm run capture`, `npm run capture:composites` and `npm run taste` rebuild the walkthrough stills, the videos, the composites and the audit in minutes from committed source. Carrying them doubled the repository for pictures anyone can remake — `qa/video` alone was 25 MB of `.webm`.
+  **Spent evidence is not committed.** `qa/directions` and `qa/direction-d`, 19 MB of A/B/C bake-off screenshots, recorded a decision the owner has since made. The decision lives in the documents.
+  **Decision evidence stays.** `qa/greek-face` (the T-189 verdict nobody has ruled on), `qa/curation` (frames awaiting an owner ruling), and every markdown report. Small, and each one is waiting on a person.
+  Tracked `qa/` falls from **66 MB to 3.6 MB**. With the dedupe, the tracked tree goes from **471 MB to 304 MB**.
+  *Files:* `.gitignore`
+
+- **T-303 — And the honest limit of all of it.** Untracking a file and deleting a duplicate shrink the **working tree** and every shallow clone — which is what a Vercel build does. They do **not** shrink the packed history: git still holds the old blobs, and only a history rewrite would remove them.
+  **History is deliberately not being rewritten.** The repository is public and pushed, a rewrite breaks every existing clone, and this project has already done one under duress during the credential incident. The cost of carrying the old blobs is paid once per full clone; the cost of a second rewrite is paid by everyone who has the repository now. `MEDIA-WEIGHT.md` says so rather than quietly reporting the smaller number.
+  The parity certificate's photography row fell from 862 to 704 in the same commit, and its **staleness guard caught it immediately** (T-290) — which is what that guard was written for. The certificate now explains the drop in place, so a reader cannot mistake 158 removed duplicates for 158 lost photographs.
+  *Files:* `scripts/media-weight.mjs`, `MEDIA-WEIGHT.md`, `scripts/parity-certificate.mjs`
