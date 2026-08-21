@@ -3,7 +3,7 @@
 **Read this first. It is written at HEAD and updated as each task lands, so it
 is the truthful position — not a plan, not a memory.**
 
-Last updated: after `overnight/24`.
+Last updated: after `overnight/25`.
 
 ---
 
@@ -36,7 +36,7 @@ Last updated: after `overnight/24`.
 | 22 — Villa pages deepened | **DONE** — `overnight/22` |
 | 23 — Redirect verification harness | **DONE** — pulled forward, T-259 |
 | 24 — Content-parity certification | **DONE** — `overnight/24`, falsified |
-| 25 — Suite consolidation | **NOT STARTED** |
+| 25 — Suite consolidation | **DONE** — `overnight/25` |
 | 26 — Dependencies & security refresh | **NOT STARTED** |
 | 27 — Second taste-audit loop | **NOT STARTED** |
 
@@ -65,8 +65,8 @@ available. The plumbing is built and flag-gated (`src/lib/locale.ts`).
 
 - **Pipeline:** auto-deploys on every push to `main`, team `domisi`,
   protection off, `noindex` on by design. See `DEPLOY.md`.
-- **Tests:** **369 passing, 1 skipped**, run as three shards (`npm run qa`), which
-  now covers **both engines** — Chromium for everything, and WebKit 26.5 for a
+- **Tests:** **398 passing, 1 skipped**, run as three shards (`npm run qa`), which
+  covers **both engines** — Chromium for everything, and WebKit 26.5 for a
   fourteen-test smoke run (`npm run qa:webkit`). Scan, typecheck
   and lint clean at HEAD — **lint was not, until this task**: two React
   correctness errors had arrived with an earlier commit while this line still
@@ -85,6 +85,12 @@ available. The plumbing is built and flag-gated (`src/lib/locale.ts`).
   Budgets LCP <= 2500ms, CLS <= 0.1, long-task <= 200ms. **All four routes pass
   every budget.** These are lab numbers against localhost with synthetic
   throttling — real-field CrUX data will differ, and only field data decides.
+- **Evidence lives outside the gate.** `npm run capture` (walkthrough stills and
+  video), `npm run capture:composites` (the pinned acts, Eeanthe/Pueblo side by
+  side, the nav in both states), `npm run taste`, `npm run coverage`,
+  `npm run parity`. None of them is a test: a screenshot proves nothing about
+  behaviour, and until T-291 two of these were in the suite, dirtying the tree
+  on every run.
 - **Evidence:** `qa/walkthrough/` stills and `qa/video/` clips, produced by
   `npm run capture`. **Partial at this commit** — 12 of 24 route/width
   combinations; the run exceeded its process budget partway. Re-run the command

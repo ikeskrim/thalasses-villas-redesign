@@ -28,7 +28,8 @@
     "qa:webkit": "playwright test --project=webkit",
     "coverage": "node scripts/registry-coverage.mjs",
     "chh": "node scripts/extract-chh.mjs",
-    "parity": "node scripts/parity-certificate.mjs"
+    "parity": "node scripts/parity-certificate.mjs",
+    "capture:composites": "node scripts/capture-composites.mjs"
   },
   "dependencies": {
     "framer-motion": "^13.0.0",
