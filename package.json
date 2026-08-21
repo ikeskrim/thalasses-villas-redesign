@@ -25,7 +25,9 @@
     "perf": "node scripts/perf.mjs",
     "taste": "node scripts/taste-audit.mjs",
     "look": "node scripts/look.mjs",
-    "qa:webkit": "playwright test --project=webkit"
+    "qa:webkit": "playwright test --project=webkit",
+    "coverage": "node scripts/registry-coverage.mjs",
+    "chh": "node scripts/extract-chh.mjs"
   },
   "dependencies": {
     "framer-motion": "^13.0.0",

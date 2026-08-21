@@ -13,7 +13,7 @@ import { HOTSPOTS } from "@/app/home-data";
 import { estateCta } from "@/lib/booking";
 import { getEstate, getEstateVillas, getSite } from "@/lib/content";
 import { byN } from "@/lib/selects";
-import { squareFeet, stayIncludes } from "@/lib/villa-page";
+import { practicalNotes, squareFeet, stayIncludes, villaServices } from "@/lib/villa-page";
 import { alternatesFor } from "@/lib/locale";
 import { CHH_MARK, partnerPolicies, recoveredFromPartner } from "@/lib/chh";
 import { Draft } from "@/components/sections/PageShell";
@@ -103,6 +103,37 @@ export default function EstatePage() {
   /* Recovered partner material, resolved once — see src/lib/chh.ts. */
   const recovered = recoveredFromPartner();
   const policies = partnerPolicies();
+  /*
+   * Each house's own contents, keyed by name. `includedVillas` names five
+   * houses; `getEstateVillas()` returns the four in the collection, so a lookup
+   * rather than a zip — an index-based pairing would silently describe Melia
+   * with Eeanthe's bathroom the day the two lists diverge in order, and they
+   * already differ in both order and length.
+   */
+  const included = Object.fromEntries(
+    (estate.includedVillas ?? []).map((v) => [v.name, v.description])
+  ) as Record<string, string | null>;
+
+  /* The estate's OWN registry facts, which are a different thing entirely. */
+  const notes = practicalNotes(estate);
+  const services = villaServices(estate);
+
+  /* Same derived spine as the villa template, and for the same reason: two of
+     these beats are conditional and a typed number is a claim about all the
+     others. (T-285, CONVENTIONS §14.) */
+  const hasPractical = notes.length > 0 || services.length > 0;
+  const spine = [
+    "hero",
+    "asone",
+    "houses",
+    "map",
+    "outdoors",
+    ...(hasPractical ? ["practical"] : []),
+    ...(recovered.length > 0 ? ["partner"] : []),
+    "rooms",
+    "enquire",
+  ];
+  const beat = (name: string) => String(spine.indexOf(name) + 1).padStart(2, "0");
 
   const runImages = estate.gallery.featured.length
     ? estate.gallery.featured.map((f) => ({ url: f.image, caption: f.caption }))
@@ -125,7 +156,7 @@ export default function EstatePage() {
           className="d-villa-hero"
         >
           <div className="canon clause-field" style={{ padding: 0 }}>
-            <p className="micro d-eyebrow">01 — The Entire Estate</p>
+            <p className="micro d-eyebrow">{beat("hero")} — The Entire Estate</p>
             <Clause gerund="Gathering" tail="All four, one gate" scale="c1" animate as="h1" />
           </div>
         </Field>
@@ -138,7 +169,7 @@ export default function EstatePage() {
           </span>
           <div className="canon">
             <Reveal>
-              <p className="micro">02 — Taken as one house</p>
+              <p className="micro">{beat("asone")} — Taken as one house</p>
               <p className="d-numbers-lede">
                 Four villas behind a single gate, {FACTS.distanceToBeach} from the water, with a
                 table that seats {FACTS.diningSeats} under the evening sun.
@@ -167,7 +198,7 @@ export default function EstatePage() {
         {/* ------------------------------------------- 03 THE FOUR HOUSES -- */}
         <section className="canon d-estate-detail">
           <Reveal>
-            <p className="micro">03 — The four houses</p>
+            <p className="micro">{beat("houses")} — The four houses</p>
             <p className="d-villa-lede">
               Each has its own pool, its own terrace and its own front door. Together they are one
               address, and one arrival.
@@ -182,6 +213,17 @@ export default function EstatePage() {
                     <span className="caption tabular d-estate-villa-spec">
                       {v.specs.bedrooms} bd · {v.specs.bathrooms} ba · sleeps {v.specs.maxGuests}
                     </span>
+                    {/*
+                      What is actually IN each house — the registry has carried
+                      this for every villa since Phase 0 and the estate page
+                      showed only the three figures. Someone taking the whole
+                      place wants to know which house has the Jacuzzi and which
+                      has the shower cabin, and the answer was already written
+                      down. (T-285.)
+                    */}
+                    {included[v.name] ? (
+                      <span className="small d-estate-villa-detail">{included[v.name]}</span>
+                    ) : null}
                   </Link>
                 </li>
               ))}
@@ -197,13 +239,13 @@ export default function EstatePage() {
           ledger={figures.slice(0, 5)}
           ctaLabel={cta.label}
           ctaHref={cta.href}
-          beat="04"
+          beat={beat("map")}
         />
 
         {/* -------------------------------------------------- 05 OUTDOORS -- */}
         <section className="canon d-estate-lists">
           <Reveal>
-            <p className="micro">05 — Outdoors</p>
+            <p className="micro">{beat("outdoors")} — Outdoors</p>
             <ul className="small d-estate-list">
               {OUTDOOR.map((o) => (
                 <li key={o}>{o}</li>
@@ -226,7 +268,38 @@ export default function EstatePage() {
           </Reveal>
         </section>
 
-        {/* --------------------------------- 06 RECOVERED FROM THE PARTNER -- */}
+        {/* -------------------------------------------- 06 GOOD TO KNOW -- */}
+        {/* The estate's own registry facts — not the partner's. See T-285. */}
+        {hasPractical ? (
+          <section className="canon d-practical">
+            <Reveal>
+              <p className="micro">{beat("practical")} — Good to know</p>
+              {notes.length ? (
+                <ul className="small d-practical-list">
+                  {notes.map((n) => (
+                    <li key={n}>{n}</li>
+                  ))}
+                </ul>
+              ) : null}
+            </Reveal>
+            {services.length ? (
+              <Reveal index={1} className="d-services">
+                <p className="micro">Arranged on request</p>
+                <ul className="small d-services-list">
+                  {services.map((sv) => (
+                    <li key={sv}>{sv}</li>
+                  ))}
+                </ul>
+                <p className="caption d-services-note">
+                  Arranged by the house and charged separately — distinct from what your stay
+                  includes.
+                </p>
+              </Reveal>
+            ) : null}
+          </section>
+        ) : null}
+
+        {/* --------------------------------- 07 RECOVERED FROM THE PARTNER -- */}
         {/*
           Content the site has never carried, recovered from the Phase 0 capture
           of the manager's own page about this property (T-282).
@@ -245,7 +318,7 @@ export default function EstatePage() {
         {recovered.length > 0 ? (
           <section className="canon d-estate-lists">
             <Reveal>
-              <p className="micro">06 — Also on the property</p>
+              <p className="micro">{beat("partner")} — Also on the property</p>
               <ul className="d-recovered-list">
                 {recovered.map((r) => (
                   <li key={r.key}>
@@ -268,17 +341,17 @@ export default function EstatePage() {
           </section>
         ) : null}
 
-        {/* -------------------------------------------------- 07 THE ROOMS - */}
+        {/* -------------------------------------------------- 08 THE ROOMS - */}
         <div className="canon d-villa-mark">
-          <p className="micro">07 — The rooms</p>
+          <p className="micro">{beat("rooms")} — The rooms</p>
           <div className="datum-rule" />
         </div>
         <TheRun images={runImages} villaName="The Entire Estate" />
 
-        {/* --------------------------------------------------- 08 ENQUIRE -- */}
+        {/* --------------------------------------------------- 09 ENQUIRE -- */}
         <section className="canon d-estate-close">
           <Reveal>
-            <p className="micro">08 — The whole estate</p>
+            <p className="micro">{beat("enquire")} — The whole estate</p>
             <div className="clause-field d-statement-clause">
               <Clause gerund="Taking" tail="The whole place, one party" scale="c2" as="h2" />
             </div>

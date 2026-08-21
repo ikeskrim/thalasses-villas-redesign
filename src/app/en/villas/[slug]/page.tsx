@@ -21,7 +21,14 @@ import {
   localImage,
 } from "@/lib/content";
 import { buildInventory } from "@/lib/inventory";
-import { VILLA_PAGE_COPY, detailRows, specStrip, stayIncludes } from "@/lib/villa-page";
+import {
+  VILLA_PAGE_COPY,
+  detailRows,
+  practicalNotes,
+  specStrip,
+  stayIncludes,
+  villaServices,
+} from "@/lib/villa-page";
 import type { Villa } from "@/types/content";
 import { alternatesFor } from "@/lib/locale";
 
@@ -148,6 +155,34 @@ export default async function VillaPage({ params }: { params: Promise<{ slug: st
       ? villa.gallery.featured.map((f) => ({ url: f.image, caption: f.caption }))
       : villa.gallery.allImages.map((u) => ({ url: u, caption: null }));
 
+  const notes = practicalNotes(villa);
+  const services = villaServices(villa);
+
+  /*
+   * THE SPINE IS DERIVED, NOT TYPED.
+   *
+   * Beat numbers were written into the JSX, and the moment a beat became
+   * conditional the numbering broke: Villa Pueblo has no policies and no
+   * services in its registry, so "05 — Good to know" did not render and the
+   * page counted 01, 02, 03, 04, 06, 07. The gapless-spine guard (T-221) caught
+   * it on the first run, which is exactly what it exists for.
+   *
+   * A number typed next to a section is a claim about every OTHER section, and
+   * no one edits all of them. So the sections that can vary are declared here,
+   * in order, and their numbers fall out of what survives. (CONVENTIONS §14.)
+   */
+  const hasPractical = notes.length > 0 || services.length > 0;
+  const spine = [
+    "hero",
+    "house",
+    "rooms",
+    "inventory",
+    ...(hasPractical ? ["practical"] : []),
+    "detail",
+    "others",
+  ];
+  const beat = (name: string) => String(spine.indexOf(name) + 1).padStart(2, "0");
+
   const others = COLLECTION_VILLA_IDS.filter((k) => k !== key).map((k) => {
     const v = getVilla(k);
     return { villa: v, src: localImage(v.gallery.heroImage), copy: VILLA_PAGE_COPY[k]! };
@@ -170,7 +205,7 @@ export default async function VillaPage({ params }: { params: Promise<{ slug: st
           className="d-villa-hero"
         >
           <div className="canon clause-field" style={{ padding: 0 }}>
-            <p className="micro d-eyebrow">01 — {villa.name}</p>
+            <p className="micro d-eyebrow">{beat("hero")} — {villa.name}</p>
             <Clause gerund={copy.gerund} tail={copy.tail} scale="c1" animate as="h1" />
           </div>
         </Field>
@@ -180,7 +215,7 @@ export default async function VillaPage({ params }: { params: Promise<{ slug: st
             cells — no dashes, no placeholders. (T-212.) */}
         <section className="canon d-spec">
           <Reveal>
-            <p className="micro">02 — The house</p>
+            <p className="micro">{beat("house")} — The house</p>
             <ul className="d-spec-strip">
               {specs.map((s) => (
                 <li
@@ -233,7 +268,7 @@ export default async function VillaPage({ params }: { params: Promise<{ slug: st
 
         {/* ---------------------------------------------- 03 THE GALLERY -- */}
         <div className="canon d-villa-mark">
-          <p className="micro">03 — The rooms</p>
+          <p className="micro">{beat("rooms")} — The rooms</p>
           <div className="datum-rule" />
         </div>
         <TheRun images={runImages} villaName={villa.name} />
@@ -242,7 +277,7 @@ export default async function VillaPage({ params }: { params: Promise<{ slug: st
         {/* The Aman split. Hard features on the left, what you are given on
             the right — the second list reads as generosity only because
             everything in it is verified. */}
-        <Inventory data={inventory} villaName={villa.name} beat="04" />
+        <Inventory data={inventory} villaName={villa.name} beat={beat("inventory")} />
 
         <section className="canon d-includes">
           <Reveal>
@@ -258,10 +293,57 @@ export default async function VillaPage({ params }: { params: Promise<{ slug: st
           </Reveal>
         </section>
 
-        {/* ------------------------------------------ 05 THE STORY BEATS -- */}
+        {/* ---------------------------- 05 THE PRACTICAL NOTES + SERVICES -- */}
+        {/*
+          Registry facts that reached no page until T-285. `policies` and
+          `amenityFacts` have been in `content/villas/*.json` since Phase 0 —
+          the pool alarm, the week's notice for pool heating, that the twin beds
+          convert — and one of them is a PRICE, 35€ a day, the only price
+          anywhere in this inventory.
+
+          Villas whose own registry states the figure print the figure; the
+          others print what theirs says. No villa borrows another's number.
+          (T-212 discipline: fewer cells, never a placeholder.)
+
+          Services are their own list and NOT part of "your stay includes",
+          which stays at the three registry inclusions permanently (T-245). A
+          cook and a babysitter are arranged and charged; putting them in the
+          same list would imply they are free — the exact error breakfast
+          nearly made.
+        */}
+        {hasPractical ? (
+          <section className="canon d-practical">
+            <Reveal>
+              <p className="micro">{beat("practical")} — Good to know</p>
+              {notes.length ? (
+                <ul className="small d-practical-list">
+                  {notes.map((n) => (
+                    <li key={n}>{n}</li>
+                  ))}
+                </ul>
+              ) : null}
+            </Reveal>
+            {services.length ? (
+              <Reveal index={1} className="d-services">
+                <p className="micro">Arranged on request</p>
+                <ul className="small d-services-list">
+                  {services.map((sv) => (
+                    <li key={sv}>{sv}</li>
+                  ))}
+                </ul>
+                <p className="caption d-services-note">
+                  Arranged by the house and charged separately — distinct from what your stay
+                  includes.
+                </p>
+              </Reveal>
+            ) : null}
+          </section>
+        ) : null}
+
+        {/* ------------------------------------------ 06 THE STORY BEATS -- */}
         <section className="canon d-beats">
           <Reveal>
-            <p className="micro">05 — {villa.name}, in detail</p>
+            <p className="micro">{beat("detail")} — {villa.name}, in detail</p>
           </Reveal>
           {copy.beats.map((b, i) => (
             <Reveal key={b.title} index={i} className="d-beat">
@@ -272,10 +354,10 @@ export default async function VillaPage({ params }: { params: Promise<{ slug: st
           ))}
         </section>
 
-        {/* --------------------------------------------- 06 CROSS-SELL ---- */}
+        {/* --------------------------------------------- 07 CROSS-SELL ---- */}
         <section className="canon d-others">
           <Reveal>
-            <p className="micro">06 — The other houses</p>
+            <p className="micro">{beat("others")} — The other houses</p>
           </Reveal>
           <ul className="d-others-grid">
             {others.map((o) => (

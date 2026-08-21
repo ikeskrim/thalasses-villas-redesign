@@ -272,3 +272,94 @@ export function detailRows(villa: Villa): { label: string; value: string }[] {
     { label: "The beach", value: s.distanceToBeach },
   ].filter((d): d is { label: string; value: string } => Boolean(d.value));
 }
+
+/**
+ * THE PRACTICAL NOTES — a villa's own policies, amenity facts and services.
+ *
+ * All three have been in `content/villas/*.json` since Phase 0 and none of them
+ * reached a page. `scripts/registry-coverage.mjs` found them by asking a
+ * simpler question than anyone had asked before: of every fact in the registry,
+ * which ones appear in the rendered text? The answer was 108 of 191.
+ *
+ * Among the missing: the pool alarm, the one-week notice for pool heating, that
+ * the twin beds convert to doubles — and a **price**, 35€ per day for pool
+ * heating, which is the only price anywhere in this inventory and had never
+ * been printed.
+ *
+ * DEDUPLICATION IS THE WHOLE DIFFICULTY. The capture recorded the same policy
+ * two or three times per villa in slightly different words, because the legacy
+ * site said it in more than one place:
+ *
+ *   "The swimming pool can be heated with an additional charge per day…"
+ *   "The swimming pool can be heated with additional 35€ per day…"
+ *
+ * Printing both reads as a mistake. Choosing between them cannot be a
+ * judgement call made per villa, so it is a rule: lines that say the same thing
+ * once numbers and punctuation are stripped are one line, and the survivor is
+ * the one that CARRIES A FIGURE. Specific beats vague, always, and the rule is
+ * the same for every villa so no villa can be quietly edited.
+ */
+export function practicalNotes(villa: Villa): string[] {
+  const raw = [...(villa.policies ?? []), ...((villa as { amenityFacts?: string[] }).amenityFacts ?? [])]
+    .map((s) => String(s).trim())
+    .filter(Boolean)
+    /* The capture wrapped one line in parentheses because the legacy page did;
+       it is a sentence, not an aside, and reads as an aside on a luxury page. */
+    .map((s) => s.replace(/^\((.*)\)$/, "$1").replace(/^Please note that\s+/i, "").trim())
+    /* The capture preserved a double space in one villa's line. */
+    .map((s) => s.replace(/\s+/g, " "))
+    .map((s) => s.charAt(0).toUpperCase() + s.slice(1));
+
+  const byMeaning = new Map<string, string>();
+  for (const line of raw) {
+    const key = line
+      .toLowerCase()
+      .replace(/[0-9]+/g, "")
+      .replace(/[€$£]/g, "")
+      .replace(/[^a-z ]/g, "")
+      /*
+       * `charge` is in this list for a reason. The vague variant says "an
+       * additional charge per day" and the specific one says "additional 35€
+       * per day" — the FIGURE REPLACES THE WORD, so leaving `charge` in the key
+       * keeps the two apart and prints both, which reads as a mistake.
+       */
+      .replace(
+        /\b(a|an|the|with|per|upon|request|additional|daily|day|charge|charges|cost|price|extra)\b/g,
+        ""
+      )
+      .replace(/\s+/g, " ")
+      .trim();
+    const existing = byMeaning.get(key);
+    if (!existing) {
+      byMeaning.set(key, line);
+      continue;
+    }
+    /* Specific beats vague: keep whichever states a figure. */
+    const hasFigure = (t: string) => /[0-9]/.test(t);
+    if (hasFigure(line) && !hasFigure(existing)) byMeaning.set(key, line);
+  }
+  return [...byMeaning.values()];
+}
+
+/**
+ * The services a villa's registry names. Six across the collection, none of
+ * them on any page until now.
+ *
+ * These are NOT "your stay includes" — that list is the three registry
+ * inclusions and stays at three permanently (T-245, owner-confirmed). A cook
+ * and a babysitter are arranged and charged; conflating the two lists would
+ * imply the second is free, which is exactly the error breakfast nearly made.
+ */
+export function villaServices(villa: Villa): string[] {
+  const seen = new Set<string>();
+  const out: string[] = [];
+  for (const s of villa.services ?? []) {
+    const name = String((s as { name?: string }).name ?? "").trim();
+    if (!name) continue;
+    const key = name.toLowerCase();
+    if (seen.has(key)) continue;
+    seen.add(key);
+    out.push(name);
+  }
+  return out;
+}

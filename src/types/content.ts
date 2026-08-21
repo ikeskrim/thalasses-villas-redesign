@@ -153,8 +153,19 @@ export interface Villa {
   relatedExperiences: string[];
   /** Owner-confirmed facts added in Phase 3, e.g. twin-to-double conversion. */
   amenityFacts?: string[];
-  /** 2142 only. */
-  includedVillas?: string[];
+  /**
+   * 2142 only — what each house in the estate actually contains.
+   *
+   * This was typed `string[]` and the registry has always held objects. It
+   * never failed because nothing read it: the estate page showed three figures
+   * per house and none of the prose. A type that describes data nobody consumes
+   * is unverified by definition, and this one was wrong from the start. (T-285.)
+   *
+   * Five entries, not four — Villa Pueblo is named here and is not part of the
+   * four-villa collection, so callers must look these up BY NAME rather than
+   * zipping them against `getEstateVillas()`.
+   */
+  includedVillas?: { name: string; description: string | null }[];
   useCases?: string[];
   todos: string[];
 }

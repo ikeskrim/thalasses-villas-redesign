@@ -63,12 +63,26 @@ export const CHH_MARK = "recovered from the manager's own listing";
  * is really in the capture. A line whose `source` phrase disappears from the
  * scrape stops being renderable rather than quietly becoming ours.
  */
+/*
+ * THREE OF THESE TURNED OUT NOT TO BE THE PARTNER'S AT ALL.
+ *
+ * The pool alarm, the pool heating terms and the convertible twin beds were
+ * attributed here for about an hour, marked "recovered from the manager's own
+ * listing" — and every one of them is in the OWNER'S registry, in
+ * `content/villas/*.json` under `policies` and `amenityFacts`, and has been
+ * since Phase 0. The registry states more than the partner does: 35€ a day,
+ * which is the only price anywhere in this inventory.
+ *
+ * They were never CHH facts. They were owner facts nobody had rendered, and
+ * `scripts/registry-coverage.mjs` is what found them — by asking which registry
+ * values appear in the text of the page that owns them. They now print as fact
+ * on the villa pages, unmarked, because that is what they are (T-285).
+ *
+ * Marking an owner's own fact as a third party's is a smaller error than
+ * inventing one, and it is the same kind: a claim about provenance made without
+ * checking. What is left below is genuinely CHH-only.
+ */
 const RECOVERED: { key: string; label: string; note: string }[] = [
-  {
-    key: "poolAlarm",
-    label: "A pool alarm",
-    note: "Every pool carries an alarm system for child safety.",
-  },
   {
     key: "playground",
     label: "A playground",
@@ -78,16 +92,6 @@ const RECOVERED: { key: string; label: string; note: string }[] = [
     key: "vegetableGarden",
     label: "A vegetable garden",
     note: "Picked with the gardener, and eaten the same day.",
-  },
-  {
-    key: "poolHeating",
-    label: "Heated pools, on request",
-    note: "An additional daily charge, and at least a week's notice.",
-  },
-  {
-    key: "bedConversion",
-    label: "Twin beds convert",
-    note: "The single beds in the twin rooms make a double.",
   },
   {
     key: "sunbeds",

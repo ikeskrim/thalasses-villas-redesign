@@ -1082,3 +1082,51 @@ main:focus-visible {
     justify-content: center;
   }
 }
+
+/* ---- The practical notes and the services ------------------------------- */
+/* Registry facts that reached no page until T-285: a pool alarm, a week's
+   notice for pool heating, twin beds that convert, and six arrangeable
+   services. Deliberately plain — these are the terms of a stay, not a sales
+   beat, and dressing them up would be the wrong register entirely. */
+.d-practical {
+  padding-block: var(--section-y) var(--section-y-tight);
+}
+.d-practical-list {
+  list-style: none;
+  margin-top: var(--section-y-tight);
+  display: grid;
+  gap: var(--spacing-step-5);
+  max-width: 68ch;
+}
+.d-practical-list li {
+  color: var(--color-phrygana);
+  padding-left: var(--spacing-step-5);
+  border-left: 1px solid rgb(20 83 95 / 0.22);
+}
+.d-services {
+  padding-block: var(--section-y-tight) var(--section-y);
+}
+.d-services-list {
+  list-style: none;
+  margin-top: var(--spacing-step-5);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-step-3) var(--spacing-step-6);
+}
+.d-services-list li {
+  color: var(--color-basalt);
+}
+.d-services-note {
+  margin-top: var(--spacing-step-5);
+  color: var(--color-phrygana);
+  max-width: 56ch;
+}
+
+/* Each house's own contents on the estate page (T-285). A quiet third line
+   under the name and the figures — it is reference, not a sales beat. */
+.d-estate-villa-detail {
+  display: block;
+  margin-top: var(--spacing-step-3);
+  color: var(--color-phrygana);
+  max-width: 52ch;
+}

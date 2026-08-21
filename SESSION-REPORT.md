@@ -3,7 +3,7 @@
 **Read this first. It is written at HEAD and updated as each task lands, so it
 is the truthful position — not a plan, not a memory.**
 
-Last updated: after `overnight/21b`.
+Last updated: after `overnight/22`.
 
 ---
 
@@ -33,7 +33,7 @@ Last updated: after `overnight/21b`.
 | 19 — Webkit smoke + final sweep | **DONE** — `overnight/19` |
 | 20 — /el locale scaffold | **DONE** — `overnight/20` |
 | 21 — CHH re-admission + Weddings | **DONE** — `overnight/21`, `overnight/21b` |
-| 22 — Villa pages deepened | **NOT STARTED** |
+| 22 — Villa pages deepened | **DONE** — `overnight/22` |
 | 23 — Redirect verification harness | **DONE** — pulled forward, T-259 |
 | 24 — Content-parity certification | **NOT STARTED** |
 | 25 — Suite consolidation | **NOT STARTED** |
@@ -103,6 +103,25 @@ available. The plumbing is built and flag-gated (`src/lib/locale.ts`).
 | Villa page spends one dark interlude, on the generosity list | D permits one or two per page; the template had none and read flat over a long scroll |
 | Estate figures moved to the shared `Ledger` | The estate and the villas now print figures through one component instead of two |
 | Scroll odometer retired | A gadget; D's brief is explicit that confidence comes from timing and whitespace |
+
+---
+
+### Registry coverage
+
+`npm run coverage` asks the question that four separate defects had been
+instances of without anyone asking it: **of every fact in the registry, which
+ones appear in the rendered text of the page that owns it?**
+
+The answer was **108 of 191**. It is **145 of 191** at HEAD.
+
+Among those recovered: a pool alarm, a week's notice for pool heating, twin beds
+that convert, six arrangeable services, each house's actual contents on the
+estate page — and **a price**, 35€ a day for pool heating, the only price
+anywhere in this inventory and printed nowhere until now.
+
+The remainder is legacy prose the Direction D copy pass deliberately replaced,
+plus Villa Pueblo, whose registry is thin and stays thin until T-212 is
+answered. `qa/coverage/REGISTRY-COVERAGE.md` lists every one.
 
 ---
 
