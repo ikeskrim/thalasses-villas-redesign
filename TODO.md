@@ -1402,3 +1402,20 @@ defect lives in, not at the layer the reviewer was describing.
   It also asserts every authored description's `source` line actually names registry fields, because **a citation nobody can follow is a comment**.
   Per-experience OG images were already built in `overnight/16` — all 21, each from its own photograph. Re-asserted here because a meta change is exactly the kind of edit that quietly drops an `og:image`.
   *Files:* `tests/meta.spec.ts`
+
+- **T-322 — Villa fact sheets: one PDF per house, generated from the registry.** The thing a guest forwards to the four other people coming on the trip, and the only artefact this project makes that survives leaving the website. Each carries the villa's name and authored line, three captioned photographs, the spec strip, the in-detail rows, the practical notes — pool alarm, the week's notice, the 35€ — and all ~116 provisions in three columns, plus the booking link and the operating licence.
+  **Generated, never typed.** Every figure comes from `content/`, through the same rules the pages use. A fact sheet with its own copy of the numbers is a second source that drifts, and it drifts where nobody looks: a PDF is not re-read after it is made.
+  **Not at `next build` time**, deliberately — it renders through Playwright and Vercel's build image has no browsers, so building it there would work on this machine and fail on the one that matters. It is a local step whose output is committed, exactly like the photography.
+  **The Greek is a stub on purpose.** The corpus exists and is verified, but it is `copyStatus: "draft"` and `/el` is unpublished. A PDF escapes a staging environment more easily than a page does, because people forward it — so the generator is locale-shaped and the Greek output is gated on the same `PUBLISHED_LOCALES` flag as everything else, with a test asserting no Greek sheet exists while the corpus is a draft.
+  *Files:* `scripts/factsheets.mjs`, `public/factsheets/*.pdf`, `src/app/en/villas/[slug]/page.tsx`
+
+- **T-323 — Three defects in the sheets, each found by looking rather than by assuming.** **7.72 MB** for five sheets, because the photographs were embedded at full resolution for images printed 46 mm tall — a fact sheet is a thing people email, and a 2 MB attachment for one villa is a thing people do not. Downscaled to 900 px at quality 72: **1.51 MB for five, largest 379 KB.**
+  **Villa Pueblo came out at 66 KB with no photographs at all**, and the size is what made it visible: its `featured` list is empty and its five frames live in `allImages`. `TheRun` has always fallen back that way; the sheet has to agree with the page it summarises.
+  **And the lede said "Four luxurious villas"** — the shared registry `shortDescription`, on a sheet about one villa, opening by naming four of them and using a banned adjective. It reads the authored per-villa description from T4-5 now, by pattern from the TypeScript so there stays one source.
+  *Files:* `scripts/factsheets.mjs`
+
+- **T-324 — The guard reads the PDF back, and the file was not what the code assumed. Twice.** `tests/factsheets.spec.ts` extracts the text from the committed PDF and asserts every locked figure against `content/villas/*.json`, plus the booking link and the licence. A generator asserting against its own inputs proves only that it is self-consistent; reading the file back proves the number a guest will see.
+  Getting there took two corrections, both the same shape. Chromium writes its content streams **Flate-compressed**, so a regex over the raw bytes recovered nothing and reported every sheet empty. And it then writes text as **hex glyph ids into a subset font** — `<0033> Tj`, not `(P) Tj` — so inflating alone still yielded nothing readable. The bridge is the `/ToUnicode` CMap the PDF embeds for exactly this purpose; parsing it is thirty lines and no new dependency.
+  Also asserted: no sheet over 600 KB, none suspiciously small, all five linked from their villa page with a `download` attribute, and every one serving 200.
+  **Weight delta: 304.2 MB → 304.9 MB tracked.**
+  *Files:* `tests/factsheets.spec.ts`

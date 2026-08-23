@@ -34,7 +34,8 @@
     "crawl": "node scripts/link-crawl.mjs",
     "dedupe": "node scripts/dedupe-images.mjs",
     "weight": "node scripts/media-weight.mjs",
-    "verify:el": "node scripts/verify-greek.mjs"
+    "verify:el": "node scripts/verify-greek.mjs",
+    "factsheets": "node scripts/factsheets.mjs"
   },
   "dependencies": {
     "framer-motion": "^13.1.1",

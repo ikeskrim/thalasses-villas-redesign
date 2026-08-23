@@ -14,7 +14,7 @@ Nothing below is a plan. What remains is named in three places and nowhere else:
 list** (facts and photographs only he can confirm), and **`LAUNCH.md`** (a
 runbook, owner-triggered, that does nothing by itself).
 
-Last updated: after `t4/5`.
+Last updated: after `t4/6`.
 
 ---
 
@@ -59,6 +59,7 @@ Last updated: after `t4/5`.
 | **T4-8 — Domain readiness (SITE_URL)** | **DONE** — `t4/8` |
 | **T4-4 — Booking deep-link hardening** | **DONE** — `t4/4`, re-verified live, falsified |
 | **T4-5 — Crafted meta layer** | **DONE** — `t4/5` |
+| **T4-6 — Villa fact-sheet PDFs** | **DONE** — `t4/6` |
 
 **A correction worth naming.** The previous message closed with "Continuing with
 Task 3." That was intent, not work: the turn ended before any of it happened, and
@@ -89,7 +90,7 @@ available. The plumbing is built and flag-gated (`src/lib/locale.ts`).
 
 - **Pipeline:** auto-deploys on every push to `main`, team `domisi`,
   protection off, `noindex` on by design. See `DEPLOY.md`.
-- **Tests:** **457 passing, 1 skipped**, run as three shards (`npm run qa`), which
+- **Tests:** **465 passing, 1 skipped**, run as three shards (`npm run qa`), which
   covers **both engines** — Chromium for everything, and WebKit 26.5 for a
   fourteen-test smoke run (`npm run qa:webkit`). Scan, typecheck
   and lint clean at HEAD — **lint was not, until this task**: two React
@@ -147,7 +148,7 @@ available. The plumbing is built and flag-gated (`src/lib/locale.ts`).
 
 ### Weight
 
-**471 MB → 304 MB tracked.** `npm run weight` measures it from what git tracks,
+**471 MB → 304.9 MB tracked** (the five fact sheets added 1.51 MB). `npm run weight` measures it from what git tracks,
 not from what is on disk.
 
 - **104.6 MB of byte-identical duplicate photographs removed.** The legacy CDN

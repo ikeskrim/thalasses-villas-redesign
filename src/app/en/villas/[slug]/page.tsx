@@ -269,6 +269,26 @@ export default async function VillaPage({ params }: { params: Promise<{ slug: st
                   {cta.secondary.label}
                 </Link>
               ) : null}
+              {/*
+                THE FACT SHEET. The thing a guest forwards to the four other
+                people coming on the trip, and the only artefact here that
+                survives leaving the website.
+
+                A plain <a download> rather than a router Link — it is a file,
+                not a route, and the extension and size are stated because a
+                link that silently starts a 380 KB download is a link people
+                learn not to press. Generated from the registry by
+                `npm run factsheets`; `tests/factsheets.spec.ts` asserts the
+                committed PDF still agrees with the registry.
+              */}
+              <a
+                href={`/factsheets/${villa.slug}.pdf`}
+                className="micro d-link d-villa-cta-secondary"
+                download
+                data-cursor="Download"
+              >
+                Fact sheet (PDF)
+              </a>
             </p>
           </Reveal>
         </section>
