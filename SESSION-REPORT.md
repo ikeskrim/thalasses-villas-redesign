@@ -3,7 +3,14 @@
 **Read this first. It is written at HEAD and updated as each task lands, so it
 is the truthful position — not a plan, not a memory.**
 
-# TRANCHE FOUR IN PROGRESS
+# QUEUE COMPLETE
+
+**Tasks 0 through 30 and all eight of tranche four are done.** Every one is
+committed and pushed with its own commit, and HEAD is green on the full gate:
+credential scan, typecheck, lint, build, `npm audit`, the Greek corpus
+verifier, and **487 tests across two engines**.
+
+The backlog is empty.
 
 **Tasks 0 through 30 are done.** Every one is committed and pushed, each with its
 own `overnight/N` commit, and HEAD is green on the full gate: credential scan,
@@ -14,7 +21,7 @@ Nothing below is a plan. What remains is named in three places and nowhere else:
 list** (facts and photographs only he can confirm), and **`LAUNCH.md`** (a
 runbook, owner-triggered, that does nothing by itself).
 
-Last updated: after `t4/3`.
+Last updated: after `t4/wrap` — tranche four complete.
 
 ---
 
@@ -61,6 +68,7 @@ Last updated: after `t4/3`.
 | **T4-5 — Crafted meta layer** | **DONE** — `t4/5` |
 | **T4-6 — Villa fact-sheet PDFs** | **DONE** — `t4/6` |
 | **T4-3 — Visual-regression baselines** | **DONE** — `t4/3`, falsified |
+| **T4 wrap** | **DONE** — `t4/wrap`; QUEUE COMPLETE |
 
 **A correction worth naming.** The previous message closed with "Continuing with
 Task 3." That was intent, not work: the turn ended before any of it happened, and
@@ -477,4 +485,56 @@ night, and axe skipping everything below the fold. **None of them was a hard
 bug. Every one of them was a tool that looked like it was working.** That is
 what `CONVENTIONS.md` §16 and §18 exist for, and it is the most useful thing to
 carry out of this build.
+
+---
+
+## Tranche four, and what it cost to be sure
+
+Eight tasks. The pattern of the whole build held: **most of what mattered was
+found by checking something that already looked finished.**
+
+| | |
+|---|---|
+| **T4-1 Greek corpus** | ~18,000 words across eight domains, one glossary, `copyStatus: "draft"`, 371 questions for the owner. Then verified figure-by-figure against the English — and the reconciliation's own report was wrong: descriptions were keyed by featureId, the same id carries different English in different villas, and **the estate would have told a Greek reader there was one kitchen** where the English says four. 15 silent collisions. |
+| **T4-2 Alt text** | The estate served **48 photographs under 3 descriptions**, 46 identical. axe passed it every run for the whole project, because axe checks that alt *exists*. Now 48 of 48 distinct. |
+| **T4-3 Visual baselines** | 22 approved viewports, photography masked — 13.4 MB of JPEG noise reduced to 4.0 MB of layout. **The first two falsifications passed**, and measuring rather than adjusting is what caught why. |
+| **T4-4 Booking** | Re-verified against the live engine, which **had been redeployed**. The recorded reason for `lang=en` was wrong. A past check-in is accepted silently and shows nothing. |
+| **T4-5 Meta** | Four villa pages shipped **the same 597-character description**. |
+| **T4-6 Fact sheets** | Five PDFs from the registry. 7.7 MB → 1.5 MB; Pueblo had no photographs; the lede said "Four luxurious villas" on a sheet about one. |
+| **T4-7 Amenity tooltips** | A `??` discarded **269 words** of recovered text — and the guard then found that **the estate rendered no inventory at all**, 127 items reaching nobody. |
+| **T4-8 SITE_URL** | The domain was hard-coded in three files. A preview deployment was emitting OpenGraph cards **fetched from the client's live site**. |
+
+### The closing cycle
+
+| # | check | result |
+|---|---|---|
+| 1 | credential scan | **CLEAN** — 390 text files |
+| 2 | typecheck / lint / build | clean; 69 static pages |
+| 3 | `npm audit` | **0 vulnerabilities** |
+| 4 | Greek corpus verifier | **CLEAN** across 8 files, 6 checks |
+| 5 | full suite, both engines | **487 passed, 1 skipped** |
+| 6 | Core Web Vitals | LCP and CLS pass everywhere; **three routes over the long-task budget** |
+| 7 | link crawl | **40 destinations, 0 broken**, 0 dead fragments |
+| 8 | taste audit | 5 findings, all accepted with written reasons |
+| 9 | registry coverage | 145 of 191 |
+| 10 | parity certificate | **5 of 6 domains complete** |
+| 11 | weight | 309.6 MB tracked, from 471 MB |
+| 12 | evidence | 120 stills, **all 24 videos**, 18 composites |
+
+**Line 6 is reported worse than last time and the reason is unchanged.** The
+homepage read 275ms in T4-4's measurement and 302ms here, on the same machine
+that produced **248ms from the pre-tranche-three source** three hours earlier.
+Nothing in this work touched the homepage's client bundle. It is host load, and
+the honest statement remains that a lab long-task figure on this machine is not
+stable enough to certify against. The budget was not moved to make it pass.
+
+### What is still open, and it is short
+
+- **The owner's review of the Greek.** 371 questions are collected on one page.
+- **`/el` routes.** The words are done and verified; the routes are not built,
+  and `PUBLISHED_LOCALES` fails the suite if anyone publishes early.
+- **The homepage's hydration cost** — named as engineering work, not absorbed.
+- **46 registry facts** that reach no page, most of them legacy prose the copy
+  pass deliberately replaced.
+- **The owner-pending list** below: facts and photographs only he can confirm.
 

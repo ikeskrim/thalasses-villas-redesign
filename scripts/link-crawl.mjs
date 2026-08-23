@@ -59,6 +59,30 @@ while (queue.length) {
   if (visited.has(route)) continue;
   visited.add(route);
 
+  /*
+   * A NON-HTML DESTINATION IS FETCHED, NOT NAVIGATED TO.
+   *
+   * The villa fact sheets are PDFs, and `page.goto()` on a PDF makes Chromium
+   * start a DOWNLOAD rather than navigate — which throws, and took the whole
+   * crawl down the first time a `.pdf` link existed. A crawler that dies on the
+   * first non-HTML link is a crawler that only works on sites without files.
+   *
+   * They still have to be checked: a fact sheet linked from every villa page
+   * and returning 404 is exactly the kind of thing this exists to find.
+   */
+  if (/\.(pdf|zip|mp4|webm|docx?|xlsx?|csv)$/i.test(route)) {
+    let code = 0;
+    try {
+      const r = await fetch(BASE + route, { method: "GET" });
+      code = r.status;
+    } catch {
+      code = 0;
+    }
+    status.set(route, { code, from: status.get(route)?.from ?? "(seed)" });
+    pages++;
+    continue;
+  }
+
   const res = await page.goto(BASE + route, { waitUntil: "load", timeout: 90_000 });
   const code = res ? res.status() : 0;
   status.set(route, { code, from: status.get(route)?.from ?? "(seed)" });
