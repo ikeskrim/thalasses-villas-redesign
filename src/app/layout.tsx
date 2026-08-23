@@ -5,6 +5,7 @@ import { CustomCursor } from "@/components/motion/CustomCursor";
 import { RouteTransition } from "@/components/motion/RouteTransition";
 import { SmoothScroll } from "@/components/motion/SmoothScroll";
 import { NAV_ENTRIES, SiteNav } from "@/components/ui/SiteNav";
+import { siteUrl } from "@/lib/site-url";
 
 import "./globals.css";
 
@@ -68,7 +69,12 @@ const cormorantItalic = localFont({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://thalasses.com"),
+  /*
+   * Drives every canonical and every OpenGraph image URL on the site, and is
+   * read from the environment so launch day is a value change rather than a
+   * code change. See `src/lib/site-url.ts` and `DEPLOY.md`.
+   */
+  metadataBase: new URL(siteUrl()),
   /*
    * Alternates are DERIVED per route from `src/lib/locale.ts`, never written
    * here — a metadataBase and a title template are site-wide facts, and a

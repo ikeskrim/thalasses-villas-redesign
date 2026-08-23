@@ -48,7 +48,39 @@ at a layer adjacent to the one the question was about, and its answer was
 reported as though it settled the question. The correct instrument here is the
 Vercel dashboard, or the owner — not `whoami`.
 
-### The one environment variable that will exist
+### Environment variables
+
+#### `SITE_URL` — optional today, and the whole of launch day
+
+Every canonical, every OpenGraph image URL, the sitemap and the sitemap line in
+`robots.txt` are absolute, and all four read their origin from one place:
+`src/lib/site-url.ts`. It used to be hard-coded in three files.
+
+| | |
+|---|---|
+| **Name** | `SITE_URL` |
+| **Where** | Vercel → Project → Settings → Environment Variables |
+| **Value** | An origin only — `https://thalasses.com`. No trailing slash, no path. A path or a trailing slash **fails the build** rather than quietly producing `https://thalasses.com//en/terms` in every canonical on the site |
+| **Required?** | **No.** Unset, it falls back to `https://thalasses.com`, so nothing has to be configured for today's behaviour |
+| **`NEXT_PUBLIC_`?** | **No.** It is read at build time by the metadata, the sitemap and robots, all server-side. Prefixing it would ship it into every browser bundle for no purpose |
+
+**Precedence**, and why each step exists:
+
+1. `SITE_URL` if set — an explicit answer always wins, which is what makes a
+   staging copy able to know it is staging.
+2. On a Vercel **preview** deployment, the deployment's own URL. Without this a
+   preview build emits OpenGraph images pointing at `thalasses.com`, so sharing
+   a preview link renders a card **fetched from the client's live site**. Not
+   visible from the dashboard, and exactly the sort of thing that embarrasses a
+   handover.
+3. On a Vercel **production** deployment, the project's production domain.
+4. `https://thalasses.com`.
+
+`tests/site-url.spec.ts` asserts the canonical, the sitemap and robots all name
+the same origin whatever that origin is, that every `og:image` is absolute and
+on it, and that **no source file hard-codes the domain any more**.
+
+#### The one environment variable that will exist
 
 When the enquiry form is connected to a mail provider, it needs exactly one:
 

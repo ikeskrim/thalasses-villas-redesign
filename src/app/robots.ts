@@ -1,5 +1,7 @@
 import type { MetadataRoute } from "next";
 
+import { absoluteUrl } from "@/lib/site-url";
+
 /**
  * NOINDEX SITE-WIDE, DELIBERATELY — see DEPLOY.md.
  *
@@ -14,6 +16,6 @@ import type { MetadataRoute } from "next";
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: { userAgent: "*", disallow: "/" },
-    sitemap: "https://thalasses.com/sitemap.xml",
+    sitemap: absoluteUrl("/sitemap.xml"),
   };
 }

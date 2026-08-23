@@ -4,6 +4,7 @@ import path from "node:path";
 import type { MetadataRoute } from "next";
 
 import { COLLECTION_VILLA_IDS, getAllExperiences, getVilla } from "@/lib/content";
+import { siteUrl } from "@/lib/site-url";
 
 /**
  * The sitemap is DERIVED — including the static routes.
@@ -26,7 +27,8 @@ import { COLLECTION_VILLA_IDS, getAllExperiences, getVilla } from "@/lib/content
  * robots rule flips and the sitemap must already be correct, not written in a
  * hurry against a live domain.
  */
-const BASE = "https://thalasses.com";
+/* Read from the environment — one answer for the whole site. See site-url.ts. */
+const BASE = siteUrl();
 
 /**
  * Routes that exist and are deliberately absent from the sitemap.

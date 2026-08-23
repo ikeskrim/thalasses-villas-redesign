@@ -1337,3 +1337,14 @@ defect lives in, not at the layer the reviewer was describing.
 - **T-308 — The disclosure announced a state change and named nothing.** The inventory's expandable items were real `<button>`s with `aria-expanded`, which is most of the way there — but no `aria-controls`, and the panel was conditionally rendered so there was nothing for an id to point at. A screen-reader user was told something had expanded and not what.
   Now it matches the pattern the register already uses in this project: `aria-controls` naming a panel that is always in the DOM and `hidden` when closed, so the relationship the id declares is always true. Asserted operable **by keyboard**, not only by pointer.
   *Files:* `src/components/sections/Inventory.tsx`, `tests/inventory-disclosure.spec.ts`
+
+- **T-309 — The domain was hard-coded in three files, and launch day meant finding all three.** `metadataBase` (which turns every canonical and every OpenGraph URL absolute), the sitemap's base, and the sitemap line in `robots.txt`. Three copies of one fact — and the failure mode is not "it breaks", it is "you find two of them".
+  All four surfaces now read `src/lib/site-url.ts`. `LAUNCH.md` gains a **step 0** that is one field, and `DEPLOY.md` documents the variable, its precedence and why it is not `NEXT_PUBLIC_`-prefixed.
+  **An origin only.** A trailing slash or a path **fails the build** rather than quietly producing `https://thalasses.com//en/terms` in every canonical on the site — both are easy to type into a dashboard field, and neither would otherwise fail anything.
+  **The preview case is the one worth having.** On a Vercel preview deployment the origin becomes the deployment's own URL, because before this a preview build emitted OpenGraph images pointing at `thalasses.com` — so sharing a preview link rendered a card **fetched from the client's live site**. Invisible from the dashboard, and precisely the kind of thing that embarrasses a handover.
+  Nothing changes today: unset, it falls back to the launch domain.
+  *Files:* `src/lib/site-url.ts`, `src/app/layout.tsx`, `src/app/sitemap.ts`, `src/app/robots.ts`, `DEPLOY.md`, `LAUNCH.md`
+
+- **T-310 — The guard reads the origin from the page rather than knowing it.** `tests/site-url.spec.ts` asserts the canonical, the sitemap and `robots.txt` all name **the same** origin — whatever that origin is — so it passes on localhost, on a preview and on the live domain, and fails the moment one of the three drifts. It also asserts every `og:image` is absolute and on that origin, and that **no source file hard-codes the domain any more**, walking `src/` and ignoring comments so a mention in prose is allowed and a string literal is not.
+  Verified end to end by building with `SITE_URL=https://staging.example.org` and reading all four surfaces back: robots, sitemap, canonical and og:image all followed.
+  *Files:* `tests/site-url.spec.ts`

@@ -64,6 +64,26 @@ Nothing below blocks launch technically, but each is a claim on a live page:
 The order matters. Doing step 5 before steps 1–4 is how a migration loses its
 rankings.
 
+### 0. Set `SITE_URL` — do this first, it is one field
+
+Vercel → Project → Settings → Environment Variables:
+
+```
+SITE_URL = https://thalasses.com
+```
+
+An origin only. No trailing slash, no path — both **fail the build** rather than
+silently producing `https://thalasses.com//en/terms` in every canonical.
+
+This is the whole of the domain change. Every canonical, every OpenGraph image
+URL, the sitemap and the sitemap line in `robots.txt` read from it. Before
+`SITE_URL` existed the domain was hard-coded in three separate files and this
+step was "find all three under time pressure, or find two".
+
+Leaving it unset is safe — it falls back to `https://thalasses.com` — so set it
+anyway, because an explicit value is the thing that lets a future staging copy
+know it is not production.
+
 ### 1. Point the domain
 
 Vercel → Project → Settings → Domains → add `thalasses.com` and `www`. Follow
