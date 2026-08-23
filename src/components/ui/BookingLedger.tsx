@@ -20,25 +20,58 @@ export interface BookingLedgerProps {
  * The engine takes a child COUNT only — there is no per-child ages parameter —
  * so no ages UI is offered (T-155/booking.json).
  */
+/** A starting position for the nights field. See the note where it is used. */
+const DEFAULT_NIGHTS = 5;
+
 export function BookingLedger({ host, villaName }: BookingLedgerProps) {
   const [checkin, setCheckin] = useState("");
-  const [nights, setNights] = useState(5);
+  /*
+   * FIVE IS A UI DEFAULT, NOT A MINIMUM STAY.
+   *
+   * The registry states no minimum stay for any villa — `villas/2142.json`
+   * records explicitly that "no cancellation policy, deposit, minimum stay,
+   * house rules, pet policy, smoking policy or children policy is stated
+   * anywhere". So there is nothing to seed this from, and seeding it from an
+   * invented minimum would be putting a policy on the page that the property
+   * has never stated (T4-4).
+   *
+   * Five nights is a sensible starting position for a villa search and nothing
+   * more. It is named here so it reads as the arbitrary choice it is, and the
+   * real minimum stay is on the owner-pending list.
+   */
+  const [nights, setNights] = useState(DEFAULT_NIGHTS);
   const [adults, setAdults] = useState(2);
   const [children, setChildren] = useState(0);
+
+  const today = new Date().toISOString().slice(0, 10);
+
+  /*
+   * `min={today}` on the input stops the PICKER offering a past date. It does
+   * not stop a typed one — a date input accepts keyboard entry, and this bar
+   * builds its URL in an effect rather than on form submit, so browser
+   * validation never runs.
+   *
+   * And the engine will not catch it either: a past `checkin` is accepted
+   * silently, returns 200, and shows nothing (verified live, 2026-08-23). So
+   * the date is dropped here, and the visitor arrives on the engine's own date
+   * picker instead of on an empty result they cannot explain.
+   */
+  const usableCheckin = checkin && checkin >= today ? checkin : "";
 
   const href = useMemo(() => {
     const url = new URL(`https://${host}/`);
     const p = url.searchParams;
-    if (checkin) p.set("checkin", checkin);
+    if (usableCheckin) p.set("checkin", usableCheckin);
     p.set("nights", String(nights));
     p.set("adults", String(adults));
     p.set("children", String(children));
-    // The engine renders in Greek without this.
+    /*
+     * The engine content-negotiates on Accept-Language: a Greek browser gets
+     * Greek, a client with no preference gets Croatian. `lang` pins it.
+     */
     p.set("lang", "en");
     return url.toString();
-  }, [host, checkin, nights, adults, children]);
-
-  const today = new Date().toISOString().slice(0, 10);
+  }, [host, usableCheckin, nights, adults, children]);
 
   return (
     <div className="ledger on-dark">

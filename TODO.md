@@ -1348,3 +1348,24 @@ defect lives in, not at the layer the reviewer was describing.
 - **T-310 — The guard reads the origin from the page rather than knowing it.** `tests/site-url.spec.ts` asserts the canonical, the sitemap and `robots.txt` all name **the same** origin — whatever that origin is — so it passes on localhost, on a preview and on the live domain, and fails the moment one of the three drifts. It also asserts every `og:image` is absolute and on that origin, and that **no source file hard-codes the domain any more**, walking `src/` and ignoring comments so a mention in prose is allowed and a string literal is not.
   Verified end to end by building with `SITE_URL=https://staging.example.org` and reading all four surfaces back: robots, sitemap, canonical and og:image all followed.
   *Files:* `tests/site-url.spec.ts`
+
+- **T-311 — The booking engine re-verified against the LIVE engine, and it had been redeployed.** Not a re-reading of the Phase 0 note: the engine and its JS bundle were fetched and driven with real parameter combinations on 2026-08-23. The bundle hash had changed — `4b51fa865d052996.js` → `366b98d362a4d4.js` — so this is new code, and **the parameter set is unchanged**: adults, checkin, checkout, children, currency, nights, room, rooms. **No ages parameter of any kind**, in any spelling. The child-count-only decision holds against code that did not exist when it was made.
+  *Files:* `content/booking.json`
+
+- **T-312 — The recorded reason for `lang=en` was wrong, and the truth matters more.** The Phase 0 note said *"the engine renders in Greek without it"*. It does not. Measured live: the engine **content-negotiates on `Accept-Language`** — a Greek browser gets `<html lang="el">` with 4,324 Greek characters, a German browser gets German, and a client sending no preference at all gets **Croatian**. `lang` is required not because the default is Greek but because **the visitor's browser decides**, which is unpredictable from our side and a stronger reason.
+  **`lang=el` is verified working**, so the Greek locale has a functioning booking path the day it ships. `bookingUrl()` now takes the language rather than hard-coding it.
+  *Files:* `src/lib/booking.ts`, `content/booking.json`
+
+- **T-313 — A PAST CHECK-IN IS SILENTLY ACCEPTED BY THE ENGINE.** `?checkin=2020-01-01&nights=5&adults=2&lang=en` returns **200**, with a body byte-length identical to the same query with a future date and different from the undated one — so the engine takes the parameters and simply shows nothing. No error, no redirect, no explanation to the visitor.
+  **Nothing downstream will ever catch this.** `min={today}` on the date input constrains the picker and not the keyboard, and this bar builds its URL in an effect rather than on form submit, so browser validation never runs either. The date is now dropped before the URL is built, in both `bookingUrl()` and the ledger, which lands the visitor on the engine's own date picker — a place that works — instead of on an empty result they cannot explain.
+  **Falsified:** removing the guard turns the suite red with *"a past date typed into the field reached the booking URL"*.
+  *Files:* `src/lib/booking.ts`, `src/components/ui/BookingLedger.tsx`, `tests/booking-links.spec.ts`
+
+- **T-314 — There is no minimum stay to seed the nights field from, so none was invented.** T4-4 asked for nights seeded from min-stay "where known". It is not known: `villas/2142.json` records explicitly that *"no cancellation policy, deposit, minimum stay, house rules, pet policy, smoking policy or children policy is stated anywhere"*.
+  The field opens at five nights, which is now a **named constant with the reasoning beside it** rather than a magic number — an arbitrary starting position for a villa search, not a policy. Seeding it from an invented minimum would put a condition on the page that the property has never stated. On the owner-pending list.
+  *Files:* `src/components/ui/BookingLedger.tsx`
+
+- **T-315 — The guard asserts against the verified set, offline.** `tests/booking-links.spec.ts` walks every booking link on eight routes and checks: https and the right host; **no parameter the engine was not verified to accept**; a pinned language; nights XOR checkout; no past or malformed date; and encoding — nothing double-encoded, no unencoded space, a lossless round-trip.
+  It reads the verified parameter list from `content/booking.json`, so the assertions are tied to evidence rather than to a list someone typed, and it asserts that list is non-empty first — a guard checking against nothing passes everything.
+  **Deliberately offline.** Reaching a third party's server on every suite run would make this project's gate depend on somebody else's uptime, which is how a guard becomes something people skip. The live check is a recorded event with a date; the suite enforces its conclusions.
+  *Files:* `tests/booking-links.spec.ts`

@@ -11,7 +11,13 @@ import type { Villa } from "@/types/content";
  *
  * Verified against the live rendered engine on 2026-08-06:
  *  - checkin / nights / checkout / adults / children / rooms all work.
- *  - lang=en is REQUIRED. The engine renders in Greek without it.
+ *  - lang IS REQUIRED, and the recorded reason was imprecise. Re-verified live
+ *    on 2026-08-23: the engine CONTENT-NEGOTIATES on `Accept-Language`. A Greek
+ *    browser with no `lang` gets Greek, a German browser gets German, and a
+ *    client sending no preference at all gets **Croatian** (`<html lang="hr">`).
+ *    So it does not "render in Greek without it" — it renders in whatever the
+ *    visitor's browser asks for, which is unpredictable from our side. `lang`
+ *    pins it, and `lang=el` is verified working for the future /el locale.
  *  - `room=` is INERT on this host. Passing room=THOI, room=WH200 or a
  *    deliberately bogus code all render the identical five room blocks, so a
  *    villa CTA cannot preselect its villa. Per D4 we link with dates only
@@ -22,6 +28,8 @@ import type { Villa } from "@/types/content";
 export interface BookingQuery {
   /** YYYY-MM-DD. Without it the engine opens on the search form. */
   checkin?: string;
+  /** Which language the engine should render in. Defaults to English. */
+  lang?: BookingLang;
   /** Use nights OR checkout, never both. */
   nights?: number;
   checkout?: string;
@@ -31,7 +39,32 @@ export interface BookingQuery {
   rooms?: number;
 }
 
-const LANG = "en";
+/**
+ * The engine's own language codes. `en` and `el` both verified live on
+ * 2026-08-23 — `lang=el` returns `<html lang="el">` with real Greek content, so
+ * the Greek locale has a working booking path the day it ships.
+ */
+export type BookingLang = "en" | "el";
+const DEFAULT_LANG: BookingLang = "en";
+
+/**
+ * A PAST CHECK-IN IS SILENTLY ACCEPTED BY THE ENGINE.
+ *
+ * Verified live: `?checkin=2020-01-01&nights=5` returns 200 and a body byte-for
+ * byte the same length as a valid future search — the engine takes the
+ * parameters and simply cannot show availability for them. It does not error,
+ * it does not redirect, and it does not tell the visitor anything is wrong.
+ *
+ * So nothing downstream will catch this and the only place it can be caught is
+ * here. A past date is dropped rather than sent, which lands the visitor on the
+ * engine's own date picker — the same place they would reach from an undated
+ * link, and a place that works.
+ */
+function isPast(date: string): boolean {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) return true;
+  const today = new Date().toISOString().slice(0, 10);
+  return date < today;
+}
 
 function host(): string {
   const cfg = getBookingConfig() as unknown as { host?: string };
@@ -43,7 +76,12 @@ export function bookingUrl(query: BookingQuery = {}): string {
   const url = new URL(`https://${host()}/`);
   const p = url.searchParams;
 
-  if (query.checkin) p.set("checkin", query.checkin);
+  /*
+   * A malformed or past date is DROPPED, not passed on. See `isPast` — the
+   * engine accepts it silently and shows nothing, which is worse than arriving
+   * with no dates at all.
+   */
+  if (query.checkin && !isPast(query.checkin)) p.set("checkin", query.checkin);
 
   // nights XOR checkout — sending both is rejected by the engine.
   if (query.nights != null && query.checkout) {
@@ -56,7 +94,7 @@ export function bookingUrl(query: BookingQuery = {}): string {
   if (query.children != null) p.set("children", String(query.children));
   if (query.rooms != null) p.set("rooms", String(query.rooms));
 
-  p.set("lang", LANG);
+  p.set("lang", query.lang ?? DEFAULT_LANG);
   return url.toString();
 }
 

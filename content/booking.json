@@ -306,5 +306,48 @@
   ],
   "PUEBLO_IS_BOOKABLE": "Villa Pueblo IS present in the availability engine as room code PUEBLO, even though the legacy website had no booking widget for it and the engine's own /accommodation/villa page omits it. This CONTRADICTS the premise of decision D1b.",
   "NO_ESTATE_ROOM": "There is no whole-estate room type on this host. The legacy WH2142 'rent them all together' listing has no equivalent. Booking the whole estate means booking five rooms, or an enquiry."
+ },
+ "reVerification": {
+  "date": "2026-08-23",
+  "method": "Fetched the live engine and its JS bundle, and drove the deep link with real parameter combinations. Not a re-read of the Phase 0 note.",
+  "engineBundle": {
+   "phase0": "dist/4b51fa865d052996.js",
+   "now": "dist/366b98d362a4d4.js",
+   "note": "THE ENGINE HAS BEEN REDEPLOYED since Phase 0 — a different bundle hash. The parameter set is unchanged, which is the point of re-verifying rather than re-reading."
+  },
+  "queryParameters": [
+   "adults",
+   "checkin",
+   "checkout",
+   "children",
+   "currency",
+   "nights",
+   "room",
+   "rooms"
+  ],
+  "childrenAges": {
+   "supported": false,
+   "reconfirmed": "No childAges / child_ages / children_ages / ages literal appears anywhere in the current bundle. The Phase 0 finding holds against new code.",
+   "consequence": "The booking bar collects a CHILD COUNT only. Do not build an ages UI."
+  },
+  "language": {
+   "finding": "THE PHASE 0 NOTE WAS IMPRECISE. It recorded 'the engine renders in Greek without lang'. It does not — it CONTENT-NEGOTIATES on Accept-Language.",
+   "measured": {
+    "no lang, no Accept-Language": "<html lang=\"hr\"> — Croatian, 0 Greek characters",
+    "no lang, Accept-Language el-GR": "<html lang=\"el\"> — 4,324 Greek characters",
+    "no lang, Accept-Language de-DE": "<html lang=\"de\">",
+    "lang=en with Accept-Language el-GR": "<html lang=\"en\"> — lang wins over the browser"
+   },
+   "consequence": "lang is required for a predictable result, and the reason is that the visitor's browser decides otherwise. lang=el is VERIFIED WORKING and is the correct value for the future /el locale."
+  },
+  "pastDates": {
+   "finding": "A past checkin is SILENTLY ACCEPTED.",
+   "measured": "?checkin=2020-01-01&nights=5&adults=2&lang=en returns 200 with a body of 41,611 bytes — byte-length identical to the same query with a future date, and different from the undated 41,600. The engine takes the parameters and shows nothing.",
+   "consequence": "The engine will never catch this. The UI is the only place it can be caught, so a past or malformed date is dropped before the URL is built (src/lib/booking.ts, src/components/ui/BookingLedger.tsx)."
+  },
+  "minimumStay": {
+   "stated": false,
+   "note": "No minimum stay is stated anywhere in the inventory for any villa. The nights field therefore opens at 5 as an arbitrary UI starting position, named as such in the component. Seeding it from an invented minimum would put a policy on the page the property has never stated. OWNER-PENDING."
+  }
  }
 }
