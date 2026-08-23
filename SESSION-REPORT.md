@@ -3,7 +3,7 @@
 **Read this first. It is written at HEAD and updated as each task lands, so it
 is the truthful position — not a plan, not a memory.**
 
-# QUEUE COMPLETE
+# TRANCHE FOUR IN PROGRESS
 
 **Tasks 0 through 30 are done.** Every one is committed and pushed, each with its
 own `overnight/N` commit, and HEAD is green on the full gate: credential scan,
@@ -14,7 +14,7 @@ Nothing below is a plan. What remains is named in three places and nowhere else:
 list** (facts and photographs only he can confirm), and **`LAUNCH.md`** (a
 runbook, owner-triggered, that does nothing by itself).
 
-Last updated: after `overnight/31` — the closing QA cycle.
+Last updated: after `t4/2`.
 
 ---
 
@@ -53,6 +53,8 @@ Last updated: after `overnight/31` — the closing QA cycle.
 | 28 — Greek pass | **DONE** — `overnight/28`; the premise did not hold, see below |
 | 29 — Launch dress rehearsal | **DONE** — `overnight/29`; all 15 redirect gaps closed |
 | 30 — Media & repo weight | **DONE** — `overnight/30`; 471 MB → 304 MB tracked |
+| **T4-1 — Greek corpus** | in progress |
+| **T4-2 — Alt-text quality audit** | **DONE** — `t4/2`, falsified |
 
 **A correction worth naming.** The previous message closed with "Continuing with
 Task 3." That was intent, not work: the turn ended before any of it happened, and
@@ -80,7 +82,7 @@ available. The plumbing is built and flag-gated (`src/lib/locale.ts`).
 
 - **Pipeline:** auto-deploys on every push to `main`, team `domisi`,
   protection off, `noindex` on by design. See `DEPLOY.md`.
-- **Tests:** **414 passing, 1 skipped**, run as three shards (`npm run qa`), which
+- **Tests:** **426 passing, 1 skipped**, run as three shards (`npm run qa`), which
   covers **both engines** — Chromium for everything, and WebKit 26.5 for a
   fourteen-test smoke run (`npm run qa:webkit`). Scan, typecheck
   and lint clean at HEAD — **lint was not, until this task**: two React
@@ -350,6 +352,10 @@ it is worth, including where it is thin.
   and neither is an iPhone in sunlight. Nothing here has been opened on a phone.
 - **The performance numbers are lab numbers** — localhost with synthetic
   throttling. Real-field CrUX data will differ and only field data decides.
+- **axe passed 77 photographs that all said the same sentence.** It checks
+  that an alt attribute exists, not that it says anything — a question no
+  generic engine can ask. Caught by a project-specific guard, not by axe
+  (T-304).
 - **axe could not see below the fold at all until T-283.** Every revealed
   section ships at `opacity: 0` and axe skips invisible elements, so the audit
   was checking the top of each page. Fixed, guarded and falsified — but every

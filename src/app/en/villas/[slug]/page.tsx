@@ -271,7 +271,7 @@ export default async function VillaPage({ params }: { params: Promise<{ slug: st
           <p className="micro">{beat("rooms")} — The rooms</p>
           <div className="datum-rule" />
         </div>
-        <TheRun images={runImages} villaName={villa.name} />
+        <TheRun images={runImages} villaName={villa.name} villa={villa} />
 
         {/* ------------------------------- 04 AMENITIES vs WHAT'S INCLUDED */}
         {/* The Aman split. Hard features on the left, what you are given on

@@ -373,7 +373,7 @@ export default function EstatePage() {
           <p className="micro">{beat("rooms")} — The rooms</p>
           <div className="datum-rule" />
         </div>
-        <TheRun images={runImages} villaName="The Entire Estate" />
+        <TheRun images={runImages} villaName="The Entire Estate" villa={estate} />
 
         {/* --------------------------------------------------- 09 ENQUIRE -- */}
         <section className="canon d-estate-close">

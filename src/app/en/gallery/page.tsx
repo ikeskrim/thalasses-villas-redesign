@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 
 import { GalleryGrid, type Cluster } from "@/components/sections/GalleryGrid";
 import { PageHead, PageShell } from "@/components/sections/PageShell";
+import { frameAlts } from "@/lib/alt";
 import { COLLECTION_VILLA_IDS, getVilla, localImage } from "@/lib/content";
 import { SELECTS } from "@/lib/selects";
 import { alternatesFor } from "@/lib/locale";
@@ -37,16 +38,53 @@ export default function GalleryPage() {
 
   const houses: Cluster[] = COLLECTION_VILLA_IDS.map((key, i) => {
     const villa = getVilla(key);
-    const frames = villa.gallery.featured
-      .map((f) => ({ src: localImage(f.image), alt: `${villa.name}, Thalasses Villas`, caption: f.caption }))
-      .filter((f): f is { src: string; alt: string; caption: string | null } => Boolean(f.src))
-      .slice(0, 12);
+    /*
+     * Alt text through the shared resolver, not `${villa.name}, Thalasses
+     * Villas` twelve times over. That fallback is the T4-2 defect, and this
+     * page had its own copy of it: the gallery served 66 images under 22
+     * distinct descriptions, twelve of them identical.
+     *
+     * The cluster's own heading already says which villa this is, so the frame
+     * only has to say which frame it is.
+     */
+    const picked = villa.gallery.featured.slice(0, 12);
+    const alts = frameAlts(
+      villa,
+      picked.map((f) => ({ url: f.image, caption: f.caption })),
+      villa.name
+    );
+    const frames = picked
+      .map((f, n) => ({ src: localImage(f.image), alt: alts[n]!, caption: f.caption }))
+      .filter((f): f is { src: string; alt: string; caption: string | null } => Boolean(f.src));
     return {
       beat: String(i + 2).padStart(2, "0"),
       title: villa.name,
       frames,
     };
   }).filter((c) => c.frames.length > 0);
+
+  /*
+   * ONE MORE DEDUPE, AT PAGE LEVEL.
+   *
+   * `frameAlts` disambiguates within a set, and each villa is its own set — but
+   * the villas share captions. "Easy access to our Private beach" is written on
+   * a frame in four different villas' galleries, so four clusters each deduped
+   * cleanly and the page still said it four times.
+   *
+   * A sighted reader sees the cluster heading and knows which house they are
+   * looking at. Someone listening does not, so the house's name is what makes
+   * the repeat distinct — and it is a fact the page is already asserting one
+   * heading above.
+   */
+  const across = new Map<string, number>();
+  for (const c of houses) for (const f of c.frames) across.set(f.alt, (across.get(f.alt) ?? 0) + 1);
+  for (const c of houses) {
+    for (const f of c.frames) {
+      if ((across.get(f.alt) ?? 0) > 1 && !f.alt.includes(c.title)) {
+        f.alt = `${f.alt} — ${c.title}`;
+      }
+    }
+  }
 
   return (
     <PageShell>

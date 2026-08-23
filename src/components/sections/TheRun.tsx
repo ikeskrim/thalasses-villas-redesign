@@ -1,7 +1,9 @@
 import Image from "next/image";
 
 import { ImageReveal } from "@/components/motion/Reveal";
+import { frameAlts } from "@/lib/alt";
 import { localImage } from "@/lib/content";
+import type { Villa } from "@/types/content";
 
 export interface RunImage {
   url: string;
@@ -10,6 +12,14 @@ export interface RunImage {
 
 /**
  * THE RUN — the villa gallery (DESIGN-PLAN §5.6).
+ *
+ * ALT TEXT IS RESOLVED ONCE, FOR THE WHOLE SET, before anything renders.
+ *
+ * Every frame here used to fall back to `img.caption ?? villaName`, which on
+ * Villa Thoi (37 captions of 40) almost never fired and looked fine, and on the
+ * estate (zero captions of 46) fired every single time — so the estate served
+ * 46 photographs described identically. `frameAlts` walks the inventory instead
+ * and never says the same thing twice without meaning to. (T4-2.)
  *
  * Two variants, chosen by how much photography actually exists. This is the
  * point of T-161: Villa Pueblo has 5 images and Villa Eeanthe has 104, and a
@@ -31,20 +41,39 @@ export interface RunImage {
  */
 const PLATES_THRESHOLD = 14;
 
-export function TheRun({ images, villaName }: { images: RunImage[]; villaName: string }) {
+export function TheRun({
+  images,
+  villaName,
+  villa = null,
+}: {
+  images: RunImage[];
+  villaName: string;
+  /** The registry entry, so album membership can describe uncaptioned frames. */
+  villa?: Villa | null;
+}) {
   const usable = images.filter((i) => localImage(i.url));
   if (!usable.length) return null;
 
+  const alts = frameAlts(villa, usable, villaName);
+
   return usable.length < PLATES_THRESHOLD ? (
-    <Plates images={usable} villaName={villaName} />
+    <Plates images={usable} alts={alts} villaName={villaName} />
   ) : (
-    <Run images={usable} villaName={villaName} />
+    <Run images={usable} alts={alts} villaName={villaName} />
   );
 }
 
 /* ------------------------------------------------------------------ plates -- */
 
-function Plates({ images, villaName }: { images: RunImage[]; villaName: string }) {
+function Plates({
+  images,
+  alts,
+  villaName,
+}: {
+  images: RunImage[];
+  alts: string[];
+  villaName: string;
+}) {
   const [opener, ...rest] = images;
   if (!opener) return null;
 
@@ -53,7 +82,7 @@ function Plates({ images, villaName }: { images: RunImage[]; villaName: string }
       <ImageReveal className="plates-opener">
         <Image
           src={localImage(opener.url)!}
-          alt={opener.caption ?? `${villaName}, Thalasses Villas`}
+          alt={alts[0]!}
           fill
           sizes="100vw"
           quality={82}
@@ -70,7 +99,7 @@ function Plates({ images, villaName }: { images: RunImage[]; villaName: string }
           <ImageReveal className="plate-figure">
             <Image
               src={localImage(img.url)!}
-              alt={img.caption ?? `${villaName}, Thalasses Villas`}
+              alt={alts[i + 1]!}
               fill
               sizes="(max-width: 767px) 100vw, 76vw"
               quality={82}
@@ -101,28 +130,43 @@ function Plates({ images, villaName }: { images: RunImage[]; villaName: string }
  */
 const RUN_LIMIT = 12;
 
-function Run({ images, villaName }: { images: RunImage[]; villaName: string }) {
+function Run({
+  images,
+  alts,
+  villaName,
+}: {
+  images: RunImage[];
+  alts: string[];
+  villaName: string;
+}) {
   // Keep source order, but let captioned frames win the limited slots.
   const ranked = images
     .map((img, i) => ({ img, i, captioned: Boolean(img.caption) }))
     .sort((a, b) => (a.captioned === b.captioned ? a.i - b.i : a.captioned ? -1 : 1));
 
   const chosen = new Set(ranked.slice(0, RUN_LIMIT).map((r) => r.i));
-  const lead = images.filter((_, i) => chosen.has(i));
-  const sheet = images.filter((_, i) => !chosen.has(i));
+  /*
+   * The ORIGINAL index travels with each frame. `alts` is built for the whole
+   * set in source order, and the run then splits that set in two — so looking
+   * an alt up by position within `lead` would describe the fourth lead frame
+   * with the fourth frame's text, which is a subtler version of the bug this
+   * change exists to fix.
+   */
+  const lead = images.map((img, i) => ({ img, i })).filter(({ i }) => chosen.has(i));
+  const sheet = images.map((img, i) => ({ img, i })).filter(({ i }) => !chosen.has(i));
 
   return (
     <>
       <section className="run" aria-label={`${villaName} photographs`}>
-        {lead.map((img, i) => (
+        {lead.map(({ img, i }, n) => (
           <figure key={`${img.url}-${i}`} className="run-frame">
             <Image
               src={localImage(img.url)!}
-              alt={img.caption ?? `${villaName}, Thalasses Villas`}
+              alt={alts[i]!}
               fill
               sizes="100vw"
               quality={82}
-              loading={i < 2 ? "eager" : "lazy"}
+              loading={n < 2 ? "eager" : "lazy"}
               style={{ objectFit: "cover" }}
             />
             {/*
@@ -153,11 +197,11 @@ function Run({ images, villaName }: { images: RunImage[]; villaName: string }) {
             {sheet.length} more photographs
           </p>
           <ul className="contact-sheet-grid">
-            {sheet.map((img, i) => (
+            {sheet.map(({ img, i }) => (
               <li key={`${img.url}-sheet-${i}`} className="contact-sheet-item">
                 <Image
                   src={localImage(img.url)!}
-                  alt={img.caption ?? `${villaName}, Thalasses Villas`}
+                  alt={alts[i]!}
                   fill
                   sizes="(max-width: 767px) 50vw, 20vw"
                   quality={75}

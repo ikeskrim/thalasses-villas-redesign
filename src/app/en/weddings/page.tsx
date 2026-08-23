@@ -123,7 +123,7 @@ export default function WeddingsPage() {
         <p className="micro">04 — The venue, photographed</p>
         <div className="datum-rule" />
       </div>
-      <TheRun images={runImages} villaName="Thalasses Rituals" />
+      <TheRun images={runImages} villaName="Thalasses Rituals" villa={venue} />
 
       {/* -------------------------------------------- 05 WHAT IS HERE -- */}
       {/* The 43 features the legacy site displayed for this venue, through the
