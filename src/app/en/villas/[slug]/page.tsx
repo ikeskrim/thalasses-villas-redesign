@@ -31,6 +31,7 @@ import {
 } from "@/lib/villa-page";
 import type { Villa } from "@/types/content";
 import { alternatesFor } from "@/lib/locale";
+import { villaDescription } from "@/lib/meta-copy";
 
 const KEY_BY_SLUG: Record<string, string> = {
   "villa-thoi": "200",
@@ -67,7 +68,13 @@ export async function generateMetadata({
   const villa = getVilla(key);
   return {
     title: villa.name,
-    description: villa.meta.description ?? undefined,
+    /*
+     * AUTHORED, not inherited. The registry gives four of the five villas the
+     * same 597-character paragraph, so four pages shipped one description —
+     * four times what a search engine shows, and identical across the four
+     * houses it is supposed to distinguish. See `src/lib/meta-copy.ts`.
+     */
+    description: villaDescription(villa, key),
     alternates: alternatesFor(`/en/villas/${villa.slug}`),
     openGraph: {
       title: villa.meta.title ?? villa.name,

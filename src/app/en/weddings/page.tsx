@@ -11,13 +11,13 @@ import { Field } from "@/components/ui/Field";
 import { getExperience, getFacilitiesForVilla, getVilla } from "@/lib/content";
 import { buildInventory } from "@/lib/inventory";
 import { alternatesFor } from "@/lib/locale";
+import { VILLA_META } from "@/lib/meta-copy";
 import { byN } from "@/lib/selects";
 import { specStrip } from "@/lib/villa-page";
 
 export const metadata: Metadata = {
   title: "Weddings & Events",
-  description:
-    "Marrying on sand, beside the water — Thalasses Rituals, the wedding and events venue at Thalasses Villas, Rethymno, Crete.",
+  description: VILLA_META["rituals"]!.description,
   alternates: alternatesFor("/en/weddings"),
 };
 

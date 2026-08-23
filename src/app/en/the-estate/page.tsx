@@ -23,13 +23,13 @@ import {
   villaServices,
 } from "@/lib/villa-page";
 import { alternatesFor } from "@/lib/locale";
+import { VILLA_META } from "@/lib/meta-copy";
 import { CHH_MARK, partnerPolicies, recoveredFromPartner } from "@/lib/chh";
 import { Draft } from "@/components/sections/PageShell";
 
 export const metadata: Metadata = {
   title: "The Entire Estate",
-  description:
-    "Four villas taken together as one house — 9 bedrooms, 6 bathrooms, sleeping 18 in beds, with four private pools and a private beach fifty metres from the door.",
+  description: VILLA_META["2142"]!.description,
   alternates: alternatesFor("/en/the-estate"),
 };
 

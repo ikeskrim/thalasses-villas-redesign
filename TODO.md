@@ -1390,3 +1390,15 @@ defect lives in, not at the layer the reviewer was describing.
   The last test asserts the corpus is **not** published — `PUBLISHED_LOCALES` still excludes `el`, and `tests/locale.spec.ts` asserts an unpublished locale genuinely 404s. **A corpus on disk must not be mistaken for a shipped locale.** `src/lib/i18n.ts` resolves it with an English fallback on every lookup, so a missing string renders English rather than a hole: a page half in English is obviously unfinished, and a page with holes looks broken in a way nobody can diagnose.
   **What remains for `/el` is the routes**, not the words. The words are done.
   *Files:* `tests/greek-corpus.spec.ts`, `src/lib/i18n.ts`, `src/lib/locale.ts`
+
+- **T-320 — Four villa pages shipped the same 597-character description.** The legacy `meta.description` is one 580-character paragraph the registry gives **identically** to Thoi, Persi, Eeanthe and Melia, prefixed with "Living unlimited."
+  Two failures, and the second is worse. It is roughly **four times** what a search engine renders, so the useful half is cut off mid-sentence. And it is identical across four pages — so the single place a searcher can tell four houses apart said nothing at all.
+  Seven authored descriptions now, all ≤160 characters and all distinct. Held to the same rule as every other authored line here: **every factual noun resolves against `content/villas/*.json`**, and each entry carries a `source` naming the fields it draws on, so the next person can check it without re-deriving it. `copyStatus: "draft"` — a meta description is a sales line, and it is the owner's voice to approve.
+  **Not generated from the spec strip**, deliberately: "2 bd · 1 ba · sleeps 4" is not a sentence, and a generated description reads like a listing. The argument of this whole rebuild is that specifics in plain prose sell a villa and adjectives do not — a search result is the one place that writing has to work with no photograph beside it.
+  Measured after: 35 routes, **35 distinct titles, 35 distinct descriptions, none over 160**, all 35 with their own OpenGraph card.
+  *Files:* `src/lib/meta-copy.ts`, `src/app/en/villas/[slug]/page.tsx`, `src/app/en/the-estate/page.tsx`, `src/app/en/weddings/page.tsx`
+
+- **T-321 — The meta layer is the part nobody looks at, which is why it drifts.** `tests/meta.spec.ts` walks all 35 routes and asserts a unique title, a unique description, a length inside the limit, and an OpenGraph card of its own — the same argument as the JSON-LD guard, applied to the other invisible layer.
+  It also asserts every authored description's `source` line actually names registry fields, because **a citation nobody can follow is a comment**.
+  Per-experience OG images were already built in `overnight/16` — all 21, each from its own photograph. Re-asserted here because a meta change is exactly the kind of edit that quietly drops an `og:image`.
+  *Files:* `tests/meta.spec.ts`
