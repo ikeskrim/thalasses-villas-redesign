@@ -14,7 +14,7 @@ Nothing below is a plan. What remains is named in three places and nowhere else:
 list** (facts and photographs only he can confirm), and **`LAUNCH.md`** (a
 runbook, owner-triggered, that does nothing by itself).
 
-Last updated: after `t4/4`.
+Last updated: after `t4/1` — the Greek corpus.
 
 ---
 
@@ -53,7 +53,7 @@ Last updated: after `t4/4`.
 | 28 — Greek pass | **DONE** — `overnight/28`; the premise did not hold, see below |
 | 29 — Launch dress rehearsal | **DONE** — `overnight/29`; all 15 redirect gaps closed |
 | 30 — Media & repo weight | **DONE** — `overnight/30`; 471 MB → 304 MB tracked |
-| **T4-1 — Greek corpus** | in progress |
+| **T4-1 — Greek corpus** | **DONE** — `t4/1`, verified against the English |
 | **T4-2 — Alt-text quality audit** | **DONE** — `t4/2`, falsified |
 | **T4-7 — Amenity tooltips render** | **DONE** — `t4/7` |
 | **T4-8 — Domain readiness (SITE_URL)** | **DONE** — `t4/8` |
@@ -72,7 +72,10 @@ than to someone else's.
 `/en/experiences` + 21 detail pages · `/en/weddings` · `/en/location` ·
 `/en/careers` · `/en/contact` · `/en/terms` · `/styleguide`
 
-`/el` deliberately does **not** exist, and `TRANSLATION-BRIEF.md` (1,123
+**The Greek corpus is complete** — ~18,000 words in `content/el/`, verified
+figure-by-figure against the English and held at `copyStatus: "draft"` for the
+owner's native review, with 371 questions collected for him. What remains for
+`/el` is the routes, not the words. `/el` deliberately does **not** exist yet, and `TRANSLATION-BRIEF.md` (1,123
 strings, 7,630 words) is what a translator would need to quote for it and is asserted to 404 — the legacy site is
 English-only, so there is no Greek copy to ship and inventing it is not
 available. The plumbing is built and flag-gated (`src/lib/locale.ts`).
@@ -85,7 +88,7 @@ available. The plumbing is built and flag-gated (`src/lib/locale.ts`).
 
 - **Pipeline:** auto-deploys on every push to `main`, team `domisi`,
   protection off, `noindex` on by design. See `DEPLOY.md`.
-- **Tests:** **447 passing, 1 skipped**, run as three shards (`npm run qa`), which
+- **Tests:** **454 passing, 1 skipped**, run as three shards (`npm run qa`), which
   covers **both engines** — Chromium for everything, and WebKit 26.5 for a
   fourteen-test smoke run (`npm run qa:webkit`). Scan, typecheck
   and lint clean at HEAD — **lint was not, until this task**: two React

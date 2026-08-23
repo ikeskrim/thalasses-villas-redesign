@@ -33,7 +33,8 @@
     "brief": "node scripts/translation-brief.mjs",
     "crawl": "node scripts/link-crawl.mjs",
     "dedupe": "node scripts/dedupe-images.mjs",
-    "weight": "node scripts/media-weight.mjs"
+    "weight": "node scripts/media-weight.mjs",
+    "verify:el": "node scripts/verify-greek.mjs"
   },
   "dependencies": {
     "framer-motion": "^13.1.1",
