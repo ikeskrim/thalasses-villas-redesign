@@ -399,3 +399,19 @@
   font-family: var(--font-gfs-didot), Georgia, serif;
   font-weight: 400;
 }
+
+/* The inventory disclosure panel (T4-7). The panel is always in the DOM and
+   `hidden` when closed, so the button's aria-controls always names something
+   real; `display: block` is restored only when it is open, because `hidden`
+   loses to a display rule otherwise. */
+.inventory-item-panel {
+  display: block;
+}
+.inventory-item-panel[hidden] {
+  display: none;
+}
+.inventory-item-extra {
+  display: block;
+  margin-top: var(--spacing-step-2);
+  color: var(--color-phrygana);
+}

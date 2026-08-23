@@ -121,12 +121,23 @@ function InventoryLine({ item }: { item: InventoryItem }) {
     );
   }
 
+  /*
+   * `aria-controls` + a real panel id, matching the pattern the register
+   * already uses. Before this the button announced "expanded" and named
+   * nothing it had expanded — a screen-reader user was told a state had
+   * changed and not what changed. The panel also stays in the DOM and is
+   * `hidden`, rather than being conditionally rendered, so the relationship
+   * the id declares is always true.
+   */
+  const panelId = `inv-${item.id}`;
+
   return (
     <li className="inventory-item">
       <button
         type="button"
         className="inventory-item-button"
         aria-expanded={open}
+        aria-controls={panelId}
         onClick={() => setOpen((v) => !v)}
       >
         {item.name}
@@ -137,7 +148,13 @@ function InventoryLine({ item }: { item: InventoryItem }) {
           </>
         ) : null}
       </button>
-      {open ? <span className="caption inventory-item-desc">{item.description}</span> : null}
+      <span id={panelId} className="inventory-item-panel" hidden={!open}>
+        <span className="caption inventory-item-desc">{item.description}</span>
+        {/* The second registry text, when there is one. See T4-7. */}
+        {item.extra ? (
+          <span className="caption inventory-item-extra">{item.extra}</span>
+        ) : null}
+      </span>
     </li>
   );
 }

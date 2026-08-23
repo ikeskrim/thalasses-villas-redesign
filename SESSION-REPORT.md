@@ -14,7 +14,7 @@ Nothing below is a plan. What remains is named in three places and nowhere else:
 list** (facts and photographs only he can confirm), and **`LAUNCH.md`** (a
 runbook, owner-triggered, that does nothing by itself).
 
-Last updated: after `t4/2`.
+Last updated: after `t4/7`.
 
 ---
 
@@ -55,6 +55,7 @@ Last updated: after `t4/2`.
 | 30 — Media & repo weight | **DONE** — `overnight/30`; 471 MB → 304 MB tracked |
 | **T4-1 — Greek corpus** | in progress |
 | **T4-2 — Alt-text quality audit** | **DONE** — `t4/2`, falsified |
+| **T4-7 — Amenity tooltips render** | **DONE** — `t4/7` |
 
 **A correction worth naming.** The previous message closed with "Continuing with
 Task 3." That was intent, not work: the turn ended before any of it happened, and
@@ -82,7 +83,7 @@ available. The plumbing is built and flag-gated (`src/lib/locale.ts`).
 
 - **Pipeline:** auto-deploys on every push to `main`, team `domisi`,
   protection off, `noindex` on by design. See `DEPLOY.md`.
-- **Tests:** **426 passing, 1 skipped**, run as three shards (`npm run qa`), which
+- **Tests:** **433 passing, 1 skipped**, run as three shards (`npm run qa`), which
   covers **both engines** — Chromium for everything, and WebKit 26.5 for a
   fourteen-test smoke run (`npm run qa:webkit`). Scan, typecheck
   and lint clean at HEAD — **lint was not, until this task**: two React

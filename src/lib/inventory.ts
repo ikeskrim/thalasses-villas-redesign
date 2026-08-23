@@ -34,6 +34,18 @@ export interface InventoryItem {
   value: string | null;
   /** The 29-odd items that carry real explanatory text. */
   description: string | null;
+  /**
+   * The registry's second, usually longer text for the same item.
+   *
+   * `description` and `extraDescription` were collapsed with `??`, so any item
+   * carrying both showed only the short one and the richer one was discarded.
+   * Sixteen items across the six facilities files did carry both, and **269
+   * words** went unrendered — including "On your arrival you will find coffee,
+   * sugar, salt, spices, some basic cleaning supplies, kitchen and toilet
+   * paper, bottled water", which is exactly the kind of thing a guest wants to
+   * know and exactly the kind of thing Phase 0 was for. (T4-7.)
+   */
+  extra: string | null;
 }
 
 export interface InventorySubgroup {
@@ -76,6 +88,11 @@ function toItem(item: FacilityItem): InventoryItem {
     name: item.name,
     value: numeric && item.value != null ? String(item.value) : null,
     description: item.description ?? item.extraDescription ?? null,
+    /* Only when it is a SECOND text, not a repeat of the one above. */
+    extra:
+      item.description && item.extraDescription && item.description !== item.extraDescription
+        ? item.extraDescription
+        : null,
   };
 }
 

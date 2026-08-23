@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Magnetic } from "@/components/motion/Magnetic";
 import { Reveal } from "@/components/motion/Reveal";
 import { EstateMap } from "@/components/sections/EstateMap";
+import { Inventory } from "@/components/sections/Inventory";
 import { SiteFooter } from "@/components/sections/SiteFooter";
 import { TheRun } from "@/components/sections/TheRun";
 import { Clause } from "@/components/ui/Clause";
@@ -11,7 +12,8 @@ import { Field } from "@/components/ui/Field";
 import { Ledger } from "@/components/ui/Ledger";
 import { HOTSPOTS } from "@/app/home-data";
 import { estateCta } from "@/lib/booking";
-import { getEstate, getEstateVillas, getSite } from "@/lib/content";
+import { getEstate, getEstateVillas, getFacilitiesForVilla, getSite } from "@/lib/content";
+import { buildInventory } from "@/lib/inventory";
 import { byN } from "@/lib/selects";
 import {
   practicalNotes,
@@ -136,6 +138,21 @@ export default function EstatePage() {
     if (split.unique[i]) included[v.name] = split.unique[i]!;
   });
 
+  /*
+   * THE ESTATE HAD NO INVENTORY AT ALL.
+   *
+   * Every villa page has carried one since the Aman split, and the wedding
+   * venue got one in overnight/21b — the estate, which is the page for taking
+   * the WHOLE property, had none. 127 items across 28 groups, 31 of them
+   * carrying recovered description text, reaching no reader.
+   *
+   * Found by the tooltip guard rather than by looking: it asserts every
+   * registry description appears on the page that owns it, and on the estate
+   * thirty-two of them did not. (T4-7.)
+   */
+  const inventory = buildInventory(getFacilitiesForVilla(estate));
+  const inventoryCount = inventory.groups.reduce((n, g) => n + g.count, 0);
+
   /* The estate's OWN registry facts, which are a different thing entirely. */
   const notes = practicalNotes(estate);
   const services = villaServices(estate);
@@ -150,6 +167,7 @@ export default function EstatePage() {
     "houses",
     "map",
     "outdoors",
+    ...(inventoryCount > 0 ? ["inventory"] : []),
     ...(hasPractical ? ["practical"] : []),
     ...(recovered.length > 0 ? ["partner"] : []),
     "rooms",
@@ -295,7 +313,12 @@ export default function EstatePage() {
           </Reveal>
         </section>
 
-        {/* -------------------------------------------- 06 GOOD TO KNOW -- */}
+        {/* ------------------------------------------- THE INVENTORY -- */}
+        {inventoryCount > 0 ? (
+          <Inventory data={inventory} villaName="The Entire Estate" beat={beat("inventory")} />
+        ) : null}
+
+        {/* -------------------------------------------- GOOD TO KNOW -- */}
         {/* The estate's own registry facts — not the partner's. See T-285. */}
         {hasPractical ? (
           <section className="canon d-practical">

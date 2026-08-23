@@ -1325,3 +1325,15 @@ defect lives in, not at the layer the reviewer was describing.
   Two routes are named as explicit regression cases, because they are the two that were wrong and they are wrong for a reason that will recur: the estate and Rituals carry **no captions at all**, so every generic fallback fires on every frame there first.
   **Falsified:** restoring the old `img.caption ?? villaName` turns it red with `46x "The Entire Estate, Thalasses Villas"` printed in the failure.
   *Files:* `tests/alt-text.spec.ts`
+
+- **T-306 — 269 words of recovered amenity text were being discarded by a `??`.** The facilities registry gives each item two text fields, `description` and `extraDescription`, and `buildInventory` collapsed them with `item.description ?? item.extraDescription`. Sixteen items across the six files carry **both**, and in every one of those the field that lost is the longer, more useful one: *"On your arrival you will find coffee, sugar, salt, spices, some basic cleaning supplies, kitchen and toilet paper, bottled water. You can also make a list and find everything in the house on arrival."* — discarded in favour of *"Salt, Pepper, etc."*
+  Same class as T-285, and invisible for the same reason: nothing on screen looks wrong when a sentence is simply absent. Both texts now render, the second only when it is genuinely a second text and not a repeat of the first.
+  *Files:* `src/lib/inventory.ts`, `src/components/sections/Inventory.tsx`, `src/app/villa.css`
+
+- **T-307 — THE ESTATE HAD NO INVENTORY AT ALL.** Every villa page has carried one since the Aman split, and the wedding venue got one in `overnight/21b`. The estate — **the page for taking the whole property** — had none: 127 items across 28 groups, 31 of them carrying recovered description text, reaching no reader.
+  Not found by looking. Found by the tooltip guard, which asserts that every description in a villa's registry appears on the page that owns it; on the estate, thirty-two did not. Added at beat 06, through the same `buildInventory` every other page uses, and the derived spine renumbered itself to 01–10 gapless without an edit (T-287 earning its keep).
+  *Files:* `src/app/en/the-estate/page.tsx`
+
+- **T-308 — The disclosure announced a state change and named nothing.** The inventory's expandable items were real `<button>`s with `aria-expanded`, which is most of the way there — but no `aria-controls`, and the panel was conditionally rendered so there was nothing for an id to point at. A screen-reader user was told something had expanded and not what.
+  Now it matches the pattern the register already uses in this project: `aria-controls` naming a panel that is always in the DOM and `hidden` when closed, so the relationship the id declares is always true. Asserted operable **by keyboard**, not only by pointer.
+  *Files:* `src/components/sections/Inventory.tsx`, `tests/inventory-disclosure.spec.ts`
