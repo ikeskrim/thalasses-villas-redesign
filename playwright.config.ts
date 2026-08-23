@@ -28,6 +28,7 @@ export default defineConfig({
   retries: 0,
   workers: 1,
   reporter: [["list"], ["json", { outputFile: "test-results/results.json" }]],
+
   use: {
     baseURL: `http://localhost:${PORT}`,
     trace: "off",
