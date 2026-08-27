@@ -161,10 +161,25 @@ for (const look of LOOKS) {
   if (look.id === "editorial") {
     const low = ordered.filter((x) => LOW_LIGHT.test(x.g.subject));
     const day = ordered.filter((x) => !LOW_LIGHT.test(x.g.subject));
+    /*
+     * DAYLIGHT LEADS, and that ordering is a decision about the chooser page
+     * rather than about this look.
+     *
+     * Golden first gave Editorial the same hero frame as Golden Coast — which
+     * is defensible on a look PAGE, where one photograph in two structures
+     * isolates the design as the only variable. On the chooser it was a
+     * mistake: two of the three cards showed the identical photograph, and the
+     * owner's entry point is exactly where "these two are the same" gets
+     * decided and one of them gets dismissed unopened.
+     *
+     * Leading on daylight also happens to be truer. Editorial's brief is
+     * daylight AND golden hour under one grade; opening on the same sunset
+     * frame as the golden-hour look made it read as a third golden variant.
+     */
     ordered = [];
     for (let i = 0; i < Math.max(low.length, day.length); i++) {
-      if (low[i]) ordered.push(low[i]);
       if (day[i]) ordered.push(day[i]);
+      if (low[i]) ordered.push(low[i]);
     }
   }
 
@@ -197,6 +212,50 @@ for (const look of LOOKS) {
     candidates: candidates.length,
     heroReady: A.length > 0,
   });
+}
+
+/* ------------------------------------------------- distinct front pages -- */
+/**
+ * NO TWO LOOKS OPEN ON THE SAME PHOTOGRAPH.
+ *
+ * On a look PAGE a shared frame is a virtue — one photograph in two structures
+ * isolates the design as the only variable. On the CHOOSER it is a defect: two
+ * identical cards read as one direction shown twice, and the owner's entry
+ * point is precisely where a look gets dismissed unopened.
+ *
+ * Ordering alone could not fix it. Golden-first collided Editorial with Golden
+ * Coast; daylight-first collided it with Aegean Light instead, because the
+ * whole library holds exactly three daylight A-grade frames. The collision is a
+ * property of a thin graded set, not of a sort order, so it needs a pass that
+ * knows about all three looks at once.
+ *
+ * THE LOOK WITH FEWER PROVEN FRAMES KEEPS ITS HERO. Aegean Light has three and
+ * Editorial Estate has eighteen; asking the one with three to yield would be
+ * taking from the look that has least. Editorial drops to its next frame, which
+ * costs it nothing.
+ *
+ * This is also the clearest signal in the whole report that the graded set is
+ * too small: with 871 photographs in the library, three directions cannot open
+ * on three different frames without being told to.
+ */
+{
+  const order = [...report].sort((a, b) => a.proven - b.proven);
+  const taken = new Set();
+  for (const r of order) {
+    const frames = picks[r.look.id].frames;
+    const i = frames.findIndex((f) => !taken.has(f.src));
+    if (i === -1) {
+      console.error(`No unused hero frame left for ${r.look.name}.`);
+      process.exitCode = 1;
+      continue;
+    }
+    if (i > 0) {
+      const [chosen] = frames.splice(i, 1);
+      frames.unshift(chosen);
+      console.log(`  ${r.look.name}: hero moved to "${chosen.subject}" (its first pick was already taken)`);
+    }
+    taken.add(frames[0].src);
+  }
 }
 
 /* ---------------------------------------------------------------- report -- */

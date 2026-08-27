@@ -113,6 +113,41 @@ claim the check does not support.
 
 ---
 
+## 4a. A Greek consequence the directive does not mention
+
+The directive treats font names as "register examples… final choices depend on
+licensing and web-font performance budgets". True, and there is a constraint it
+does not know about: **the Greek corpus exists and `/el` is unbuilt, and this
+project's display face has no Greek.**
+
+That was recorded during Phase 3 (T-176, verified by inspecting the served
+woff2): **Marcellus carries latin and latin-ext, no Greek.** It is why the
+chooser page had to stop reaching for Marcellus — «Τρεις όψεις» was silently
+rendering in a Georgia fallback beside Latin set in Marcellus.
+
+Of the three prototype display faces:
+
+| look | display face | Greek |
+|---|---|---|
+| Aegean Light | Marcellus | **none** — T-176, verified in repo |
+| Editorial Estate | Cormorant Garamond | vendored subset is latin-only by filename; **not independently verified** |
+| Golden Coast | **GFS Didot** | ships a Greek subset — `gfs-didot-greek.woff2`, wired and loading |
+
+So Golden Coast is the only one of the three that carries its own Greek. If
+either of the others wins, `/el` needs a display face sourced, licensed and
+weighed before the Greek corpus can be published — which is real work that
+attaches to the choice and should be priced into it, not discovered afterwards.
+
+*A caveat on method:* a quick width-comparison heuristic was tried here to test
+all four faces at once and it reported every face as covering Greek, including
+Marcellus. That is wrong, and it is wrong because per-glyph fallback changes a
+string's width for reasons other than coverage. The table above therefore rests
+on the repository's existing verified finding and on which subset files actually
+exist, not on that measurement. Confirm Cormorant Garamond by the T-189 method
+before relying on its row.
+
+---
+
 ## 5. Legibility, which is the part that got rejected before
 
 The first build of the prototypes reproduced the exact defect that got an

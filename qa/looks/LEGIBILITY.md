@@ -20,9 +20,9 @@ hides exactly that case.
 | golden | phone | `lk-headline` | 46px | **5.91:1** | 3:1 | pass |
 | editorial | desktop | `lk-draft` | 11px | **6.03:1** | 4.5:1 | pass |
 | editorial | phone | `lk-draft` | 11px | **6.64:1** | 4.5:1 | pass |
-| golden | desktop | `lk-headline` | 96px | **8.10:1** | 3:1 | pass |
-| golden | phone | `lk-headline-tail` | 20px | **9.82:1** | 4.5:1 | pass |
-| golden | phone | `lk-lede` | 16px | **11.45:1** | 4.5:1 | pass |
+| golden | desktop | `lk-headline` | 96px | **8.01:1** | 3:1 | pass |
+| golden | phone | `lk-headline-tail` | 20px | **9.86:1** | 4.5:1 | pass |
+| golden | phone | `lk-lede` | 16px | **11.47:1** | 4.5:1 | pass |
 | golden | desktop | `lk-headline-tail` | 42px | **11.93:1** | 3:1 | pass |
 | golden | phone | `lk-draft` | 11px | **14.37:1** | 4.5:1 | pass |
 | aegean | desktop | `lk-eyebrow` | 13px | **14.56:1** | 4.5:1 | pass |
