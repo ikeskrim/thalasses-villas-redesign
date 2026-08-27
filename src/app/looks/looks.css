@@ -1,0 +1,867 @@
+/* ==========================================================================
+   THE THREE LOOKS — a token swap, made literal.
+
+   This file is the whole experiment. Every prototype renders from ONE React
+   component with one DOM; the only thing that changes between Aegean Light,
+   Editorial Estate and Golden Coast is the block of custom properties under
+   its `[data-look]` selector, plus the arrangement rules that read them.
+
+   That is the re-skin directive's central claim — "a token/curation/
+   choreography swap, not a rebuild" — written so it can be checked. If all
+   three sketches can be expressed from identical markup, the claim holds. If
+   one of them needs a different DOM, that is worth knowing before anybody
+   promises the owner a two-week re-skin.
+
+   ON BEING UNLAYERED, DELIBERATELY
+   --------------------------------
+   The site declares `@layer tokens, base, register, primitives, components,
+   utilities` and an unlayered declaration beats all of them. That fact caused
+   the same defect on this project four separate times, so using it on purpose
+   needs a reason rather than a shrug.
+
+   The reason: these rules define custom properties and style `.lk-` classes
+   that exist nowhere else on the site. There is nothing for them to win
+   against. Putting them in a layer would make their precedence depend on which
+   order Next happened to bundle a route-scoped stylesheet in, which is the
+   fragile option, not the safe-looking one.
+
+   Nothing here touches a site class, a site token at `:root`, or any element
+   outside `[data-look]`.
+   ========================================================================== */
+
+/* ==========================================================================
+   THE SITE'S CHROME DOES NOT COME TO THIS PARTY.
+
+   Every route under /looks inherits the root layout, which mounts the Direction
+   D navigation, the film grain, the contextual cursor and the route-wipe
+   overlay. On a page whose entire job is "which of these three do you like",
+   that is fatal: the owner would be looking at Direction D's nav bar, in
+   Direction D's typeface, sitting on top of all three candidates, and Aegean
+   Light — a direction about paper-white clarity — would be showing through 3%
+   film grain.
+
+   THE ALTERNATIVE WAS WORSE. Next's supported way to escape a root layout is to
+   split the app into route groups with two separate roots, which means moving
+   nine route directories and both metadata files on a site with 73 green routes,
+   to change what a throwaway prototype looks like. Not a trade worth making.
+
+   So the chrome is suppressed by `:has()`, keyed on the marker the looks layout
+   puts on its wrapper. It is scoped to pages that carry that marker and touches
+   nothing else. `tests/looks.spec.ts` asserts the chrome is genuinely absent
+   here and genuinely present on the real site, so this stays honest rather than
+   becoming a rule nobody remembers.
+   ========================================================================== */
+body:has([data-looks-root]) .nav,
+body:has([data-looks-root]) .skip-link,
+body:has([data-looks-root]) .grain,
+body:has([data-looks-root]) .cursor {
+  display: none !important;
+}
+
+/* Lenis sets an inline scroll behaviour on <html>; the prototypes scroll natively. */
+body:has([data-looks-root]) {
+  overflow-x: hidden;
+}
+
+/* --------------------------------------------------------------------------
+   AEGEAN LIGHT — paper, air, one blue.
+   Image-to-air about 50/50. Type small, wide-tracked, centred, never over a
+   busy part of a photograph.
+   -------------------------------------------------------------------------- */
+[data-look="aegean"] {
+  --lk-paper: #ffffff;
+  --lk-ground: #f4f1ea; /* limewash                                   */
+  --lk-ink: #1c2b33;
+  --lk-quiet: #5d6b73;
+  --lk-accent: #1e7fa3; /* Aegean blue — links and hairlines only     */
+  --lk-scrim: rgba(28, 43, 51, 0.28);
+
+  --lk-display: var(--font-marcellus), Georgia, serif;
+  --lk-body: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+  /* Capped at 88px — below the 96px ceiling, because this look is about air. */
+  --lk-display-xl: clamp(2.5rem, 1.5rem + 4.8vw, 5.5rem);
+  --lk-display-l: clamp(1.9rem, 1.3rem + 2.8vw, 3.2rem);
+  --lk-track: 0.02em;
+  --lk-measure: 34rem;
+  --lk-air: clamp(5rem, 12vh, 11rem);
+  --lk-hero-h: 82vh;
+  --lk-radius: 0;
+  --lk-align: center;
+  --lk-ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --lk-dur: 900ms;
+}
+
+/* --------------------------------------------------------------------------
+   EDITORIAL ESTATE — bone paper, numbered acts, a print grid.
+   Image-to-air about 60/40. Left-aligned columns, hairline rules, numerals.
+   -------------------------------------------------------------------------- */
+[data-look="editorial"] {
+  --lk-paper: #f7f4ee;
+  --lk-ground: #efe9de;
+  --lk-ink: #14110e;
+  --lk-quiet: #5b564c;
+  --lk-accent: #6e6a4f; /* bronze-olive — numerals and rules          */
+  --lk-scrim: rgba(20, 17, 14, 0.34);
+
+  --lk-display: var(--font-cormorant-garamond), Georgia, serif;
+  --lk-body: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --lk-label: ui-monospace, "Cascadia Mono", "SF Mono", Menlo, monospace;
+
+  --lk-display-xl: clamp(2.75rem, 1.4rem + 6vw, 6rem); /* the 96px ceiling */
+  --lk-display-l: clamp(2rem, 1.4rem + 3vw, 3.5rem);
+  --lk-track: 0;
+  --lk-measure: 30rem;
+  --lk-air: clamp(4rem, 9vh, 8rem);
+  --lk-hero-h: 76vh;
+  --lk-radius: 0;
+  --lk-align: left;
+  --lk-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --lk-dur: 700ms;
+}
+
+/* --------------------------------------------------------------------------
+   GOLDEN COAST — warm ivory, Didone, full bleed.
+   Image-to-air about 70/30. Type bottom-left in the safe margin.
+   -------------------------------------------------------------------------- */
+[data-look="golden"] {
+  --lk-paper: #fbf7f0;
+  --lk-ground: #f0e6d6;
+  --lk-ink: #2a211b;
+  --lk-quiet: #6b5b4c;
+  --lk-accent: #b08432; /* gold, darkened to clear AA on ivory        */
+  /* Dark and opaque because it CARRIES TEXT — see the scrim note below.
+     A mood scrim and a legibility scrim are not the same value. */
+  --lk-scrim: rgba(26, 19, 13, 0.92);
+
+  --lk-display: var(--font-gfs-didot), "Didot", Georgia, serif;
+  --lk-body: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+  --lk-display-xl: clamp(2.75rem, 1.4rem + 6vw, 6rem); /* the 96px ceiling */
+  --lk-display-l: clamp(2rem, 1.4rem + 3vw, 3.5rem);
+  --lk-track: 0.01em;
+  --lk-measure: 32rem;
+  --lk-air: clamp(3.5rem, 8vh, 7rem);
+  --lk-hero-h: 92vh;
+  --lk-radius: 0;
+  --lk-align: left;
+  --lk-ease: cubic-bezier(0.33, 1, 0.68, 1);
+  --lk-dur: 1400ms;
+}
+
+/* ==========================================================================
+   THE ARRANGEMENT — one DOM, read three ways.
+   ========================================================================== */
+
+[data-look] {
+  background: var(--lk-paper);
+  color: var(--lk-ink);
+  font-family: var(--lk-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+[data-look] .lk-main {
+  display: block;
+}
+
+/* ------------------------------------------------------------------ hero -- */
+.lk-hero {
+  position: relative;
+  height: var(--lk-hero-h);
+  min-height: 30rem;
+  display: grid;
+  overflow: hidden;
+}
+
+.lk-hero-frame {
+  position: absolute;
+  inset: 0;
+}
+
+.lk-hero-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 54%;
+}
+
+/*
+ * GOLDEN COAST'S SCRIM, and it is the only one left doing real work.
+ *
+ * The first version was a single bottom gradient reaching 0.42 — enough on a
+ * dusk frame and useless on the bright sand this look's own hero happens to
+ * end in. TWO gradients, because the failure had two causes: the copy sits
+ * bottom-LEFT, so the left edge needs density the right edge does not, and a
+ * hero photograph's brightest region is unpredictable, so the bottom band has
+ * to be strong enough for the worst case rather than the observed one.
+ *
+ * Verified by measurement, not by eye: `npm run legibility` samples the pixels
+ * actually composited behind every line of hero type and computes the WCAG
+ * ratio. It is the only reason this is a number and not a preference.
+ */
+.lk-hero-scrim {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      100deg,
+      color-mix(in srgb, var(--lk-scrim) 100%, transparent) 0%,
+      color-mix(in srgb, var(--lk-scrim) 55%, transparent) 34%,
+      transparent 62%
+    ),
+    linear-gradient(
+      180deg,
+      transparent 30%,
+      color-mix(in srgb, var(--lk-scrim) 70%, transparent) 68%,
+      color-mix(in srgb, var(--lk-scrim) 100%, transparent) 100%
+    );
+}
+
+/* The copy column stops before the busy centre of the frame. */
+[data-look="golden"] .lk-hero-copy {
+  max-width: 46rem;
+  margin-inline: 0 auto;
+}
+
+@media (min-width: 60rem) {
+  [data-look="golden"] .lk-hero-copy {
+    padding-left: clamp(2.5rem, 6vw, 5.5rem);
+  }
+}
+
+.lk-hero-copy {
+  position: relative;
+  align-self: end;
+  width: 100%;
+  max-width: 90rem;
+  margin-inline: auto;
+  padding: 0 clamp(1.25rem, 5vw, 4.5rem) clamp(2.5rem, 7vh, 5rem);
+  color: #fff;
+  text-align: var(--lk-align);
+}
+
+/* ==========================================================================
+   LEGIBILITY IS STRUCTURAL, NOT A GRADIENT.
+
+   The first capture of these prototypes reproduced, exactly, the defect that
+   got an earlier round rejected: white display type on a bright photograph,
+   unreadable. Aegean Light was the worst of the three, and that is not bad
+   luck — it is the direction whose whole premise is BRIGHT frames, which is
+   precisely the condition under which a bottom scrim fails.
+
+   Darkening a bright look until its type reads is not a fix. It makes it a
+   different look. So two of the three take the type OFF the photograph:
+
+     Aegean    — copy sits on paper beneath the frame. Its own brief says type
+                 belongs "in generous safe margins, never over busy image
+                 areas"; the brief was right and the first pass ignored it.
+     Editorial — already off-image at desktop, where the hero is a split. Below
+                 the frame on phone, where the split collapses.
+     Golden    — stays on the photograph, because full-bleed cinema is what the
+                 direction IS. It gets a scrim built for the job instead, and
+                 `npm run legibility` measures the result against the actual
+                 composited pixels rather than trusting it.
+   ========================================================================== */
+
+[data-look="aegean"] .lk-hero,
+[data-look="editorial"] .lk-hero {
+  height: auto;
+  min-height: 0;
+  grid-template-rows: auto auto;
+  background: var(--lk-paper);
+}
+
+[data-look="aegean"] .lk-hero-frame,
+[data-look="editorial"] .lk-hero-frame {
+  position: relative;
+  inset: auto;
+  grid-row: 1;
+  height: clamp(20rem, 62vh, 40rem);
+}
+
+[data-look="aegean"] .lk-hero-scrim,
+[data-look="editorial"] .lk-hero-scrim {
+  display: none;
+}
+
+[data-look="aegean"] .lk-hero-copy,
+[data-look="editorial"] .lk-hero-copy {
+  grid-row: 2;
+  color: var(--lk-ink);
+  padding-top: clamp(2.5rem, 6vh, 4.5rem);
+  padding-bottom: clamp(2.5rem, 6vh, 4.5rem);
+}
+
+[data-look="aegean"] .lk-hero-copy {
+  max-width: 52rem;
+}
+
+/*
+ * Editorial splits: the frame is a column, not a backdrop. Same markup —
+ * the hero grid simply gets two tracks and the photograph stops covering.
+ */
+@media (min-width: 60rem) {
+  [data-look="editorial"] .lk-hero {
+    /* Back to ONE row of two columns — the stacked arrangement above is the
+       phone fallback, and its `grid-template-rows` has to be undone here or
+       the copy lands below the frame instead of beside it. */
+    grid-template-rows: auto;
+    grid-template-columns: 1.15fr 1fr;
+    height: var(--lk-hero-h);
+    align-items: stretch;
+    background: var(--lk-ground);
+  }
+  [data-look="editorial"] .lk-hero-frame {
+    position: relative;
+    inset: auto;
+    grid-row: 1;
+    grid-column: 1;
+    height: auto;
+  }
+  [data-look="editorial"] .lk-hero-copy {
+    grid-row: 1;
+    grid-column: 2;
+    align-self: center;
+    color: var(--lk-ink);
+    padding: clamp(2rem, 5vw, 4rem);
+    max-width: none;
+  }
+}
+
+.lk-eyebrow {
+  font-size: 0.8rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  margin: 0 0 1.25rem;
+  opacity: 0.86;
+}
+
+[data-look="editorial"] .lk-eyebrow {
+  font-family: var(--lk-label);
+  letter-spacing: 0.14em;
+}
+
+.lk-headline {
+  font-family: var(--lk-display);
+  font-weight: 400;
+  font-size: var(--lk-display-xl);
+  line-height: 1.02;
+  letter-spacing: var(--lk-track);
+  margin: 0;
+  /* The legibility ceiling is in the clamp, not in a promise. Nothing here
+     may crop or overflow, so the headline wraps rather than shrinking. */
+  overflow-wrap: break-word;
+}
+
+.lk-headline-tail {
+  display: block;
+  font-size: 0.44em;
+  letter-spacing: 0.06em;
+  opacity: 0.9;
+  margin-top: 0.6em;
+}
+
+[data-look="golden"] .lk-headline-tail {
+  font-style: italic;
+}
+
+.lk-lede {
+  max-width: var(--lk-measure);
+  margin: 1.75rem auto 0;
+  font-size: clamp(1rem, 0.94rem + 0.3vw, 1.2rem);
+  line-height: 1.55;
+}
+
+[data-look="editorial"] .lk-lede,
+[data-look="golden"] .lk-lede {
+  margin-inline: 0;
+}
+
+/* ---------------------------------------------------------------- litany -- */
+.lk-litany {
+  background: var(--lk-ground);
+  padding: var(--lk-air) clamp(1.25rem, 5vw, 4.5rem);
+}
+
+.lk-litany-inner {
+  max-width: 68rem;
+  margin-inline: auto;
+  display: grid;
+  gap: clamp(2rem, 5vh, 4rem);
+  text-align: var(--lk-align);
+}
+
+.lk-line {
+  font-family: var(--lk-display);
+  font-size: var(--lk-display-l);
+  line-height: 1.18;
+  letter-spacing: var(--lk-track);
+  margin: 0;
+  max-width: 24ch;
+  margin-inline: auto;
+}
+
+[data-look="editorial"] .lk-line,
+[data-look="golden"] .lk-line {
+  margin-inline: 0;
+}
+
+/*
+ * The numerals are Editorial's, and they are a PSEUDO-ELEMENT so that the
+ * three looks keep one DOM. A counter in CSS is the difference between a
+ * re-skin and a rewrite.
+ */
+[data-look="editorial"] .lk-litany-inner {
+  counter-reset: lk-line;
+  gap: 0;
+}
+
+[data-look="editorial"] .lk-line {
+  counter-increment: lk-line;
+  display: grid;
+  grid-template-columns: 4.5rem 1fr;
+  gap: 1.5rem;
+  align-items: baseline;
+  border-top: 1px solid color-mix(in srgb, var(--lk-accent) 40%, transparent);
+  padding: clamp(1.5rem, 4vh, 2.5rem) 0;
+  max-width: none;
+}
+
+[data-look="editorial"] .lk-line::before {
+  content: "0" counter(lk-line);
+  font-family: var(--lk-label);
+  font-size: 0.8rem;
+  letter-spacing: 0.14em;
+  color: var(--lk-accent);
+}
+
+/* Golden stacks its lines like terraces stepping toward the water. */
+@media (min-width: 60rem) {
+  [data-look="golden"] .lk-line:nth-child(2) {
+    margin-left: 6%;
+  }
+  [data-look="golden"] .lk-line:nth-child(3) {
+    margin-left: 12%;
+  }
+  [data-look="golden"] .lk-line:nth-child(4) {
+    margin-left: 18%;
+  }
+  [data-look="golden"] .lk-line:nth-child(5) {
+    margin-left: 24%;
+  }
+}
+
+/* ------------------------------------------------------------------ act -- */
+.lk-act {
+  padding: var(--lk-air) clamp(1.25rem, 5vw, 4.5rem);
+}
+
+.lk-act-inner {
+  max-width: 90rem;
+  margin-inline: auto;
+  display: grid;
+  gap: clamp(2rem, 5vw, 4rem);
+  align-items: center;
+}
+
+@media (min-width: 60rem) {
+  .lk-act-inner {
+    grid-template-columns: 1fr 1fr;
+  }
+  /* Golden gives the photograph the larger share — 70/30, image-forward. */
+  [data-look="golden"] .lk-act-inner {
+    grid-template-columns: 1.6fr 1fr;
+  }
+  /* Aegean puts air where Golden puts photograph. */
+  [data-look="aegean"] .lk-act-inner {
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(3rem, 7vw, 6rem);
+  }
+}
+
+.lk-act-copy {
+  text-align: var(--lk-align);
+}
+
+.lk-act-label {
+  font-size: 0.8rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--lk-quiet);
+  margin: 0 0 1.25rem;
+}
+
+[data-look="editorial"] .lk-act-label {
+  font-family: var(--lk-label);
+  color: var(--lk-accent);
+}
+
+.lk-act-title {
+  font-family: var(--lk-display);
+  font-weight: 400;
+  font-size: var(--lk-display-l);
+  line-height: 1.1;
+  letter-spacing: var(--lk-track);
+  margin: 0;
+  overflow-wrap: break-word;
+}
+
+.lk-figure {
+  margin: 0;
+  border-radius: var(--lk-radius);
+  overflow: hidden;
+}
+
+.lk-figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.lk-caption {
+  margin: 0.75rem 0 0;
+  font-size: 0.82rem;
+  line-height: 1.45;
+  color: var(--lk-quiet);
+}
+
+[data-look="editorial"] .lk-caption {
+  font-family: var(--lk-label);
+  border-left: 2px solid var(--lk-accent);
+  padding-left: 0.75rem;
+}
+
+/* ----------------------------------------------------------------- strip -- */
+.lk-strip {
+  padding: 0 0 var(--lk-air);
+  background: var(--lk-paper);
+}
+
+.lk-strip-inner {
+  display: grid;
+  gap: 2px;
+  grid-template-columns: repeat(2, 1fr);
+  max-width: 90rem;
+  margin-inline: auto;
+  padding-inline: clamp(1.25rem, 5vw, 4.5rem);
+}
+
+@media (min-width: 48rem) {
+  .lk-strip-inner {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.lk-strip figure {
+  margin: 0;
+}
+
+.lk-strip img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+}
+
+[data-look="aegean"] .lk-strip-inner {
+  gap: clamp(0.75rem, 2vw, 1.5rem);
+}
+
+[data-look="aegean"] .lk-strip img {
+  aspect-ratio: 1 / 1;
+}
+
+[data-look="golden"] .lk-strip-inner {
+  gap: 0;
+  padding-inline: 0;
+  max-width: none;
+}
+
+/* --------------------------------------------------------------- booking -- */
+.lk-book {
+  background: var(--lk-ground);
+  padding: var(--lk-air) clamp(1.25rem, 5vw, 4.5rem);
+  text-align: var(--lk-align);
+}
+
+.lk-book-inner {
+  max-width: 48rem;
+  margin-inline: auto;
+}
+
+[data-look="editorial"] .lk-book-inner,
+[data-look="golden"] .lk-book-inner {
+  margin-inline: 0;
+}
+
+.lk-cta {
+  display: inline-block;
+  margin-top: 2rem;
+  font-family: var(--lk-body);
+  font-size: 0.86rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--lk-ink);
+  text-decoration: none;
+  border-bottom: 1px solid var(--lk-accent);
+  padding-bottom: 0.4rem;
+  transition: border-color var(--lk-dur) var(--lk-ease);
+}
+
+.lk-cta:hover,
+.lk-cta:focus-visible {
+  border-bottom-color: var(--lk-ink);
+}
+
+/* ------------------------------------------------------------- draft mark -- */
+/*
+ * Copy that is not signed off says so, here as well as on the live site. A
+ * prototype that quietly drops a draft marker teaches the owner the line is
+ * settled — and this is the document he will be looking at hardest.
+ */
+.lk-draft {
+  display: inline-block;
+  margin-top: 0.75rem;
+  font-family: var(--lk-body);
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--lk-quiet);
+  border: 1px solid currentColor;
+  border-radius: 2px;
+  padding: 0.2rem 0.5rem;
+  opacity: 0.75;
+}
+
+/*
+ * WHITE ONLY WHERE THE COPY IS ACTUALLY ON A PHOTOGRAPH.
+ *
+ * This rule used to paint every hero draft badge white, from when all three
+ * looks overlaid their copy. Once Aegean and Editorial moved their copy onto
+ * paper it left the marker white on white — measured at exactly 1.00:1, which
+ * is the signature of a thing that is not there at all.
+ *
+ * Of everything on the page this is the worst element to lose. Its entire job
+ * is to tell the owner that a line is not signed off; invisible, it teaches him
+ * the opposite of the truth. Golden Coast is the only look still setting hero
+ * type on an image, so it is the only one that needs the light treatment.
+ */
+[data-look="golden"] .lk-hero-copy .lk-draft {
+  color: #fff;
+  opacity: 0.72;
+}
+
+/* =========================================================== choreography ==
+   Three characters, one mechanism. Everything is a transition on a single
+   `data-in` attribute the page flips once the section is on screen.
+   ========================================================================== */
+
+.lk-reveal {
+  opacity: 0;
+  transition:
+    opacity var(--lk-dur) var(--lk-ease),
+    transform var(--lk-dur) var(--lk-ease);
+}
+
+[data-in="true"] .lk-reveal,
+.lk-reveal[data-in="true"] {
+  opacity: 1;
+  transform: none;
+}
+
+/* Aegean: a fade and nothing else. */
+[data-look="aegean"] .lk-reveal {
+  transform: none;
+}
+
+/* Editorial: lines set themselves, staggered, from below. */
+[data-look="editorial"] .lk-reveal {
+  transform: translateY(1.25rem);
+}
+
+[data-look="editorial"] .lk-line:nth-child(2) {
+  transition-delay: 90ms;
+}
+[data-look="editorial"] .lk-line:nth-child(3) {
+  transition-delay: 180ms;
+}
+[data-look="editorial"] .lk-line:nth-child(4) {
+  transition-delay: 270ms;
+}
+[data-look="editorial"] .lk-line:nth-child(5) {
+  transition-delay: 360ms;
+}
+
+/* Golden: a slow push-in. The hero frame is the thing that moves. */
+[data-look="golden"] .lk-reveal {
+  transform: translateY(2rem);
+}
+
+[data-look="golden"] .lk-hero-frame img {
+  transform: scale(1.06);
+  transition: transform 14s linear;
+}
+
+[data-look="golden"] .lk-hero[data-in="true"] .lk-hero-frame img {
+  transform: scale(1);
+}
+
+/*
+ * MANDATORY, not a nicety. It is an invariant of this project and it is also
+ * the honest way to show a motion-heavy direction to somebody who may have the
+ * setting on: Golden Coast without its push-in is still Golden Coast.
+ */
+@media (prefers-reduced-motion: reduce) {
+  [data-look] .lk-reveal,
+  [data-look] .lk-hero-frame img {
+    transition: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+}
+
+/* ============================================================== the chooser */
+.lk-chooser {
+  min-height: 100vh;
+  background: #f4f1ea;
+  color: #1c2b33;
+  font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  padding: clamp(2rem, 6vw, 5rem) clamp(1.25rem, 5vw, 4rem);
+}
+
+.lk-chooser-inner {
+  max-width: 74rem;
+  margin-inline: auto;
+}
+
+.lk-chooser h1 {
+  font-family: var(--font-marcellus), Georgia, serif;
+  font-weight: 400;
+  font-size: clamp(2rem, 1.4rem + 2.6vw, 3.25rem);
+  line-height: 1.1;
+  margin: 0 0 1rem;
+}
+
+.lk-chooser-lede {
+  max-width: 42rem;
+  line-height: 1.6;
+  color: #4a565d;
+  margin: 0 0 3rem;
+}
+
+.lk-cards {
+  display: grid;
+  gap: clamp(1.5rem, 3vw, 2.5rem);
+}
+
+@media (min-width: 56rem) {
+  .lk-cards {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.lk-card {
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border: 1px solid #dcd8cf;
+  text-decoration: none;
+  color: inherit;
+  overflow: hidden;
+  transition: border-color 240ms ease;
+}
+
+.lk-card:hover,
+.lk-card:focus-visible {
+  border-color: #1e7fa3;
+}
+
+.lk-card img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+
+.lk-card-body {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  flex: 1;
+}
+
+.lk-card-body h2 {
+  font-family: var(--font-marcellus), Georgia, serif;
+  font-weight: 400;
+  font-size: 1.5rem;
+  margin: 0;
+}
+
+.lk-card-el {
+  font-size: 0.95rem;
+  color: #4a565d;
+  margin: 0;
+  line-height: 1.55;
+}
+
+.lk-card-meta {
+  margin: 0;
+  font-size: 0.76rem;
+  letter-spacing: 0.06em;
+  color: #6d7880;
+  line-height: 1.5;
+}
+
+.lk-card-open {
+  margin-top: auto;
+  font-size: 0.78rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #1e7fa3;
+}
+
+.lk-note {
+  margin-top: 3.5rem;
+  padding-top: 1.75rem;
+  border-top: 1px solid #dcd8cf;
+  font-size: 0.85rem;
+  line-height: 1.65;
+  color: #4a565d;
+  max-width: 46rem;
+}
+
+.lk-note strong {
+  color: #1c2b33;
+}
+
+/* ---------------------------------------------------------- look nav bar -- */
+/*
+ * Switching between the three has to be one thumb-reach, because the owner is
+ * comparing them, not reading them in turn.
+ */
+.lk-switch {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  gap: 0;
+  background: var(--lk-paper);
+  border-bottom: 1px solid color-mix(in srgb, var(--lk-ink) 15%, transparent);
+}
+
+.lk-switch a {
+  flex: 1;
+  padding: 0.85rem 0.5rem;
+  text-align: center;
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--lk-quiet);
+}
+
+.lk-switch a[aria-current="page"] {
+  color: var(--lk-ink);
+  box-shadow: inset 0 -2px 0 var(--lk-accent);
+}

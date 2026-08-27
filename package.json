@@ -37,6 +37,8 @@
     "verify:el": "node scripts/verify-greek.mjs",
     "factsheets": "node scripts/factsheets.mjs",
     "reservoir": "node scripts/look-reservoir.mjs",
+    "looks": "node scripts/capture-looks.mjs",
+    "legibility": "node scripts/hero-legibility.mjs",
     "verify:provenance": "node scripts/verify-provenance.mjs"
   },
   "dependencies": {

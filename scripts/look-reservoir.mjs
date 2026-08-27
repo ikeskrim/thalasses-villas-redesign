@@ -171,6 +171,14 @@ for (const look of LOOKS) {
   picks[look.id] = {
     name: look.name,
     promise: look.promise,
+    /*
+     * The counts travel WITH the picks, so the prototype reads them from here
+     * rather than carrying its own transcribed copy. A number typed into a
+     * second file is a number that goes stale the first time the library
+     * changes, silently, on the one card whose whole job is to tell the owner
+     * what a look can actually be dressed from.
+     */
+    reservoir: { proven: A.length, support: B.length, candidates: candidates.length },
     frames: ordered.slice(0, 8).map((x) => ({
       src: pathOf(x.m),
       /* The curator's own words. Never generated, never paraphrased. */

@@ -1,0 +1,211 @@
+import { expect, test } from "@playwright/test";
+import fs from "node:fs";
+import path from "node:path";
+
+/**
+ * THE LOOK PROTOTYPES — a re-skin, proved rather than asserted.
+ *
+ * The re-skin directive's structural claim is that changing direction is "a
+ * token/curation/choreography swap, not a rebuild". That claim decides whether
+ * a re-skin is two weeks or two months, so it is worth more than a comment.
+ *
+ * The first test below is the one that means something: it serialises the DOM
+ * of all three prototypes and asserts they are IDENTICAL — same elements, same
+ * order, same classes. If a future change forks one look's markup, the claim is
+ * no longer true and this says so on that commit rather than at the estimate.
+ *
+ * The rest guard the things a prototype quietly gets wrong:
+ *   - the site's own chrome leaking into a page that is comparing designs
+ *   - a throwaway route reaching a crawler or a sitemap
+ *   - display type breaking the 96px legibility ceiling the owner asked for
+ *   - a fake booking button, on the one flow that earns money
+ *   - photographs described by something other than the curator's own words
+ */
+
+const LOOKS = ["aegean", "editorial", "golden"] as const;
+const ROOT = process.cwd();
+
+/** Attributes that are ALLOWED to differ — they are the swap itself. */
+const VARIABLE = new Set(["data-look", "src", "alt", "srcset", "width", "height", "aria-current", "href", "data-in", "style"]);
+
+test.describe("look prototypes", () => {
+  test("all three render from one DOM — the re-skin claim, measured", async ({ page }) => {
+    const shapes: string[] = [];
+
+    for (const look of LOOKS) {
+      await page.goto(`/looks/${look}`, { waitUntil: "load" });
+      /*
+       * Structure only: tag name and class list, in document order. Attributes
+       * that carry the curation (which photograph) or the state (which look,
+       * whether a reveal has fired) are excluded by name rather than by
+       * guessing, so a NEW differing attribute fails instead of slipping past.
+       */
+      const shape = await page.evaluate((variable) => {
+        const walk = (el: Element, depth: number): string[] => {
+          const attrs = [...el.attributes]
+            .map((a) => a.name)
+            .filter((n) => !variable.includes(n))
+            .sort()
+            .join(",");
+          const line = `${"  ".repeat(depth)}${el.tagName.toLowerCase()}.${el.className || "-"}[${attrs}]`;
+          return [line, ...[...el.children].flatMap((c) => walk(c, depth + 1))];
+        };
+        const root = document.querySelector("[data-look]");
+        return root ? walk(root, 0).join("\n") : "";
+      }, [...VARIABLE]);
+
+      expect(shape.length, `/looks/${look} rendered nothing`).toBeGreaterThan(200);
+      shapes.push(shape);
+    }
+
+    expect(
+      shapes[1],
+      "Editorial Estate's DOM differs from Aegean Light's — the three looks are no " +
+        "longer a token swap, and any estimate built on that claim is now wrong"
+    ).toBe(shapes[0]);
+    expect(
+      shapes[2],
+      "Golden Coast's DOM differs from Aegean Light's — see above"
+    ).toBe(shapes[0]);
+  });
+
+  test("the site's chrome stays on the site", async ({ page }) => {
+    /*
+     * The looks inherit the root layout, which mounts the Direction D nav, the
+     * film grain and the contextual cursor. Comparing three candidate designs
+     * underneath a fourth one is not a comparison. Suppressed by `:has()` in
+     * looks.css — and checked here, because a rule Lightning CSS declined to
+     * emit would look exactly like one that worked.
+     */
+    for (const look of LOOKS) {
+      await page.goto(`/looks/${look}`, { waitUntil: "load" });
+      for (const sel of [".nav", ".grain", ".cursor"]) {
+        const shown = await page.evaluate((s) => {
+          const el = document.querySelector(s);
+          return el ? getComputedStyle(el).display !== "none" : false;
+        }, sel);
+        expect(shown, `/looks/${look}: the site's ${sel} is showing`).toBe(false);
+      }
+    }
+
+    /* And the suppression must not have escaped onto the real site. */
+    await page.goto("/", { waitUntil: "load" });
+    const navOnSite = await page.evaluate(() => {
+      const el = document.querySelector(".nav");
+      return el ? getComputedStyle(el).display !== "none" : false;
+    });
+    expect(navOnSite, "the homepage lost its navigation — the :has() rule escaped its scope").toBe(true);
+  });
+
+  test("nothing here is indexable, and nothing here is in the sitemap", async ({ page, request }) => {
+    for (const route of ["/looks", ...LOOKS.map((l) => `/looks/${l}`)]) {
+      await page.goto(route, { waitUntil: "load" });
+      const robots = await page.locator('meta[name="robots"]').getAttribute("content");
+      expect(robots ?? "", `${route} is missing a robots directive`).toContain("noindex");
+    }
+
+    const sitemap = await request.get("/sitemap.xml");
+    expect(sitemap.status()).toBe(200);
+    const xml = await sitemap.text();
+    expect(xml, "a look prototype reached the sitemap").not.toContain("/looks");
+  });
+
+  test("the display ceiling holds — nothing over 96px, nothing cropped", async ({ page }) => {
+    /*
+     * The owner rejected two rounds for oversized type he could not read, and
+     * the directive names 96px at 1440 as the ceiling. The site already enforces
+     * it in `--text-display-xl`; these prototypes have their own scale, so they
+     * need their own assertion rather than inheriting the reassurance.
+     */
+    await page.setViewportSize({ width: 1440, height: 900 });
+    for (const look of LOOKS) {
+      await page.goto(`/looks/${look}`, { waitUntil: "load" });
+      const sizes = await page.evaluate(() =>
+        [...document.querySelectorAll(".lk-headline, .lk-act-title, .lk-line")].map((el) => ({
+          what: el.className.split(" ")[0],
+          px: parseFloat(getComputedStyle(el).fontSize),
+          overflowing: el.scrollWidth > el.clientWidth + 1,
+        }))
+      );
+      expect(sizes.length, `/looks/${look} has no display type`).toBeGreaterThan(0);
+      for (const s of sizes) {
+        expect(s.px, `/looks/${look}: ${s.what} renders at ${s.px}px, over the 96px ceiling`).toBeLessThanOrEqual(96);
+        expect(s.overflowing, `/looks/${look}: ${s.what} is clipped by its own box`).toBe(false);
+      }
+    }
+  });
+
+  test("booking goes to the real engine on every look", async ({ page }) => {
+    for (const look of LOOKS) {
+      await page.goto(`/looks/${look}`, { waitUntil: "load" });
+      const href = await page.locator("a.lk-cta").first().getAttribute("href");
+      expect(href, `/looks/${look} has no booking link`).toContain("thalassesvillas.reserve-online.net");
+      expect(href, `/looks/${look} booking link is missing lang`).toContain("lang=en");
+    }
+  });
+
+  test("every photograph is described in the curator's own words", async ({ page }) => {
+    /*
+     * The prototypes are dressed only from `content/look-picks.json`, whose
+     * `subject` lines were written by a person looking at each frame. Nothing
+     * here may carry a generated description, a filename, or an empty alt —
+     * the estate page shipped 48 photographs under 3 descriptions once, and the
+     * fallback that caused it is the thing to keep out of new surfaces.
+     */
+    const picks = JSON.parse(
+      fs.readFileSync(path.join(ROOT, "content", "look-picks.json"), "utf-8")
+    ) as { looks: Record<string, { frames: { src: string; subject: string }[] }> };
+
+    for (const look of LOOKS) {
+      await page.goto(`/looks/${look}`, { waitUntil: "load" });
+      const known = new Set(picks.looks[look]!.frames.map((f) => f.subject));
+
+      const alts = await page.evaluate(() =>
+        [...document.querySelectorAll("img")].map((i) => ({
+          alt: (i.getAttribute("alt") ?? "").trim(),
+          src: i.getAttribute("src") ?? "",
+        }))
+      );
+      expect(alts.length, `/looks/${look} rendered no photographs`).toBeGreaterThan(3);
+
+      for (const a of alts) {
+        expect(a.alt, `/looks/${look}: ${a.src} has no description`).not.toBe("");
+        expect(/\.(jpe?g|png|webp|avif)$/i.test(a.alt), `/looks/${look}: alt is a filename`).toBe(false);
+        expect(
+          known.has(a.alt),
+          `/looks/${look}: "${a.alt}" is not one of the curator's descriptions — ` +
+            `something is generating alt text`
+        ).toBe(true);
+      }
+
+      /* And no description may be reused, which is how the estate failed. */
+      const seen = alts.map((a) => a.alt);
+      expect(new Set(seen).size, `/looks/${look} repeats a description`).toBe(seen.length);
+    }
+  });
+
+  test("the reservoir figures on the chooser come from the reservoir", async ({ page }) => {
+    /*
+     * These numbers are the part of the decision the owner cannot see by
+     * looking — "6 support frames" is the difference between a look that
+     * photographs well and one that can dress five villa pages. They are read
+     * from the generated file rather than transcribed, and this asserts the
+     * page is showing what that file actually says.
+     */
+    const picks = JSON.parse(
+      fs.readFileSync(path.join(ROOT, "content", "look-picks.json"), "utf-8")
+    ) as { looks: Record<string, { reservoir: { proven: number; support: number; candidates: number } }> };
+
+    await page.goto("/looks", { waitUntil: "load" });
+    const text = (await page.locator(".lk-cards").innerText()).replace(/\s+/g, " ");
+
+    for (const look of LOOKS) {
+      const r = picks.looks[look]!.reservoir;
+      expect(r.proven, `${look} has no proven hero frame`).toBeGreaterThan(0);
+      expect(
+        text,
+        `the chooser does not show ${look}'s proven count of ${r.proven}`
+      ).toContain(`${r.proven} proven hero frames`);
+    }
+  });
+});

@@ -150,3 +150,11 @@ qa/phase3/
 qa/directions/
 qa/direction-d/
 qa/directive/
+
+# The three re-skin look prototypes, photographed. 9.8 MB of stills that are
+# DERIVED — `npm run looks` regenerates every one of them from committed code,
+# committed picks and committed photographs, so storing them buys nothing that
+# the repository does not already hold. The conclusions live in
+# qa/looks/RESERVOIR.md and qa/looks/LEGIBILITY.md, which are markdown and stay.
+# The prototypes themselves are a route (/looks), not a folder of pictures.
+qa/looks/shots/

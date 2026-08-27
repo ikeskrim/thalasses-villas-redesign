@@ -38,6 +38,10 @@ const BASE = siteUrl();
  */
 const EXCLUDED: Record<string, string> = {
   "/styleguide": "Internal design reference. Carries robots noindex of its own.",
+  "/looks":
+    "The three re-skin prototypes. A decision instrument for the owner, not a " +
+    "page of the site — noindex, unlinked, and handed over by URL. The three " +
+    "`/looks/<id>` routes are dynamic and never walked.",
 };
 
 /** Every non-dynamic `page.tsx` under `src/app`, as a route path. */
