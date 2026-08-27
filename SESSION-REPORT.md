@@ -3,7 +3,32 @@
 **Read this first. It is written at HEAD and updated as each task lands, so it
 is the truthful position — not a plan, not a memory.**
 
-# QUEUE COMPLETE
+# TRANCHE FIVE — the visual re-skin directive
+
+Tranche four closed the backlog. A visual re-skin research directive then
+arrived: three candidate looks, an AI-imagery strategy, and a build template.
+Acting on it is `t5/*`, and the record is **`RE-SKIN-DIRECTIVE.md`**.
+
+| | |
+|---|---|
+| **T5-1 Reservoir** | The directive ranks the looks on "the library skews golden hour". Measured: the SHORTLIST does (15 of 18 A-grades are low light), the library does not — 799 of 871 frames were never graded and average −4.7 warmth against the shortlist's +15.1. Aegean Light is not starved, it is **unmeasured**: 3 proven heroes against 279 candidates nobody has opened. Golden Coast is the inverse — 15 proven heroes and **6** support frames, which will not dress five villa pages. |
+| **T5-2 AI imagery gate** | `AI-IMAGERY-POLICY.md` plus a SHA-256 ledger of all 712 shipped frames, inside `npm run verify`. Falsified five ways. Nothing here is AI-touched; the baseline records that so a departure is visible rather than assumed. |
+| **T5-3 Three prototypes** | `/looks/aegean`, `/looks/editorial`, `/looks/golden` — his photographs, his words, three ways. One DOM across all three, **asserted** by `tests/looks.spec.ts`, which is what makes "a token swap, not a rebuild" a measured claim. No new fonts: Marcellus, Cormorant Garamond and GFS Didot were already vendored, and GFS Didot carries the Greek that Marcellus lacks. |
+| **T5-4 Legibility, measured** | The first build reproduced the defect that got an earlier round rejected — white type on a bright frame. Fixed structurally, then measured against the actual composited pixels at the worst pixel per run: **30 runs, 0 below AA, worst 5.20:1**. |
+
+**Two detectors were wrong before the design was**, which is the recurring
+lesson of this project and it recurred twice in one tranche. The capture waited
+400ms against a 1400ms reveal and photographed a transition; and the guard
+written to catch unstyled pages read its token off the layout's outer wrapper,
+where custom properties do not inherit upward — so it failed on every correctly
+styled page and sent me hunting a stylesheet that was working. Both fixed at
+cause, both now carry the reason in the file.
+
+Full suite after the tranche: **496 passed, 1 skipped** across two engines.
+
+---
+
+# QUEUE COMPLETE (tranche four)
 
 **Tasks 0 through 30 and all eight of tranche four are done.** Every one is
 committed and pushed with its own commit, and HEAD is green on the full gate:
