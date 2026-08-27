@@ -35,7 +35,8 @@
     "dedupe": "node scripts/dedupe-images.mjs",
     "weight": "node scripts/media-weight.mjs",
     "verify:el": "node scripts/verify-greek.mjs",
-    "factsheets": "node scripts/factsheets.mjs"
+    "factsheets": "node scripts/factsheets.mjs",
+    "reservoir": "node scripts/look-reservoir.mjs"
   },
   "dependencies": {
     "framer-motion": "^13.1.1",
