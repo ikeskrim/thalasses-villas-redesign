@@ -38,6 +38,7 @@ correction was.**
 | **Aegean Light** | 5 | 162 | 0 |
 | **Editorial Estate** | 33 | 266 | 0 |
 | **Golden Coast** | 28 | 104 | 0 |
+| **Type-Alive** | 33 | 266 | 0 |
 
 *Proven* means a person looked at the frame, graded it, wrote what is in it, and
 it is still on the disk. *Candidates* means the numbers say it is worth looking
@@ -108,6 +109,19 @@ written while looking at the photograph.
 | A | `71c90c592c9de399a307c6c526e2fe8c.jpg` | Villa exterior at dusk, pool lit green-blue |
 | A | `9aa4e786f2a577fcefebfbe93dec1683.jpg` | Villa exterior, blue hour, hot tub foreground |
 | A | `4061547978a0f802bc4712fee10f236d.jpg` | Wedding gathering by the water, backlit |
+
+### Type-Alive
+
+| grade | frame | what is in it |
+|---|---|---|
+| A | `13ba81cb69bed6a720e6f30f2f21f085.jpg` | Beach cabanas dressed at sunset |
+| A | `AMZ_7855.jpg` | Beach umbrellas and loungers, golden hour, sea behind |
+| A | `AMZ_7867.jpg` | Thatched umbrellas, low sun, sea |
+| A | `65070ce083cb1d043359d54469a98399.jpg` | Lit villa exterior at dusk with hot tub |
+| A | `f4ce809444820e6479bd30644b38dcee.jpg` | Two beach cabanas at sunset on the rocks |
+| A | `71c90c592c9de399a307c6c526e2fe8c.jpg` | Villa exterior at dusk, pool lit green-blue |
+| A | `698ae610f28e6c0bf630084f01cb36c8.jpg` | Terrace loungers facing the sea |
+| A | `9aa4e786f2a577fcefebfbe93dec1683.jpg` | Villa exterior, blue hour, hot tub foreground |
 
 ## Index integrity
 

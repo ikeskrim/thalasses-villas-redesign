@@ -22,7 +22,12 @@ import path from "node:path";
  *   - photographs described by something other than the curator's own words
  */
 
-const LOOKS = ["aegean", "editorial", "golden"] as const;
+/**
+ * The PHOTO-LED looks. Direction E is deliberately not here — see the one-DOM
+ * test below, where its absence is the finding rather than an oversight.
+ */
+const PHOTO_LOOKS = ["aegean", "editorial", "golden"] as const;
+const ALL_LOOKS = [...PHOTO_LOOKS, "type-alive"] as const;
 const ROOT = process.cwd();
 
 /** Attributes that are ALLOWED to differ — they are the swap itself. */
@@ -62,10 +67,25 @@ test.describe("look prototypes", () => {
     ).not.toBe("");
   });
 
-  test("all three render from one DOM — the re-skin claim, measured", async ({ page }) => {
+  test("the three photo-led looks render from one DOM — the re-skin claim, measured", async ({ page }) => {
+    /*
+     * DIRECTION E IS EXCLUDED, AND THE EXCLUSION IS THE RESULT.
+     *
+     * The directive calls a re-skin "a token/composition swap, not a rebuild".
+     * For the three photo-led directions that is true and this test proves it:
+     * identical markup, only tokens and photographs differ.
+     *
+     * Type-Alive could not be built that way. Its act numerals, its marginalia
+     * and its two-copy marquee are content rather than decoration, and forcing
+     * them through the shared component would have meant pseudo-element numbers
+     * nobody can select and a sidenote crammed into a figcaption. So the honest
+     * answer is that the claim held for three directions out of four, and both
+     * halves are recorded — including here, in the test that would otherwise
+     * have been quietly widened to make the failure go away.
+     */
     const shapes: string[] = [];
 
-    for (const look of LOOKS) {
+    for (const look of PHOTO_LOOKS) {
       await page.goto(`/looks/${look}`, { waitUntil: "load" });
       /*
        * Structure only: tag name and class list, in document order. Attributes
@@ -110,7 +130,7 @@ test.describe("look prototypes", () => {
      * looks.css — and checked here, because a rule Lightning CSS declined to
      * emit would look exactly like one that worked.
      */
-    for (const look of LOOKS) {
+    for (const look of ALL_LOOKS) {
       await page.goto(`/looks/${look}`, { waitUntil: "load" });
       for (const sel of [".nav", ".grain", ".cursor"]) {
         const shown = await page.evaluate((s) => {
@@ -131,7 +151,7 @@ test.describe("look prototypes", () => {
   });
 
   test("nothing here is indexable, and nothing here is in the sitemap", async ({ page, request }) => {
-    for (const route of ["/looks", ...LOOKS.map((l) => `/looks/${l}`)]) {
+    for (const route of ["/looks", ...ALL_LOOKS.map((l) => `/looks/${l}`)]) {
       await page.goto(route, { waitUntil: "load" });
       const robots = await page.locator('meta[name="robots"]').getAttribute("content");
       expect(robots ?? "", `${route} is missing a robots directive`).toContain("noindex");
@@ -151,10 +171,15 @@ test.describe("look prototypes", () => {
      * need their own assertion rather than inheriting the reassurance.
      */
     await page.setViewportSize({ width: 1440, height: 900 });
-    for (const look of LOOKS) {
+    for (const look of ALL_LOOKS) {
       await page.goto(`/looks/${look}`, { waitUntil: "load" });
       const sizes = await page.evaluate(() =>
-        [...document.querySelectorAll(".lk-headline, .lk-act-title, .lk-line")].map((el) => ({
+        /* Both look families: the photo-led `.lk-` classes and Direction E's `.te-`. */
+        [
+          ...document.querySelectorAll(
+            ".lk-headline, .lk-act-title, .lk-line, .te-display, .te-display-l, .te-display-m"
+          ),
+        ].map((el) => ({
           what: el.className.split(" ")[0],
           px: parseFloat(getComputedStyle(el).fontSize),
           overflowing: el.scrollWidth > el.clientWidth + 1,
@@ -169,9 +194,9 @@ test.describe("look prototypes", () => {
   });
 
   test("booking goes to the real engine on every look", async ({ page }) => {
-    for (const look of LOOKS) {
+    for (const look of ALL_LOOKS) {
       await page.goto(`/looks/${look}`, { waitUntil: "load" });
-      const href = await page.locator("a.lk-cta").first().getAttribute("href");
+      const href = await page.locator("a.lk-cta, a.te-cta").first().getAttribute("href");
       expect(href, `/looks/${look} has no booking link`).toContain("thalassesvillas.reserve-online.net");
       expect(href, `/looks/${look} booking link is missing lang`).toContain("lang=en");
     }
@@ -189,7 +214,7 @@ test.describe("look prototypes", () => {
       fs.readFileSync(path.join(ROOT, "content", "look-picks.json"), "utf-8")
     ) as { looks: Record<string, { frames: { src: string; subject: string }[] }> };
 
-    for (const look of LOOKS) {
+    for (const look of ALL_LOOKS) {
       await page.goto(`/looks/${look}`, { waitUntil: "load" });
       const known = new Set(picks.looks[look]!.frames.map((f) => f.subject));
 
@@ -248,7 +273,7 @@ test.describe("look prototypes", () => {
         count: s.querySelectorAll("img").length,
       }))
     );
-    expect(strips.length, "the chooser has no wardrobe strips").toBe(3);
+    expect(strips.length, "a chooser card is missing its wardrobe strip").toBe(ALL_LOOKS.length);
     for (const s of strips) {
       expect(s.count, "a wardrobe strip is empty").toBeGreaterThanOrEqual(3);
       expect(s.hidden, "a wardrobe strip is not marked decorative").toBe(true);
@@ -283,16 +308,16 @@ test.describe("look prototypes", () => {
         hasRisk: !!a.querySelector(".lk-card-risk"),
       }))
     );
-    expect(cards.length).toBe(3);
+    expect(cards.length).toBe(ALL_LOOKS.length);
     for (const c of cards) {
       expect(c.text, "a card does not state its font position").toMatch(/Greek/i);
       expect(c.text, "a card does not say whether the face is free").toMatch(/Free face/i);
     }
     expect(
       cards.filter((c) => c.hasRisk).length,
-      "every card carries the production-risk line — a warning on all three is " +
+      "every card carries the production-risk line — a warning on all of them is " +
         "decoration, and means the threshold is measuring nothing"
-    ).toBeLessThan(3);
+    ).toBeLessThan(ALL_LOOKS.length);
   });
 
   test("the reservoir figures on the chooser come from the reservoir", async ({ page }) => {
@@ -310,7 +335,7 @@ test.describe("look prototypes", () => {
     await page.goto("/looks", { waitUntil: "load" });
     const text = (await page.locator(".lk-cards").innerText()).replace(/\s+/g, " ");
 
-    for (const look of LOOKS) {
+    for (const look of ALL_LOOKS) {
       const r = picks.looks[look]!.reservoir;
       expect(r.proven, `${look} has no proven hero frame`).toBeGreaterThan(0);
       expect(

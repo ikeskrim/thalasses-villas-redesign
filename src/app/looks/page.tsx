@@ -3,15 +3,15 @@ import type { Metadata } from "next";
 import { LOOKS } from "./looks-data";
 
 export const metadata: Metadata = {
-  title: "Three looks — Thalasses",
+  title: "Four looks — Thalasses",
   robots: { index: false, follow: false },
 };
 
 /**
  * THE CHOOSER — the page the owner opens on his phone.
  *
- * It is deliberately plain. It is a menu, not a fourth design, and a chooser
- * that has a look of its own competes with the three things it is asking about.
+ * It is deliberately plain. It is a menu, not a fifth design, and a chooser
+ * that has a look of its own competes with the four things it is asking about.
  *
  * Greek first in each card, because he reads Greek first.
  */
@@ -19,12 +19,13 @@ export default function LooksIndex() {
   return (
     <div className="lk-chooser">
       <div className="lk-chooser-inner">
-        <h1>Τρεις όψεις. Διάλεξε μία.</h1>
+        <h1>Τέσσερις όψεις. Διάλεξε μία.</h1>
         <p className="lk-chooser-lede">
-          Three directions for the same site — your photographs, your words, your
-          property, three ways. Nothing here is a mock-up of somebody else&rsquo;s
-          hotel: every frame is from the estate, and every line is already on the
-          site. Open each one, then pick the one you want to live in.
+          Four directions for the same site — your photographs, your words, your
+          property. Nothing here is a mock-up of somebody else&rsquo;s hotel: every
+          frame is from the estate, and every line is already on the site. Three
+          lead with photography; the fourth leads with the words and keeps the
+          photographs small. Open each one, then pick the one you want to live in.
         </p>
 
         <div className="lk-cards">
@@ -81,10 +82,26 @@ export default function LooksIndex() {
                   can be beautiful in a hero and impossible to dress across five
                   villa pages, and that is exactly what "6 support frames" means.
                 */}
+                {/*
+                  Direction E is measured on a different axis on purpose. Its
+                  argument is that it needs THREE reserved photographs rather
+                  than ten, so quoting it the same "proven hero frames" line as
+                  the photo-led looks would flatter it with a number that is not
+                  its constraint.
+                */}
                 <p className="lk-card-meta">
-                  <strong>{look.reservoir.proven}</strong> proven hero frames ·{" "}
-                  <strong>{look.reservoir.support}</strong> support ·{" "}
-                  {look.reservoir.candidates} ungraded
+                  {look.id === "type-alive" ? (
+                    <>
+                      Needs <strong>3</strong> reserved photographs, not 10 ·{" "}
+                      {look.reservoir.proven} available
+                    </>
+                  ) : (
+                    <>
+                      <strong>{look.reservoir.proven}</strong> proven hero frames ·{" "}
+                      <strong>{look.reservoir.support}</strong> support ·{" "}
+                      {look.reservoir.candidates} ungraded
+                    </>
+                  )}
                 </p>
 
                 {/*
@@ -116,11 +133,12 @@ export default function LooksIndex() {
           </p>
           <p>
             <strong>The photography is the constraint, not the design.</strong>{" "}
-            Only 72 of 871 frames have ever been graded by a person, and the
-            grader reached for sunset light — so Golden Coast has 15 proven hero
-            frames and only 6 support frames behind them, while Aegean Light has 3
-            proven heroes and 279 candidates nobody has opened. Whichever you
-            pick, one afternoon of grading comes first. See{" "}
+            The whole library has now been graded — 712 of 871 frames, two
+            independent graders each. It holds <strong>33</strong> hero-grade
+            photographs, and only <strong>five</strong> of those are daylight.
+            That is why Aegean Light carries a warning and why the fourth
+            direction exists: Type-Alive leads with words, so it needs three
+            reserved photographs instead of ten. See{" "}
             <code>qa/looks/RESERVOIR.md</code>.
           </p>
           <p>

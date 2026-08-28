@@ -72,18 +72,26 @@ if (!(await reachable(BASE))) {
  */
 async function assertStyled(page, where) {
   /*
-   * `[data-look]`, NOT `[data-looks-root]`.
+   * `[data-look]`, NOT `[data-looks-root]`, and it accepts EITHER ink token.
    *
-   * The first version of this guard asked the layout's outer wrapper, which is
-   * earlier in the tree and therefore what `querySelector` returns first. The
-   * token is declared on the INNER element, and custom properties inherit
-   * downward — so the outer wrapper reports "" on a perfectly styled page and
-   * the guard failed every run. A check that cannot pass is worse than no
-   * check: it sent me looking for a broken stylesheet that was working.
+   * Two corrections, both from this guard being wrong rather than the page.
+   * First it asked the layout's outer wrapper — earlier in the tree, so what
+   * `querySelector` returns — but the token is declared on the INNER element
+   * and custom properties inherit downward, so it reported "" on a perfectly
+   * styled page. Then Direction E arrived declaring `--te-ink` in its own
+   * stylesheet, and a guard hard-coded to `--lk-ink` failed the one look that
+   * had never used it.
+   *
+   * A check that cannot pass is worse than no check: both times it sent me
+   * hunting a broken stylesheet that was working. It now asks for whichever
+   * ink the look actually declares, so adding a fifth direction cannot
+   * resurrect this.
    */
   const ink = await page.evaluate(() => {
     const root = document.querySelector("[data-look]");
-    return root ? getComputedStyle(root).getPropertyValue("--lk-ink").trim() : "";
+    if (!root) return "";
+    const cs = getComputedStyle(root);
+    return (cs.getPropertyValue("--lk-ink") || cs.getPropertyValue("--te-ink")).trim();
   });
   if (!ink) {
     console.error(
@@ -113,13 +121,24 @@ const required = (px, weight) => {
   return px >= 24 || (bold && px >= 18.66) ? 3 : 4.5;
 };
 
-const LOOKS = ["aegean", "editorial", "golden"];
+/**
+ * Direction E is measured too, and it needs its own selectors.
+ *
+ * Its type is not over a photograph — it is over paper and a slow ambient
+ * gradient. That gradient is exactly the sort of thing that looks harmless and
+ * quietly eats contrast, so it gets the same treatment: hide the text,
+ * screenshot what is behind it, sample the worst pixel.
+ */
+const LOOKS = [
+  { id: "aegean", root: ".lk-hero", text: ".lk-eyebrow, .lk-headline, .lk-headline-tail, .lk-lede, .lk-draft" },
+  { id: "editorial", root: ".lk-hero", text: ".lk-eyebrow, .lk-headline, .lk-headline-tail, .lk-lede, .lk-draft" },
+  { id: "golden", root: ".lk-hero", text: ".lk-eyebrow, .lk-headline, .lk-headline-tail, .lk-lede, .lk-draft" },
+  { id: "type-alive", root: ".te-hero", text: ".te-kicker, .te-display, .te-lede, .te-draft, .te-caption" },
+];
 const VIEWS = [
   ["desktop", 1440, 900],
   ["phone", 390, 844],
 ];
-const TEXT = ".lk-eyebrow, .lk-headline, .lk-headline-tail, .lk-lede, .lk-draft";
-
 const browser = await chromium.launch();
 const rows = [];
 
@@ -127,13 +146,15 @@ for (const [label, width, height] of VIEWS) {
   const page = await browser.newPage({ viewport: { width, height }, deviceScaleFactor: 1 });
 
   for (const look of LOOKS) {
-    await page.goto(`${BASE}/looks/${look}`, { waitUntil: "load", timeout: 90_000 });
+    const TEXT = look.text;
+    const ROOT = look.root;
+    await page.goto(`${BASE}/looks/${look.id}`, { waitUntil: "load", timeout: 90_000 });
     await page.waitForTimeout(1800); /* reveals settled — see capture-looks.mjs */
-    await assertStyled(page, `/looks/${look} @${label}`);
+    await assertStyled(page, `/looks/${look.id} @${label}`);
 
     /* Where the type is, what colour it is, and how big it renders. */
-    const items = await page.evaluate((sel) => {
-      const hero = document.querySelector(".lk-hero");
+    const items = await page.evaluate(([sel, rootSel]) => {
+      const hero = document.querySelector(rootSel);
       if (!hero) return [];
       const heroBox = hero.getBoundingClientRect();
       return [...hero.querySelectorAll(sel)]
@@ -154,20 +175,20 @@ for (const [label, width, height] of VIEWS) {
             h: Math.round(b.height),
           };
         });
-    }, TEXT);
+    }, [TEXT, ROOT]);
 
     /*
      * Hide the type — `visibility`, never `display`, so nothing reflows and the
      * boxes measured a moment ago still describe where the text was.
      */
-    await page.evaluate((sel) => {
-      const hero = document.querySelector(".lk-hero");
+    await page.evaluate(([sel, rootSel]) => {
+      const hero = document.querySelector(rootSel);
       for (const el of hero?.querySelectorAll(sel) ?? []) {
         el.style.visibility = "hidden";
       }
-    }, TEXT);
+    }, [TEXT, ROOT]);
 
-    const shot = await page.locator(".lk-hero").screenshot();
+    const shot = await page.locator(ROOT).screenshot();
     const { data, info } = await sharp(shot).raw().toBuffer({ resolveWithObject: true });
     const { width: iw, height: ih, channels } = info;
 
@@ -192,7 +213,7 @@ for (const [label, width, height] of VIEWS) {
 
       const need = required(it.px, it.weight);
       rows.push({
-        look,
+        look: look.id,
         view: label,
         what: it.what,
         text: it.text,
@@ -204,12 +225,12 @@ for (const [label, width, height] of VIEWS) {
       });
     }
 
-    await page.evaluate((sel) => {
-      const hero = document.querySelector(".lk-hero");
+    await page.evaluate(([sel, rootSel]) => {
+      const hero = document.querySelector(rootSel);
       for (const el of hero?.querySelectorAll(sel) ?? []) {
         el.style.visibility = "";
       }
-    }, TEXT);
+    }, [TEXT, ROOT]);
   }
 
   await page.close();

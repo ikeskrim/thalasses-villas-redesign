@@ -730,7 +730,7 @@ body:has([data-looks-root]) {
 }
 
 .lk-chooser-inner {
-  max-width: 74rem;
+  max-width: 84rem;
   margin-inline: auto;
 }
 
@@ -770,9 +770,15 @@ body:has([data-looks-root]) {
   gap: clamp(1.5rem, 3vw, 2.5rem);
 }
 
-@media (min-width: 56rem) {
+@media (min-width: 48rem) {
   .lk-cards {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 72rem) {
+  .lk-cards {
+    grid-template-columns: repeat(4, 1fr);
   }
 }
 

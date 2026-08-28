@@ -82,7 +82,6 @@ const browser = await chromium.launch();
 const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
 
 const hits = new Map();
-let rendered = 0;
 for (const route of ROUTES) {
   await page.goto(BASE + route, { waitUntil: "load", timeout: 90_000 });
   const total = await page.evaluate(() => document.body.scrollHeight);
@@ -100,7 +99,6 @@ for (const route of ROUTES) {
   );
   for (const s of new Set(srcs)) {
     if (!s.startsWith("/images/")) continue;
-    rendered++;
     if (flagged.has(s)) {
       if (!hits.has(s)) hits.set(s, []);
       hits.get(s).push(route);

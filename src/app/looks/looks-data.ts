@@ -1,7 +1,7 @@
 import picks from "../../../content/look-picks.json";
 
 /**
- * THREE LOOKS, ONE PAGE, SO THE OWNER CAN CHOOSE BY LOOKING.
+ * FOUR LOOKS, ONE PAGE, SO THE OWNER CAN CHOOSE BY LOOKING.
  *
  * Five verbal rounds failed on this project. Both times a design decision
  * actually landed, it landed because he saw something and picked it. The
@@ -15,27 +15,27 @@ import picks from "../../../content/look-picks.json";
  * prototype per look and let him choose from moving pixels" — is the primary
  * move, not the fallback.
  *
- * So: his photographs, his words, his property, three ways.
+ * So: his photographs, his words, his property, four ways.
  *
- * THE COPY IS IDENTICAL ACROSS ALL THREE. Same eyebrow, same lede, same five
+ * THE COPY IS IDENTICAL ACROSS ALL FOUR. Same eyebrow, same lede, same five
  * litany lines, all lifted from `src/app/home-data.ts` where every one of them
  * already resolves against the inventory. If the copy changed between looks he
  * would be choosing a manifesto, not a design, and the comparison would prove
  * nothing.
  *
- * WHAT DIFFERS IS EXACTLY THREE THINGS, which is the directive's own claim
- * about what a re-skin is:
+ * For the three PHOTO-LED looks, what differs is exactly three things — tokens,
+ * curation, choreography — and nothing else. They render from ONE component and
+ * `tests/looks.spec.ts` asserts their DOM is identical, which is what makes the
+ * directive's "a token swap, not a rebuild" a measured claim rather than a hope.
  *
- *   1. TOKENS      — palette, type family, display scale, rhythm.
- *   2. CURATION    — which photographs, from `npm run reservoir`.
- *   3. CHOREOGRAPHY — how it moves.
- *
- * The markup does not differ. All three render from one component, and
- * `tests/looks.spec.ts` asserts the DOM is identical across them — which is
- * what makes "a token swap, not a rebuild" a measured claim rather than a hope.
+ * DIRECTION E BREAKS THAT, AND THE BREAK IS THE FINDING. Type-Alive puts
+ * typography in front and demotes photography to small treated windows; its
+ * numerals, marginalia and marquee are content rather than decoration, so it
+ * needs its own markup. The claim held for three directions and did not hold
+ * for the fourth, and both halves are recorded rather than the convenient one.
  */
 
-export const LOOK_IDS = ["aegean", "editorial", "golden"] as const;
+export const LOOK_IDS = ["aegean", "editorial", "golden", "type-alive"] as const;
 export type LookId = (typeof LOOK_IDS)[number];
 
 export interface Frame {
@@ -108,6 +108,11 @@ export interface Look {
   /** What the reservoir says this look can actually be dressed from. */
   reservoir: Reservoir;
   /**
+   * One quiet line, present only when this look genuinely cannot dress the
+   * site from graded photography. Null otherwise — see WARDROBE.
+   */
+  risk: string | null;
+  /**
    * The typographic bill, so the owner decides with it visible.
    *
    * VERIFIED, not assumed. Every fact here was read from the Google Fonts
@@ -128,15 +133,10 @@ export interface Look {
    * need a different display face sourced, not a re-subset of the same one.
    * GFS Didot ships greek and greek-ext.
    */
-  /**
-   * One quiet line, present only when this look genuinely cannot dress the
-   * site from graded photography. Null otherwise — see WARDROBE.
-   */
-  risk: string | null;
   fonts: {
     /** The display face this look uses. */
     face: string;
-    /** Open licence, already in this repo. True for all three — see above. */
+    /** Open licence, already in this repo. True for all four — see above. */
     free: boolean;
     /** Does the family offer a Greek subset at all? */
     greek: boolean;
@@ -183,11 +183,31 @@ const SLOTS = 6;
  */
 export const WARDROBE = { heroSlots: 10, siteFrames: 245, routesCounted: 10 } as const;
 
-function riskFor(r: Reservoir): string | null {
-  if (r.proven >= WARDROBE.heroSlots) return null;
+/**
+ * HOW MANY HERO FRAMES A LOOK ACTUALLY NEEDS — which is not the same number for
+ * every look, and pretending it was would have hidden Direction E's whole point.
+ *
+ * The three photo-led directions each head every major page with a photograph,
+ * so they need all ten. Type-Alive heads its pages with TYPE and rations
+ * photography to two or three reserved set-pieces; ten would be a requirement
+ * invented by the measuring tool rather than by the design.
+ *
+ * That difference is the argument for the direction, so it is modelled rather
+ * than smoothed over.
+ */
+const HERO_SLOTS_NEEDED: Record<LookId, number> = {
+  aegean: WARDROBE.heroSlots,
+  editorial: WARDROBE.heroSlots,
+  golden: WARDROBE.heroSlots,
+  "type-alive": 3,
+};
+
+function riskFor(id: LookId, r: Reservoir): string | null {
+  const need = HERO_SLOTS_NEEDED[id];
+  if (r.proven >= need) return null;
   return (
-    `Only ${r.proven} frames in this look are strong enough to head a page, and the site has ` +
-    `${WARDROBE.heroSlots}. Choosing it means shooting or finding more.`
+    `Only ${r.proven} frames in this look are strong enough to head a page, and it needs ` +
+    `${need}. Choosing it means shooting or finding more.`
   );
 }
 
@@ -217,7 +237,7 @@ function withSlots(base: Omit<Look, "frames" | "hero" | "act" | "strip" | "reser
     strip: frames.slice(2, SLOTS),
     /* Read, never transcribed — see the note in scripts/look-reservoir.mjs. */
     reservoir: entry.reservoir,
-    risk: riskFor(entry.reservoir),
+    risk: riskFor(base.id, entry.reservoir),
   };
 }
 
@@ -285,6 +305,28 @@ export const LOOKS: Look[] = [
       free: true,
       greek: true,
       bill: "Free face, already in the build. Greek included — the Greek site is covered by the same face.",
+    },
+  }),
+  withSlots({
+    id: "type-alive",
+    name: "Type-Alive",
+    greekName: "Ζωντανά Γράμματα",
+    promise:
+      "The words lead and they move. Photographs are small, treated, and rationed to two or three moments.",
+    greekPromise:
+      "Τα γράμματα πρωταγωνιστούν και κινούνται. Οι φωτογραφίες είναι λίγες, μικρές και δουλεμένες.",
+    /* Named in the brief as the category proof; recorded, never fetched. */
+    anchors: ["bottegaveneta.com", "aesop.com", "locomotive.ca"],
+    character: {
+      type: "Literata Variable — the weight moves",
+      palette: "Warm paper, cobalt, coral, citron",
+      motion: "Type settles, lines arrive, the register drifts.",
+    },
+    fonts: {
+      face: "Literata",
+      free: true,
+      greek: true,
+      bill: "Free face, newly added. Greek included, and it is variable — which is what lets the type move.",
     },
   }),
 ];

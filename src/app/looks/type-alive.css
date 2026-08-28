@@ -1,0 +1,629 @@
+/* ==========================================================================
+   DIRECTION E — "TYPE-ALIVE"
+
+   The other three directions are photographs with typography on them. This one
+   is typography with photographs in it, and that inversion is not a style
+   preference — it is the answer to a measured constraint.
+
+   The grading pass put the whole library through one standard: **33 hero-grade
+   frames in 871, and 13 of the 15 found in the second pass are dusk or sunset.**
+   Aegean Light has five daylight A-grades in the entire collection. A photo-led
+   direction is therefore rationed by material that does not exist, and every
+   photo-led round so far has been rejected.
+
+   So the display face and the motion carry the page, the library is demoted to
+   small treated windows and detail crops, and the ~33 real heroes are spent on
+   two or three moments where scarcity reads as editing rather than shortage.
+
+   ON THE DOM. The other three prototypes share one component and a test asserts
+   it. THIS ONE DOES NOT, and that is reported rather than hidden: kickers, act
+   numerals, marginalia and a seamless marquee are content, not decoration, and
+   faking them from the photo-led markup would have meant a CSS counter for the
+   numbers, a duplicated node for the marquee and no home at all for the
+   sidenotes. The directive calls a re-skin "a token/composition swap"; for the
+   first three that was true and measured. For this one it is a composition
+   change, and `tests/looks.spec.ts` now says so in as many words.
+   ========================================================================== */
+
+[data-look="type-alive"] {
+  /* ---- ground and ink ---------------------------------------------------- */
+  --te-paper: #faf7f1;
+  --te-paper-deep: #f2ece1;
+  --te-ink: #1a1a18;
+  --te-quiet: #57534a;
+
+  /*
+   * THREE ACCENTS, ONE PER SECTION — and two of the three named in the brief
+   * cannot carry text.
+   *
+   * Measured against this paper with the WCAG relative-luminance formula, not
+   * estimated: the brief's sun-coral `#FF6A3D` is **2.66:1** and its citron
+   * `#C6A15B` is **2.27:1**. Both fail AA at every size this design uses —
+   * they are not "large-text only", they are below even the 3:1 large-text
+   * floor. The cobalt passes at 5.57:1.
+   *
+   * So the two failing colours are kept exactly where they were meant to be
+   * beautiful — as the DUOTONE inks, colouring photographs and carrying no
+   * words — and darkened versions do the reading. Nothing is lost from the
+   * palette; the bright colours still set the mood of each section.
+   *
+   * Same rule as the site's own palette: the colour that carries text passes
+   * unaided, so no lint rule is needed to police it.
+   */
+  --te-cobalt: #0b5fcc; /* 5.57:1 on paper — links, kickers, numerals  */
+  --te-coral-ink: #b8340d; /* readable coral — 5.56:1                     */
+  --te-citron-ink: #6b5410; /* readable citron — 6.77:1                    */
+  --te-coral: #ff6a3d; /* DUOTONE ONLY — never carries text           */
+  --te-citron: #c6a15b; /* DUOTONE ONLY — never carries text           */
+
+  /* ---- the type scale (directive §2, capped at the 96px ceiling) --------- */
+  --te-display-xl: clamp(2.75rem, 1.1rem + 7.3vw, 6rem); /* 96px @1440  */
+  --te-display-l: clamp(2rem, 1.2rem + 3.6vw, 4rem); /* 64px         */
+  --te-display-m: clamp(1.6rem, 1.2rem + 1.8vw, 2.75rem); /* 44px         */
+  --te-lede: clamp(1.25rem, 1.05rem + 0.9vw, 1.75rem); /* 28px         */
+  --te-body-l: clamp(1.05rem, 0.98rem + 0.35vw, 1.25rem); /* 20px         */
+  --te-body: clamp(1rem, 0.96rem + 0.2vw, 1.0625rem); /* 17px         */
+  --te-caption: 0.875rem; /* 14px         */
+  --te-kicker: 0.75rem; /* 12px         */
+
+  --te-display-lh: 1;
+  --te-body-lh: 1.55;
+  --te-measure: 34em;
+  --te-measure-lede: 30em;
+
+  --te-display: var(--font-literata), var(--font-literata-greek), Georgia, serif;
+  --te-body-face: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+  --te-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --te-rule: 1px solid color-mix(in srgb, var(--te-ink) 16%, transparent);
+
+  background: var(--te-paper);
+  color: var(--te-ink);
+  font-family: var(--te-body-face);
+}
+
+/* Section accents. One dominant per section, never two competing. */
+[data-look="type-alive"] .te-s1 {
+  --te-accent: var(--te-cobalt);
+  --te-duo: var(--te-cobalt);
+}
+[data-look="type-alive"] .te-s2 {
+  --te-accent: var(--te-coral-ink);
+  --te-duo: var(--te-coral);
+}
+[data-look="type-alive"] .te-s3 {
+  --te-accent: var(--te-citron-ink);
+  --te-duo: var(--te-citron);
+}
+
+/* ==========================================================================
+   AMBIENT LIFE — a 20s gradient drift, and nothing else in the background.
+   Grain is a static texture and costs no frames, so it stays under reduced
+   motion; the drift does not.
+   ========================================================================== */
+[data-look="type-alive"] .te-ambient {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(60% 50% at 18% 12%, color-mix(in srgb, var(--te-cobalt) 9%, transparent), transparent 70%),
+    radial-gradient(55% 45% at 85% 78%, color-mix(in srgb, var(--te-coral) 10%, transparent), transparent 70%);
+  animation: te-drift 20s ease-in-out infinite alternate;
+}
+
+@keyframes te-drift {
+  from {
+    transform: translate3d(-2%, -1%, 0) scale(1.04);
+  }
+  to {
+    transform: translate3d(2%, 1.5%, 0) scale(1.08);
+  }
+}
+
+[data-look="type-alive"] .te-main {
+  position: relative;
+  z-index: 1;
+}
+
+/* ==========================================================================
+   EDITORIAL PRIMITIVES
+   ========================================================================== */
+[data-look="type-alive"] .te-wrap {
+  max-width: 78rem;
+  margin-inline: auto;
+  padding-inline: clamp(1.25rem, 5vw, 4.5rem);
+}
+
+[data-look="type-alive"] .te-kicker {
+  font-family: var(--te-body-face);
+  font-size: var(--te-kicker);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--te-accent, var(--te-quiet));
+  margin: 0 0 1rem;
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+}
+
+/* Act numbers are tabular so 01 and 02 occupy identical width. */
+[data-look="type-alive"] .te-num {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+  color: var(--te-accent, var(--te-quiet));
+}
+
+[data-look="type-alive"] .te-display {
+  font-family: var(--te-display);
+  font-weight: 400;
+  font-size: var(--te-display-xl);
+  line-height: var(--te-display-lh);
+  letter-spacing: -0.015em;
+  margin: 0;
+  /* The ceiling is in the clamp. Nothing may crop; long words wrap. */
+  overflow-wrap: break-word;
+  text-wrap: balance;
+}
+
+/* Each word of the hero lockup owns its line — see the note in TypeAlivePage. */
+[data-look="type-alive"] .te-line {
+  display: block;
+}
+
+[data-look="type-alive"] .te-display-l {
+  font-family: var(--te-display);
+  font-weight: 400;
+  font-size: var(--te-display-l);
+  line-height: 1.04;
+  letter-spacing: -0.012em;
+  margin: 0;
+  overflow-wrap: break-word;
+}
+
+[data-look="type-alive"] .te-display-m {
+  font-family: var(--te-display);
+  font-weight: 400;
+  font-size: var(--te-display-m);
+  line-height: 1.1;
+  margin: 0 0 1rem;
+  overflow-wrap: break-word;
+}
+
+/* The size drop IS the hierarchy — 28px lede, then 17px body. */
+[data-look="type-alive"] .te-lede {
+  font-size: var(--te-lede);
+  line-height: 1.35;
+  max-width: var(--te-measure-lede);
+  margin: 1.5rem 0 0;
+  color: var(--te-ink);
+}
+
+[data-look="type-alive"] .te-body {
+  font-size: var(--te-body);
+  line-height: var(--te-body-lh);
+  max-width: var(--te-measure);
+  margin: 1.5rem 0 0;
+  color: var(--te-quiet);
+  /* Ragged right, never justified: rivers read as cheap on screen. */
+  text-align: start;
+  hyphens: none;
+}
+
+[data-look="type-alive"] .te-caption {
+  font-size: var(--te-caption);
+  line-height: 1.45;
+  color: var(--te-quiet);
+  margin: 0.6rem 0 0;
+}
+
+/* ==========================================================================
+   PHOTOGRAPHY, DEMOTED
+
+   Duotone, in a frame, never full bleed except the reserved set-piece. The
+   treatment is a real one rather than a filter: the container carries the
+   accent, the greyscale image is composited in `screen` so the shadows take
+   the accent and the highlights go to paper.
+
+   IT IS NOT USED TO MAKE DIFFERENT SOURCES LOOK ALIKE. `content/image-sources.md`
+   tiers this property's imagery, and a treatment that made licensed stock read
+   as the estate's own photography would defeat the tiering rather than serve it.
+   Everything treated here is Tier A — the property's own frames.
+   ========================================================================== */
+[data-look="type-alive"] .te-frame {
+  margin: 0;
+  /* Sit at the top of its grid row rather than stretching to the tallest
+     column — a frame that grows to match a text column is a box, not a frame. */
+  align-self: start;
+  max-width: 380px;
+  border: var(--te-rule);
+  padding: 0.5rem;
+  background: var(--te-paper);
+}
+
+[data-look="type-alive"] .te-duotone {
+  position: relative;
+  display: block;
+  background: var(--te-duo, var(--te-cobalt));
+  overflow: hidden;
+}
+
+[data-look="type-alive"] .te-duotone img {
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: grayscale(1) contrast(1.06) brightness(1.02);
+  mix-blend-mode: screen;
+}
+
+/* Warms the highlights back toward paper so it never blows to pure white. */
+[data-look="type-alive"] .te-duotone::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--te-paper);
+  mix-blend-mode: multiply;
+  opacity: 0.12;
+  pointer-events: none;
+}
+
+/* The reserved set-piece: full treatment, real colour, still framed. */
+[data-look="type-alive"] .te-setpiece {
+  max-width: none;
+  padding: 0;
+  border: none;
+}
+
+[data-look="type-alive"] .te-setpiece .te-duotone {
+  background: none;
+}
+
+[data-look="type-alive"] .te-setpiece .te-duotone img {
+  filter: none;
+  mix-blend-mode: normal;
+}
+
+[data-look="type-alive"] .te-setpiece .te-duotone::after {
+  display: none;
+}
+
+/* ==========================================================================
+   SECTIONS
+   ========================================================================== */
+[data-look="type-alive"] .te-hero {
+  padding: clamp(3rem, 9vh, 7rem) 0 clamp(3rem, 8vh, 6rem);
+}
+
+[data-look="type-alive"] .te-hero-grid {
+  display: grid;
+  gap: clamp(2rem, 5vw, 4rem);
+  align-items: end;
+}
+
+@media (min-width: 62rem) {
+  [data-look="type-alive"] .te-hero-grid {
+    /* Type takes the larger share. That is the direction, stated in a ratio. */
+    grid-template-columns: 1.5fr 1fr;
+  }
+}
+
+/* The single vertical kicker, used once on the page. */
+[data-look="type-alive"] .te-rail {
+  display: none;
+}
+
+@media (min-width: 62rem) {
+  [data-look="type-alive"] .te-rail {
+    display: block;
+    position: absolute;
+    left: clamp(0.5rem, 2vw, 1.75rem);
+    top: 12rem;
+    writing-mode: vertical-rl;
+    font-size: var(--te-kicker);
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--te-quiet);
+  }
+}
+
+[data-look="type-alive"] .te-litany {
+  padding: clamp(3rem, 9vh, 7rem) 0;
+  border-top: var(--te-rule);
+}
+
+[data-look="type-alive"] .te-litany ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: clamp(1.25rem, 3vh, 2.25rem);
+}
+
+/*
+ * ONE NUMBERING SYSTEM PER SECTION, and the measure has to sit on the element
+ * that actually carries the type.
+ *
+ * Two bugs here, and the second is the instructive one.
+ *
+ * The kicker gave each section an act number AND every litany line its own
+ * numeral, so the screen read "01 The days" above a line also marked "01" — two
+ * schemes counting different things a centimetre apart. The line numerals are
+ * gone; the act numbers stay, because those run across the page and mean
+ * something.
+ *
+ * Then the measure. `max-width: 34ch` was set on the `<li>`, and **`ch`
+ * resolves against the element's OWN font-size** — the `li` inherits 17px body
+ * text, so 34ch came out at roughly 270px while the display span inside it was
+ * rendering at 64px. Every line broke into three, hard against the left edge,
+ * with two-thirds of a 1440px screen empty: the exact "wall of words" the brief
+ * warns about, produced by putting a correct rule on the wrong element.
+ *
+ * The constraint now sits on the display span, where a `ch` is a 64px character.
+ */
+[data-look="type-alive"] .te-litany li {
+  max-width: none;
+}
+
+[data-look="type-alive"] .te-litany .te-display-l {
+  display: block;
+  max-width: 16ch;
+}
+
+@media (min-width: 48rem) {
+  [data-look="type-alive"] .te-litany .te-display-l {
+    max-width: 24ch;
+  }
+}
+
+[data-look="type-alive"] .te-act {
+  padding: clamp(3rem, 9vh, 7rem) 0;
+  border-top: var(--te-rule);
+}
+
+[data-look="type-alive"] .te-act-grid {
+  display: grid;
+  gap: clamp(1.5rem, 4vw, 3rem);
+}
+
+@media (min-width: 62rem) {
+  [data-look="type-alive"] .te-act-grid {
+    /* marginalia | copy | frame — the sidenote is a column, not a box. */
+    grid-template-columns: 10rem minmax(0, 1fr) auto;
+  }
+}
+
+/* Marginalia: hung annotations, no border, no background, no card. */
+[data-look="type-alive"] .te-margin {
+  font-size: var(--te-caption);
+  line-height: 1.5;
+  color: var(--te-quiet);
+  margin: 0;
+  display: grid;
+  gap: 0.5rem;
+  align-content: start;
+}
+
+[data-look="type-alive"] .te-margin b {
+  display: block;
+  font-weight: 400;
+  font-family: var(--te-display);
+  font-size: 1.35rem;
+  color: var(--te-ink);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------------------------------------------------------------- marquee -- */
+[data-look="type-alive"] .te-register {
+  padding: clamp(3rem, 9vh, 7rem) 0 clamp(2rem, 5vh, 3rem);
+  border-top: var(--te-rule);
+}
+
+[data-look="type-alive"] .te-marquee {
+  overflow: hidden;
+  margin-top: 2rem;
+  /* Fades the ends so it reads as continuous rather than cut off. */
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+}
+
+[data-look="type-alive"] .te-marquee-track {
+  display: flex;
+  gap: 0;
+  width: max-content;
+  /*
+   * 46 px/s. The brief allows 40–60 and calls anything past ~80 a gimmick; the
+   * duration is derived from the track width so the SPEED is the constant and
+   * adding a chip does not silently make it faster.
+   */
+  animation: te-marquee 38s linear infinite;
+}
+
+[data-look="type-alive"] .te-marquee:hover .te-marquee-track,
+[data-look="type-alive"] .te-marquee:focus-within .te-marquee-track {
+  animation-play-state: paused;
+}
+
+@keyframes te-marquee {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    /* Exactly one copy of the list — the second copy makes the seam invisible. */
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+/*
+ * The runs are classes, not inline styles. The duplicate copy carried
+ * `style={{display:"flex"}}` and an inline declaration beats a stylesheet — so
+ * the reduced-motion rule that hides it did nothing, and a reader with motion
+ * turned off saw the whole register printed twice.
+ */
+[data-look="type-alive"] .te-marquee-run {
+  display: flex;
+}
+
+[data-look="type-alive"] .te-windows {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-top: 2.5rem;
+}
+
+[data-look="type-alive"] .te-window {
+  max-width: 220px;
+}
+
+[data-look="type-alive"] .te-chip {
+  font-size: var(--te-body);
+  color: var(--te-ink);
+  white-space: nowrap;
+  padding-inline: 1.5rem;
+  border-right: var(--te-rule);
+}
+
+[data-look="type-alive"] .te-book {
+  padding: clamp(3rem, 9vh, 7rem) 0 clamp(4rem, 10vh, 8rem);
+  border-top: var(--te-rule);
+}
+
+[data-look="type-alive"] .te-cta {
+  display: inline-block;
+  margin-top: 1.75rem;
+  font-size: 0.86rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--te-cobalt);
+  text-decoration: none;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid currentColor;
+}
+
+[data-look="type-alive"] .te-draft {
+  display: inline-block;
+  margin-top: 1rem;
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--te-quiet);
+  border: 1px solid currentColor;
+  border-radius: 2px;
+  padding: 0.2rem 0.5rem;
+}
+
+/* ==========================================================================
+   MOTION — the life layer, all of it compositor-friendly.
+
+   Almost every rule below animates `opacity` or `transform` and nothing else,
+   because the INP budget is 200ms and text that reflows on every frame is the
+   fastest way to lose it.
+
+   THE WEIGHT SETTLE IS THE EXCEPTION, and it cost a real defect before it was
+   contained. Animating `wght` changes glyph widths — measured, the hero word
+   grows from 242px to 286px — so it DOES reflow, and there is no compositor-only
+   way to make a variable font gain weight.
+
+   Left as one wrapping headline, that reflow flipped the phone hero between two
+   lines and three, moving the entire page below it by 46px: **0.0376 CLS, all of
+   it mine.** The fix is not to weaken the animation but to remove its ability to
+   change the line count — each word of the lockup is its own block, so the
+   settle changes a width inside a line box and nothing else. Measured back to
+   **CLS 0** at both viewports afterwards.
+   ========================================================================== */
+[data-look="type-alive"] .te-in {
+  opacity: 0;
+  transform: translate3d(0, 16px, 0);
+  transition:
+    opacity 500ms var(--te-ease),
+    transform 500ms var(--te-ease);
+}
+
+[data-look="type-alive"] [data-in="true"] .te-in,
+[data-look="type-alive"] .te-in[data-in="true"] {
+  opacity: 1;
+  transform: none;
+}
+
+/* 90ms stagger, the litany only. Headlines may animate; body may not. */
+[data-look="type-alive"] .te-litany li:nth-child(1) .te-in {
+  transition-delay: 0ms;
+}
+[data-look="type-alive"] .te-litany li:nth-child(2) .te-in {
+  transition-delay: 90ms;
+}
+[data-look="type-alive"] .te-litany li:nth-child(3) .te-in {
+  transition-delay: 180ms;
+}
+[data-look="type-alive"] .te-litany li:nth-child(4) .te-in {
+  transition-delay: 270ms;
+}
+[data-look="type-alive"] .te-litany li:nth-child(5) .te-in {
+  transition-delay: 360ms;
+}
+
+/*
+ * THE WEIGHT SETTLE — the one move that only a variable font can make, and the
+ * reason the face had to be chosen before anything was built.
+ *
+ * Literata carries wght 200–900 and opsz 7–72. The hero word starts light and
+ * settles to 600 over 700ms. It is a transition on `font-variation-settings`,
+ * so it needs no library and no text splitting.
+ */
+[data-look="type-alive"] .te-settle {
+  font-variation-settings: "wght" 300, "opsz" 72;
+  transition: font-variation-settings 700ms cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+[data-look="type-alive"] .te-settle[data-settled="true"] {
+  font-variation-settings: "wght" 600, "opsz" 72;
+}
+
+/* Type you can touch: villa names and the litany gain weight under the cursor. */
+[data-look="type-alive"] .te-hoverable {
+  font-variation-settings: "wght" 400;
+  transition:
+    font-variation-settings 200ms ease,
+    color 200ms ease;
+}
+
+[data-look="type-alive"] .te-hoverable:hover,
+[data-look="type-alive"] .te-hoverable:focus-visible {
+  font-variation-settings: "wght" 500;
+}
+
+/* ==========================================================================
+   REDUCED MOTION — mandatory, and it removes the marquee too.
+
+   A marquee is not a decoration that can be slowed down: for a reader with
+   vestibular sensitivity it is the single most hostile pattern on the page, so
+   under `reduce` the track stops and the chips become a static wrapped row
+   rather than a strip that has scrolled halfway out of view.
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  [data-look="type-alive"] .te-in,
+  [data-look="type-alive"] .te-settle,
+  [data-look="type-alive"] .te-hoverable {
+    transition: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+
+  [data-look="type-alive"] .te-settle {
+    font-variation-settings: "wght" 600, "opsz" 72 !important;
+  }
+
+  [data-look="type-alive"] .te-ambient {
+    animation: none !important;
+  }
+
+  [data-look="type-alive"] .te-marquee-track {
+    animation: none !important;
+    width: auto;
+    flex-wrap: wrap;
+  }
+
+  /* The duplicate copy exists only to hide the loop seam; it is noise at rest. */
+  [data-look="type-alive"] .te-marquee-copy {
+    display: none !important;
+  }
+}

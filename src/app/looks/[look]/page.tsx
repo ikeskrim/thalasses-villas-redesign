@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import LookPage from "../LookPage";
+import TypeAlivePage from "../TypeAlivePage";
 import { LOOK_IDS, getLook } from "../looks-data";
 
 export function generateStaticParams() {
@@ -28,5 +29,6 @@ export default async function Page({ params }: { params: Promise<{ look: string 
   const { look } = await params;
   const l = getLook(look);
   if (!l) notFound();
-  return <LookPage look={l} />;
+  /* Direction E composes differently on purpose — see TypeAlivePage's header. */
+  return l.id === "type-alive" ? <TypeAlivePage look={l} /> : <LookPage look={l} />;
 }

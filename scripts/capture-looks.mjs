@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * PHOTOGRAPH THE THREE LOOKS.
+ * PHOTOGRAPH THE FOUR LOOKS.
  *
  * A design deliverable that has only been typechecked has not been checked. This
  * shoots each prototype at desktop and phone, at three scroll positions, so the
@@ -52,18 +52,26 @@ if (!(await reachable(BASE))) {
  */
 async function assertStyled(page, where) {
   /*
-   * `[data-look]`, NOT `[data-looks-root]`.
+   * `[data-look]`, NOT `[data-looks-root]`, and it accepts EITHER ink token.
    *
-   * The first version of this guard asked the layout's outer wrapper, which is
-   * earlier in the tree and therefore what `querySelector` returns first. The
-   * token is declared on the INNER element, and custom properties inherit
-   * downward — so the outer wrapper reports "" on a perfectly styled page and
-   * the guard failed every run. A check that cannot pass is worse than no
-   * check: it sent me looking for a broken stylesheet that was working.
+   * Two corrections, both from this guard being wrong rather than the page.
+   * First it asked the layout's outer wrapper — earlier in the tree, so what
+   * `querySelector` returns — but the token is declared on the INNER element
+   * and custom properties inherit downward, so it reported "" on a perfectly
+   * styled page. Then Direction E arrived declaring `--te-ink` in its own
+   * stylesheet, and a guard hard-coded to `--lk-ink` failed the one look that
+   * had never used it.
+   *
+   * A check that cannot pass is worse than no check: both times it sent me
+   * hunting a broken stylesheet that was working. It now asks for whichever
+   * ink the look actually declares, so adding a fifth direction cannot
+   * resurrect this.
    */
   const ink = await page.evaluate(() => {
     const root = document.querySelector("[data-look]");
-    return root ? getComputedStyle(root).getPropertyValue("--lk-ink").trim() : "";
+    if (!root) return "";
+    const cs = getComputedStyle(root);
+    return (cs.getPropertyValue("--lk-ink") || cs.getPropertyValue("--te-ink")).trim();
   });
   if (!ink) {
     console.error(
@@ -76,7 +84,7 @@ async function assertStyled(page, where) {
   }
 }
 
-const LOOKS = ["aegean", "editorial", "golden"];
+const LOOKS = ["aegean", "editorial", "golden", "type-alive"];
 const VIEWS = [
   ["desktop", 1440, 900],
   ["phone", 390, 844],
@@ -117,7 +125,7 @@ for (const [label, width, height] of VIEWS) {
       ["late", 0.66],
     ]) {
       await page.evaluate((y) => window.scrollTo(0, y), Math.round(total * frac));
-      /* Long enough for the slowest look's reveal (Golden, 1400ms) to finish. */
+      /* Long enough for the slowest reveal on any look to finish. */
       await page.waitForTimeout(1700);
       await page.screenshot({ path: path.join(OUT, `${look}-${label}-${name}.png`) });
       shots++;

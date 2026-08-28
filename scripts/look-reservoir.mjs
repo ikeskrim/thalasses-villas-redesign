@@ -160,6 +160,22 @@ const LOOKS = [
     wantsGraded: (g) => LOW_LIGHT.test(g.subject),
     wantsUngraded: (m) => m.warmth >= 25,
   },
+  {
+    id: "type-alive",
+    name: "Type-Alive",
+    promise: "Typography leads; photography is small, treated and rationed.",
+    /*
+     * IT TAKES ANY GRADED FRAME, and that is the direction's whole argument.
+     *
+     * The other three are photo-led, so each needs frames in ITS light: Aegean
+     * needs daylight and has five. Type-Alive demotes photography to small
+     * treated windows and detail crops, where a B-grade frame of stone or water
+     * texture is not a compromise — it is the intended material. The frames it
+     * cannot use are the ones no direction can use.
+     */
+    wantsGraded: () => true,
+    wantsUngraded: (m) => m.score >= 4.0,
+  },
 ];
 
 /* Usable at all: on the disk, graded, and not carrying a content flag. */
@@ -283,30 +299,83 @@ for (const look of LOOKS) {
  * on three different frames without being told to.
  */
 {
+  /*
+   * DIFFERENT FILE IS NOT THE SAME AS DIFFERENT PICTURE.
+   *
+   * The first version compared `src` and passed happily while Golden Coast and
+   * Type-Alive opened on two DIFFERENT files that were both thatched beach
+   * umbrellas at sunset, shot minutes apart. On the chooser they read as one
+   * photograph used twice — exactly the failure this pass exists to prevent,
+   * slipping through because the test was for identity rather than for
+   * likeness.
+   *
+   * The subject lines are the only description of these frames that exists, and
+   * they are specific enough to work as a proxy: two heroes that share two or
+   * more significant words are treated as the same picture. It is a heuristic
+   * and it is stated as one — the right fix is a perceptual hash, which is a
+   * larger piece of work than the problem currently justifies.
+   */
+  const STOP = new Set([
+    "the", "a", "an", "and", "with", "at", "on", "in", "of", "to", "over",
+    "behind", "under", "from", "for", "beyond", "against", "sea", "white",
+  ]);
+  const keywords = (s) =>
+    new Set(
+      s
+        .toLowerCase()
+        .replace(/[^a-z\s]/g, " ")
+        .split(/\s+/)
+        .filter((w) => w.length > 2 && !STOP.has(w))
+    );
+  /**
+   * What the photograph is OF, which is the thing that actually reads as a
+   * repeat. Two shared keywords was not enough: Golden Coast's "Beach umbrellas
+   * and loungers, golden hour" and Type-Alive's "Thatched umbrellas, low sun"
+   * share exactly one word — `umbrellas` — and are plainly the same picture
+   * twice on a chooser card. The subject noun is the stronger signal, so it is
+   * checked on its own.
+   */
+  const SUBJECT_NOUNS = [
+    "umbrella", "cabana", "lounger", "pool", "terrace", "villa", "beach",
+    "table", "garden", "path", "kitchen", "bedroom", "bathroom", "helicopter",
+    "boat", "shoreline", "headland", "gate", "deck",
+  ];
+  const primary = (s) => {
+    const t = s.toLowerCase();
+    return SUBJECT_NOUNS.find((n) => t.includes(n)) ?? null;
+  };
+  const tooAlike = (a, b) => {
+    const pa = primary(a);
+    if (pa && pa === primary(b)) return true;
+    const A = keywords(a);
+    let shared = 0;
+    for (const w of keywords(b)) if (A.has(w)) shared++;
+    return shared >= 2;
+  };
+
   const order = [...report].sort((a, b) => a.proven - b.proven);
-  const taken = new Set();
+  const taken = [];
   for (const r of order) {
     const frames = picks[r.look.id].frames;
-    const i = frames.findIndex((f) => !taken.has(f.src));
+    const i = frames.findIndex(
+      (f) => !taken.some((t) => t.src === f.src || tooAlike(t.subject, f.subject))
+    );
     if (i === -1) {
-      console.error(`No unused hero frame left for ${r.look.name}.`);
+      console.error(`No visually distinct hero frame left for ${r.look.name}.`);
       process.exitCode = 1;
       continue;
     }
     if (i > 0) {
       const [chosen] = frames.splice(i, 1);
       frames.unshift(chosen);
-      console.log(`  ${r.look.name}: hero moved to "${chosen.subject}" (its first pick was already taken)`);
+      console.log(`  ${r.look.name}: hero moved to "${chosen.subject}" (earlier picks were taken or too alike)`);
     }
-    taken.add(frames[0].src);
+    taken.push(frames[0]);
   }
 }
 
 /* ---------------------------------------------------------------- report -- */
 const pct = (n, d) => (d ? ((n / d) * 100).toFixed(0) : "0");
-const gradedLow = selects.selects.filter((s) => s.grade === "A" && LOW_LIGHT.test(s.subject ?? "")).length;
-const gradedA = selects.selects.filter((s) => s.grade === "A").length;
-const meanWarmth = (arr) => (arr.length ? (arr.reduce((s, x) => s + x.warmth, 0) / arr.length).toFixed(1) : "-");
 
 let md = `# Look reservoir — can the library dress each direction?
 

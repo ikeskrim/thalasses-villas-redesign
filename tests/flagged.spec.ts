@@ -104,7 +104,7 @@ test.describe("flagged photography", () => {
     ).toEqual([]);
   });
 
-  test("the quarantine is honest — every entry is still flagged and still on the site", async ({ page }) => {
+  test("the quarantine is honest — every entry is still flagged and still on the site", () => {
     /*
      * A quarantine list is a place things get hidden. This asserts it holds only
      * frames that are genuinely still flagged by the grading data, so it cannot

@@ -14,18 +14,20 @@ disagreements are the useful part.
 
 | | |
 |---|---|
-| **`/looks`** | The chooser. Three cards, Greek first, with the reservoir figures on each. |
+| **`/looks`** | The chooser. Four cards, Greek first, with the reservoir figures, the font bill and any production risk on each. |
 | **`/looks/aegean`** | Aegean Light — Marcellus, paper white, one Aegean blue. |
 | **`/looks/editorial`** | Editorial Estate — Cormorant Garamond, bone paper, numbered acts. |
 | **`/looks/golden`** | Golden Coast — GFS Didot, warm ivory, full-bleed cinematic. |
+| **`/looks/type-alive`** | Direction E — Literata Variable, warm paper, type leads and photography is demoted. See §6a. |
 
 Noindex, unlinked, excluded from the sitemap with a stated reason. Same copy on
-all three — every line already on the live homepage — because a comparison in
+all four — every line already on the live homepage — because a comparison in
 which the words also change is a comparison of nothing.
 
 Commands: `npm run reservoir` (what each look can be dressed from),
-`npm run looks` (photograph all three), `npm run legibility` (measure hero type
-against the pixels behind it), `npm run verify:provenance` (the imagery gate).
+`npm run looks` (photograph all four), `npm run legibility` (measure type
+against the pixels behind it), `npm run flagged` (stock photography on the live
+site), `npm run verify:provenance` (the imagery gate).
 
 ---
 
@@ -153,7 +155,8 @@ claim the check does not support.
   the reassurance.
 - **WebHotelier deep links only**, `lang=en`, dates-only. Unchanged, and the
   prototypes use the real engine.
-- **`prefers-reduced-motion`** is mandatory and honoured on all three.
+- **`prefers-reduced-motion`** is mandatory and honoured on all four — and on
+  Direction E it also stops the marquee and removes its duplicate row.
 - **No horizontal overflow at any width** — asserted per look, per viewport.
 
 ---
@@ -281,12 +284,132 @@ carried as its claims, not as findings:
 
 ---
 
+## 6a. Direction E — "Type-Alive", built as a fourth prototype
+
+The fifth directive proposes a typography-led direction where the display face
+and kinetic text carry the page and the library is demoted to small treated
+windows. **It is the first direction whose premise the grading pass supports.**
+33 hero-grade frames in 871, five of them daylight — a photo-led direction is
+rationed by material that does not exist, and this one asks for three reserved
+photographs instead of ten.
+
+Built at `/looks/type-alive`: Literata Variable, warm paper, three section
+accents, editorial composition (kickers, act numerals, oversized-lede rhythm,
+marginalia), and the motion system — weight settle, staggered litany, a 46 px/s
+marquee, ambient gradient drift, all with `prefers-reduced-motion` fallbacks.
+
+**Measured, not asserted:**
+
+| | |
+|---|---|
+| Weight settle | wght **300 → 600** over ~900ms, element 242px → 286px. The variable axis is real, not declared. |
+| CLS | **0** at 1440 and 390 — after a defect, see below |
+| LCP | 740ms / 708ms |
+| Legibility | 40 runs across four looks, **0 below AA**, worst 4.93:1 |
+| Overflow | 0px at both viewports |
+| Reduced motion | marquee stopped, ambient frozen, settle at final weight, duplicate row removed |
+
+### What it cost to get there
+
+- **The signature move shipped a layout shift.** Animating `wght` changes glyph
+  widths, so the hero flipped between two lines and three on a phone and moved
+  the page 46px — **0.0376 CLS, mine**. Fixed at cause by locking each word of
+  the lockup to its own line: the settle can change a width, never a line count.
+  My CSS comment claiming it "moves nothing but itself" was written before that
+  was true, and is corrected in place.
+- **A measure rule on the wrong element.** `max-width: 34ch` sat on the `<li>`,
+  where `ch` resolves against 17px body text — so a 64px display line got a
+  270px measure and broke into three, hard against the left edge of a 1440px
+  screen. `ch` belongs on the element that carries the type.
+- **Two numbering systems a centimetre apart** — section acts and line numerals
+  both reading "01".
+- **An inline `display:flex` beat the reduced-motion rule** that hides the
+  marquee's seam copy, so a reader with motion disabled saw the register twice.
+- **The unstyled-page guard failed a fourth time**, because Direction E declares
+  `--te-ink` and the guard asked for `--lk-ink`. It now accepts either.
+
+### The one-DOM claim, and where it stops
+
+`tests/looks.spec.ts` proves the three photo-led looks render from **identical
+markup** — the directive's "token/composition swap" is true and measured for
+them. **It is not true for Direction E.** Its act numerals, marginalia and
+two-copy marquee are content, and forcing them through the shared component
+would have meant pseudo-element numbers nobody can select and a sidenote crammed
+into a `figcaption`. The claim held for three directions out of four; both
+halves are recorded, including in the test, which was widened by *name* rather
+than by quietly loosening what it asserts.
+
+---
+
+## 6b. The type verification — and two errors in the recommended pool
+
+Stage 0 was named the blocker. Checked against the Google Fonts catalogue:
+
+**Confirmed exactly as claimed:** Literata (Greek, `opsz 7-72` + `wght 200-900`),
+EB Garamond, Vollkorn, Alegreya (all Greek + variable); GFS Didot, GFS
+Neohellenic, Cardo (Greek, static); and every face on the "do NOT assume Greek"
+list — Cormorant, Cormorant Garamond, Fraunces, Playfair Display, Spectral,
+Marcellus, Gilda Display all confirmed to have **no Greek subset**.
+
+**Two entries are wrong:**
+
+- **Newsreader is listed in the "verified Greek + variable" recommended pool.
+  It has no Greek subset** — cyrillic, latin, latin-ext, vietnamese only. It
+  cannot serve the role the table gives it.
+- **Old Standard TT is listed under "verified Greek but static". The catalogue
+  shows no Greek subset** for it either. (GFS Bodoni is simply absent from the
+  Google Fonts catalogue, so it could not be checked this way — not disproven.)
+
+**And the caveat can be closed:** the body-sans question was flagged as
+unverified. Both candidates work — **Inter** ships `greek` + `greek-ext` and is
+variable (`opsz`, `wght`); **IBM Plex Sans** ships Greek and is variable
+(`wdth`, `wght`). Inter is already vendored here, latin-only, so Greek body text
+is a free re-subset.
+
+---
+
+## 6c. One instruction not carried out
+
+The directive's photography rules include: *"Experience imagery: licensed stock
+permitted (Experience Imagery Policy v2) with logging; same duotone treatment so
+stock and real frames read as one system."*
+
+**There is no Experience Imagery Policy v2 in this repository.** What exists is
+`content/image-sources.md`, which records the owner's own three-tier rule:
+
+- **Tier A — the property.** *"Real photography of Thalasses only. Never stock,
+  never generated, never a 'similar' villa. Guests book what they see."*
+- **Tier B — named places.** Real photographs of those actual places, logged.
+- **Tier C — abstract texture.** Linen, stone, olive, water surface. *Licensed
+  stock permitted* — and generated imagery only for non-representational
+  texture, *"never a place, a building or a person."*
+
+Experience imagery is representational: a scuba diver, a jeep on a track, a
+wine tasting. Under the owner's tiering that is Tier B at best. **Tier C's stock
+permission covers abstract texture and nothing else**, so the instruction as
+written would widen a rule the owner set, using the name of a policy that does
+not exist.
+
+The second half is the sharper problem. Applying one duotone *"so stock and real
+frames read as one system"* would make bought-in imagery **less** distinguishable
+from the property's own — at the exact moment the grading pass found **twelve
+stock-flagged photographs already live** on `/` and `/en/experiences`, quarantined
+and awaiting the owner's ruling (§2a).
+
+**So Direction E is built with Tier A photography only**, and its duotone is
+applied to the estate's own frames. If the owner rules that licensed stock may
+illustrate experiences, that is his call to make explicitly — and it should
+amend `content/image-sources.md`, which is where his rule actually lives.
+
+---
+
 ## 7. What the decision now needs
 
 The grading pass is done, so the list is shorter than it was.
 
-1. **Open the three prototypes** at `/looks` and pick one. They are the
-   artifact; the anchor sites are shorthand.
+1. **Open the four prototypes** at `/looks` and pick one. They are the
+   artifact; the anchor sites are shorthand. Three lead with photography; the
+   fourth leads with type and needs three reserved frames instead of ten.
 2. **Rule on the fourteen flagged frames.** Twelve stock and two public-place
    photographs are on the homepage and the experiences index today. They are
    quarantined and guarded, not removed — see §2a and
