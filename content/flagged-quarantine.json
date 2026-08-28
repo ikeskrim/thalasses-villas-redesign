@@ -1,0 +1,230 @@
+{
+  "_note": "Flagged photographs the site currently renders, held pending an OWNER RULING. Nothing here has been deleted — content decisions belong to the owner and this project keeps what it is given. `tests/flagged.spec.ts` fails if a hard-flagged frame appears that is not on this list, so the count can shrink and never grow by accident. Regenerate with `npm run flagged -- --adopt` and read the diff.",
+  "_whyItMatters": "This rebuild exists because the previous site used stock photographs of places that were not Thalasses. A flagged frame shipping here would be the same failure with better typography.",
+  "status": "owner-pending",
+  "frames": [
+    {
+      "src": "/images/_pool/267597f7da675716be65dde87d17a259.jpg",
+      "flag": "stock",
+      "subject": "A sunbather's legs on a boat deck above the wake and open sea",
+      "why": "Generic lifestyle boating stock; no estate content visible and impossible to attribute to this property.",
+      "routes": [
+        "/",
+        "/en/experiences"
+      ]
+    },
+    {
+      "src": "/images/_pool/d9ec159dfbcda11acebe87c1e990ec3d.jpg",
+      "flag": "stock",
+      "subject": "White-gloved hand opening the door of a black car",
+      "why": "Generic luxury-transfer stock photography with no property content at all; the same trope the owner's rule excludes.",
+      "routes": [
+        "/",
+        "/en/experiences"
+      ]
+    },
+    {
+      "src": "/images/_pool/1c263ae8e7a7ec57c5735885379ef302.jpg",
+      "flag": "public-place",
+      "subject": "Stone lighthouse and harbour wall framed through a yellow-walled arch",
+      "why": "This is a public Venetian harbour lighthouse and quayside in town, not the estate.",
+      "routes": [
+        "/",
+        "/en/experiences"
+      ]
+    },
+    {
+      "src": "/images/_pool/b1987c68d509d41e5aa1269ecd12a5d1.jpg",
+      "flag": "stock",
+      "subject": "Woman with a backpack photographing mountains from a rocky ridge",
+      "why": "Reads as generic hiking stock photography of the kind the curator rejected alongside the cyclist frames.",
+      "routes": [
+        "/",
+        "/en/experiences"
+      ]
+    },
+    {
+      "src": "/images/_pool/0c4f054699fa4cd5f3592c934df7d5dc.jpg",
+      "flag": "stock",
+      "subject": "Two safari jeeps on a mountain dirt track past grazing sheep under a heavy sky",
+      "why": "Generic off-road excursion photograph on an inland mountain track with no property feature visible; reads as bought-in activity stock used to illustrate jeep safaris.",
+      "routes": [
+        "/",
+        "/en/experiences"
+      ]
+    },
+    {
+      "src": "/images/_pool/e343feb5a2a5cab3bfb8988418ab9cbe.jpg",
+      "flag": "public-place",
+      "subject": "Parasailer under a smiley-face canopy behind a speedboat towing an inflatable",
+      "why": "Open bay off a built-up town seafront with a commercial watersports boat — a public beach operation, not the estate.",
+      "routes": [
+        "/",
+        "/en/experiences"
+      ]
+    },
+    {
+      "src": "/images/_pool/2ecca71169fd54974a50f596a089b8e2.jpg",
+      "flag": "stock",
+      "subject": "Hands pouring massage oil from a glass bottle over a client's back, frangipani flower beside",
+      "why": "Indistinguishable from commercial spa stock imagery; no property context whatsoever and a tropical flower inconsistent with the estate.",
+      "routes": [
+        "/",
+        "/en/experiences"
+      ]
+    },
+    {
+      "src": "/images/_pool/4b0fcbfb168597e79076b3cac6ec1d1c.jpg",
+      "flag": "stock",
+      "subject": "Personal trainer coaching a woman with a barbell in a gym",
+      "why": "Generic gym/fitness stock photograph with a car park behind the glass; no connection to the estate.",
+      "routes": [
+        "/",
+        "/en/experiences"
+      ]
+    },
+    {
+      "src": "/images/_pool/7268b16ac113ef4d5b65d7fe5ed5dce5.jpg",
+      "flag": "stock",
+      "subject": "Blue quad bike parked on a dirt track in front of woodland",
+      "why": "Generic ATV stock photography; the birch-and-scrub woodland is not Cretan coastal landscape and nothing of the estate appears.",
+      "routes": [
+        "/",
+        "/en/experiences"
+      ]
+    },
+    {
+      "src": "/images/_pool/c24c3cbb07a7d000732744102339fad6.jpg",
+      "flag": "stock",
+      "subject": "Runner crouching to tie a trainer on a sunlit woodland path",
+      "why": "Classic generic fitness stock photography - anonymous cropped athlete on a wooded path with nothing of the estate visible.",
+      "routes": [
+        "/",
+        "/en/experiences"
+      ]
+    },
+    {
+      "src": "/images/_pool/54095a9f31b0139695c64ad1d801083e.jpg",
+      "flag": "stock",
+      "subject": "Scuba divers descending over a sandy underwater slope",
+      "why": "Generic scuba-diving stock imagery used to illustrate an activity; nothing of the estate is visible and it cannot be attributed to this property.",
+      "routes": [
+        "/",
+        "/en/experiences"
+      ]
+    },
+    {
+      "src": "/images/_pool/733997e4cda86e32b69dc8883a526a07.jpg",
+      "flag": "stock",
+      "subject": "Stacked white pebbles lettered Spirit, Body and Mind held in an open palm over soft bokeh",
+      "why": "Generic wellness stock image with overlaid lettering; carries no property content whatsoever.",
+      "routes": [
+        "/",
+        "/en/experiences"
+      ]
+    },
+    {
+      "src": "/images/_pool/b70c87734651ed6a4cb9b75b18016353.jpg",
+      "flag": "stock",
+      "subject": "Wine barrel, bottles, filled glasses and grapes staged before a vineyard at sunset",
+      "why": "Textbook composited stock beverage photography, not the property; the same objection raised against the branded beer product shots.",
+      "routes": [
+        "/",
+        "/en/experiences"
+      ]
+    },
+    {
+      "src": "/images/_pool/dd02adb78e41b725facdf9786cb9d686.jpg",
+      "flag": "stock",
+      "subject": "Row of wine glasses on a rail in front of a trellised vineyard",
+      "why": "Generic wine-tasting stock in front of a trellised hillside vineyard; a seafront estate is not this landscape.",
+      "routes": [
+        "/",
+        "/en/experiences"
+      ]
+    }
+  ],
+  "unsure": [
+    {
+      "src": "/images/_pool/46af4b45d2287f5eece037050001b0a0.jpg",
+      "subject": "Close-up of the badge on a cream retro refrigerator in a kitchen",
+      "routes": [
+        "/en/the-estate"
+      ]
+    },
+    {
+      "src": "/images/_pool/a4aa107c2d0d8f3842e40218e19f7ac6.jpg",
+      "subject": "Kitchen counter with a coffee machine, capsule bowl, purple mixing bowl and sink",
+      "routes": [
+        "/en/villas/villa-thoi"
+      ]
+    },
+    {
+      "src": "/images/_pool/f6c9dccbbd5f8fd96b14b164789ec23d.jpg",
+      "subject": "Two branded toiletry bottles and a towel beside a white basin",
+      "routes": [
+        "/en/villas/villa-thoi"
+      ]
+    },
+    {
+      "src": "/images/_pool/3d0ad4fed37872466fe569d789df7b55.jpg",
+      "subject": "Breakfast table crowded with bread, cured meats, cheese, eggs, juice and jam jars",
+      "routes": [
+        "/en/villas/villa-thoi",
+        "/en/villas/villa-persi",
+        "/en/villas/villa-melia"
+      ]
+    },
+    {
+      "src": "/images/_pool/93aa7c74d8f3ae6988ceee542b57eb0a.jpg",
+      "subject": "Thatched umbrellas and loungers on a rocky shore by turquoise water",
+      "routes": [
+        "/en/villas/villa-persi",
+        "/en/villas/villa-eeanthe",
+        "/en/gallery"
+      ]
+    },
+    {
+      "src": "/images/_pool/cbb909bbf6e7d157facfc8092acb2ec5.jpg",
+      "subject": "Open-plan living room with kitchenette, dining table and sofa",
+      "routes": [
+        "/en/villas/villa-persi"
+      ]
+    },
+    {
+      "src": "/images/_pool/c26521e47027eee6b3e2e5781383d96d.jpg",
+      "subject": "Branded shower gel bottle tucked into rolled white towels",
+      "routes": [
+        "/en/villas/villa-eeanthe"
+      ]
+    },
+    {
+      "src": "/images/_pool/fa62c6f2a74cb7bef796eb9a1ee0edb7.jpg",
+      "subject": "Close-up of a branded white refrigerator door and handle",
+      "routes": [
+        "/en/villas/villa-melia"
+      ]
+    },
+    {
+      "src": "/images/_pool/15e97a3260044624852e287a6a828aef.jpg",
+      "subject": "Bathroom with marble tiling, a walk-in shower and an oval vessel basin",
+      "routes": [
+        "/en/villas/villa-melia"
+      ]
+    },
+    {
+      "src": "/images/_pool/caa71c9873130fbe17a0373b6b1d1717.jpg",
+      "subject": "Folded white towels and a wicker basket with lavender against a marble bathroom wall",
+      "routes": [
+        "/en/villas/villa-melia"
+      ]
+    },
+    {
+      "src": "/images/_pool/bd26a568584d98852c4c8e6db87c2e9a.jpg",
+      "subject": "Chalkboard cocktail list beside beer bottles in an ice bucket on a bar counter",
+      "routes": [
+        "/en/weddings"
+      ]
+    }
+  ]
+}

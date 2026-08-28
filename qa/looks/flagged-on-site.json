@@ -1,0 +1,522 @@
+[
+  {
+    "id": "g0213",
+    "file": "267597f7da675716be65dde87d17a259.jpg",
+    "store": "pool",
+    "path": "/images/_pool/267597f7da675716be65dde87d17a259.jpg",
+    "w": 2248,
+    "h": 1536,
+    "grade": "C",
+    "subject": "A sunbather's legs on a boat deck above the wake and open sea",
+    "reason": "Classic point-of-view holiday stock trope with nothing of the property in frame; blown-out water highlights and a cropped tender at the left edge.",
+    "flag": "stock",
+    "flagReason": "Generic lifestyle boating stock; no estate content visible and impossible to attribute to this property.",
+    "graders": 2,
+    "agreed": true,
+    "adjudicated": false,
+    "src": "/images/_pool/267597f7da675716be65dde87d17a259.jpg",
+    "routes": [
+      "/",
+      "/en/experiences"
+    ]
+  },
+  {
+    "id": "g0566",
+    "file": "d9ec159dfbcda11acebe87c1e990ec3d.jpg",
+    "store": "pool",
+    "path": "/images/_pool/d9ec159dfbcda11acebe87c1e990ec3d.jpg",
+    "w": 2248,
+    "h": 1536,
+    "grade": "C",
+    "subject": "White-gloved hand opening the door of a black car",
+    "reason": "Textbook generic chauffeur stock: cropped gloved hand, anonymous car panel, nothing of the property in frame.",
+    "flag": "stock",
+    "flagReason": "Generic luxury-transfer stock photography with no property content at all; the same trope the owner's rule excludes.",
+    "graders": 2,
+    "agreed": true,
+    "adjudicated": false,
+    "src": "/images/_pool/d9ec159dfbcda11acebe87c1e990ec3d.jpg",
+    "routes": [
+      "/",
+      "/en/experiences"
+    ]
+  },
+  {
+    "id": "g0198",
+    "file": "1c263ae8e7a7ec57c5735885379ef302.jpg",
+    "store": "pool",
+    "path": "/images/_pool/1c263ae8e7a7ec57c5735885379ef302.jpg",
+    "w": 2248,
+    "h": 1536,
+    "grade": "B",
+    "subject": "Stone lighthouse and harbour wall framed through a yellow-walled arch",
+    "reason": "Genuinely nice frame-within-a-frame with warm light on the stone arch, but the sky is dull and cloud-flat, a green signboard intrudes at the left edge and a chain lies across the foreground paving; competent area content at best.",
+    "flag": "public-place",
+    "flagReason": "This is a public Venetian harbour lighthouse and quayside in town, not the estate.",
+    "graders": 2,
+    "agreed": true,
+    "adjudicated": false,
+    "src": "/images/_pool/1c263ae8e7a7ec57c5735885379ef302.jpg",
+    "routes": [
+      "/",
+      "/en/experiences"
+    ]
+  },
+  {
+    "id": "g0498",
+    "file": "b1987c68d509d41e5aa1269ecd12a5d1.jpg",
+    "store": "pool",
+    "path": "/images/_pool/b1987c68d509d41e5aa1269ecd12a5d1.jpg",
+    "w": 2248,
+    "h": 1536,
+    "grade": "C",
+    "subject": "Woman with a backpack photographing mountains from a rocky ridge",
+    "reason": "Generic lifestyle stock: blown white sky, low resolution and soft detail, subject with her back turned and nothing of the property visible.",
+    "flag": "stock",
+    "flagReason": "Reads as generic hiking stock photography of the kind the curator rejected alongside the cyclist frames.",
+    "graders": 2,
+    "agreed": true,
+    "adjudicated": false,
+    "src": "/images/_pool/b1987c68d509d41e5aa1269ecd12a5d1.jpg",
+    "routes": [
+      "/",
+      "/en/experiences"
+    ]
+  },
+  {
+    "id": "g0170",
+    "file": "0c4f054699fa4cd5f3592c934df7d5dc.jpg",
+    "store": "pool",
+    "path": "/images/_pool/0c4f054699fa4cd5f3592c934df7d5dc.jpg",
+    "w": 2248,
+    "h": 1536,
+    "grade": "C",
+    "subject": "Two safari jeeps on a mountain dirt track past grazing sheep under a heavy sky",
+    "reason": "Heavily processed generic excursion imagery with nothing of the property in frame; the same category as the cyclist frames the standard rejects.",
+    "flag": "stock",
+    "flagReason": "Generic off-road excursion photograph on an inland mountain track with no property feature visible; reads as bought-in activity stock used to illustrate jeep safaris.",
+    "graders": 2,
+    "agreed": true,
+    "adjudicated": false,
+    "src": "/images/_pool/0c4f054699fa4cd5f3592c934df7d5dc.jpg",
+    "routes": [
+      "/",
+      "/en/experiences"
+    ]
+  },
+  {
+    "id": "g0583",
+    "file": "e343feb5a2a5cab3bfb8988418ab9cbe.jpg",
+    "store": "pool",
+    "path": "/images/_pool/e343feb5a2a5cab3bfb8988418ab9cbe.jpg",
+    "w": 2248,
+    "h": 1536,
+    "grade": "C",
+    "subject": "Parasailer under a smiley-face canopy behind a speedboat towing an inflatable",
+    "reason": "Soft, low-resolution activity snapshot with a cartoon parachute and a hazy town waterfront on the horizon; nothing of the estate is in frame and the register is water-sports advertising.",
+    "flag": "public-place",
+    "flagReason": "Open bay off a built-up town seafront with a commercial watersports boat — a public beach operation, not the estate.",
+    "graders": 2,
+    "agreed": true,
+    "adjudicated": false,
+    "src": "/images/_pool/e343feb5a2a5cab3bfb8988418ab9cbe.jpg",
+    "routes": [
+      "/",
+      "/en/experiences"
+    ]
+  },
+  {
+    "id": "g0227",
+    "file": "2ecca71169fd54974a50f596a089b8e2.jpg",
+    "store": "pool",
+    "path": "/images/_pool/2ecca71169fd54974a50f596a089b8e2.jpg",
+    "w": 2248,
+    "h": 1536,
+    "grade": "C",
+    "subject": "Hands pouring massage oil from a glass bottle over a client's back, frangipani flower beside",
+    "reason": "Generic spa product photography — shallow depth of field, anonymous brown backdrop, a tropical frangipani bloom that belongs to no Crete garden, and nothing of the property in frame. Exactly the register the owner's stock rule excludes.",
+    "flag": "stock",
+    "flagReason": "Indistinguishable from commercial spa stock imagery; no property context whatsoever and a tropical flower inconsistent with the estate.",
+    "graders": 2,
+    "agreed": true,
+    "adjudicated": false,
+    "src": "/images/_pool/2ecca71169fd54974a50f596a089b8e2.jpg",
+    "routes": [
+      "/",
+      "/en/experiences"
+    ]
+  },
+  {
+    "id": "g0299",
+    "file": "4b0fcbfb168597e79076b3cac6ec1d1c.jpg",
+    "store": "pool",
+    "path": "/images/_pool/4b0fcbfb168597e79076b3cac6ec1d1c.jpg",
+    "w": 2248,
+    "h": 1536,
+    "grade": "C",
+    "subject": "Personal trainer coaching a woman with a barbell in a gym",
+    "reason": "An indoor commercial gym with a car park visible through the glazing and a slogan T-shirt as the subject — nothing of the property in frame. Generic fitness stock of exactly the kind the standard excludes.",
+    "flag": "stock",
+    "flagReason": "Generic gym/fitness stock photograph with a car park behind the glass; no connection to the estate.",
+    "graders": 2,
+    "agreed": true,
+    "adjudicated": false,
+    "src": "/images/_pool/4b0fcbfb168597e79076b3cac6ec1d1c.jpg",
+    "routes": [
+      "/",
+      "/en/experiences"
+    ]
+  },
+  {
+    "id": "g0384",
+    "file": "7268b16ac113ef4d5b65d7fe5ed5dce5.jpg",
+    "store": "pool",
+    "path": "/images/_pool/7268b16ac113ef4d5b65d7fe5ed5dce5.jpg",
+    "w": 2248,
+    "h": 1536,
+    "grade": "C",
+    "subject": "Blue quad bike parked on a dirt track in front of woodland",
+    "reason": "A vehicle product shot on a sand track with dense green deciduous woodland behind - no light, no composition, nothing of the property.",
+    "flag": "stock",
+    "flagReason": "Generic ATV stock photography; the birch-and-scrub woodland is not Cretan coastal landscape and nothing of the estate appears.",
+    "graders": 2,
+    "agreed": true,
+    "adjudicated": false,
+    "src": "/images/_pool/7268b16ac113ef4d5b65d7fe5ed5dce5.jpg",
+    "routes": [
+      "/",
+      "/en/experiences"
+    ]
+  },
+  {
+    "id": "g0531",
+    "file": "c24c3cbb07a7d000732744102339fad6.jpg",
+    "store": "pool",
+    "path": "/images/_pool/c24c3cbb07a7d000732744102339fad6.jpg",
+    "w": 2248,
+    "h": 1536,
+    "grade": "C",
+    "subject": "Runner crouching to tie a trainer on a sunlit woodland path",
+    "reason": "Generic sports stock with lens flare and no property in frame at all; exactly the cyclist-into-the-sunset trope the standard excludes.",
+    "flag": "stock",
+    "flagReason": "Classic generic fitness stock photography - anonymous cropped athlete on a wooded path with nothing of the estate visible.",
+    "graders": 2,
+    "agreed": true,
+    "adjudicated": false,
+    "src": "/images/_pool/c24c3cbb07a7d000732744102339fad6.jpg",
+    "routes": [
+      "/",
+      "/en/experiences"
+    ]
+  },
+  {
+    "id": "g0317",
+    "file": "54095a9f31b0139695c64ad1d801083e.jpg",
+    "store": "pool",
+    "path": "/images/_pool/54095a9f31b0139695c64ad1d801083e.jpg",
+    "w": 2248,
+    "h": 1536,
+    "grade": "C",
+    "subject": "Scuba divers descending over a sandy underwater slope",
+    "reason": "An underwater diving frame with no property in it at all — the same generic activity-illustration register as the stock cyclist frames the standard rejects.",
+    "flag": "stock",
+    "flagReason": "Generic scuba-diving stock imagery used to illustrate an activity; nothing of the estate is visible and it cannot be attributed to this property.",
+    "graders": 2,
+    "agreed": true,
+    "adjudicated": false,
+    "src": "/images/_pool/54095a9f31b0139695c64ad1d801083e.jpg",
+    "routes": [
+      "/",
+      "/en/experiences"
+    ]
+  },
+  {
+    "id": "g0386",
+    "file": "733997e4cda86e32b69dc8883a526a07.jpg",
+    "store": "pool",
+    "path": "/images/_pool/733997e4cda86e32b69dc8883a526a07.jpg",
+    "w": 2248,
+    "h": 1536,
+    "grade": "C",
+    "subject": "Stacked white pebbles lettered Spirit, Body and Mind held in an open palm over soft bokeh",
+    "reason": "A generic wellness graphic with text burned into the stones and a studio bokeh background; nothing of the property is in frame. Same species as the curated stock rejects.",
+    "flag": "stock",
+    "flagReason": "Generic wellness stock image with overlaid lettering; carries no property content whatsoever.",
+    "graders": 2,
+    "agreed": true,
+    "adjudicated": false,
+    "src": "/images/_pool/733997e4cda86e32b69dc8883a526a07.jpg",
+    "routes": [
+      "/",
+      "/en/experiences"
+    ]
+  },
+  {
+    "id": "g0510",
+    "file": "b70c87734651ed6a4cb9b75b18016353.jpg",
+    "store": "pool",
+    "path": "/images/_pool/b70c87734651ed6a4cb9b75b18016353.jpg",
+    "w": 2248,
+    "h": 1536,
+    "grade": "C",
+    "subject": "Wine barrel, bottles, filled glasses and grapes staged before a vineyard at sunset",
+    "reason": "An obviously composited commercial product still life: studio-lit foreground objects dropped against a graded vineyard sunset, with impossible lighting between the two halves.",
+    "flag": "stock",
+    "flagReason": "Textbook composited stock beverage photography, not the property; the same objection raised against the branded beer product shots.",
+    "graders": 2,
+    "agreed": true,
+    "adjudicated": false,
+    "src": "/images/_pool/b70c87734651ed6a4cb9b75b18016353.jpg",
+    "routes": [
+      "/",
+      "/en/experiences"
+    ]
+  },
+  {
+    "id": "g0570",
+    "file": "dd02adb78e41b725facdf9786cb9d686.jpg",
+    "store": "pool",
+    "path": "/images/_pool/dd02adb78e41b725facdf9786cb9d686.jpg",
+    "w": 2248,
+    "h": 1536,
+    "grade": "C",
+    "subject": "Row of wine glasses on a rail in front of a trellised vineyard",
+    "reason": "Product-shot styling against a soft-focus vineyard — no estate, no sea, nothing of the property; the wine-tasting equivalent of the cyclist frames.",
+    "flag": "stock",
+    "flagReason": "Generic wine-tasting stock in front of a trellised hillside vineyard; a seafront estate is not this landscape.",
+    "graders": 2,
+    "agreed": true,
+    "adjudicated": false,
+    "src": "/images/_pool/dd02adb78e41b725facdf9786cb9d686.jpg",
+    "routes": [
+      "/",
+      "/en/experiences"
+    ]
+  },
+  {
+    "id": "g0287",
+    "file": "46af4b45d2287f5eece037050001b0a0.jpg",
+    "store": "pool",
+    "path": "/images/_pool/46af4b45d2287f5eece037050001b0a0.jpg",
+    "w": 3300,
+    "h": 2200,
+    "grade": "C",
+    "subject": "Close-up of the badge on a cream retro refrigerator in a kitchen",
+    "reason": "A branded appliance logo is the entire subject, with the rest of the kitchen thrown out of focus; no property context and no scene.",
+    "flag": "unsure",
+    "flagReason": "The frame is dominated by another company's appliance branding with no identifiable property context.",
+    "graders": 2,
+    "agreed": true,
+    "adjudicated": false,
+    "src": "/images/_pool/46af4b45d2287f5eece037050001b0a0.jpg",
+    "routes": [
+      "/en/the-estate"
+    ]
+  },
+  {
+    "id": "g0482",
+    "file": "a4aa107c2d0d8f3842e40218e19f7ac6.jpg",
+    "store": "pool",
+    "path": "/images/_pool/a4aa107c2d0d8f3842e40218e19f7ac6.jpg",
+    "w": 1080,
+    "h": 1920,
+    "grade": "C",
+    "subject": "Kitchen counter with a coffee machine, capsule bowl, purple mixing bowl and sink",
+    "reason": "Snapshot detail crop of a worktop: coloured plastic knives, a purple bowl and a blue board make it read as clutter rather than styling, and the vertical framing cuts the oven and cabinets awkwardly. Flat interior light.",
+    "flag": "unsure",
+    "flagReason": "A third-party coffee-machine logo and branded capsule box sit centre frame, the same objection the curator raised against the branded coffee-machine close-up.",
+    "graders": 2,
+    "agreed": true,
+    "adjudicated": false,
+    "src": "/images/_pool/a4aa107c2d0d8f3842e40218e19f7ac6.jpg",
+    "routes": [
+      "/en/villas/villa-thoi"
+    ]
+  },
+  {
+    "id": "g0614",
+    "file": "f6c9dccbbd5f8fd96b14b164789ec23d.jpg",
+    "store": "pool",
+    "path": "/images/_pool/f6c9dccbbd5f8fd96b14b164789ec23d.jpg",
+    "w": 2304,
+    "h": 1536,
+    "grade": "C",
+    "subject": "Two branded toiletry bottles and a towel beside a white basin",
+    "reason": "Tight product close-up with no property context at all, and the third-party toiletry brand is the most legible thing in frame. Indistinguishable from generic amenity stock.",
+    "flag": "unsure",
+    "flagReason": "Carries another company's branding on the bottles and shows no property context; confirm it is in-villa photography before use.",
+    "graders": 2,
+    "agreed": true,
+    "adjudicated": false,
+    "src": "/images/_pool/f6c9dccbbd5f8fd96b14b164789ec23d.jpg",
+    "routes": [
+      "/en/villas/villa-thoi"
+    ]
+  },
+  {
+    "id": "g0255",
+    "file": "3d0ad4fed37872466fe569d789df7b55.jpg",
+    "store": "pool",
+    "path": "/images/_pool/3d0ad4fed37872466fe569d789df7b55.jpg",
+    "w": 1920,
+    "h": 1080,
+    "grade": "C",
+    "subject": "Breakfast table crowded with bread, cured meats, cheese, eggs, juice and jam jars",
+    "reason": "Cluttered and unstyled — plastic condiment sachets, a branded honey jar, a coffee capsule and a cardboard carton sit among the plates, the foreground is a blur of jam jars and the background is blown out. Snapshot depth of field with no room or view to place it.",
+    "flag": "unsure",
+    "flagReason": "No property context at all and several third-party branded packets and a coffee capsule in frame; cannot be confirmed as in-villa photography.",
+    "graders": 2,
+    "agreed": true,
+    "adjudicated": false,
+    "src": "/images/_pool/3d0ad4fed37872466fe569d789df7b55.jpg",
+    "routes": [
+      "/en/villas/villa-thoi",
+      "/en/villas/villa-persi",
+      "/en/villas/villa-melia"
+    ]
+  },
+  {
+    "id": "g0460",
+    "file": "93aa7c74d8f3ae6988ceee542b57eb0a.jpg",
+    "store": "pool",
+    "path": "/images/_pool/93aa7c74d8f3ae6988ceee542b57eb0a.jpg",
+    "w": 1920,
+    "h": 1080,
+    "grade": "B",
+    "subject": "Thatched umbrellas and loungers on a rocky shore by turquoise water",
+    "reason": "The private shoreline looks its best in the water colour, but this is hard overhead light with no modelling, the foreground is taken up by timber steps and dry scrub, and a wooden bin sits in the bottom right. Strong support frame.",
+    "flag": "unsure",
+    "flagReason": "A small multicoloured logo mark sits on the sand near the lower-right corner, which reads as a watermark burned into the file.",
+    "graders": 2,
+    "agreed": true,
+    "adjudicated": false,
+    "src": "/images/_pool/93aa7c74d8f3ae6988ceee542b57eb0a.jpg",
+    "routes": [
+      "/en/villas/villa-persi",
+      "/en/villas/villa-eeanthe",
+      "/en/gallery"
+    ]
+  },
+  {
+    "id": "g0546",
+    "file": "cbb909bbf6e7d157facfc8092acb2ec5.jpg",
+    "store": "pool",
+    "path": "/images/_pool/cbb909bbf6e7d157facfc8092acb2ec5.jpg",
+    "w": 2304,
+    "h": 1536,
+    "grade": "B",
+    "subject": "Open-plan living room with kitchenette, dining table and sofa",
+    "reason": "Clean, level, well-exposed interior that reads as real and usable. Flat even light, no view, a black subwoofer box on the floor and a blue plastic bag left on the dining table keep it in support territory.",
+    "flag": "unsure",
+    "flagReason": "Compact studio layout, sofa bed and retro-fridge styling differ markedly from the white-and-timber villa interiors elsewhere in this set, and nothing in frame ties it to a seafront estate.",
+    "graders": 2,
+    "agreed": true,
+    "adjudicated": false,
+    "src": "/images/_pool/cbb909bbf6e7d157facfc8092acb2ec5.jpg",
+    "routes": [
+      "/en/villas/villa-persi"
+    ]
+  },
+  {
+    "id": "g0532",
+    "file": "c26521e47027eee6b3e2e5781383d96d.jpg",
+    "store": "pool",
+    "path": "/images/_pool/c26521e47027eee6b3e2e5781383d96d.jpg",
+    "w": 1920,
+    "h": 1080,
+    "grade": "C",
+    "subject": "Branded shower gel bottle tucked into rolled white towels",
+    "reason": "Soft-focus amenity close-up where the sharpest element is a third-party product label; no property context and the shallow focus leaves most of the frame mush.",
+    "flag": "unsure",
+    "flagReason": "Tight branded toiletry product shot with no property context, indistinguishable from generic amenity stock; confirm it was shot in-villa.",
+    "graders": 2,
+    "agreed": true,
+    "adjudicated": false,
+    "src": "/images/_pool/c26521e47027eee6b3e2e5781383d96d.jpg",
+    "routes": [
+      "/en/villas/villa-eeanthe"
+    ]
+  },
+  {
+    "id": "g0623",
+    "file": "fa62c6f2a74cb7bef796eb9a1ee0edb7.jpg",
+    "store": "pool",
+    "path": "/images/_pool/fa62c6f2a74cb7bef796eb9a1ee0edb7.jpg",
+    "w": 1920,
+    "h": 1080,
+    "grade": "C",
+    "subject": "Close-up of a branded white refrigerator door and handle",
+    "reason": "A manufacturer's logo is the entire subject, everything else is out of focus. No property context; identical to generic appliance product photography.",
+    "flag": "unsure",
+    "flagReason": "The frame is dominated by another company's brand lettering and shows nothing identifiable as this estate.",
+    "graders": 2,
+    "agreed": true,
+    "adjudicated": false,
+    "src": "/images/_pool/fa62c6f2a74cb7bef796eb9a1ee0edb7.jpg",
+    "routes": [
+      "/en/villas/villa-melia"
+    ]
+  },
+  {
+    "id": "g0191",
+    "file": "15e97a3260044624852e287a6a828aef.jpg",
+    "store": "pool",
+    "path": "/images/_pool/15e97a3260044624852e287a6a828aef.jpg",
+    "w": 2304,
+    "h": 1536,
+    "grade": "C",
+    "subject": "Bathroom with marble tiling, a walk-in shower and an oval vessel basin",
+    "reason": "Wall-hung toilet with a folded cloth on the lid sits dead centre with a toilet brush beside it; flat interior light and wide-angle distortion pull the walls out. Functional listing frame, not editorial.",
+    "flag": "unsure",
+    "flagReason": "The rolled towel in the foreground carries another company's brand name (coco-mat) legibly across it, so the frame shows third-party branding rather than the estate's own.",
+    "graders": 2,
+    "agreed": true,
+    "adjudicated": false,
+    "src": "/images/_pool/15e97a3260044624852e287a6a828aef.jpg",
+    "routes": [
+      "/en/villas/villa-melia"
+    ]
+  },
+  {
+    "id": "g0545",
+    "file": "caa71c9873130fbe17a0373b6b1d1717.jpg",
+    "store": "pool",
+    "path": "/images/_pool/caa71c9873130fbe17a0373b6b1d1717.jpg",
+    "w": 2304,
+    "h": 1536,
+    "grade": "B",
+    "subject": "Folded white towels and a wicker basket with lavender against a marble bathroom wall",
+    "reason": "Soft warm light and real texture — terry towelling, wicker weave, veined marble — which makes it usable as a small supporting detail or a background block. It is weak: the bottom half dissolves into an out-of-focus towel, a cropped white basin corner intrudes at bottom-left, and the white ceramic ornament at top-left is unreadable. But none of that is a C-list defect; the light is directional and pleasant and the register is right. Support only, and small.",
+    "flag": "unsure",
+    "flagReason": "A supplier's linen brand label (COCO-MAT) is legible on the towel that dominates the frame — third-party branding rather than the estate's own.",
+    "graders": 3,
+    "agreed": false,
+    "adjudicated": true,
+    "wasA": "B",
+    "wasB": "C",
+    "src": "/images/_pool/caa71c9873130fbe17a0373b6b1d1717.jpg",
+    "routes": [
+      "/en/villas/villa-melia"
+    ]
+  },
+  {
+    "id": "g0520",
+    "file": "bd26a568584d98852c4c8e6db87c2e9a.jpg",
+    "store": "pool",
+    "path": "/images/_pool/bd26a568584d98852c4c8e6db87c2e9a.jpg",
+    "w": 2248,
+    "h": 1536,
+    "grade": "C",
+    "subject": "Chalkboard cocktail list beside beer bottles in an ice bucket on a bar counter",
+    "reason": "Bar and catering gear shot close, with branded beer labels the most legible thing in frame; the register is exactly the buffet-equipment one the standard rejects.",
+    "flag": "unsure",
+    "flagReason": "Another company's beer branding dominates a bar close-up with no estate signature visible; matches the flagged third-party product frames and should be confirmed before use.",
+    "graders": 2,
+    "agreed": true,
+    "adjudicated": false,
+    "src": "/images/_pool/bd26a568584d98852c4c8e6db87c2e9a.jpg",
+    "routes": [
+      "/en/weddings"
+    ]
+  }
+]

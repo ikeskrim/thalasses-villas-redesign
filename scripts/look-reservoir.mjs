@@ -2,45 +2,48 @@
 /**
  * CAN THIS LIBRARY ACTUALLY DRESS THAT LOOK?
  *
- * The re-skin directive names three directions and asserts a photographic fact
- * about each: that the library "skews golden hour", which makes Look C a natural
- * fit and means Look A "requires deliberate re-curation AWAY from" that skew.
+ * The re-skin directive names three directions and asserts a photographic fact:
+ * that the library "skews golden hour", which makes Golden Coast a natural fit
+ * and means Aegean Light needs re-curation AWAY from that skew.
  *
- * That is a claim about THIS repository's inventory, and this repository has a
- * rule about claims (CONVENTIONS §18). So it is measured here rather than
- * accepted, and the measurement does not agree with it.
+ * THIS FILE ARGUED THE OPPOSITE, AND THIS FILE WAS WRONG.
  *
- * WHAT THE NUMBERS SAY
+ * On the 72 frames Phase 1 had graded — 8% of the library — the argument was
+ * that the skew lived in the CURATION rather than the collection: warmth did
+ * not separate the grades, and the 799 ungraded frames were cooler on average,
+ * so Aegean Light looked merely unmeasured rather than starved.
  *
- *   The A-grade shortlist is golden-hour dominated — 15 of 18 frames are
- *   sunset, dusk, blue hour or low sun, by their own curator's subject lines.
- *   The directive is right about that.
+ * Then all 640 gradeable frames were put through the same written standard by
+ * two independent graders with a third adjudicating. The result: **15 new
+ * A-grades out of 640, and 13 of those 15 are dusk, sunset or low sun.**
  *
- *   The LIBRARY is not. Only 72 of 871 scored frames were ever visually graded;
- *   the other 799 average a warmth of -4.7 against the shortlist's +15.1. And
- *   warmth does not separate the grades at all — A averages 15.1, B 15.0, C
- *   14.2 — so warm light was never a grading criterion. It is what the grader
- *   reached for, not what the library holds.
+ * The half that was right: the library holds far more usable SUPPORT material
+ * than an 8% sample implied — Aegean Light went from 23 support frames to 162.
  *
- *   So the skew is in the CURATION, not the collection. Look A is not starved;
- *   it is UNGRADED. That is a different problem with a different fix: a grading
- *   pass over frames already identified, not a re-shoot and not a compromise.
+ * The half that mattered and was wrong: average warmth across all frames says
+ * nothing about where the hero-grade frames are. Grade for grade this property
+ * photographs at hero level mainly at golden hour, which for a west-facing
+ * seafront estate is unsurprising in hindsight. Aegean Light has **five**
+ * daylight A-grades in the whole library. It is starved, and grading proved it
+ * rather than fixing it.
+ *
+ * That is the value of the pass, and the reason the conclusion is left in the
+ * report rather than quietly replaced: a measurement that only ever confirms
+ * you is not a measurement.
  *
  * WHY IT CHECKS THE DISK
  *
- * `content/photo-metrics.json` scored 871 files. 320 byte-identical duplicates
- * were later collapsed and deleted, so a fifth of the index points at files that
- * are no longer there. A reservoir report that recommends deleted frames is
- * worse than none, because it reads as availability.
+ * `content/photo-metrics.json` scored 871 files. Byte-identical duplicates were
+ * later collapsed and deleted, so 158 of those records point at files that are
+ * no longer there. A reservoir that recommends deleted frames reads as
+ * availability.
  *
- * WHY UNGRADED FRAMES ARE COUNTED BUT NEVER PICKED
+ * WHY A FRAME MUST BE GRADED TO BE PICKED
  *
- * A pick has to carry a description, and this project does not invent them. The
- * 72 graded frames have a curator's `subject` line; the other 799 have nothing
- * but numbers. Numbers cannot tell you there is an air-conditioning unit in the
- * corner — that is why 22 of 72 were rejected for clutter no metric detects.
- * Ungraded frames are therefore reported as WORK AVAILABLE, and the prototypes
- * are dressed only in frames a person has actually looked at.
+ * A pick has to carry a description, and this project does not invent them. A
+ * graded frame has a person's `subject` line; an ungraded one has only numbers,
+ * and numbers cannot see the air-conditioning unit in the corner — which is
+ * what put 374 of these 640 frames in grade C.
  *
  *   node scripts/look-reservoir.mjs
  */
@@ -68,23 +71,64 @@ const exists = (m) => onDisk.has(pathOf(m));
 
 /* --------------------------------------------------------- what was graded -- */
 const flagged = new Set(selects.flags.map((f) => f.n));
-const graded = new Map(); /* file -> { grade, subject, n, flagged } */
+const graded = new Map(); /* file -> { grade, subject, n, flagged, pass } */
 for (const s of selects.selects) {
   graded.set(s.file, {
     grade: s.grade,
     subject: s.subject ?? "",
     n: s.n,
     flagged: flagged.has(s.n),
+    pass: 1,
   });
 }
 
 /**
- * Golden hour, as the curator described it — not as a colour metric guessed it.
+ * THE SECOND PASS, if it has been run.
  *
- * `warmth` cannot tell dusk from a terracotta wall in flat light. The subject
- * lines can, because a person wrote them while looking at the frame.
+ * `content/photo-grades.json` holds every frame Phase 1 never looked at, graded
+ * against the same written standard by two independent graders with a third
+ * adjudicating. Before it existed this file could only ever report on 8% of the
+ * library, and said so; now it reports on all of it.
+ *
+ * It is read OPTIONALLY on purpose. The grading pass is a large, expensive,
+ * regenerable artefact, and a reservoir that cannot run without it would make
+ * the whole look system undiagnosable on a fresh checkout.
  */
-const LOW_LIGHT = /sunset|dusk|blue hour|low sun|golden|backlit|lantern|lit |uplit|night/i;
+const gradesPath = path.join(ROOT, "content", "photo-grades.json");
+let pass2 = 0;
+if (fs.existsSync(gradesPath)) {
+  const second = JSON.parse(fs.readFileSync(gradesPath, "utf-8"));
+  for (const f of second.frames ?? []) {
+    /* Phase 1 wins on any overlap — it is the owner-facing curation of record. */
+    if (graded.has(f.file)) continue;
+    graded.set(f.file, {
+      grade: f.grade,
+      subject: f.subject ?? "",
+      n: f.id,
+      flagged: !!f.flag,
+      pass: 2,
+    });
+    pass2++;
+  }
+}
+
+/**
+ * Golden hour, as the graders described it — not as a colour metric guessed it.
+ * `warmth` cannot tell dusk from a terracotta wall in flat light; a person
+ * looking at the frame can, and did.
+ *
+ * Written against what graders ACTUALLY wrote, and widened once because of a
+ * miss that shipped: the first version matched "sunset" and not "sun setting",
+ * so "Sun setting behind a distant headland over calm sea" was classified as
+ * daylight and picked as a frame for AEGEAN LIGHT — the bright direction.
+ *
+ * A prose classifier is a compromise. The right fix would have been to ask the
+ * graders for the light as a field, and that is worth doing if this is ever
+ * re-run. Until then the vocabulary is explicit rather than clever, and the
+ * picked frames are eyeballed against it.
+ */
+const LOW_LIGHT =
+  /sunset|sun ?setting|setting sun|sundown|dusk|twilight|blue hour|low sun|golden|backlit|lantern|festoon|string of bulbs|lit |uplit|evening|night/i;
 
 /* --------------------------------------------------------------- the looks -- */
 /**
@@ -268,26 +312,34 @@ let md = `# Look reservoir — can the library dress each direction?
 
 Generated by \`npm run reservoir\`. Re-run it; do not quote it from memory.
 
-## The correction
+## The question, and the answer that reversed itself
 
-The re-skin directive states that the library "skews golden hour", and builds its
-ranking on that: Look C is called the natural fit and Look A is said to need
-re-curation *away* from the skew.
+The re-skin directive ranks the three looks on a photographic claim: that the
+library "skews golden hour", making Golden Coast the natural fit and Aegean
+Light the one needing re-curation away from the skew.
 
-**The skew is in the curation, not the collection.**
+**On 8% of the library, this file argued the opposite** — that the skew lived in
+the CURATION rather than the collection, because only ${selects.selects.length} of
+${metrics.length} frames had ever been looked at and the ungraded remainder was
+cooler on average. The conclusion drawn was that Aegean Light was not starved,
+merely unmeasured.
 
-| | frames | mean warmth |
-|---|---|---|
-| Visually graded (the shortlist) | ${selects.selects.length} | ${meanWarmth(selects.selects)} |
-| Never visually graded | ${ungraded.length} | ${meanWarmth(ungraded)} |
+**Then everything was graded, and that conclusion was wrong.**
 
-Warm light was never a grading criterion — across the shortlist, warmth does not
-separate the grades (A ${meanWarmth(selects.selects.filter((s) => s.grade === "A"))}, B ${meanWarmth(selects.selects.filter((s) => s.grade === "B"))}, C ${meanWarmth(selects.selects.filter((s) => s.grade === "C"))}). What is true is that
-**${gradedLow} of the ${gradedA} A-grade frames are sunset, dusk, blue hour or low sun**
-(${pct(gradedLow, gradedA)}%), by their curator's own subject lines. The grader reached for
-dramatic light. The library did not supply it.
+Two independent graders took all ${pass2} remaining frames through the same
+written standard, with a third adjudicating disagreements. The library is now
+${pct(graded.size, metrics.length)}% graded. The full set yielded **15 new
+A-grades in 640 frames**, and **13 of those 15 are dusk, sunset or low sun**.
 
-Only **${pct(selects.selects.length, metrics.length)}%** of the scored library was ever looked at by a person.
+Where the first conclusion was right: the library holds far more usable SUPPORT
+material than an 8% sample suggested. Where it was wrong, and it is the half that
+mattered: average warmth across all frames says nothing about where the
+hero-grade frames are. Grade for grade, this property photographs at hero level
+mainly at golden hour — which for a west-facing seafront estate is not a
+surprise in hindsight.
+
+**The directive was right, and closer to right for its own reason than the
+correction was.**
 
 ## What each look actually has
 
@@ -367,7 +419,7 @@ fs.writeFileSync(
   ) + "\n"
 );
 
-console.log(`library: ${metrics.length} scored, ${onDisk.size} on disk, ${selects.selects.length} graded (${pct(selects.selects.length, metrics.length)}%)`);
+console.log(`library: ${metrics.length} scored, ${onDisk.size} on disk, ${graded.size} graded (${pct(graded.size, metrics.length)}%)` + (pass2 ? ` — ${selects.selects.length} in pass 1, ${pass2} in pass 2` : ""));
 for (const r of report) {
   console.log(
     `  ${r.look.name.padEnd(16)} proven A ${String(r.proven).padStart(2)}  support ${String(r.support).padStart(2)}  ungraded candidates ${r.candidates}`

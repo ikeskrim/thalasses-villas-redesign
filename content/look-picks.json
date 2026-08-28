@@ -10,9 +10,9 @@
       "name": "Aegean Light",
       "promise": "Bright Mediterranean minimal — daylight, blue water, whitewashed stone.",
       "reservoir": {
-        "proven": 3,
-        "support": 23,
-        "candidates": 279
+        "proven": 5,
+        "support": 162,
+        "candidates": 0
       },
       "frames": [
         {
@@ -40,6 +40,22 @@
           "h": 2200
         },
         {
+          "src": "/images/_pool/ba708bd7dc2cbb8b64977cf20f4ec861.jpg",
+          "subject": "Shaded terrace table framed by an open door, palms and turquoise sea beyond",
+          "grade": "A",
+          "n": "g0514",
+          "w": 2248,
+          "h": 1536
+        },
+        {
+          "src": "/images/_pool/41fb09192a5b9ed238a8fe6f365e3801.jpg",
+          "subject": "Thatched umbrellas and loungers on a sandy beach above turquoise water",
+          "grade": "A",
+          "n": "g0269",
+          "w": 1920,
+          "h": 1080
+        },
+        {
           "src": "/images/_chh/AMZ_7845.jpg",
           "subject": "Same beach scene, weaker framing",
           "grade": "B",
@@ -62,22 +78,6 @@
           "n": 5,
           "w": 1920,
           "h": 1280
-        },
-        {
-          "src": "/images/_chh/AMZ_7655.jpg",
-          "subject": "Family at a breakfast table",
-          "grade": "B",
-          "n": 12,
-          "w": 1920,
-          "h": 1280
-        },
-        {
-          "src": "/images/_chh/Untitled-design.webp",
-          "subject": "Vegetable beds toward the sea",
-          "grade": "B",
-          "n": 14,
-          "w": 1920,
-          "h": 1080
         }
       ]
     },
@@ -85,9 +85,9 @@
       "name": "Editorial Estate",
       "promise": "A magazine feature about one address — daylight and golden hour under one grade.",
       "reservoir": {
-        "proven": 18,
-        "support": 29,
-        "candidates": 146
+        "proven": 33,
+        "support": 266,
+        "candidates": 0
       },
       "frames": [
         {
@@ -139,12 +139,12 @@
           "h": 1536
         },
         {
-          "src": "/images/_chh/AMZ_7845.jpg",
-          "subject": "Same beach scene, weaker framing",
-          "grade": "B",
-          "n": 2,
-          "w": 1920,
-          "h": 1280
+          "src": "/images/_pool/ba708bd7dc2cbb8b64977cf20f4ec861.jpg",
+          "subject": "Shaded terrace table framed by an open door, palms and turquoise sea beyond",
+          "grade": "A",
+          "n": "g0514",
+          "w": 2248,
+          "h": 1536
         },
         {
           "src": "/images/_pool/65070ce083cb1d043359d54469a98399.jpg",
@@ -160,9 +160,9 @@
       "name": "Golden Coast",
       "promise": "Golden-hour cinematic — warm light, houses stacked toward the water.",
       "reservoir": {
-        "proven": 15,
-        "support": 6,
-        "candidates": 95
+        "proven": 28,
+        "support": 104,
+        "candidates": 0
       },
       "frames": [
         {

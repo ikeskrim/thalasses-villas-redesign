@@ -29,45 +29,90 @@ against the pixels behind it), `npm run verify:provenance` (the imagery gate).
 
 ---
 
-## 2. The correction that matters
+## 2. The correction that matters — and then reversed itself
 
-**The directive says the library "skews golden hour", and ranks the looks on
-it** — Look C a natural fit, Look A needing re-curation *away* from the skew.
+**Round one, on 8% of the library.** The directive ranks the looks on the claim
+that the library "skews golden hour". Measured against the 72 frames Phase 1 had
+graded, the argument here was that the skew lived in the *curation*: warmth did
+not separate the grades (A 15.1, B 15.0, C 14.2), and the 799 ungraded frames
+averaged −4.7 warmth against the shortlist's +15.1. Conclusion drawn: Aegean
+Light was not starved, only unmeasured, and an afternoon of grading would fix it.
 
-Measured, half of that is right and the half that is wrong changes what to do.
+**Round two: the grading pass ran, and that conclusion was wrong.**
 
-The **A-grade shortlist** is golden-hour dominated: 15 of 18 frames are sunset,
-dusk, blue hour or low sun, by their own curator's subject lines. True.
+All 640 gradeable frames went through the Phase 1 standard verbatim, two
+independent graders each, a third adjudicating disagreements. **88% agreement**
+across 640 frames; 74 adjudicated.
 
-The **library** is not. Only 72 of 871 scored frames were ever visually graded.
-The other 799 average a warmth of **−4.7** against the shortlist's **+15.1** —
-and warmth does not separate the grades at all (A 15.1, B 15.0, C 14.2), so warm
-light was never a grading criterion. It is what the grader reached for.
+| | |
+|---|---|
+| newly graded | 640 |
+| grade A | **15** |
+| grade B | 251 |
+| grade C | 374 (58%) |
+| flagged | 109 |
 
-| look | proven hero | proven support | ungraded candidates |
+**Thirteen of the fifteen new A-grades are dusk, sunset or low sun.** The
+library is now 82% graded, and the picture inverted:
+
+| look | proven hero (A) | proven support (B) | ungraded left |
 |---|---|---|---|
-| Aegean Light | 3 | 23 | 279 |
-| Editorial Estate | 18 | 29 | 146 |
-| Golden Coast | 15 | **6** | 95 |
+| Aegean Light | **5** | 162 | 0 |
+| Editorial Estate | 33 | 266 | 0 |
+| Golden Coast | 28 | 104 | 0 |
 
-Two consequences the directive does not name:
+Where the correction was right: the library holds far more usable *support*
+material than an 8% sample implied — Aegean went from 23 support frames to 162.
 
-1. **Aegean Light is not starved, it is unmeasured.** Its shortage is an
-   afternoon of grading over frames that already sit in `public/images/`, not a
-   re-shoot and not a compromise.
-2. **Golden Coast is hero-rich and support-poor.** Six proven support frames
-   will not dress five villa pages, an estate page and an experiences index. It
-   is the only look whose hero photography is proven today and the one with the
-   least room left to grow.
+Where it was wrong, and it is the half that decides the ranking: average warmth
+across all frames says nothing about where the hero-grade frames are. Grade for
+grade, **this property photographs at hero level mainly at golden hour** — not a
+surprise, in hindsight, for a west-facing seafront estate. Aegean Light has five
+daylight A-grades in the entire library. It is starved, and grading proved that
+rather than fixing it.
 
-**The recommendation is therefore not a different pick.** It is that the pick
-should follow one grading pass, because as things stand the ranking is decided
-by which 8% of the library somebody happened to look at in Phase 1.
+**The directive's original ranking was right.** Golden Coast and Editorial
+Estate can both head every page of the site; Aegean Light cannot, and no amount
+of further grading will change it, because there is nothing left to grade.
 
-Candidate counts are upper bounds: 22 of the 72 graded frames were rejected for
-air-conditioning units, cables, plastic furniture and catering gear, none of
-which any metric can see. Expect roughly a third of any candidate set to fall
-away on sight. Regenerate with `npm run reservoir`.
+That is what the pass was for. A measurement that only ever confirms you is not
+a measurement.
+
+---
+
+## 2a. What the grading pass found that nobody was looking for
+
+**109 frames carry a flag** — 23 stock, 22 a public place, 1 a different
+property, 63 unsure. A flag is not a quality judgement; it is a claim that the
+photograph may not be this property.
+
+Cross-referenced against what the built site actually renders
+(`npm run flagged`), **25 of them are on a page right now, and 14 carry a
+specific claim**:
+
+| flag | on the site |
+|---|---|
+| `stock` | **12** |
+| `public-place` | 2 |
+| `unsure` | 11 |
+
+They are all on `/` and `/en/experiences`, illustrating activities: scuba
+divers, a gym trainer with a barbell, a quad bike on a birch-woodland track, a
+composited wine-barrel still life, a white-gloved hand opening a car door, a
+parasailer over a town beach.
+
+**This is the defect the entire project exists to prevent.** The site being
+replaced used stock photographs of places that were not Thalasses; the rebuild
+inherited the experience imagery wholesale and nothing had ever checked it,
+because the grading knew which frames looked bought-in and the site knew which
+frames it rendered, and the two had never been put in the same room.
+
+**Nothing has been deleted.** Which photographs represent the property is the
+owner's call and this project keeps what it is given. The fourteen are recorded
+in `content/flagged-quarantine.json` with each grader's reason, and
+`tests/flagged.spec.ts` now fails the build if a hard-flagged frame appears that
+is not already on that list. The number can shrink when he rules; it cannot grow
+by accident.
 
 ---
 
@@ -238,13 +283,32 @@ carried as its claims, not as findings:
 
 ## 7. What the decision now needs
 
-1. **Open the three prototypes.** They are the artifact; the anchors are
-   shorthand.
-2. **One grading pass** over the ungraded candidates for whichever look is
-   short — 279 for Aegean, 95 for Golden. This is the cheapest item on the whole
-   document and it is currently deciding the ranking by accident.
-3. **Golden Coast needs a support-frame answer** before it can be committed to,
-   independent of whether it wins on looks.
-4. Only then the token swap, the re-curation, and the re-choreography, per the
+The grading pass is done, so the list is shorter than it was.
+
+1. **Open the three prototypes** at `/looks` and pick one. They are the
+   artifact; the anchor sites are shorthand.
+2. **Rule on the fourteen flagged frames.** Twelve stock and two public-place
+   photographs are on the homepage and the experiences index today. They are
+   quarantined and guarded, not removed — see §2a and
+   `qa/looks/FLAGGED-ON-SITE.md`.
+3. **Know what Aegean Light costs before choosing it.** Five hero-grade daylight
+   frames against ten pages that need one. It is the only look that would
+   require new photography, and the library has nothing left to grade.
+4. Only then the token swap, the re-curation and the re-choreography per the
    directive's Part 3 — which the prototypes support: all three render from one
    DOM, asserted by `tests/looks.spec.ts`, so the swap really is a swap.
+
+### The coverage table, for the record
+
+| | Aegean Light | Editorial Estate | Golden Coast |
+|---|---|---|---|
+| Hero-grade frames (A, unflagged) | **5** | 33 | 28 |
+| Support frames (B, unflagged) | 162 | 266 | 104 |
+| Can head all 10 pages? | **no** | yes | yes |
+| Display face | Marcellus | Cormorant Garamond | GFS Didot |
+| Licence | free, vendored | free, vendored | free, vendored |
+| Greek | **no** | **no** | **yes** |
+| `/el` display face needed? | yes | yes | no |
+
+Library: 871 scored, 713 on disk, **712 graded (82%)** — 72 in Phase 1, 640 in
+this pass. Nothing gradeable remains.

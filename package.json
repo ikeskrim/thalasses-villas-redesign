@@ -37,6 +37,9 @@
     "verify:el": "node scripts/verify-greek.mjs",
     "factsheets": "node scripts/factsheets.mjs",
     "reservoir": "node scripts/look-reservoir.mjs",
+    "grading:sheet": "node scripts/grading-sheet.mjs",
+    "grading:merge": "node scripts/merge-grades.mjs",
+    "flagged": "node scripts/flagged-on-site.mjs",
     "looks": "node scripts/capture-looks.mjs",
     "legibility": "node scripts/hero-legibility.mjs",
     "verify:provenance": "node scripts/verify-provenance.mjs"
