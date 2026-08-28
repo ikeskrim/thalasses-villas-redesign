@@ -882,3 +882,40 @@ body:has([data-looks-root]) {
   color: var(--lk-ink);
   box-shadow: inset 0 -2px 0 var(--lk-accent);
 }
+
+/* ------------------------------------------------------- the wardrobe strip */
+/*
+ * Four more frames under each card, because a hero flatters every direction.
+ * What actually separates them is what the fifth-best frame looks like, and the
+ * owner should be choosing on that rather than on one lucky photograph.
+ *
+ * `aria-hidden`, and the images carry `alt=""`, for a specific reason rather
+ * than laziness: the whole card is a single <a>, so every alt inside it joins
+ * the link's accessible name. Five photograph descriptions plus the heading,
+ * the promise, the type notes and the frame counts would give a screen-reader
+ * user a link name several sentences long. The hero above stays described; the
+ * strip is decoration and says so.
+ */
+.lk-card-strip {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2px;
+  background: #dcd8cf;
+}
+
+.lk-card-strip img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+}
+
+/* The production risk, when there is one. Quiet, not a klaxon. */
+.lk-card-risk {
+  margin: 0;
+  font-size: 0.76rem;
+  line-height: 1.5;
+  color: #7a5a3a;
+  border-left: 2px solid #c08a4a;
+  padding-left: 0.6rem;
+}

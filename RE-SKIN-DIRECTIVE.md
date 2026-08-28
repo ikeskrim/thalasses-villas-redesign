@@ -113,38 +113,72 @@ claim the check does not support.
 
 ---
 
-## 4a. A Greek consequence the directive does not mention
+## 4a. The typographic bill — verified, and it corrects its own premise
 
-The directive treats font names as "register examples… final choices depend on
-licensing and web-font performance budgets". True, and there is a constraint it
-does not know about: **the Greek corpus exists and `/el` is unbuilt, and this
-project's display face has no Greek.**
+The instruction to annotate each look with its font facts came with a premise:
+*Golden — free faces, Greek included; Aegean/Editorial — commercial licence
+required plus an /el face to source.*
 
-That was recorded during Phase 3 (T-176, verified by inspecting the served
-woff2): **Marcellus carries latin and latin-ext, no Greek.** It is why the
-chooser page had to stop reaching for Marcellus — «Τρεις όψεις» was silently
-rendering in a Georgia fallback beside Latin set in Marcellus.
+**Half of that is wrong, and it is the money half.** Checked against the Google
+Fonts catalogue metadata (`isOpenSource`, `subsets`) rather than recalled:
 
-Of the three prototype display faces:
+| look | display face | open licence | Greek subset |
+|---|---|---|---|
+| Aegean Light | Marcellus | **yes** | **no** — latin, latin-ext only |
+| Editorial Estate | Cormorant Garamond | **yes** | **no** — cyrillic, latin, vietnamese |
+| Golden Coast | GFS Didot | **yes** | **yes** — greek, greek-ext |
+| *(all three, body)* | Inter | **yes** | yes — vendored latin-only here |
 
-| look | display face | Greek |
-|---|---|---|
-| Aegean Light | Marcellus | **none** — T-176, verified in repo |
-| Editorial Estate | Cormorant Garamond | vendored subset is latin-only by filename; **not independently verified** |
-| Golden Coast | **GFS Didot** | ships a Greek subset — `gfs-didot-greek.woff2`, wired and loading |
+**No look as prototyped requires a font purchase.** All four faces are open
+licence and all four are already vendored in this repository. The commercial
+premise belongs to the directive's *named* faces — Canela, Reckless, GT Sectra,
+Söhne — and those are commercial for all three looks equally, so they are not a
+differentiator either.
 
-So Golden Coast is the only one of the three that carries its own Greek. If
-either of the others wins, `/el` needs a display face sourced, licensed and
-weighed before the Greek corpus can be published — which is real work that
-attaches to the choice and should be priced into it, not discovered afterwards.
+**The real differentiator is Greek, and it is not a licence question.** Neither
+Marcellus nor Cormorant Garamond offers a Greek subset *at all*, so `/el` would
+need a different display face chosen — not a re-subset of the same family. GFS
+Didot ships Greek, so Golden Coast carries the Greek site for free. That also
+independently confirms T-176, which was verified in Phase 1 by a different
+method.
 
-*A caveat on method:* a quick width-comparison heuristic was tried here to test
-all four faces at once and it reported every face as covering Greek, including
-Marcellus. That is wrong, and it is wrong because per-glyph fallback changes a
-string's width for reasons other than coverage. The table above therefore rests
-on the repository's existing verified finding and on which subset files actually
-exist, not on that measurement. Confirm Cormorant Garamond by the T-189 method
-before relying on its row.
+One piece of good news the check turned up: **Inter does offer Greek**, and is
+vendored latin-only here. Greek *body* text is therefore a free re-subset under
+any of the three looks. The problem is confined to the display face.
+
+*A method note, because an earlier attempt got this wrong.* A width-comparison
+heuristic was tried first — render Greek in each face against a fallback and
+compare — and it reported every face as covering Greek, including Marcellus.
+Per-glyph fallback changes a string's width for reasons other than coverage. The
+table above comes from the catalogue, not from that measurement.
+
+---
+
+## 4b. What "dress five villa pages" actually costs — counted
+
+The production-risk line on the chooser needed a threshold, and inventing one
+would have put a fabricated number in front of the owner. So the built site was
+counted instead: every distinct frame rendered across ten routes, after a full
+scroll.
+
+| route | distinct frames |
+|---|---|
+| villa-thoi / persi / eeanthe / melia | 44 / 47 / 49 / 48 |
+| villa-pueblo | **9** — the known content gap, not a design choice |
+| the estate | 46 |
+| weddings | 32 |
+| experiences | 19 |
+| home | 33 |
+| **distinct across all ten** | **245** |
+
+A villa page is not "a hero and three supports". It is forty-odd frames, and the
+site runs on 245 distinct photographs — against a Phase 1 graded set of 72.
+
+What actually gates a *look*, though, is narrower: galleries can be dressed from
+good support frames, but a direction cannot fake the full-bleed frame at the top
+of each major page. There are **ten** of those — five villas, the estate,
+weddings, experiences, location, home — and that is the number the chooser's
+risk line is measured against.
 
 ---
 

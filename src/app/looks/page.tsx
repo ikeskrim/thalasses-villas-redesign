@@ -39,6 +39,27 @@ export default function LooksIndex() {
                 loading="lazy"
                 decoding="async"
               />
+              {/*
+                THE WARDROBE STRIP — four more frames, so the card shows the
+                look wearing its real clothes rather than its best single
+                photograph. A hero flatters every direction; what separates them
+                is what the fifth-best frame looks like.
+              */}
+              <div className="lk-card-strip" aria-hidden="true">
+                {look.strip.map((f) => (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    key={f.src}
+                    src={f.src}
+                    alt=""
+                    width={f.w}
+                    height={f.h}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                ))}
+              </div>
+
               <div className="lk-card-body">
                 <h2>
                   {look.greekName}
@@ -65,6 +86,21 @@ export default function LooksIndex() {
                   <strong>{look.reservoir.support}</strong> support ·{" "}
                   {look.reservoir.candidates} ungraded
                 </p>
+
+                {/*
+                  The typographic bill. Verified from the font catalogue, not
+                  recalled — this line is about money and coverage, and the owner
+                  is making a decision on it.
+                */}
+                <p className="lk-card-meta">{look.fonts.bill}</p>
+
+                {/*
+                  The production risk, and ONLY when there is one. A warning that
+                  appears on every card is decoration; a warning that appears on
+                  one is information.
+                */}
+                {look.risk ? <p className="lk-card-risk">{look.risk}</p> : null}
+
                 <span className="lk-card-open">Open →</span>
               </div>
             </a>

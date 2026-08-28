@@ -107,6 +107,42 @@ export interface Look {
   strip: Frame[];
   /** What the reservoir says this look can actually be dressed from. */
   reservoir: Reservoir;
+  /**
+   * The typographic bill, so the owner decides with it visible.
+   *
+   * VERIFIED, not assumed. Every fact here was read from the Google Fonts
+   * catalogue metadata (`isOpenSource`, `subsets`) rather than recalled, because
+   * this text sits on a decision page and a wrong licence claim there is a
+   * wrong claim about money.
+   *
+   * It also corrects the premise it was asked under. The brief assumed Aegean
+   * and Editorial would need a COMMERCIAL licence and Golden would not. They do
+   * not: Marcellus, Cormorant Garamond, GFS Didot and Inter are all
+   * open-licence and all four are already vendored in this repository, so no
+   * look as prototyped implies a font purchase. The directive's own NAMED faces
+   * — Canela, Reckless, GT Sectra, Söhne — are commercial, but they are
+   * commercial for all three looks equally, so they are not a differentiator.
+   *
+   * The real differentiator is Greek, and it is not about money: neither
+   * Marcellus nor Cormorant Garamond offers a Greek subset AT ALL, so /el would
+   * need a different display face sourced, not a re-subset of the same one.
+   * GFS Didot ships greek and greek-ext.
+   */
+  /**
+   * One quiet line, present only when this look genuinely cannot dress the
+   * site from graded photography. Null otherwise — see WARDROBE.
+   */
+  risk: string | null;
+  fonts: {
+    /** The display face this look uses. */
+    face: string;
+    /** Open licence, already in this repo. True for all three — see above. */
+    free: boolean;
+    /** Does the family offer a Greek subset at all? */
+    greek: boolean;
+    /** One line for the card, in the owner's terms. */
+    bill: string;
+  };
 }
 
 /**
@@ -119,6 +155,41 @@ export interface Look {
  * shipping a prototype with two empty squares in the strip.
  */
 const SLOTS = 6;
+
+/**
+ * WHAT DRESSING THIS SITE ACTUALLY COSTS, MEASURED FROM THE BUILT SITE.
+ *
+ * "Can it dress five villa pages" needed a number, and inventing one would have
+ * put a fabricated threshold on the owner's decision page. So it was counted:
+ * every distinct frame rendered across the ten main routes, after a full scroll.
+ *
+ *   villa pages       44, 47, 49, 48 distinct frames — and Pueblo just 9,
+ *                     which is the known content gap, not a design choice
+ *   the estate        46
+ *   weddings          32
+ *   experiences       19
+ *   home              33
+ *   ---------------------------------------------------------------
+ *   distinct frames across those ten routes   245
+ *
+ * So a villa page is not "a hero and three supports" — it is FORTY-ODD frames,
+ * and the site as a whole runs on 245. Against that, the entire Phase 1 graded
+ * set was 72.
+ *
+ * `heroSlots` is the number that actually gates a LOOK, though. Galleries can
+ * be dressed from good support frames; what a direction cannot fake is the
+ * full-bleed frame at the top of each major page. There are ten of those:
+ * five villas, the estate, weddings, experiences, location, home.
+ */
+export const WARDROBE = { heroSlots: 10, siteFrames: 245, routesCounted: 10 } as const;
+
+function riskFor(r: Reservoir): string | null {
+  if (r.proven >= WARDROBE.heroSlots) return null;
+  return (
+    `Only ${r.proven} frames in this look are strong enough to head a page, and the site has ` +
+    `${WARDROBE.heroSlots}. Choosing it means shooting or finding more.`
+  );
+}
 
 function framesFor(id: LookId): Frame[] {
   const entry = PICKS.looks[id];
@@ -134,7 +205,7 @@ function framesFor(id: LookId): Frame[] {
 }
 
 /** Slot resolution, once, so neither the component nor the chooser indexes blind. */
-function withSlots(base: Omit<Look, "frames" | "hero" | "act" | "strip" | "reservoir">): Look {
+function withSlots(base: Omit<Look, "frames" | "hero" | "act" | "strip" | "reservoir" | "risk">): Look {
   const entry = PICKS.looks[base.id]!;
   const frames = framesFor(base.id);
   const [hero, act] = frames as [Frame, Frame, ...Frame[]];
@@ -146,6 +217,7 @@ function withSlots(base: Omit<Look, "frames" | "hero" | "act" | "strip" | "reser
     strip: frames.slice(2, SLOTS),
     /* Read, never transcribed — see the note in scripts/look-reservoir.mjs. */
     reservoir: entry.reservoir,
+    risk: riskFor(entry.reservoir),
   };
 }
 
@@ -170,6 +242,12 @@ export const LOOKS: Look[] = [
       palette: "Paper white, limewash, one Aegean blue",
       motion: "Slow fades. Almost nothing.",
     },
+    fonts: {
+      face: "Marcellus",
+      free: true,
+      greek: false,
+      bill: "Free face, already in the build. No Greek — the Greek site needs a second display face chosen.",
+    },
   }),
   withSlots({
     id: "editorial",
@@ -183,6 +261,12 @@ export const LOOKS: Look[] = [
       palette: "Bone paper, ink, bronze-olive rules",
       motion: "Text sets itself, line by line.",
     },
+    fonts: {
+      face: "Cormorant Garamond",
+      free: true,
+      greek: false,
+      bill: "Free face, already in the build. No Greek — the Greek site needs a second display face chosen.",
+    },
   }),
   withSlots({
     id: "golden",
@@ -195,6 +279,12 @@ export const LOOKS: Look[] = [
       type: "GFS Didot, high contrast, full width",
       palette: "Warm ivory, sand, espresso, gold",
       motion: "Slow push-in. Fills the eye.",
+    },
+    fonts: {
+      face: "GFS Didot",
+      free: true,
+      greek: true,
+      bill: "Free face, already in the build. Greek included — the Greek site is covered by the same face.",
     },
   }),
 ];
