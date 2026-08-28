@@ -3,28 +3,77 @@
 **Read this first. It is written at HEAD and updated as each task lands, so it
 is the truthful position — not a plan, not a memory.**
 
-# TRANCHE FIVE — the visual re-skin directive
+# TRANCHE FIVE — the re-skin directive, and the grading pass
 
-Tranche four closed the backlog. A visual re-skin research directive then
-arrived: three candidate looks, an AI-imagery strategy, and a build template.
-Acting on it is `t5/*`, and the record is **`RE-SKIN-DIRECTIVE.md`**.
+Tranche four closed the backlog. A visual re-skin research directive arrived,
+then a work order: **grade the whole library first, then let the owner pick.**
+Both are done. The record is **`RE-SKIN-DIRECTIVE.md`**; the owner's page is
+**`/looks`**.
+
+## The headline
+
+**The grading pass proved my own correction wrong, and that is the point of it.**
+
+On 8% of the library this repo argued the golden-hour skew lived in the
+*curation* rather than the collection — warmth did not separate the grades, and
+the ungraded remainder was cooler on average — so Aegean Light looked merely
+unmeasured. All 640 remaining frames were then graded against the Phase 1
+standard verbatim, two independent graders each, a third adjudicating. **88%
+agreement.** Thirteen of the fifteen new A-grades are dusk, sunset or low sun.
+
+| | Aegean Light | Editorial Estate | Golden Coast |
+|---|---|---|---|
+| Hero-grade (A, unflagged) | **5** | 33 | 28 |
+| Support (B, unflagged) | 162 | 266 | 104 |
+| Heads all 10 pages? | **no** | yes | yes |
+| Display face | Marcellus | Cormorant Garamond | GFS Didot |
+| Licence | free, vendored | free, vendored | free, vendored |
+| Greek | no | no | **yes** |
+
+Right about support: Aegean went from 23 usable support frames to 162. Wrong
+about the thing that decides it: average warmth says nothing about where the
+hero frames are. This property photographs at hero level mainly at golden hour.
+**The directive's original ranking was right**, and there is nothing left to
+grade — the library is now 82% graded and Aegean has five daylight A-grades in
+all of it.
+
+## And the pass found what nobody was looking for
+
+**Fourteen photographs on the live site are flagged as not this property** —
+twelve stock, two public places, all on `/` and `/en/experiences`. Scuba divers,
+a gym trainer, a quad bike on a birch-woodland track, a composited wine-barrel
+still life, a white-gloved chauffeur.
+
+This is the founding defect of the whole project: the site being replaced used
+stock photographs of places that were not Thalasses. The rebuild inherited the
+experience imagery wholesale, and nothing had ever checked it — the grading knew
+which frames looked bought-in, the site knew which frames it rendered, and the
+two had never been put in the same room.
+
+Nothing is deleted; that is the owner's ruling to make. They are recorded in
+`content/flagged-quarantine.json` with each grader's reason, and
+`tests/flagged.spec.ts` fails the build if a hard-flagged frame appears that is
+not already listed. **The list can shrink. It cannot grow by accident.**
 
 | | |
 |---|---|
-| **T5-1 Reservoir** | The directive ranks the looks on "the library skews golden hour". Measured: the SHORTLIST does (15 of 18 A-grades are low light), the library does not — 799 of 871 frames were never graded and average −4.7 warmth against the shortlist's +15.1. Aegean Light is not starved, it is **unmeasured**: 3 proven heroes against 279 candidates nobody has opened. Golden Coast is the inverse — 15 proven heroes and **6** support frames, which will not dress five villa pages. |
-| **T5-2 AI imagery gate** | `AI-IMAGERY-POLICY.md` plus a SHA-256 ledger of all 712 shipped frames, inside `npm run verify`. Falsified five ways. Nothing here is AI-touched; the baseline records that so a departure is visible rather than assumed. |
-| **T5-3 Three prototypes** | `/looks/aegean`, `/looks/editorial`, `/looks/golden` — his photographs, his words, three ways. One DOM across all three, **asserted** by `tests/looks.spec.ts`, which is what makes "a token swap, not a rebuild" a measured claim. No new fonts: Marcellus, Cormorant Garamond and GFS Didot were already vendored, and GFS Didot carries the Greek that Marcellus lacks. |
-| **T5-4 Legibility, measured** | The first build reproduced the defect that got an earlier round rejected — white type on a bright frame. Fixed structurally, then measured against the actual composited pixels at the worst pixel per run: **30 runs, 0 below AA, worst 5.20:1**. |
+| **T5-1 Reservoir** | Measured the directive's photo claim instead of accepting it. |
+| **T5-2 AI imagery gate** | Policy + SHA-256 ledger of 712 frames, inside `npm run verify`, falsified five ways. Nothing here is AI-touched. |
+| **T5-3 Three prototypes** | `/looks/aegean|editorial|golden`. One DOM across all three, **asserted**. No new fonts. |
+| **T5-4 Directive record** | What was verified here vs what is carried as the directive's claim. |
+| **T5-5 Distinct heroes** | Neither sort order could separate them — three daylight A-grades existed in the whole graded set. |
+| **T5-6 Chooser** | Wardrobe strip, the font bill (verified — and the premise was wrong on the money half), the production risk (threshold counted from the built site, not invented). |
+| **T5-7 Grading pass** | 640 frames, 88% agreement. Reversed the correction. Found the stock photography. |
 
-**Two detectors were wrong before the design was**, which is the recurring
-lesson of this project and it recurred twice in one tranche. The capture waited
-400ms against a 1400ms reveal and photographed a transition; and the guard
-written to catch unstyled pages read its token off the layout's outer wrapper,
-where custom properties do not inherit upward — so it failed on every correctly
-styled page and sent me hunting a stylesheet that was working. Both fixed at
-cause, both now carry the reason in the file.
+**Three detectors were wrong before the design was**, in one tranche: a capture
+that photographed a transition, a guard that read its token off the wrong
+element, and a light classifier that matched "sunset" but not "sun setting" and
+was feeding a dusk frame to the bright direction. All fixed at cause.
 
-Full suite after the tranche: **496 passed, 1 skipped** across two engines.
+Full suite: **501 passed, 1 skipped** across two engines. Legibility 30 runs, 0
+below AA, worst 5.20:1.
+
+**Stopped here by instruction. The owner picks at `/looks`.**
 
 ---
 
