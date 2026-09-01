@@ -43,6 +43,7 @@
     "experience-imagery": "node scripts/experience-imagery.mjs",
     "looks": "node scripts/capture-looks.mjs",
     "legibility": "node scripts/hero-legibility.mjs",
+    "hotel:cwv": "node scripts/hotel-cwv.mjs",
     "verify:provenance": "node scripts/verify-provenance.mjs"
   },
   "dependencies": {

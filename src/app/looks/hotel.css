@@ -231,6 +231,31 @@
   color: rgba(255, 255, 255, 0.94);
 }
 
+/*
+ * The letterbox bars. `transform-origin` at the outer edge so they close
+ * inward, and `scaleY` so the hero's height never changes — a bar that grew by
+ * height would reflow the page on every scroll frame.
+ */
+[data-look="hotel"] .ho-letterbox {
+  position: absolute;
+  inset-inline: 0;
+  height: 4.5vh;
+  background: #12100c;
+  transform: scaleY(0);
+  pointer-events: none;
+  will-change: transform;
+}
+
+[data-look="hotel"] .ho-letterbox--top {
+  top: 0;
+  transform-origin: top;
+}
+
+[data-look="hotel"] .ho-letterbox--bottom {
+  bottom: 0;
+  transform-origin: bottom;
+}
+
 /* Dots, because a slider the reader cannot see the shape of feels broken. */
 [data-look="hotel"] .ho-dots {
   position: absolute;
@@ -321,17 +346,26 @@
   background: var(--ho-sand);
 }
 
+/* next/image emits its own width/height; the aspect ratio is enforced here so
+   the box is reserved before the file arrives and CLS stays at zero. */
 [data-look="hotel"] .ho-card-figure img {
   display: block;
   width: 100%;
+  height: auto;
   aspect-ratio: 4 / 3;
   object-fit: cover;
   transition: transform 600ms ease;
 }
 
-/* Gentle hover zoom — the genre's own gesture, kept under 4%. */
-[data-look="hotel"] .ho-card:hover .ho-card-figure img {
-  transform: scale(1.035);
+/*
+ * Gentle hover zoom — the genre's own gesture, kept under 4%, and gated on a
+ * device that actually has hover. On a touch screen `:hover` sticks after a tap
+ * and leaves a card zoomed with no way to undo it.
+ */
+@media (hover: hover) {
+  [data-look="hotel"] .ho-card:hover .ho-card-figure img {
+    transform: scale(1.035);
+  }
 }
 
 [data-look="hotel"] .ho-card-body {
@@ -633,5 +667,11 @@
   [data-look="hotel"] .ho-card-figure img {
     transition: none !important;
     transform: none !important;
+  }
+
+  /* HotelMotion installs nothing under `reduce`, so the bars stay closed — but
+     the rule is stated here too rather than depending on a script not running. */
+  [data-look="hotel"] .ho-letterbox {
+    display: none !important;
   }
 }

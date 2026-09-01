@@ -1,6 +1,8 @@
+import Image from "next/image";
 import Link from "next/link";
 
 import HotelHero from "./HotelHero";
+import HotelMotion from "./HotelMotion";
 import {
   DISTANCES,
   ESTATE,
@@ -40,6 +42,12 @@ import {
 export default function HotelPage() {
   return (
     <div data-look="hotel">
+      {/*
+        PHASE 1 MOTION. A client island that mounts nothing under reduced
+        motion and imports its libraries only after paint — see HotelMotion.
+      */}
+      <HotelMotion />
+
       {/* ---------------------------------------------------------- BAR -- */}
       <header className="ho-bar">
         <Link className="ho-mark" href="/looks/hotel">
@@ -80,8 +88,14 @@ export default function HotelPage() {
               {VILLAS.map((v) => (
                 <article className="ho-card" key={v.slug}>
                   <figure className="ho-card-figure">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={v.frame.src} alt={v.frame.alt} loading="lazy" decoding="async" />
+                    <Image
+                      src={v.frame.src}
+                      alt={v.frame.alt}
+                      width={800}
+                      height={600}
+                      sizes="(min-width: 72rem) 22vw, (min-width: 48rem) 45vw, 92vw"
+                      quality={80}
+                    />
                   </figure>
                   <div className="ho-card-body">
                     <h3>{v.name}</h3>
@@ -106,8 +120,14 @@ export default function HotelPage() {
               */}
               <article className="ho-card ho-card--wide">
                 <figure className="ho-card-figure">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={ESTATE.frame.src} alt={ESTATE.frame.alt} loading="lazy" decoding="async" />
+                  <Image
+                    src={ESTATE.frame.src}
+                    alt={ESTATE.frame.alt}
+                    width={1200}
+                    height={675}
+                    sizes="(min-width: 48rem) 46vw, 92vw"
+                    quality={80}
+                  />
                 </figure>
                 <div className="ho-card-body">
                   <h3>{ESTATE.name}</h3>
@@ -149,8 +169,14 @@ export default function HotelPage() {
                     <article className={`ho-card${e.needsImagery ? " ho-card--text" : ""}`} key={e.slug}>
                       {e.frame ? (
                         <figure className="ho-card-figure">
-                          {/* eslint-disable-next-line @next/next/no-img-element */}
-                          <img src={e.frame.src} alt={e.frame.alt} loading="lazy" decoding="async" />
+                          <Image
+                            src={e.frame.src}
+                            alt={e.frame.alt}
+                            width={800}
+                            height={600}
+                            sizes="(min-width: 72rem) 22vw, (min-width: 48rem) 45vw, 92vw"
+                            quality={80}
+                          />
                         </figure>
                       ) : null}
                       <div className="ho-card-body">

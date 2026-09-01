@@ -403,6 +403,68 @@ amend `content/image-sources.md`, which is where his rule actually lives.
 
 ---
 
+## 6d. F+ Motion — Phase 1 built, and the gate did its job
+
+The F+ directive adds a three-tier "weirdness dial" to Direction F and puts its
+own build behind a Core Web Vitals blocker. **Phase 1 only is built**, because
+Recommendation 1 says not to start Phase 2 until Phase 1 passes — and that is
+the right order.
+
+Built: the scroll handoff on the hero (letterbox closing + 8% parallax,
+scrubbed), the manifesto's split-line mask reveal, quiet staggered reveals
+everywhere else, Lenis wired to the GSAP ticker. **No WebGL, no sticky deck, no
+drag strip** — Phase 2, unstarted.
+
+### The gate caught a real defect, unprompted
+
+First run, throttled to a mid-range phone:
+
+| | before | after |
+|---|---|---|
+| LCP, phone | **17,576 ms** | **1,116 ms** |
+| LCP, desktop | 3,588 ms | 612 ms |
+| CLS | 0 | 0 |
+| Worst interaction | 56 ms | 24 ms |
+
+The cause: these prototypes deliberately used a plain `<img>` so a throwaway
+page would not depend on the site's image pipeline. That reasoning was recorded
+in the component and it was **wrong** — the hero alone was 2.09 MB and the villa
+cards another 3.61 MB, unoptimised. The rationale was about coupling; the
+measurement is about a guest on a Cretan mobile connection, and it wins.
+Direction F now uses `next/image`, which is what the real build would use, so
+measuring without it was measuring the wrong page.
+
+That failure is the strongest evidence the gate is real: it was not a synthetic
+falsification, it was the first honest run.
+
+### Verified against the directive's own constitution
+
+| rule | result |
+|---|---|
+| Conversion is sacred | Book Now hit-tested clickable at 0%, 40% and 90% scroll |
+| Transform and opacity only | letterbox is `scaleY`, parallax is `translate3d`; **CLS 0** |
+| Works without JS | 24 cards render, none hidden, heading and Book Now present |
+| Reduced motion is a path | **0 motion chunks requested** — GSAP and Lenis never download |
+| Legibility inviolable | largest display 56px; 46 legibility runs, 0 below AA |
+| Touch has no hover | card zoom gated behind `@media (hover: hover)` |
+| Motion JS budget | ~118 KB uncompressed ≈ 39 KB gzip, inside the 55–70 KB budget, all dynamically imported after paint |
+
+### What this gate cannot say
+
+The directive asks for a pass **at p75 in the field via CrUX**. That is not
+obtainable from this repository and will not be until the site is deployed and
+carries real traffic — CrUX reports on other people's browsers. Everything above
+is a **lab** measurement and says so in its own output. A pass here is necessary,
+not sufficient.
+
+INP has the same shape: it is a field metric. The figure reported is the worst
+latency of interactions the script actually drives — a slider dot, a full scroll,
+a card hover. **TBT on the phone profile is 269 ms**, which is the number that
+would threaten INP in the field, and it is the first thing to watch when Phase 2
+adds a WebGL canvas.
+
+---
+
 ## 7. What the decision now needs
 
 The grading pass is done, so the list is shorter than it was.

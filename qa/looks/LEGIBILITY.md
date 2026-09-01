@@ -19,19 +19,19 @@ hides exactly that case.
 | golden | desktop | `lk-eyebrow` | 13px | **5.39:1** | 4.5:1 | pass |
 | aegean | desktop | `lk-draft` | 11px | **5.50:1** | 4.5:1 | pass |
 | aegean | phone | `lk-draft` | 11px | **5.50:1** | 4.5:1 | pass |
-| hotel | desktop | `` | 56px | **5.89:1** | 3:1 | pass |
+| hotel | desktop | `` | 56px | **5.84:1** | 3:1 | pass |
 | golden | phone | `lk-headline` | 46px | **5.91:1** | 3:1 | pass |
-| hotel | phone | `` | 36px | **5.97:1** | 3:1 | pass |
 | editorial | desktop | `lk-draft` | 11px | **6.03:1** | 4.5:1 | pass |
+| hotel | phone | `` | 36px | **6.49:1** | 3:1 | pass |
 | editorial | phone | `lk-draft` | 11px | **6.64:1** | 4.5:1 | pass |
 | type-alive | desktop | `te-draft` | 11px | **7.16:1** | 4.5:1 | pass |
 | type-alive | desktop | `te-caption` | 14px | **7.16:1** | 4.5:1 | pass |
 | type-alive | phone | `te-draft` | 11px | **7.16:1** | 4.5:1 | pass |
 | type-alive | phone | `te-caption` | 14px | **7.16:1** | 4.5:1 | pass |
-| hotel | phone | `` | 15px | **7.77:1** | 4.5:1 | pass |
 | hotel | phone | `ho-draft` | 15px | **7.83:1** | 4.5:1 | pass |
+| hotel | phone | `` | 15px | **7.86:1** | 4.5:1 | pass |
 | golden | desktop | `lk-headline` | 96px | **8.01:1** | 3:1 | pass |
-| hotel | desktop | `` | 18px | **8.61:1** | 4.5:1 | pass |
+| hotel | desktop | `` | 18px | **8.37:1** | 4.5:1 | pass |
 | golden | phone | `lk-headline-tail` | 20px | **9.86:1** | 4.5:1 | pass |
 | golden | phone | `lk-lede` | 16px | **11.47:1** | 4.5:1 | pass |
 | golden | desktop | `lk-headline-tail` | 42px | **11.93:1** | 3:1 | pass |
@@ -58,7 +58,7 @@ hides exactly that case.
 | editorial | phone | `lk-headline` | 46px | **17.14:1** | 3:1 | pass |
 | editorial | phone | `lk-headline-tail` | 20px | **17.14:1** | 4.5:1 | pass |
 | editorial | phone | `lk-lede` | 16px | **17.14:1** | 4.5:1 | pass |
-| hotel | desktop | `ho-draft` | 18px | **17.96:1** | 4.5:1 | pass |
+| hotel | desktop | `ho-draft` | 18px | **17.86:1** | 4.5:1 | pass |
 
 ## Why this exists
 
