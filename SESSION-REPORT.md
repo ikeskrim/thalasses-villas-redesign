@@ -3,6 +3,62 @@
 **Read this first. It is written at HEAD and updated as each task lands, so it
 is the truthful position — not a plan, not a memory.**
 
+# TRANCHE EIGHT — F+ motion, Phase 1
+
+The F+ directive adds a three-tier "weirdness dial" to Direction F and puts the
+build behind a Core Web Vitals blocker. **Phase 1 only is built** — its own
+Recommendation 1 says not to start Phase 2 until Phase 1 passes, and that is the
+right order.
+
+Built: the hero scroll handoff (letterbox closing plus 8% parallax, scrubbed),
+the manifesto's split-line mask reveal, quiet staggered reveals elsewhere, Lenis
+wired to the GSAP ticker. **No WebGL, no sticky deck, no drag strip.**
+
+## The gate failed first, and that is the point
+
+| | before | after |
+|---|---|---|
+| LCP, phone (4× CPU, Slow 4G) | **17,576 ms** | **1,116 ms** |
+| LCP, desktop | 3,588 ms | 612 ms |
+| CLS | 0 | 0 |
+| Worst driven interaction | 56 ms | 24 ms |
+
+The cause was a decision I had made and written down: the prototypes used a
+plain `<img>` so a throwaway page would not depend on the site's image pipeline.
+The hero alone was 2.09 MB and the villa cards another 3.61 MB, unoptimised. The
+rationale was about coupling; the measurement is about a guest on a Cretan
+mobile connection. Direction F now uses `next/image` — which is what the real
+build would use, so measuring without it was measuring the wrong page.
+
+Not a synthetic falsification. The first honest run.
+
+## Verified against the directive's constitution
+
+| rule | result |
+|---|---|
+| Conversion is sacred | Book Now hit-tested clickable at 0%, 40%, 90% scroll |
+| Transform and opacity only | letterbox `scaleY`, parallax `translate3d` — **CLS 0** |
+| Works without JS | 24 cards render, none hidden, heading and Book Now present |
+| Reduced motion is a path | **0 motion chunks requested** — GSAP and Lenis never download |
+| Legibility inviolable | largest display 56px; 46 legibility runs, 0 below AA |
+| Touch has no hover | card zoom gated behind `@media (hover: hover)` |
+| Motion JS budget | ~118 KB raw ≈ 39 KB gzip, inside the 55–70 KB budget, imported after paint |
+
+## What the gate cannot say
+
+The directive asks for a pass **at p75 in the field via CrUX**. That is not
+obtainable here and will not be until the site is deployed with real traffic.
+Everything above is a **lab** measurement and says so in its own output — a pass
+here is necessary, not sufficient. **TBT on the phone profile is 269 ms**, and
+that is the number that would threaten INP in the field. It is the first thing to
+watch when Phase 2 adds a WebGL canvas.
+
+Suite: **502 passed, 1 skipped**. Shard 1 flaked once with a Next
+`NoFallbackError` during image optimisation and passed on the two re-runs; noted
+rather than smoothed over.
+
+---
+
 # TRANCHE SEVEN — the owner's ruling, and Direction F
 
 Two things landed: the owner's imagery ruling became a rule in the repository,
