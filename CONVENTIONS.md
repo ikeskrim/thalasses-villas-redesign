@@ -494,3 +494,32 @@ one of them is true. When a finding is real but deliberate, it is written up in
 `qa/taste/ACCEPTED.md` with the reason, and the detector goes on reporting it.
 A page whose exceptions are recorded is maintained; a page whose exceptions were
 tuned out of the tool is unexamined and looks identical.
+
+## 19. An owner decision is committed the moment it is relayed
+
+A decision that lives only in a chat window is not a decision the repository
+can act on, and the next session will not have that chat.
+
+**This is written from a defect, not from a principle.** The owner approved
+Direction F — the dense hotel homepage — and the approval was never written
+down. A later session then received a brief whose register was Aman, Casa
+Angelina, "hyper-minimalist, editorial", inferred the aesthetic from that
+language, and built five interaction features against a direction the owner had
+already rejected. Nothing in the repository contradicted it, because nothing in
+the repository knew.
+
+So:
+
+1. **Owner decisions go into `DECISIONS.md` the moment they are relayed** — the
+   same turn, before the work they authorise. One entry, dated, with what it
+   settles and what it does not.
+2. **A session begins aesthetic work by reading `DECISIONS.md`.** Not the brief,
+   not the last screenshot, not the register of the prose in front of it.
+3. **A session that finds no recorded decision ASKS.** It does not infer one
+   from a brief's tone, from which references are named, or from what the last
+   commit happened to build. "The brief said Aman, so minimalism is approved" is
+   exactly the reasoning this section exists to forbid.
+
+The asymmetry is the point: asking costs one message, and inferring costs a
+direction's worth of work aimed at the wrong target — which is what it cost
+here.
