@@ -344,6 +344,10 @@
   overflow: hidden;
   margin: 0;
   background: var(--ho-sand);
+  /* The containing block for the liquid canvas, which is `inset: 0` over the
+     photograph. Without this it resolves against a distant ancestor and the
+     canvas lands somewhere else on the page entirely. */
+  position: relative;
 }
 
 /* next/image emits its own width/height; the aspect ratio is enforced here so

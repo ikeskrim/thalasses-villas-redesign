@@ -2,6 +2,8 @@ import Image from "next/image";
 import Link from "next/link";
 
 import HotelHero from "./HotelHero";
+import { FooterReveal } from "@/components/motion/FooterReveal";
+import { LiquidCards } from "@/components/motion/LiquidCards";
 import HotelMotion from "./HotelMotion";
 import {
   DISTANCES,
@@ -90,6 +92,7 @@ export function HotelPage() {
               this grid by id so the twenty-one experience cards below — which
               must stay scannable — never get it.
             */}
+            <LiquidCards selector="#villas .ho-card-figure" />
 
             <div className="ho-grid">
               {VILLAS.map((v) => (
@@ -319,6 +322,8 @@ export function HotelPage() {
           Level 1: this is a real hotel footer with contact, booking, socials
           and the licence, revealed quietly.
         */}
+        <div className="footer-reveal">
+          <FooterReveal selector=".ho-footer" />
         <footer className="ho-footer" id="contact">
           <div className="ho-wrap">
             <div className="ho-footer-grid">
@@ -389,6 +394,7 @@ export function HotelPage() {
             </p>
           </div>
         </footer>
+        </div>
       </main>
     </div>
   );

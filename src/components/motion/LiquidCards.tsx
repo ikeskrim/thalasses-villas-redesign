@@ -3,11 +3,16 @@
 import { useEffect } from "react";
 
 /**
- * LIQUID HOVER ON THE ACT PHOTOGRAPHY — one WebGL canvas, and no new dependency.
+ * THE VILLA-CARD SIGNATURE INTERACTION — one WebGL canvas, no new dependency.
  *
- * The brief asks for a shader distortion on the large act images rather than a
- * CSS hover. This is that: a ripple that follows the pointer and settles when it
- * leaves.
+ * `MOTION-DIRECTIVE.md` puts exactly one Level-3 shader on the page and puts it
+ * HERE: the six villa cards, on a Level-1 grid. A ripple follows the pointer
+ * and settles when it leaves.
+ *
+ * IT USED TO BE ON THE THREE-ACT SECTION, which was Direction D's homepage and
+ * is not the homepage any more (`DECISIONS.md` D-001). Moved rather than
+ * rebuilt: the mechanism was right, the surface was chosen against a brief
+ * whose register the owner had already rejected.
  *
  * WHY RAW WebGL RATHER THAN OGL OR THREE.
  *
@@ -34,9 +39,15 @@ import { useEffect } from "react";
  *   a ripple is precisely the kind of motion `prefers-reduced-motion` exists to
  *   refuse. In both cases nothing is initialised and no shader is compiled.
  *
- *   A WHISPER. Peak displacement is under 2% of the frame. The reference
- *   guidance puts the gimmick threshold near 10%; past about 6% a luxury image
- *   starts to read as a novelty filter.
+ *   A WHISPER, and the directive fixes the number: **≤6% displacement, slow
+ *   lerp, no RGB split.** Peak here is under 1.6% of the frame. Past about 6%
+ *   a luxury photograph starts to read as a novelty filter, and the reference
+ *   guidance puts the outright gimmick threshold near 10%.
+ *
+ *   ON TOUCH IT IS A ONE-SHOT IN-VIEW RIPPLE, not nothing. There is no hover on
+ *   a phone, so the card ripples once as it scrolls into view and settles — the
+ *   directive's own touch equivalent, rather than silently dropping the
+ *   interaction on the surface most guests will use.
  */
 
 const VERT = `
@@ -88,11 +99,12 @@ function compile(gl: WebGLRenderingContext, type: number, src: string) {
   return s;
 }
 
-export function LiquidActs({ selector = ".act-media" }: { selector?: string }) {
+export function LiquidCards({ selector = ".ho-card-figure" }: { selector?: string }) {
   useEffect(() => {
     const fine = window.matchMedia("(pointer: fine)").matches;
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (!fine || reduced) return;
+    /* Reduced motion refuses the whole thing; touch gets the in-view form. */
+    if (reduced) return;
 
     const media = [...document.querySelectorAll<HTMLElement>(selector)];
     if (!media.length) return;
@@ -116,7 +128,7 @@ export function LiquidActs({ selector = ".act-media" }: { selector?: string }) {
 
     function start() {
       const canvas = document.createElement("canvas");
-      canvas.className = "act-liquid";
+      canvas.className = "ho-liquid";
       canvas.setAttribute("aria-hidden", "true");
 
       const gl = canvas.getContext("webgl", {
@@ -236,10 +248,50 @@ export function LiquidActs({ selector = ".act-media" }: { selector?: string }) {
         target = 0;
       };
 
-      for (const el of media) {
-        el.addEventListener("pointerenter", enter);
-        el.addEventListener("pointermove", movePointer, { passive: true });
-        el.addEventListener("pointerleave", leave);
+      /**
+       * TOUCH GETS A ONE-SHOT RIPPLE, not silence.
+       *
+       * `MOTION-DIRECTIVE.md` requires a touch equivalent for every hover
+       * effect, and the equivalent it names for this one is a gentle ripple as
+       * the card scrolls into view. Dropping the interaction entirely on the
+       * surface most guests use would be the easy reading of "touch has no
+       * hover" and the wrong one.
+       */
+      let inView: IntersectionObserver | null = null;
+      if (fine) {
+        for (const el of media) {
+          el.addEventListener("pointerenter", enter);
+          el.addEventListener("pointermove", movePointer, { passive: true });
+          el.addEventListener("pointerleave", leave);
+        }
+      } else {
+        const rippled = new WeakSet<Element>();
+        inView = new IntersectionObserver(
+          (entries) => {
+            for (const e of entries) {
+              if (!e.isIntersecting || rippled.has(e.target)) continue;
+              rippled.add(e.target);
+              const el = e.target as HTMLElement;
+              const img = el.querySelector("img");
+              if (!img || !(img as HTMLImageElement).complete) continue;
+              host = el;
+              if (!upload(img as HTMLImageElement)) continue;
+              el.appendChild(canvas);
+              size();
+              /* From the middle, and released immediately — one pass, not a
+                 loop, so a scrolling phone is not running a shader per card. */
+              mx = 0.5;
+              my = 0.5;
+              target = 1;
+              if (!raf) raf = requestAnimationFrame(tick);
+              window.setTimeout(() => {
+                target = 0;
+              }, 420);
+            }
+          },
+          { threshold: 0.55 }
+        );
+        for (const el of media) inView.observe(el);
       }
       window.addEventListener("resize", size);
 
@@ -253,6 +305,7 @@ export function LiquidActs({ selector = ".act-media" }: { selector?: string }) {
 
       return () => {
         cancelAnimationFrame(raf);
+        inView?.disconnect();
         for (const el of media) {
           el.removeEventListener("pointerenter", enter);
           el.removeEventListener("pointermove", movePointer);

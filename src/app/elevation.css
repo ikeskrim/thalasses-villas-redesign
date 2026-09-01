@@ -68,44 +68,25 @@
 }
 /* The native cursor stays available — this is an enhancement, not a replacement. */
 /*
- * THE OS POINTER IS HIDDEN — WITH TWO CARVE-OUTS THAT ARE NOT NEGOTIABLE.
+ * THE OS POINTER STAYS. Reverted, deliberately.
  *
- * Hiding it is what makes the custom cursor read as bespoke rather than as a
- * dot floating over a normal page. But two places keep the real pointer, and
- * they are declared here rather than in the component so they hold even if the
- * script fails:
+ * A previous pass hid it — `cursor: none` on the body with carve-outs for form
+ * fields and the booking control. That was built against a brief whose register
+ * was Aman and Casa Angelina, before the owner's approval of **Direction F**
+ * was recorded (`DECISIONS.md` D-001).
  *
- *   TEXT ENTRY keeps its I-beam. A caret needs a cursor shaped like a caret.
+ * F is conventional hotel UX. Its whole argument is familiarity: a guest should
+ * recognise the page as a hotel site and find Book Now without learning
+ * anything. `MOTION-DIRECTIVE.md`'s avoid-list rules out custom cursors that
+ * hide the real pointer, and hiding it site-wide to satisfy carve-outs one by
+ * one is fighting the guidance rather than following it.
  *
- *   THE BOOKING CONTROL keeps its pointer. It is the one element on this site
- *   that earns money, and the motion directive's avoid-list names it: no
- *   custom cursor that hides the real pointer over Book. A guest unsure whether
- *   the button is clickable is a booking lost to decoration.
+ * The contextual label cursor stays on the Direction D inner pages, where it
+ * was designed and where `data-cursor` attributes exist. It is suppressed on
+ * the F homepage in `sections.css`.
  */
-body.has-custom-cursor,
-body.has-custom-cursor a,
-body.has-custom-cursor button {
-  cursor: none;
-}
-
-body.has-custom-cursor input,
-body.has-custom-cursor textarea,
-body.has-custom-cursor select,
-body.has-custom-cursor [contenteditable] {
+body.has-custom-cursor {
   cursor: auto;
-}
-
-body.has-custom-cursor [data-cursor="Book"],
-body.has-custom-cursor [data-book],
-body.has-custom-cursor .nav-book,
-body.has-custom-cursor a[href*="reserve-online.net"] {
-  cursor: pointer;
-}
-
-/* The magnetic state: a touch larger, so the snap is felt as well as seen. */
-.cursor--magnetic {
-  width: 16px;
-  height: 16px;
 }
 
 /* ---- Magnetic ------------------------------------------------------------ */
@@ -473,11 +454,14 @@ body.has-custom-cursor a[href*="reserve-online.net"] {
 
 /* ------------------------------------------------------ the liquid canvas -- */
 /*
- * Sits over the act photograph, never replaces it. The `<img>` underneath keeps
- * its alt text and stays the element that loads — so with no WebGL, a lost
- * context, or scripting off, the section is exactly what it was.
+ * Sits over the VILLA-CARD photograph, never replaces it. The `<img>` underneath
+ * keeps its alt text and stays the element that loads — so with no WebGL, a
+ * lost context, or scripting off, the card is exactly what it was.
+ *
+ * (It was the three-act section until `DECISIONS.md` D-001 made Direction F the
+ * homepage; `MOTION-DIRECTIVE.md` §C puts the one shader on the villa cards.)
  */
-.act-liquid {
+.ho-liquid {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -488,7 +472,7 @@ body.has-custom-cursor a[href*="reserve-online.net"] {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .act-liquid {
+  .ho-liquid {
     display: none !important;
   }
 }

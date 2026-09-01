@@ -27,7 +27,7 @@ import { getSmoothScroll, onSmoothScrollChange } from "@/lib/smooth-scroll";
  * Under `prefers-reduced-motion` nothing is imported and nothing animates; the
  * CSS reveal also collapses to a plain, static footer.
  */
-export function FooterReveal() {
+export function FooterReveal({ selector = ".site-footer" }: { selector?: string } = {}) {
   const done = useRef(false);
 
   useEffect(() => {
@@ -38,7 +38,7 @@ export function FooterReveal() {
     let cancelled = false;
     let unsubscribe: (() => void) | undefined;
 
-    const footer = document.querySelector<HTMLElement>(".site-footer");
+    const footer = document.querySelector<HTMLElement>(selector);
     const slot = document.querySelector<HTMLElement>(".footer-reveal");
     if (!footer || !slot) return;
 
@@ -97,8 +97,9 @@ export function FooterReveal() {
         unsubscribe = onSmoothScrollChange(attach);
 
         const ctx = gsap.context(() => {
+          /* Level 1: a quiet stagger over the footer's real columns. */
           const rows = footer.querySelectorAll<HTMLElement>(
-            ".footer-mega-line, .footer-rule, .footer-grid > div, .footer-legal"
+            ".ho-footer-grid > div, .ho-licence, .footer-grid > div, .footer-legal"
           );
           /* Resting state set HERE, not in CSS: with no script the footer is
              simply visible, rather than a blank block waiting for a library. */
@@ -127,7 +128,7 @@ export function FooterReveal() {
       unsubscribe?.();
       cleanup?.();
     };
-  }, []);
+  }, [selector]);
 
   return null;
 }
