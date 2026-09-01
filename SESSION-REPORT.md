@@ -3,6 +3,87 @@
 **Read this first. It is written at HEAD and updated as each task lands, so it
 is the truthful position — not a plan, not a memory.**
 
+# TRANCHE SEVEN — the owner's ruling, and Direction F
+
+Two things landed: the owner's imagery ruling became a rule in the repository,
+and a sixth direction was built as a yes/no prototype.
+
+**HOLDING AT `/looks` FOR THE OWNER'S ANSWER. No further look work.**
+
+## 1. Tier B-Experiences — the ruling, committed
+
+Until now it existed only in conversation. It is `content/image-sources.md` now,
+beside the tiers it amends. Non-property representational imagery is permitted
+**for experience cards only**: own frames first; otherwise properly licensed
+stock; it must plausibly depict the activity as delivered in Crete or the
+Mediterranean; no landmark from elsewhere; no third-party branding; one log line
+per frame; never in a Tier A context; and **stock stays visually honest** — no
+shared treatment that blurs a licensed frame into the property's own work.
+
+**The ratchet changed shape with it.** The question is no longer "is this frame
+stock" — stock is allowed in one place now — but "is this frame accounted for":
+
+1. every non-property frame the site renders must be in the log; unlogged fails
+2. a `withdrawn` frame must not render at all
+
+Both falsified. The fourteen inherited frames do **not** auto-return: twelve are
+`pending-licence` (unknown is not licensed), and two are `withdrawn` on brand
+grounds — the quad bike in birch woodland that is not Crete, and the composited
+wine still life — blocked at the single function every component resolves an
+image through.
+
+**Dressed, own frames first: 7 of 21 experiences** now carry a real frame of the
+property. The other **14 have no honest own frame** and are marked
+`needs-licensed-stock` with the reason per slug. That restraint is the point: a
+first pass matched "massage" to a villa at dusk and "hiking" to a garden path,
+because a loose keyword search always finds something. A hot tub is not a
+massage.
+
+## 2. Direction F — "The Cretan Hotel", at `/looks/hotel`
+
+The dense, warm, credible hotel homepage: Book Now pinned top-right, a slow
+hero, six villa cards with facts and two buttons, twenty-one experiences grouped
+by kind, weddings, distances, a press wall, a real footer with the licence.
+Calibrated on a same-island competitor's **structure and density** and on none of
+its identity.
+
+| | |
+|---|---|
+| CLS | **0** at 1440 and 390 |
+| LCP | 140ms / 100ms |
+| Largest display | 56px — well under the 96px ceiling |
+| Legibility | **46 runs across five looks, 0 below AA**, worst 4.93:1 |
+| Overflow | 0px |
+| Suite | **502 passed, 1 skipped**, two engines |
+
+**Villa photographs come from the registry's own mapping.** A villa card asserts
+"this is Villa Thoi", and nothing in the grading pass knows which building is
+which — so the cards use each villa's `gallery.heroImage` as the owner's CMS
+published it.
+
+**What the registry would not give is a labelled slot, not a filled one:** the
+mantinada (a real cultural form with real authorship), the press wall beyond its
+single genuine Condé Nast Traveler 2024 mention, and the group's sister
+properties. The CN badge image is deliberately not re-hosted — third-party
+trademark.
+
+## Five defects, all mine, found by measuring and by looking
+
+- **The hero scrim was tuned by eye and failed** — headline 2.22:1, paragraph
+  3.37:1. The same defect Golden Coast had, made a second time.
+- **`.ho-group h3` matched every card title** as well as the group label and won
+  on source order; villa names rendered as 11px uppercase labels.
+- **The unstyled-page guard failed a third time**, under a comment I had written
+  saying a fifth direction could not resurrect it. It no longer lists token
+  names — it asks whether any CSS rule targets the look.
+- **The legibility sampler measured through an element's own background**,
+  reporting the draft marker at a phantom 1.00:1. It now composites the plate
+  first; the marker was then a genuine near-miss at 4.25 and got a darker one.
+- **The alt-text test called a correct page wrong**, checking against each look's
+  picks when Direction F is dressed from the registry.
+
+---
+
 # TRANCHE SIX — Direction E, and one instruction not carried out
 
 A fifth directive proposed **"Type-Alive"**: a typography-led direction where the
