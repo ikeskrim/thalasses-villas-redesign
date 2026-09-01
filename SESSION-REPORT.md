@@ -3,6 +3,90 @@
 **Read this first. It is written at HEAD and updated as each task lands, so it
 is the truthful position — not a plan, not a memory.**
 
+# TRANCHE NINE — Direction F is production
+
+**The chooser is gone. `/` is Direction F.** The owner approved it before this
+session's work landed, and that approval lived only in a chat window — which is
+the defect the first commit of this tranche fixes. `DECISIONS.md` D-001 records
+it, `CONVENTIONS.md` §19 makes recording it the rule, and a session that finds
+no recorded decision now ASKS instead of inferring one from a brief's register.
+
+`/looks` and the four candidate directions are deleted from the build. Their
+measurements and findings stay below, in tranches five to eight, which is where
+a rejected candidate belongs.
+
+**Everything below this line about "holding at `/looks` for the owner's pick" is
+the record of a decision that has since been made.** It is left standing rather
+than edited, because the reasoning that fed the decision is the useful part.
+
+## This session's five features, remapped to F's register
+
+| Feature | Verdict | Why |
+|---|---|---|
+| Lenis + Next routing sync | **keep** | Level 1, no visual claim of its own |
+| Magnetic cursor hiding the OS pointer | **remove** | `MOTION-DIRECTIVE.md` §E names it. F is conventional hotel UX |
+| WebGL shader on the three acts | **retune** | Moved to the six villa cards, §C's own home for it |
+| Mega-footer with GSAP unveil | **retune** | Mechanic kept, set-piece dropped: §B puts the footer at Level 1 |
+| EN/GR language switcher | **keep** | Still renders nothing until a second locale publishes |
+
+The shader was measured after the move: one canvas, displacement under 1.6%
+against §C's 6% ceiling, aligned to its figure to the pixel, a one-shot in-view
+ripple on touch, and nothing compiled at all under `reduce`.
+
+## What the verification found
+
+The gates were run against `/`, not against the prototype, and turned up eight
+defects on the production homepage and two in this session's own motion work.
+The full list is in the commit message for `e6b32c4`; the ones worth naming here:
+
+- **No skip link, and no `id="main"`.** Suppressing Direction D's chrome took
+  the skip link with it. A keyboard reader had no way past the header.
+- **`hotel.css` was outside every cascade layer** — imported from `layout.tsx`
+  rather than the CSS entry. The fourth and fifth occurrence of the defect
+  `globals.css`'s own header documents twice.
+- **No canonical on `/`**, and its description duplicated `/en/terms`.
+- **The nav pointed at `/#collection`**, which no element carries any more.
+- **The chauffeur had been reorganised out of existence** — one of twenty-one
+  experiences, behind a code comment claiming it was in Discover Crete.
+- **The hero rotated through a B-grade frame**, against the curation ruling.
+
+Two instruments were also reporting success without reaching their subject: the
+a11y suite's `reveal()` measured the page height once, too early, and audited
+600px of a 6,612px page; the ledger guard was pointed at a homepage that no
+longer has a ledger and passed on finding nothing.
+
+## Gates
+
+Lab only, 4× CPU and Slow 4G on the phone profile. **The p75 field gate cannot
+be met from this repository** — CrUX reports on real visitors and the site is not
+deployed. A lab pass is necessary, not sufficient.
+
+| | LCP | CLS | worst interaction | TBT |
+|---|---|---|---|---|
+| desktop | 640 ms | 0 | 24 ms | 10 ms |
+| phone | 1,140 ms | 0 | 40 ms | 268 ms |
+
+Motion JS **66.8 kB gzip** against the ~70 kB budget. Hero legibility 6 runs, 0
+below AA, worst 5.84:1. Suite **475 passed, 19 skipped, 0 failed** — every skip
+is a guard whose subject renders nowhere since the homepage changed, parked with
+its reason and with a test that fails the day it comes back.
+
+TBT of 268 ms on the phone profile is the figure that would threaten INP under a
+real field measurement. It is inside the lab gate and it is the number to watch
+first after deployment.
+
+## Still open
+
+- **Fourteen experiences need licensed Tier B stock**, with per-slug reasons in
+  `content/experience-imagery.json`. Sourcing is the owner's call on licence and
+  budget; nothing may be bought or invented from here.
+- **The inner pages are still Direction D** while the homepage is F. Stated in
+  `src/app/page.tsx`. Converting eleven pages was not in this instruction.
+- `/el` unpublished, 371 owner questions. Fourteen quarantined frames still
+  owner-pending.
+
+---
+
 # TRANCHE EIGHT — F+ motion, Phase 1
 
 The F+ directive adds a three-tier "weirdness dial" to Direction F and puts the
