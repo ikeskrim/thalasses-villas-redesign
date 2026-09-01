@@ -173,6 +173,18 @@ const BLOCKED = new Set([
   "4088b922635567e2a388c664796a8760", // public place: Fortezza gate (Location only)
   "9e80231c072456bb5f5b0de3f1943b64", // quarantined: provenance unverified
   "89b9b7d0649de8eaf9e70763e3b9c2f5", // quarantined: provenance unverified
+  /*
+   * WITHDRAWN UNDER TIER B-EXPERIENCES, on brand grounds rather than paperwork.
+   *
+   * The owner's ruling opened a door for licensed stock on experience cards.
+   * These two do not walk back through it even if a licence turns up, and the
+   * reason is recorded in `content/experience-imagery.json` so it is not
+   * relitigated: the quad bike stands in birch-and-scrub woodland that is not
+   * Crete, and the wine still life is a composite that reads as an
+   * advertisement rather than as an evening here.
+   */
+  "7268b16ac113ef4d5b65d7fe5ed5dce5", // withdrawn: quad bike, not a Cretan landscape
+  "b70c87734651ed6a4cb9b75b18016353", // withdrawn: composited wine-barrel stock
 ]);
 
 const BLOCKED_FILES = new Set(["Rituals-p-4.webp", "AMZ_7491.jpg"]);

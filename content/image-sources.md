@@ -8,6 +8,21 @@ The rule this file exists to enforce (owner's, §2 of the elevation brief):
   book what they see.
 - **Tier B — named places.** Rethymno old town, Preveli, Triopetra, the gorges. Real photographs of
   those actual places, owner material first, otherwise clearly licensed, origin and licence logged.
+- **Tier B-Experiences — the activities.** *(Owner's ruling, added after the graded pass.)*
+  Non-property, representational imagery **is permitted for experience cards only**. A jeep safari,
+  a dive, a massage: these happen off the estate and the estate has never photographed them.
+  Conditions, all of them:
+  1. **Own real frames first.** If the property has a genuine frame of the activity, it wins.
+  2. Otherwise **properly licensed stock**; free-licence sources are fine.
+  3. It must **plausibly depict the activity as delivered here** — Crete or the wider
+     Mediterranean. No landmark from somewhere else, no alpine pass, no tropical reef.
+  4. **No third-party branding** in frame.
+  5. **One log line per frame** in `content/experience-imagery.json`: file, source, licence.
+  6. **Never in a Tier A context.** Not a villa page, not the estate, not the beach, not a hero.
+     An experience card is the whole of the permission.
+  7. **Stock stays visually honest.** No shared treatment — no common duotone or grade — that
+     blurs a licensed frame into the property's own photography. It may sit in the same layout;
+     it may not be disguised as Thalasses.
 - **Tier C — abstract texture.** Linen, stone, olive, water surface. Licensed stock permitted.
   Generated imagery permitted **only** for non-representational texture — never a place, a building
   or a person.
@@ -83,8 +98,29 @@ and the video slot is built so that dropping in an MP4/WebM is a content change,
 poster frame — placed in `public/video/` and referenced from `content/site.json`. The owner has the
 master footage; a clip cut from the source is also better than anything re-encoded from YouTube.
 
-## 6. Nothing generated, nothing stock
+## 6. Nothing generated; stock only where Tier B-Experiences allows it
 
-As of this pass, **no generated imagery and no third-party stock has been introduced.** Every file
-in `public/images/` originates from the client or their management company. If Tier C texture is
-added later, each file gets a row here with its origin and licence before it is used.
+**No generated imagery has been introduced, and none is permitted outside Tier C texture.** Every
+file in `public/images/` originates from the client or their management company.
+
+Tier B-Experiences (above) opens one narrow door, and it is enforced rather than trusted:
+`content/experience-imagery.json` is the log, and `tests/flagged.spec.ts` **fails the build on any
+non-property frame the site renders that is not logged there.**
+
+### The fourteen inherited frames
+
+The graded pass found fourteen frames on `/` and `/en/experiences` that two independent graders
+flagged as stock or as a public place. They came from the owner's own Loggia CMS, so somebody put
+them there — but **their licences are unknown, and unknown is not licensed.**
+
+**They do not automatically return under the new rule.** Each is logged with
+`status: "pending-licence"`, and clearing one means producing its licence, not asserting it.
+
+Two are out for a second reason and do not come back even with paperwork:
+
+| frame | why it stays out |
+|---|---|
+| Blue quad bike on a dirt track in birch-and-scrub woodland | The landscape is not Crete. It fails condition 3 on sight. |
+| Composited wine barrel, bottles, glasses and grapes before a vineyard at sunset | Textbook composited stock. It reads as an advertisement, not as an evening here. |
+
+Both carry `status: "withdrawn"`, and the suite fails if either renders again.

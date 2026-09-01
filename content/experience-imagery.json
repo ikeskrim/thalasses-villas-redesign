@@ -1,0 +1,271 @@
+{
+  "_note": "Experience-card imagery under the Tier B-Experiences rule in content/image-sources.md. `experiences` maps a slug to the frame its card should use; `inherited` is the log of the fourteen flagged frames the rebuild received. tests/flagged.spec.ts fails on any non-property frame the site renders that is not logged here, and on any frame marked withdrawn. Regenerate with `npm run experience-imagery`.",
+  "_rule": "content/image-sources.md — Tier B-Experiences",
+  "generated": {
+    "dressedFromOwnFrames": 7,
+    "needsLicensedStock": 14
+  },
+  "experiences": {
+    "bike-tours": {
+      "tier": "B-Experiences",
+      "status": "needs-licensed-stock",
+      "why": "Routes are around Crete, not on the estate.",
+      "brief": "Plausibly this activity in Crete or the Mediterranean; no landmark from elsewhere; no third-party branding; licence recorded here."
+    },
+    "biological-garden": {
+      "tier": "A",
+      "status": "cleared",
+      "src": "/images/_chh/Untitled-design.webp",
+      "alt": "Vegetable beds toward the sea",
+      "grade": "B",
+      "source": "The property's own photography",
+      "licence": "Owner's material"
+    },
+    "boat-trip": {
+      "tier": "B-Experiences",
+      "status": "needs-licensed-stock",
+      "why": "Happens at sea, off the estate. No own frame of a boat exists in the library.",
+      "brief": "Plausibly this activity in Crete or the Mediterranean; no landmark from elsewhere; no third-party branding; licence recorded here."
+    },
+    "breakfast-on-the-beach": {
+      "tier": "A",
+      "status": "cleared",
+      "src": "/images/_pool/99ee7129fabc577170b07a49cc337bef.jpg",
+      "alt": "Breakfast table and chair on a white terrace facing the sea",
+      "grade": "B",
+      "source": "The property's own photography",
+      "licence": "Owner's material"
+    },
+    "chauffeur": {
+      "tier": "A",
+      "status": "cleared",
+      "src": "/images/_chh/Villa-Persi-44_result.webp",
+      "alt": "Illuminated estate entrance sign lettered Thalasses beside a driveway at dusk",
+      "grade": "B",
+      "source": "The property's own photography",
+      "licence": "Owner's material"
+    },
+    "chef-in-villa": {
+      "tier": "A",
+      "status": "cleared",
+      "src": "/images/_chh/Rituals-m-7.webp",
+      "alt": "Dressed dinner tables on a terrace in low sun",
+      "grade": "B",
+      "source": "The property's own photography",
+      "licence": "Owner's material"
+    },
+    "dream-weadding-on-the-beach": {
+      "tier": "A",
+      "status": "cleared",
+      "src": "/images/_chh/Rituals-p-12.webp",
+      "alt": "Two open-sided canopies over low cushioned tables on a rocky beach at sunset",
+      "grade": "B",
+      "source": "The property's own photography",
+      "licence": "Owner's material"
+    },
+    "exclusive-tour": {
+      "tier": "B-Experiences",
+      "status": "needs-licensed-stock",
+      "why": "Rethymno town and monasteries; these are Tier B named places, photographed off-site.",
+      "brief": "Plausibly this activity in Crete or the Mediterranean; no landmark from elsewhere; no third-party branding; licence recorded here."
+    },
+    "hiking": {
+      "tier": "B-Experiences",
+      "status": "needs-licensed-stock",
+      "why": "The gorges are inland. The estate's paths are garden paths, not trails.",
+      "brief": "Plausibly this activity in Crete or the Mediterranean; no landmark from elsewhere; no third-party branding; licence recorded here."
+    },
+    "jeep-safari": {
+      "tier": "B-Experiences",
+      "status": "needs-licensed-stock",
+      "why": "Inland mountain tracks.",
+      "brief": "Plausibly this activity in Crete or the Mediterranean; no landmark from elsewhere; no third-party branding; licence recorded here."
+    },
+    "jet-ski-safari": {
+      "tier": "B-Experiences",
+      "status": "needs-licensed-stock",
+      "why": "Open water, operated off-site.",
+      "brief": "Plausibly this activity in Crete or the Mediterranean; no landmark from elsewhere; no third-party branding; licence recorded here."
+    },
+    "learn-the-secrets-of-cretan-cuisine": {
+      "tier": "A",
+      "status": "cleared",
+      "src": "/images/_chh/Villa-Eeanthi-6_result.webp",
+      "alt": "Bright kitchen and dining table with folding doors open to a sunlit terrace",
+      "grade": "B",
+      "source": "The property's own photography",
+      "licence": "Owner's material"
+    },
+    "massage": {
+      "tier": "B-Experiences",
+      "status": "needs-licensed-stock",
+      "why": "In-villa, but never photographed. A hot tub is not a massage.",
+      "brief": "Plausibly this activity in Crete or the Mediterranean; no landmark from elsewhere; no third-party branding; licence recorded here."
+    },
+    "personal-trainer": {
+      "tier": "B-Experiences",
+      "status": "needs-licensed-stock",
+      "why": "No gym or training frame exists.",
+      "brief": "Plausibly this activity in Crete or the Mediterranean; no landmark from elsewhere; no third-party branding; licence recorded here."
+    },
+    "private-helipad": {
+      "tier": "B-Experiences",
+      "status": "needs-licensed-stock",
+      "why": "The only helicopter frame in the library carries a watermark and is flagged unsure.",
+      "brief": "Plausibly this activity in Crete or the Mediterranean; no landmark from elsewhere; no third-party branding; licence recorded here."
+    },
+    "quad-safari": {
+      "tier": "B-Experiences",
+      "status": "needs-licensed-stock",
+      "why": "Inland tracks. The inherited frame is withdrawn — its landscape is not Crete.",
+      "brief": "Plausibly this activity in Crete or the Mediterranean; no landmark from elsewhere; no third-party branding; licence recorded here."
+    },
+    "running": {
+      "tier": "B-Experiences",
+      "status": "needs-licensed-stock",
+      "why": "No own frame of the activity; a garden path is not a running route.",
+      "brief": "Plausibly this activity in Crete or the Mediterranean; no landmark from elsewhere; no third-party branding; licence recorded here."
+    },
+    "scuba-diving": {
+      "tier": "B-Experiences",
+      "status": "needs-licensed-stock",
+      "why": "Underwater. Nothing comparable in the library.",
+      "brief": "Plausibly this activity in Crete or the Mediterranean; no landmark from elsewhere; no third-party branding; licence recorded here."
+    },
+    "therapist": {
+      "tier": "B-Experiences",
+      "status": "needs-licensed-stock",
+      "why": "Same. No own frame depicts a treatment.",
+      "brief": "Plausibly this activity in Crete or the Mediterranean; no landmark from elsewhere; no third-party branding; licence recorded here."
+    },
+    "wine-production": {
+      "tier": "B-Experiences",
+      "status": "needs-licensed-stock",
+      "why": "A working winery, off-site. The inherited frame is withdrawn as composited stock.",
+      "brief": "Plausibly this activity in Crete or the Mediterranean; no landmark from elsewhere; no third-party branding; licence recorded here."
+    },
+    "wine-tasting": {
+      "tier": "A",
+      "status": "cleared",
+      "src": "/images/_chh/Villa-Eeanthi-9_result.webp",
+      "alt": "Outdoor dining table set with wine beside a barbecue counter and timber fence",
+      "grade": "B",
+      "source": "The property's own photography",
+      "licence": "Owner's material"
+    }
+  },
+  "inherited": [
+    {
+      "src": "/images/_pool/267597f7da675716be65dde87d17a259.jpg",
+      "subject": "A sunbather's legs on a boat deck above the wake and open sea",
+      "source": "Owner's Loggia CMS (thalasses.com), inherited in Phase 0",
+      "licence": "unknown",
+      "status": "pending-licence",
+      "why": "Flagged as stock by two independent graders. Unknown is not licensed; clearing it means producing the licence, not asserting one."
+    },
+    {
+      "src": "/images/_pool/d9ec159dfbcda11acebe87c1e990ec3d.jpg",
+      "subject": "White-gloved hand opening the door of a black car",
+      "source": "Owner's Loggia CMS (thalasses.com), inherited in Phase 0",
+      "licence": "unknown",
+      "status": "pending-licence",
+      "why": "Flagged as stock by two independent graders. Unknown is not licensed; clearing it means producing the licence, not asserting one."
+    },
+    {
+      "src": "/images/_pool/1c263ae8e7a7ec57c5735885379ef302.jpg",
+      "subject": "Stone lighthouse and harbour wall framed through a yellow-walled arch",
+      "source": "Owner's Loggia CMS (thalasses.com), inherited in Phase 0",
+      "licence": "unknown",
+      "status": "pending-licence",
+      "why": "Flagged as public-place by two independent graders. Unknown is not licensed; clearing it means producing the licence, not asserting one."
+    },
+    {
+      "src": "/images/_pool/b1987c68d509d41e5aa1269ecd12a5d1.jpg",
+      "subject": "Woman with a backpack photographing mountains from a rocky ridge",
+      "source": "Owner's Loggia CMS (thalasses.com), inherited in Phase 0",
+      "licence": "unknown",
+      "status": "pending-licence",
+      "why": "Flagged as stock by two independent graders. Unknown is not licensed; clearing it means producing the licence, not asserting one."
+    },
+    {
+      "src": "/images/_pool/0c4f054699fa4cd5f3592c934df7d5dc.jpg",
+      "subject": "Two safari jeeps on a mountain dirt track past grazing sheep under a heavy sky",
+      "source": "Owner's Loggia CMS (thalasses.com), inherited in Phase 0",
+      "licence": "unknown",
+      "status": "pending-licence",
+      "why": "Flagged as stock by two independent graders. Unknown is not licensed; clearing it means producing the licence, not asserting one."
+    },
+    {
+      "src": "/images/_pool/e343feb5a2a5cab3bfb8988418ab9cbe.jpg",
+      "subject": "Parasailer under a smiley-face canopy behind a speedboat towing an inflatable",
+      "source": "Owner's Loggia CMS (thalasses.com), inherited in Phase 0",
+      "licence": "unknown",
+      "status": "pending-licence",
+      "why": "Flagged as public-place by two independent graders. Unknown is not licensed; clearing it means producing the licence, not asserting one."
+    },
+    {
+      "src": "/images/_pool/2ecca71169fd54974a50f596a089b8e2.jpg",
+      "subject": "Hands pouring massage oil from a glass bottle over a client's back, frangipani flower beside",
+      "source": "Owner's Loggia CMS (thalasses.com), inherited in Phase 0",
+      "licence": "unknown",
+      "status": "pending-licence",
+      "why": "Flagged as stock by two independent graders. Unknown is not licensed; clearing it means producing the licence, not asserting one."
+    },
+    {
+      "src": "/images/_pool/4b0fcbfb168597e79076b3cac6ec1d1c.jpg",
+      "subject": "Personal trainer coaching a woman with a barbell in a gym",
+      "source": "Owner's Loggia CMS (thalasses.com), inherited in Phase 0",
+      "licence": "unknown",
+      "status": "pending-licence",
+      "why": "Flagged as stock by two independent graders. Unknown is not licensed; clearing it means producing the licence, not asserting one."
+    },
+    {
+      "src": "/images/_pool/7268b16ac113ef4d5b65d7fe5ed5dce5.jpg",
+      "subject": "Blue quad bike parked on a dirt track in front of woodland",
+      "source": "Owner's Loggia CMS (thalasses.com), inherited in Phase 0",
+      "licence": "unknown",
+      "status": "withdrawn",
+      "why": "The birch-and-scrub woodland is not Crete. Fails Tier B-Experiences condition 3 on sight."
+    },
+    {
+      "src": "/images/_pool/c24c3cbb07a7d000732744102339fad6.jpg",
+      "subject": "Runner crouching to tie a trainer on a sunlit woodland path",
+      "source": "Owner's Loggia CMS (thalasses.com), inherited in Phase 0",
+      "licence": "unknown",
+      "status": "pending-licence",
+      "why": "Flagged as stock by two independent graders. Unknown is not licensed; clearing it means producing the licence, not asserting one."
+    },
+    {
+      "src": "/images/_pool/54095a9f31b0139695c64ad1d801083e.jpg",
+      "subject": "Scuba divers descending over a sandy underwater slope",
+      "source": "Owner's Loggia CMS (thalasses.com), inherited in Phase 0",
+      "licence": "unknown",
+      "status": "pending-licence",
+      "why": "Flagged as stock by two independent graders. Unknown is not licensed; clearing it means producing the licence, not asserting one."
+    },
+    {
+      "src": "/images/_pool/733997e4cda86e32b69dc8883a526a07.jpg",
+      "subject": "Stacked white pebbles lettered Spirit, Body and Mind held in an open palm over soft bokeh",
+      "source": "Owner's Loggia CMS (thalasses.com), inherited in Phase 0",
+      "licence": "unknown",
+      "status": "pending-licence",
+      "why": "Flagged as stock by two independent graders. Unknown is not licensed; clearing it means producing the licence, not asserting one."
+    },
+    {
+      "src": "/images/_pool/b70c87734651ed6a4cb9b75b18016353.jpg",
+      "subject": "Wine barrel, bottles, filled glasses and grapes staged before a vineyard at sunset",
+      "source": "Owner's Loggia CMS (thalasses.com), inherited in Phase 0",
+      "licence": "unknown",
+      "status": "withdrawn",
+      "why": "Textbook composited stock — it reads as an advertisement rather than an evening here."
+    },
+    {
+      "src": "/images/_pool/dd02adb78e41b725facdf9786cb9d686.jpg",
+      "subject": "Row of wine glasses on a rail in front of a trellised vineyard",
+      "source": "Owner's Loggia CMS (thalasses.com), inherited in Phase 0",
+      "licence": "unknown",
+      "status": "pending-licence",
+      "why": "Flagged as stock by two independent graders. Unknown is not licensed; clearing it means producing the licence, not asserting one."
+    }
+  ]
+}

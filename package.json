@@ -40,6 +40,7 @@
     "grading:sheet": "node scripts/grading-sheet.mjs",
     "grading:merge": "node scripts/merge-grades.mjs",
     "flagged": "node scripts/flagged-on-site.mjs",
+    "experience-imagery": "node scripts/experience-imagery.mjs",
     "looks": "node scripts/capture-looks.mjs",
     "legibility": "node scripts/hero-legibility.mjs",
     "verify:provenance": "node scripts/verify-provenance.mjs"
