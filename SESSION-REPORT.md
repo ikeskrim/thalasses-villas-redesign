@@ -3,6 +3,97 @@
 **Read this first. It is written at HEAD and updated as each task lands, so it
 is the truthful position — not a plan, not a memory.**
 
+# TRANCHE SIX — Direction E, and one instruction not carried out
+
+A fifth directive proposed **"Type-Alive"**: a typography-led direction where the
+display face carries the page and the photography is demoted to small treated
+windows. It is built at **`/looks/type-alive`** as a fourth prototype, so the
+owner compares it beside the other three rather than in place of them.
+
+**HOLDING AT `/looks` FOR THE OWNER'S PICK. No further look work until he
+chooses.**
+
+## Why this direction is different from the other four rounds
+
+It is the first one whose premise the measurements support. The grading pass
+found **33 hero-grade frames in 871, and five of them daylight** — a photo-led
+direction is rationed by material that does not exist, and six photo-led rounds
+have now been rejected. Type-Alive asks for **three** reserved photographs
+instead of ten, and the chooser card says so on its own axis rather than quoting
+it the "proven hero frames" number that is not its constraint.
+
+## Stage 0 was the blocker, so it was checked first
+
+| claim | result |
+|---|---|
+| Literata: Greek + variable | **confirmed** — `greek`, `greek-ext`, `opsz 7–72`, `wght 200–900` |
+| EB Garamond / Vollkorn / Alegreya | confirmed Greek + variable |
+| GFS Didot / GFS Neohellenic / Cardo | confirmed Greek, static |
+| "do NOT assume Greek" list | **all confirmed Greek-less** — Cormorant, Cormorant Garamond, Fraunces, Playfair Display, Spectral, Marcellus, Gilda Display |
+| **Newsreader**, listed as Greek + variable | **WRONG — no Greek subset** |
+| **Old Standard TT**, listed as Greek/static | **WRONG — no Greek subset** |
+| body sans, flagged unverified | **caveat closed** — Inter *and* IBM Plex Sans both ship Greek and are variable |
+
+## Measured, not declared
+
+| | |
+|---|---|
+| Weight settle | wght **300 → 600**, element 242px → 286px — the variable axis is genuinely animating |
+| CLS | **0** at 1440 and 390 |
+| LCP | 740ms / 708ms |
+| Legibility | **40 runs across four looks, 0 below AA**, worst 4.93:1 |
+| Overflow | 0px at both viewports |
+| Reduced motion | marquee stopped, ambient frozen, settle at final weight, duplicate row removed |
+| Suite | **501 passed, 1 skipped**, two engines |
+
+## Five defects, all mine, found by measuring and by looking
+
+- **The signature move shipped a layout shift.** Animating `wght` changes glyph
+  widths, so the phone hero flipped between two lines and three and moved the
+  page 46px — **0.0376 CLS**. Fixed at cause: each word of the lockup owns its
+  line, so the settle changes a width and never a line count. The CSS comment
+  claiming it "moves nothing but itself" was written before that was true and is
+  corrected in place.
+- **A measure rule on the wrong element.** `max-width: 34ch` sat on the `<li>`,
+  where `ch` resolves against 17px body text — a 64px display line got a 270px
+  measure and broke into three against the left edge of a 1440px screen.
+- **Two numbering systems a centimetre apart**, both reading "01".
+- **An inline `display:flex` beat the reduced-motion rule** hiding the marquee's
+  seam copy, so a reader with motion off saw the register printed twice.
+- **The distinctness pass compared file paths**, so two different files that were
+  both thatched umbrellas at sunset passed as distinct heroes. It now also
+  compares what the photograph is *of*.
+
+## The one-DOM claim held for three directions out of four
+
+`tests/looks.spec.ts` proves Aegean, Editorial and Golden render from **identical
+markup**. Type-Alive could not: its act numerals, marginalia and two-copy marquee
+are content, not decoration. The test was widened by **name** — `PHOTO_LOOKS` —
+rather than by quietly loosening what it asserts, and the exclusion is written
+into it as the finding.
+
+## One instruction not carried out
+
+The directive permits licensed stock for experience imagery under an **"Experience
+Imagery Policy v2"**. **No such policy exists in this repository.** What exists is
+`content/image-sources.md`, the owner's own tiering: Tier A is *"Real photography
+of Thalasses only… Guests book what they see"*, and Tier C permits licensed stock
+for **abstract texture only** — *"never a place, a building or a person"*.
+Experience imagery is representational, so that permission does not reach it.
+
+The second half is sharper: applying one duotone *"so stock and real frames read
+as one system"* would make bought-in imagery **less** distinguishable from the
+property's own — at the exact moment the grading pass found **twelve
+stock-flagged photographs already live** on `/` and `/en/experiences`, quarantined
+and awaiting his ruling.
+
+So Direction E is dressed in **Tier A photography only**. If the owner wants stock
+to illustrate experiences that is his call to make explicitly, and it should
+amend `content/image-sources.md`, where his rule actually lives. Full reasoning in
+`RE-SKIN-DIRECTIVE.md` §6c.
+
+---
+
 # TRANCHE FIVE — the re-skin directive, and the grading pass
 
 Tranche four closed the backlog. A visual re-skin research directive arrived,
@@ -73,7 +164,8 @@ was feeding a dusk frame to the bright direction. All fixed at cause.
 Full suite: **501 passed, 1 skipped** across two engines. Legibility 30 runs, 0
 below AA, worst 5.20:1.
 
-**Stopped here by instruction. The owner picks at `/looks`.**
+*(Tranche five stopped here by instruction; tranche six added the fourth
+direction above, and holds at the same place.)*
 
 ---
 
