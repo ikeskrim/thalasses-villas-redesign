@@ -94,13 +94,20 @@ test.describe("@smoke second engine", () => {
      */
     await page.goto("/");
     /*
-     * Wait for the hero to have a box before measuring. The homepage opens
-     * behind a preloader, and evaluating on `load` finds every display element
-     * at zero width — which reads as "no display type on this page" and is
-     * really "the page has not painted yet". A locator wait retries; a fixed
-     * sleep would pass on a fast machine and fail on a slow one.
+     * Wait for the hero to have a box before measuring. Evaluating on `load`
+     * finds every display element at zero width — which reads as "no display
+     * type on this page" and is really "the page has not painted yet". A
+     * locator wait retries; a fixed sleep would pass on a fast machine and fail
+     * on a slow one.
+     *
+     * THE FACE IS LITERATA, NOT MARCELLUS. The homepage is Direction F
+     * (`DECISIONS.md` D-001) and its serif is Literata — vendored, variable and
+     * Greek-capable. Marcellus is Direction D's and still dresses the inner
+     * pages; it is deliberately NOT asserted here, because it is not used on
+     * this page and `document.fonts.check` would report it unloaded whether the
+     * woff2 was reachable or not.
      */
-    await page.locator(".d-hero-copy .display").first().waitFor({ state: "visible" });
+    await page.locator(".ho-hero-copy h1").first().waitFor({ state: "visible" });
     const loaded = await page.evaluate(async () => {
       await document.fonts.ready;
       /*
@@ -112,7 +119,7 @@ test.describe("@smoke second engine", () => {
        */
       let biggest: Element | null = null;
       let size = 0;
-      for (const el of document.querySelectorAll("h1, h2, .display, .c1, .c2")) {
+      for (const el of document.querySelectorAll("h1, h2, .display, .c1, .c2, .ho-hero-copy h1")) {
         if (!(el.textContent || "").trim()) continue;
         const r = el.getBoundingClientRect();
         if (r.width < 4 || r.height < 4) continue;
@@ -123,39 +130,54 @@ test.describe("@smoke second engine", () => {
         }
       }
       return {
-        marcellus: document.fonts.check('96px "Marcellus"'),
+        literata: document.fonts.check('56px "Literata"'),
         inter: document.fonts.check('16px "Inter"'),
         size,
         used: biggest ? getComputedStyle(biggest).fontFamily : null,
       };
     });
-    expect(loaded.marcellus, "Marcellus did not load — headings are in the fallback").toBe(true);
+    expect(loaded.literata, "Literata did not load — headings are in the fallback").toBe(true);
     expect(loaded.inter, "Inter did not load — body copy is in the fallback").toBe(true);
     expect(loaded.size, "no display type found — this assertion is not looking at anything").toBeGreaterThan(40);
     expect(loaded.used?.toLowerCase(), "the largest type on the page is not the brand face").toContain(
-      "marcellus"
+      "literata"
     );
   });
 
-  test("@smoke cascade layers applied — the hero tail is not the primitive colour", async ({
+  test("@smoke cascade layers applied — the layered import really reached the page", async ({
     page,
   }) => {
     /*
-     * `@layer` is the mechanism the whole cascade now depends on (T-274). An
-     * engine that ignored it would fall back to source order and the hero tail
-     * would revert to phrygana on a dark photograph — invisible, and exactly
-     * the bug that layer was introduced to kill. Asserting the OUTCOME is the
-     * only way to know the feature is really working rather than merely parsed.
+     * `@layer` is the mechanism the whole cascade depends on (T-274), and this
+     * asserts the OUTCOME rather than trusting that the feature parsed.
+     *
+     * It used to read Direction D's hero tail, which rendered only on D's
+     * homepage and now renders nowhere. It reads Direction F's homepage
+     * instead, and the thing it reads is a stronger test than the one it
+     * replaced: `hotel.css` reaches the browser ONLY through
+     * `@import "./hotel.css" layer(components)` in globals.css. An engine that
+     * ignored layered imports would drop the entire stylesheet, and the page
+     * would fall back to the site's limestone body ground with an unstyled
+     * link where Book Now should be.
+     *
+     * (It was imported from `layout.tsx` for one commit, which put it OUTSIDE
+     * every layer — the precise defect globals.css's own header documents twice.
+     * This is the guard that would have caught it.)
      */
     await page.goto("/");
-    const colour = await page.evaluate(() => {
-      const el = document.querySelector(".d-hero-copy .clause-tail");
-      return el ? getComputedStyle(el).color : null;
+    const styled = await page.evaluate(() => {
+      const root = document.querySelector('[data-look="hotel"]');
+      const book = document.querySelector(".ho-book");
+      return {
+        ground: root ? getComputedStyle(root).backgroundColor : null,
+        book: book ? getComputedStyle(book).backgroundColor : null,
+      };
     });
-    expect(colour, "no hero tail found — this assertion is not looking at anything").toBeTruthy();
-    expect(colour, "the components layer did not beat the primitives layer").toBe(
-      "rgb(232, 233, 227)"
-    );
+    expect(styled.ground, "no Direction F root found — this assertion is not looking at anything").toBeTruthy();
+    /* --ho-ivory, set in hotel.css and reachable only through the layered import. */
+    expect(styled.ground, "the components layer did not apply hotel.css").toBe("rgb(251, 248, 242)");
+    /* --ho-terracotta on Book Now, the one control that must never be unstyled. */
+    expect(styled.book, "Book Now lost its ground — hotel.css did not apply").toBe("rgb(168, 68, 42)");
   });
 
   test("@smoke every booking affordance leads to the real engine", async ({ page }) => {

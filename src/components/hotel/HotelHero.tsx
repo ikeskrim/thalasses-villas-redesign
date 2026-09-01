@@ -79,8 +79,18 @@ export default function HotelHero({
             fill
             sizes="100vw"
             quality={82}
-            /* The LCP element. Never lazy — the directive's own avoid-list. */
+            /*
+             * The LCP element. Never lazy — the directive's own avoid-list.
+             *
+             * `priority` in Next 16 emits a `<link rel="preload" as="image">`
+             * in the head, which is the stronger half of poster-first: the
+             * fetch starts before the `<img>` is parsed. It does NOT put
+             * `fetchpriority` on the element, so that is stated here too —
+             * `MOTION-DIRECTIVE.md` §A.5 names the attribute, and a reader
+             * checking the markup against the directive should find it.
+             */
             priority={i === 0}
+            fetchPriority={i === 0 ? "high" : "auto"}
             loading={i === 0 ? undefined : "lazy"}
           />
         </div>

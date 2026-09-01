@@ -14,8 +14,8 @@ on desktop.
 
 | view | LCP | CLS | worst interaction | TBT | LCP element |
 |---|---|---|---|---|---|
-| desktop | 340ms | 0 | 0ms | 18ms | `P.d-hero-lede` |
-| phone | 1196ms | 0 | 0ms | 331ms | `P.d-hero-lede` |
+| desktop | 640ms | 0 | 24ms | 10ms | `IMG.` |
+| phone | 1140ms | 0 | 40ms | 268ms | `IMG.` |
 
 Budgets: LCP ≤ 2500ms · CLS ≤ 0.1 · interaction ≤ 200ms.
 

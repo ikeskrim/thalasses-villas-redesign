@@ -2,9 +2,40 @@ import { expect, test } from "@playwright/test";
 import fs from "node:fs";
 import path from "node:path";
 
+/**
+ * THESE PATTERNS MOVED WHEN THE HOMEPAGE DID.
+ *
+ * Every test here read `/`, because Direction D's homepage was where the six
+ * patterns lived. `DECISIONS.md` D-001 made Direction F the homepage, so each
+ * pattern is now in one of two states, and each test says which:
+ *
+ *   RETARGETED — the pattern still renders, on an inner page that is still
+ *   Direction D. The estate map is on `/en/the-estate`, the chips and the drag
+ *   register on `/en/experiences`, the spec ledgers on `/en/the-estate`. These
+ *   guards are alive and pointed at their subject.
+ *
+ *   PARKED — the litany, the three acts, the numbered spine, the preloader and
+ *   the scroll cue rendered ONLY on D's homepage and now render nowhere. Their
+ *   components still exist in `src/components/sections/`. The guards are kept
+ *   and skipped with the reason, and `tests/direction-d.spec.ts` carries the
+ *   test that fails the day any of them is mounted again.
+ *
+ * Nothing here was deleted. A guard written after a rejected round is the last
+ * thing to throw away because the thing it guards is temporarily off-stage.
+ */
+
+const PARKED =
+  "Parked by DECISIONS.md D-001: this pattern rendered only on Direction D's " +
+  "homepage, which is now Direction F. See `the parked guards are parked for a " +
+  "true reason` in tests/direction-d.spec.ts.";
+
+const ESTATE = "/en/the-estate";
+const EXPERIENCES = "/en/experiences";
+
 /** Parity for the six Seasats-pattern components. */
 test.describe("the six patterns", () => {
   test("1 — the litany renders every line and one payoff", async ({ page }) => {
+    test.skip(true, PARKED + " (.litany-line)");
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.goto("/", { waitUntil: "load" });
     const lines = await page.locator(".litany-line").count();
@@ -16,6 +47,7 @@ test.describe("the six patterns", () => {
   });
 
   test("2 — three acts, four verified cards each", async ({ page }) => {
+    test.skip(true, PARKED + " (.acts-sticky)");
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.goto("/", { waitUntil: "load" });
     await page.waitForSelector(".acts-sticky", { timeout: 15000 });
@@ -33,6 +65,7 @@ test.describe("the six patterns", () => {
   });
 
   test("2b — the act selector is keyboard operable with aria-current", async ({ page }) => {
+    test.skip(true, PARKED + " (.acts-tab)");
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.goto("/", { waitUntil: "load" });
     await page.waitForSelector(".acts-sticky", { timeout: 15000 });
@@ -48,7 +81,8 @@ test.describe("the six patterns", () => {
 
   test("3 — the estate map renders every marker and a full list fallback", async ({ page }) => {
     await page.setViewportSize({ width: 1440, height: 900 });
-    await page.goto("/", { waitUntil: "load" });
+    /* Retargeted: the map is on the estate page, which is still Direction D. */
+    await page.goto(ESTATE, { waitUntil: "load" });
     const markers = await page.locator(".estate-map-marker").count();
     expect(markers).toBeGreaterThanOrEqual(6);
     expect(markers).toBeLessThanOrEqual(9);
@@ -62,8 +96,12 @@ test.describe("the six patterns", () => {
   });
 
   test("4 — spec ledgers use tabular figures, never a table", async ({ page }) => {
-    await page.goto("/", { waitUntil: "load" });
-    await page.waitForSelector(".acts-sticky", { timeout: 15000 });
+    /* Retargeted: eight inline ledgers on the estate page. The old wait was on
+       `.acts-sticky`, a homepage component — waiting for the ledgers instead. */
+    await page.goto(ESTATE, { waitUntil: "load" });
+    /* `attached`, not `visible`: the first of the eight inline ledgers sits in
+       a collapsed amenity panel, so waiting for visibility waits forever. */
+    await page.waitForSelector(".ledger-inline", { state: "attached", timeout: 15000 });
     expect(await page.locator(".ledger-inline").count()).toBeGreaterThan(0);
     // The banned elements stay banned.
     expect(await page.locator(".act-card table, .estate-map-card table").count()).toBe(0);
@@ -71,7 +109,8 @@ test.describe("the six patterns", () => {
 
   test("5 — chips filter to the right counts and survive in the URL", async ({ page }) => {
     await page.setViewportSize({ width: 1440, height: 900 });
-    await page.goto("/", { waitUntil: "load" });
+    /* Retargeted: the drag register and its chips are on /en/experiences. */
+    await page.goto(EXPERIENCES, { waitUntil: "load" });
 
     const dir = path.join(process.cwd(), "content", "experiences");
     const cats: Record<string, number> = {};
@@ -92,7 +131,7 @@ test.describe("the six patterns", () => {
     }
 
     // A linked filter restores on load.
-    await page.goto("/#sea", { waitUntil: "load" });
+    await page.goto(`${EXPERIENCES}#sea`, { waitUntil: "load" });
     await page.waitForTimeout(300);
     await expect(page.locator(".drag-card")).toHaveCount(cats["Sea"]!);
   });
@@ -104,6 +143,8 @@ test.describe("the six patterns", () => {
     // opposite of that. Asserted as absent rather than deleted, so that if it
     // ever comes back it comes back as a decision.
     await page.setViewportSize({ width: 1440, height: 900 });
+    /* Still `/`, and still meaningful: the homepage is Direction F now and it
+       does not spend a beat on the odometer either. */
     await page.goto("/", { waitUntil: "load" });
     await expect(page.locator(".odometer")).toHaveCount(0);
     // The component still exists and is still tested by its own unit of truth;
@@ -111,6 +152,7 @@ test.describe("the six patterns", () => {
   });
 
   test("registers never mix: no clause heads an act, no imperative takes a tail", async ({ page }) => {
+    test.skip(true, PARKED + " (.act-title)");
     await page.goto("/", { waitUntil: "load" });
     await page.waitForSelector(".acts-sticky", { timeout: 15000 });
     // Clause labels never end in a full stop; act titles always do.
@@ -125,6 +167,7 @@ test.describe("the six patterns", () => {
 
 test.describe("T-203 — the pin must stay pinned", () => {
   test("no ancestor of the sticky stage carries a sticky-killing property", async ({ page }) => {
+    test.skip(true, PARKED + " (.acts-sticky)");
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.goto("/", { waitUntil: "load" });
     await page.waitForSelector(".acts-sticky", { timeout: 15000 });
@@ -154,6 +197,7 @@ test.describe("T-203 — the pin must stay pinned", () => {
   });
 
   test("the stage holds at the top through the whole pinned run", async ({ page }) => {
+    test.skip(true, PARKED + " (.acts-sticky)");
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.goto("/", { waitUntil: "load" });
 
@@ -224,6 +268,7 @@ test.describe("T-203 — the pin must stay pinned", () => {
  */
 test.describe("the numbered spine", () => {
   test("homepage beats are gapless, unique, and every section carries one", async ({ page }) => {
+    test.skip(true, PARKED + " (.litany-beat)");
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.goto("/", { waitUntil: "load" });
     await page.waitForSelector(".litany-beat");
@@ -290,6 +335,7 @@ test.describe("copy defects found by reading, not by looking", () => {
   });
 
   test("the litany is announced once, not twice", async ({ page }) => {
+    test.skip(true, PARKED + " (.litany)");
     await page.goto("/", { waitUntil: "load" });
     const occurrences = await page.evaluate(() => {
       let n = 0;
@@ -309,7 +355,8 @@ test.describe("copy defects found by reading, not by looking", () => {
   test("no distance is rendered as a blank dash", async ({ page }) => {
     // Eight of eleven beaches have no distance in the inventory. The old markup
     // printed "—" for each, which reads as missing data; they are a named run now.
-    await page.goto("/", { waitUntil: "load" });
+    /* Retargeted: the coastline is on /en/location, which is still Direction D. */
+    await page.goto("/en/location", { waitUntil: "load" });
     const values = await page.locator(".coastline-value").allTextContents();
     expect(values.length).toBeGreaterThan(0);
     for (const v of values) {
@@ -321,6 +368,7 @@ test.describe("copy defects found by reading, not by looking", () => {
 
 test.describe("claims refuted by measurement", () => {
   test("the hero has a preloader, ambient motion and a scroll cue", async ({ page }) => {
+    test.skip(true, PARKED + " (.d-cue, .kenburns, the preloader)");
     await page.goto("/", { waitUntil: "commit" });
     // The preloader is real and session-scoped; it dismisses inside ~1.8s, which
     // is why a late look does not find it.
@@ -342,6 +390,7 @@ test.describe("claims refuted by measurement", () => {
   });
 
   test("the scroll cue never sits underneath the booking bar", async ({ page }) => {
+    test.skip(true, PARKED + " (.d-cue, .ledger)");
     // The first version did, at every width: 62px of overlap on desktop, 198px
     // on a phone. The clearance is a token; this is what keeps it honest.
     for (const width of [390, 768, 1440]) {
@@ -368,6 +417,7 @@ test.describe("claims refuted by measurement", () => {
   });
 
   test("every Collection cell is image-forward", async ({ page }) => {
+    test.skip(true, PARKED + " (.d-plate)");
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.goto("/", { waitUntil: "load" });
     const plates = await page.locator(".d-plate").count();
@@ -377,7 +427,8 @@ test.describe("claims refuted by measurement", () => {
   });
 
   test("no experience card is a hole — image or a designed typographic card", async ({ page }) => {
-    await page.goto("/", { waitUntil: "load" });
+    /* Retargeted: the drag register is on /en/experiences. */
+    await page.goto(EXPERIENCES, { waitUntil: "load" });
     await page.waitForSelector(".drag-card");
     const holes = await page.evaluate(() =>
       [...document.querySelectorAll(".drag-card")]

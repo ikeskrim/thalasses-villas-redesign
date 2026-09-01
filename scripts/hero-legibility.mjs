@@ -125,14 +125,22 @@ const required = (px, weight) => {
  * quietly eats contrast, so it gets the same treatment: hide the text,
  * screenshot what is behind it, sample the worst pixel.
  */
+/*
+ * ONE LOOK, AND IT IS THE HOMEPAGE.
+ *
+ * The four candidates were prototypes under `/looks`, and `DECISIONS.md` D-001
+ * settled the question: Direction F is production and the others are deleted
+ * from the build. Measuring a route that 404s would have produced the emptiest
+ * possible pass, so the list shrank with the build rather than after it.
+ *
+ * Their recorded measurements stay in `qa/looks/LEGIBILITY.md` history and in
+ * `SESSION-REPORT.md`. What is measured here is what a guest can load.
+ */
 const LOOKS = [
-  { id: "aegean", root: ".lk-hero", text: ".lk-eyebrow, .lk-headline, .lk-headline-tail, .lk-lede, .lk-draft" },
-  { id: "editorial", root: ".lk-hero", text: ".lk-eyebrow, .lk-headline, .lk-headline-tail, .lk-lede, .lk-draft" },
-  { id: "golden", root: ".lk-hero", text: ".lk-eyebrow, .lk-headline, .lk-headline-tail, .lk-lede, .lk-draft" },
-  { id: "type-alive", root: ".te-hero", text: ".te-kicker, .te-display, .te-lede, .te-draft, .te-caption" },
-  /* Direction F puts its hero copy over a photograph behind a scrim, like the
-     photo-led three — so it is measured the same way and for the same reason. */
-  { id: "hotel", root: ".ho-hero", text: ".ho-hero-copy h1, .ho-hero-copy p" },
+  /* Direction F puts its hero copy over a photograph behind a scrim, so the
+     text is hidden, the frame behind it screenshotted, and the worst pixel
+     sampled — a scrim tuned by eye is how this hero failed AA the first time. */
+  { id: "hotel", path: "/", root: ".ho-hero", text: ".ho-hero-copy h1, .ho-hero-copy p" },
 ];
 const VIEWS = [
   ["desktop", 1440, 900],
@@ -147,9 +155,9 @@ for (const [label, width, height] of VIEWS) {
   for (const look of LOOKS) {
     const TEXT = look.text;
     const ROOT = look.root;
-    await page.goto(`${BASE}/looks/${look.id}`, { waitUntil: "load", timeout: 90_000 });
+    await page.goto(`${BASE}${look.path}`, { waitUntil: "load", timeout: 90_000 });
     await page.waitForTimeout(1800); /* reveals settled — see capture-looks.mjs */
-    await assertStyled(page, `/looks/${look.id} @${label}`, look.id);
+    await assertStyled(page, `${look.path} @${label}`, look.id);
 
     /* Where the type is, what colour it is, and how big it renders. */
     const items = await page.evaluate(([sel, rootSel]) => {

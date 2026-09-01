@@ -68,7 +68,10 @@ export function HotelPage() {
         </a>
       </header>
 
-      <main>
+      {/* `id="main"` is the skip link's target. The site shell gives every
+          other page one via PageShell; this page renders its own `<main>`,
+          so it states it here. Without it the skip link points at nothing. */}
+      <main id="main">
         <HotelHero
           frames={HERO}
           line={MANIFESTO.line}
@@ -261,9 +264,25 @@ export function HotelPage() {
               <div>
                 <p className="ho-eyebrow">Discover Crete</p>
                 <h2>Where you are</h2>
+                {/*
+                  THE CHAUFFEUR IS NAMED HERE, and it was not.
+
+                  `hotel-data.ts` says the three "Service" experiences are placed
+                  where they belong rather than in the grid — the wedding in its
+                  own section, "the helipad and the chauffeur are arrival, and sit
+                  in Discover Crete". The helipad did. The chauffeur did not: the
+                  line said "Arrival by car", which is how anyone arrives anywhere
+                  and is not the offer. One of twenty-one experiences was
+                  reorganised out of existence, which is the one thing the content
+                  rule forbids, and the parity guard found it.
+
+                  The wording is the registry's own: Thalasses meets guests at the
+                  airport or the port and drives them to the villa.
+                */}
                 <p className="ho-lede">
-                  Pigianos Kampos, on the north coast between Rethymno and Heraklion. Arrival by
-                  car, or by helicopter to the estate&rsquo;s own pad.
+                  Pigianos Kampos, on the north coast between Rethymno and Heraklion. We can meet
+                  you at the airport or the port and drive you here, or you can arrive by
+                  helicopter to the estate&rsquo;s own pad.
                 </p>
               </div>
             </div>

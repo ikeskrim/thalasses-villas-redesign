@@ -56,12 +56,71 @@ const ROUTES = [
  * whole accessibility claim rests on.
  */
 async function reveal(page: import("@playwright/test").Page) {
-  const total = await page.evaluate(() => document.body.scrollHeight);
+  /*
+   * THE HEIGHT IS RE-READ EVERY STEP, and the walk asserts it arrived.
+   *
+   * It used to measure `document.body.scrollHeight` ONCE, immediately after
+   * `waitUntil: "load"`, and scroll to that. On the Direction F homepage that
+   * measurement is racy: the load event can win the race against the first
+   * layout of the freshly-applied stylesheet, and the page reads as 900px —
+   * the viewport floor — instead of 6,612. The walk then covered 600px, axe
+   * audited the hero, and the rest of the page went unexamined.
+   *
+   * Which is this file's own subject (CONVENTIONS §18): an instrument that
+   * reports success without reaching what it is measuring. It was written to
+   * fix exactly that failure and then committed it, in the same function, for
+   * the same reason — a single measurement taken too early and trusted.
+   *
+   * So: re-read the height as it goes, because a page that reveals content on
+   * scroll gets taller as you scroll it, and then FAIL if the bottom was never
+   * reached rather than quietly auditing the top.
+   */
   const step = 600;
-  for (let y = 0; y <= total; y += step) {
+  let y = 0;
+  let guard = 0;
+
+  for (;;) {
     await page.evaluate((v) => window.scrollTo(0, v), y);
     await page.waitForTimeout(45);
+
+    const { max } = await page.evaluate(() => ({
+      max: document.documentElement.scrollHeight - window.innerHeight,
+    }));
+
+    if (y >= max) break;
+    y = Math.min(y + step, max);
+
+    /* A page taller than ~600 screens is a runaway, not a page. */
+    if (++guard > 600) throw new Error("reveal() did not reach the bottom — the page keeps growing");
   }
+
+  const reached = await page.evaluate(() => ({
+    y: Math.round(window.scrollY),
+    max: Math.round(document.documentElement.scrollHeight - window.innerHeight),
+  }));
+  /* Lenis can hold the scroll a pixel or two off the true bottom. */
+  if (reached.max - reached.y > 4) {
+    throw new Error(
+      `reveal() stopped at ${reached.y} of ${reached.max} — the audit below would ` +
+        `only have covered the top of the page`
+    );
+  }
+
+  /*
+   * SETTLE AT THE BOTTOM BEFORE TURNING ROUND.
+   *
+   * Reaching the bottom is not the same as the page having finished reacting
+   * to it. GSAP's `ScrollTrigger.batch` collects entering elements over a
+   * 100ms window, so a walk that jumps 600px every 45ms arrives ahead of the
+   * reveal it is supposed to be triggering — and then scrolls away before it
+   * lands. Measured on `/`: the whole press wall was still `visibility:
+   * hidden` when the audit ran.
+   *
+   * A tenth of a second of patience is the difference between auditing the
+   * page and auditing the part of it that happened to be quick.
+   */
+  await page.waitForTimeout(1200);
+
   await page.evaluate(() => window.scrollTo(0, 0));
   await page.waitForTimeout(400);
 }

@@ -153,7 +153,16 @@ export function SiteNav({
 
 /** The register, in beat order. Kept here so every page shares one source. */
 export const NAV_ENTRIES: NavEntry[] = [
-  { n: "01", label: "The Villas", href: "/#collection" },
+  /*
+   * `/#villas`, not `/#collection`. The homepage is Direction F now
+   * (`DECISIONS.md` D-001) and its villa section carries `id="villas"`;
+   * `#collection` was Direction D's villa index and no element carries it any
+   * more. The nav is hidden ON the F homepage but visible on every inner page,
+   * so this link was live and landed readers at the top of the homepage
+   * instead of at the villas — found by the dead-anchor guard in
+   * `tests/patterns.spec.ts`.
+   */
+  { n: "01", label: "The Villas", href: "/#villas" },
   { n: "02", label: "The Estate", href: "/en/the-estate" },
   { n: "03", label: "Experiences", href: "/en/experiences" },
   { n: "04", label: "Weddings", href: "/en/weddings" },

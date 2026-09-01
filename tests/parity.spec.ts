@@ -29,23 +29,40 @@ test.describe("homepage content parity", () => {
       (f) => readJson<{ name: string }>("villas", `${f}.json`).name
     ).sort();
 
-    // Direction D replaced the Collection grid with one villa per viewport.
-    // `.collection-name` travelled with the name, so the CONTENT contract is
-    // unchanged and only the container moved.
-    const rendered = (await page.locator(".collection-name").allTextContents())
+    /*
+     * The container moved twice and the contract did not. Direction D replaced
+     * the Collection grid with one villa per viewport; Direction F
+     * (DECISIONS.md D-001) replaced that with six cards in `#villas`, five
+     * named villas and the estate. The five names are what is asserted, because
+     * the five names are what this test has always been about.
+     */
+    const rendered = (await page.locator("#villas .ho-card h3").allTextContents())
       .map((s) => s.trim())
+      .filter((n) => n !== "The Entire Estate")
       .sort();
 
     expect(rendered).toEqual(expected);
     expect(rendered).toHaveLength(5);
   });
 
-  test("the Estate entry is present with its clause", async ({ page }) => {
+  test("the Estate entry is present, with its proposition", async ({ page }) => {
+    /*
+     * IT USED TO ASSERT THE CLAUSE "Gathering ALL FOUR, ONE GATE".
+     *
+     * The clause is Direction D's signature element and Direction F carries no
+     * clauses, so that assertion could only be met by a page that no longer
+     * exists. What this test is protecting is not the element: it is that the
+     * homepage still OFFERS THE WHOLE ESTATE, which is the single highest-value
+     * booking on the site and the thing a four-villa grid quietly loses.
+     *
+     * So it asserts the offer, in whatever markup carries it.
+     */
     await page.goto("/", { waitUntil: "load" });
-    const labels = await page.locator(".clause").evaluateAll((els) =>
-      els.map((e) => e.getAttribute("aria-label"))
-    );
-    expect(labels).toContain("Gathering ALL FOUR, ONE GATE");
+    const card = page.locator(".ho-card--wide").first();
+    await expect(card, "the homepage no longer offers the estate as one house").toHaveCount(1);
+    const text = ((await card.textContent()) ?? "").replace(/\s+/g, " ");
+    expect(text).toContain("The Entire Estate");
+    expect(text, "the estate card no longer says what it is").toMatch(/four seafront villas/i);
   });
 
   test("the Register renders every experience in the inventory", async ({ page }) => {
@@ -55,9 +72,66 @@ test.describe("homepage content parity", () => {
       .filter((f) => f.endsWith(".json")).length;
 
     expect(expected).toBe(21);
-    // The Register became a horizontal drag gallery in the elevation pass;
-    // the count contract is unchanged.
-    await expect(page.locator(".drag-card")).toHaveCount(expected);
+
+    /*
+     * ALL TWENTY-ONE ARE ON THE PAGE. EIGHTEEN OF THEM ARE IN THE GRID.
+     *
+     * Direction F groups the experiences by kind — Sea, Land, Taste, Wellness —
+     * and the three the registry files under "Service" are placed where they
+     * belong instead: the wedding has its own section, and the helipad and the
+     * chauffeur sit in Discover Crete as arrival. That is the standing rule
+     * working as intended (reorganise, never delete), and it is exactly the
+     * kind of move that hides a deletion, so the deletion is what is checked.
+     *
+     * Counting `.ho-card` in `#experiences` would have passed at 18 and said
+     * nothing. Every experience is looked up BY NAME across the whole page.
+     */
+    const names = fs
+      .readdirSync(path.join(CONTENT, "experiences"))
+      .filter((f) => f.endsWith(".json"))
+      .map((f) => readJson<{ name: string }>("experiences", f).name);
+
+    const body = ((await page.locator("body").textContent()) ?? "").replace(/\s+/g, " ");
+
+    /*
+     * THREE ARE REPRESENTED RATHER THAN LISTED, and each must be findable.
+     *
+     * A bare name check would demand the homepage print "Chauffeur" as a card
+     * title, which is not what reorganising means. But "it is represented
+     * somewhere" is exactly the claim that lets content disappear: this test
+     * first ran with the chauffeur nowhere on the page at all, behind a comment
+     * in `hotel-data.ts` asserting it sat in Discover Crete. It did not — the
+     * line read "Arrival by car", which is how anyone arrives anywhere.
+     *
+     * So each of the three names the SECTION it moved to and a phrase only its
+     * own offer would produce. Move it again and this fails, which is the point.
+     */
+    const RELOCATED: Record<string, { section: string; proof: RegExp }> = {
+      Chauffeur: { section: "#crete", proof: /meet you at the airport or the port/i },
+      "Private Helipad": { section: "#crete", proof: /helicopter/i },
+      "Dream Wedding on the Beach": { section: "#weddings", proof: /wedding/i },
+    };
+
+    const missing: string[] = [];
+    for (const n of names) {
+      const moved = RELOCATED[n];
+      if (!moved) {
+        if (!body.includes(n)) missing.push(`${n} — not on the page at all`);
+        continue;
+      }
+      const section = ((await page.locator(moved.section).textContent()) ?? "").replace(/\s+/g, " ");
+      if (!moved.proof.test(section)) {
+        missing.push(`${n} — relocated to ${moved.section}, which no longer describes it`);
+      }
+    }
+
+    expect(
+      missing,
+      `these experiences are in the inventory and unreachable on the homepage:\n  ${missing.join("\n  ")}`
+    ).toEqual([]);
+
+    /* And the grid itself still carries the four groups it claims to. */
+    await expect(page.locator("#experiences .ho-card")).toHaveCount(18);
   });
 
   test("Estate figures match the locked capacity table", async ({ page }) => {
@@ -73,13 +147,25 @@ test.describe("homepage content parity", () => {
     expect(estate.specs.pools).toBe(4);
     expect(estate.specs.sizeSqm).toBe(240);
 
-    // The estate proposition moved to the Estate Map in the Seasats rebuild.
-    // The ledger, the clause and the enquiry CTA all travelled with it.
-    const values = (await page.locator(".estate-map-ledger dd").allTextContents()).map((s) => s.trim());
-    for (const v of ["9", "6", "18", "4", "240"]) {
-      expect(values, `estate figure ${v} missing from the homepage`).toContain(v);
+    /*
+     * THREE OF THE FIVE ARE ON THE HOMEPAGE; ALL FIVE ARE ON THE ESTATE PAGE.
+     *
+     * Direction F's estate card states bedrooms, beds and pools — "9 bedrooms,
+     * 18 in beds, 4 pools, one table for 18" — and leaves bathrooms and the
+     * square-metre figure to `/en/the-estate`, which carries the full ledger.
+     * That is an editorial choice about a card, not a loss: the assertion below
+     * checks the homepage says what it says, and the assertion after it checks
+     * that nothing was dropped on the way.
+     */
+    const card = ((await page.locator(".ho-card--wide").first().textContent()) ?? "").replace(
+      /\s+/g,
+      " "
+    );
+    for (const v of ["9", "18", "4"]) {
+      expect(card, `estate figure ${v} missing from the homepage card`).toContain(v);
     }
-    await expect(page.locator(".estate-map-cta a")).toHaveCount(1);
+    /* The card is a route into the offer, not a dead end. */
+    await expect(page.locator('.ho-card--wide a[href*="/en/"]').first()).toHaveCount(1);
     await page.goto("/en/the-estate", { waitUntil: "load" });
     // Direction D replaced the bespoke figures block with the shared Ledger.
     const full = (await page.locator(".d-ledger .ledger-spec-value").allTextContents()).map((s) =>
@@ -106,6 +192,14 @@ test.describe("homepage content parity", () => {
     const site = readJson<{ legal?: { operatingLicence?: string } }>("site.json");
     const licence = site.legal?.operatingLicence;
     expect(licence).toBe("1041K91003163701");
+    /*
+     * `.ho-footer` on the homepage, `.site-footer` everywhere else. Direction F
+     * brings its own hotel footer and the licence travelled with it — which is
+     * the point of the test, since an operating licence is a legal obligation
+     * and the easiest thing in a redesign to leave behind.
+     */
+    await expect(page.locator(".ho-footer")).toContainText(licence!);
+    await page.goto("/en/the-estate", { waitUntil: "load" });
     await expect(page.locator(".site-footer")).toContainText(licence!);
   });
 
@@ -136,7 +230,9 @@ test.describe("homepage content parity", () => {
   });
 
   test("every clause obeys the grammar", async ({ page }) => {
-    await page.goto("/", { waitUntil: "load" });
+    /* The clause is Direction D's element and the homepage is Direction F now;
+       the estate page carries four of them. */
+    await page.goto("/en/the-estate", { waitUntil: "load" });
     const labels = (
       await page.locator(".clause").evaluateAll((els) => els.map((e) => e.getAttribute("aria-label")))
     ).filter(Boolean) as string[];
@@ -312,13 +408,19 @@ test.describe("curation rulings", () => {
     const aFiles = new Set(
       selects.selects.filter((s) => s.grade === "A").map((s) => s.file?.replace(/\.\w+$/, ""))
     );
+    /*
+     * The full-bleed beats were `.field`, `.kenburns` and `.pinned-media` on
+     * Direction D's homepage. Direction F's one full-bleed surface is its hero,
+     * and the rule is the same rule: the frame a visitor meets first is an
+     * A-grade frame or it is not full-bleed.
+     */
     await page.goto("/", { waitUntil: "load" });
     const fieldImgs = await page.evaluate(() =>
-      [...document.querySelectorAll(".field img, .kenburns img, .pinned-media img")].map((i) =>
+      [...document.querySelectorAll(".ho-slide img")].map((i) =>
         decodeURIComponent((i as HTMLImageElement).currentSrc || (i as HTMLImageElement).src)
       )
     );
-    expect(fieldImgs.length).toBeGreaterThan(0);
+    expect(fieldImgs.length, "no full-bleed frame found — this test is checking nothing").toBeGreaterThan(0);
     for (const src of fieldImgs) {
       const stem = src.split("/").pop()?.split("&")[0]?.replace(/\.\w+.*$/, "") ?? "";
       expect([...aFiles].some((a) => a && stem.includes(a)), `non-A-grade frame full-bleed: ${src}`).toBe(true);

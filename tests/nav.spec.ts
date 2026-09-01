@@ -14,7 +14,20 @@ const NAV_COUNT = (
     .match(/\{ n: "\d\d", label:/g) ?? []
 ).length;
 
-const ROUTES = ["/", "/en/the-estate", "/en/villas/villa-eeanthe", "/en/villas/villa-pueblo"];
+/*
+ * `/` IS NOT IN THIS LIST ANY MORE, AND IT HAS ITS OWN TEST INSTEAD.
+ *
+ * The homepage is Direction F (`DECISIONS.md` D-001) and brings its own header:
+ * `.ho-bar`, with Book Now pinned top-right. Direction D's `.nav` is suppressed
+ * there and every assertion below about `.nav-register`, `.nav-toggle` and
+ * `.nav-book` is about a header that page does not use.
+ *
+ * Dropping `/` from the loop without replacing the check would have left the
+ * production homepage's booking affordance untested — which is the single most
+ * important control on the site. `the homepage books` at the bottom of this
+ * file covers it, against F's own markup.
+ */
+const ROUTES = ["/en/the-estate", "/en/villas/villa-eeanthe", "/en/villas/villa-pueblo"];
 
 /*
  * `load`, not `networkidle`.
@@ -72,7 +85,8 @@ test.describe("navigation", () => {
 
   test("nav is keyboard complete", async ({ page }) => {
     await page.setViewportSize({ width: 900, height: 900 }); // toggle visible
-    await page.goto("/", { waitUntil: "load" });
+    /* A Direction D page: the homepage uses F's own bar. */
+    await page.goto("/en/the-estate", { waitUntil: "load" });
 
     const toggle = page.locator(".nav-toggle");
     await expect(toggle).toBeVisible();
@@ -147,7 +161,8 @@ test.describe("navigation", () => {
     // text can never disagree (WCAG 2.5.3).
     for (const width of [390, 1440]) {
       await page.setViewportSize({ width, height: 800 });
-      await page.goto("/", { waitUntil: "load" });
+      /* A Direction D page: the homepage uses F's own bar. */
+      await page.goto("/en/the-estate", { waitUntil: "load" });
       await expect(page.locator(".nav-book")).toBeVisible();
 
       // Assert the invariant, not the glyphs: `.micro` applies
@@ -203,4 +218,43 @@ test.describe("the estate page carries the map at full depth", () => {
     expect(body).toContain("enquire — we design your stay");
     expect(body).not.toContain("cannot be booked");
   });
+});
+
+test.describe("the Direction F homepage books", () => {
+  /*
+   * THE HOMEPAGE'S OWN BOOKING AFFORDANCE.
+   *
+   * `.nav-book` is Direction D's and the homepage does not render it. This is
+   * the same contract asserted against `.ho-bar`: Book Now is present, visible,
+   * top-right, reaches the real engine, and carries none of the defects the
+   * booking link has had before — a room preselect the host ignores (T-156) and
+   * an engine that defaults to Greek (T-159).
+   */
+  for (const width of [390, 900, 1440]) {
+    test(`Book Now is reachable and correct at ${width}`, async ({ page }) => {
+      await page.setViewportSize({ width, height: 844 });
+      await page.goto("/", { waitUntil: "load" });
+
+      const book = page.locator(".ho-book");
+      await expect(book).toBeVisible();
+
+      const href = await book.getAttribute("href");
+      expect(href).toContain("thalassesvillas.reserve-online.net");
+      expect(href, "room preselect is inert on this host (T-156)").not.toContain("room=");
+      expect(href, "the engine defaults to Greek (T-159)").toContain("lang=en");
+
+      /* Top-right and inside the viewport, which is the whole convention. */
+      const box = (await book.boundingBox())!;
+      expect(box.y, "Book Now is not at the top of the page").toBeLessThan(120);
+      expect(
+        box.x + box.width,
+        "Book Now runs past the right edge of the viewport"
+      ).toBeLessThanOrEqual(width + 1);
+      expect(box.x, "Book Now is not on the right-hand side").toBeGreaterThan(width / 2);
+
+      /* And it has a real accessible name, not an icon. */
+      const name = ((await book.textContent()) ?? "").trim();
+      expect(name.length, "Book Now has no text").toBeGreaterThan(2);
+    });
+  }
 });

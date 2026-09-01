@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import { HotelPage } from "@/components/hotel/HotelPage";
+import { alternatesFor } from "@/lib/locale";
 
 /**
  * THE HOMEPAGE — Direction F, "The Cretan Hotel".
@@ -26,8 +27,28 @@ import { HotelPage } from "@/components/hotel/HotelPage";
  * is real work and was not in this instruction's scope.
  */
 export const metadata: Metadata = {
+  /*
+   * ITS OWN DESCRIPTION, not the site default.
+   *
+   * The first version of this file repeated the layout's default string, which
+   * `/en/terms` also inherits — so the two shared the one line a searcher reads
+   * to tell pages apart, and the homepage's was the one that mattered. Every
+   * fact here resolves against the inventory: five villas, a pool each, a
+   * private beach fifty metres below, and the four seafront houses as one.
+   */
   description:
-    "An intimate seafront collection of private villas in Pigianos Kampos, Rethymno, Crete.",
+    "Five villas above a private beach on the north coast of Crete, each with its own pool. " +
+    "Take one, or the four seafront houses together.",
+  /*
+   * THE CANONICAL, which the first version of this file dropped.
+   *
+   * Direction D's homepage declared one and this replacement did not, so for
+   * the length of one commit the site's most important page told search engines
+   * nothing about its own address. `alternatesFor` is the single source for it
+   * — it emits the canonical and, once `/el` publishes, the hreflang set, so
+   * this page cannot drift from the rule the way a hand-written block would.
+   */
+  alternates: alternatesFor("/"),
 };
 
 export default function Home() {

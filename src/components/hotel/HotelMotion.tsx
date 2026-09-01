@@ -177,6 +177,45 @@ export default function HotelMotion() {
             }),
         });
 
+        /*
+         * THE SAFETY NET. Nothing this sets to `autoAlpha: 0` may stay there.
+         *
+         * `batch` collects entering elements over a 100 ms window before it
+         * animates them, which is what keeps the trigger count in single
+         * figures — and it means the reveal LAGS an instant jump. Jump to the
+         * bottom with End, or land on a restored scroll position, and for a
+         * moment the last section is `visibility: hidden`. Measured: a walk
+         * that jumped 600px every 45ms left the whole press wall invisible;
+         * the same walk pausing at the bottom left nothing.
+         *
+         * Real wheel scrolling never hit it, and coming back up re-triggers,
+         * so no reader was going to be stranded. But `MOTION-DIRECTIVE.md` §A.2
+         * says motion decorates structure and never replaces it, and content
+         * whose visibility depends on a batching interval is content the motion
+         * layer is holding hostage.
+         *
+         * So a cheap sweep on scroll-idle reveals anything at or above the fold
+         * that is somehow still hidden. It runs after scrolling stops, does
+         * nothing in the normal case, and cannot itself hide anything.
+         */
+        const sweep = () => {
+          for (const el of reveal) {
+            if (gsap.getProperty(el, "autoAlpha") !== 0) continue;
+            if (el.getBoundingClientRect().top > window.innerHeight) continue;
+            gsap.to(el, { autoAlpha: 1, y: 0, duration: 0.3, overwrite: true });
+          }
+        };
+        let idle = 0;
+        const onScroll = () => {
+          window.clearTimeout(idle);
+          idle = window.setTimeout(sweep, 200);
+        };
+        window.addEventListener("scroll", onScroll, { passive: true });
+        ctx.add(() => () => {
+          window.removeEventListener("scroll", onScroll);
+          window.clearTimeout(idle);
+        });
+
         ScrollTrigger.refresh();
       });
 

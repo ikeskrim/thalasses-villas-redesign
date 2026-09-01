@@ -37,6 +37,16 @@ export function CustomCursor() {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (!fine || reduced) return;
 
+    /*
+     * NOT ON DIRECTION F. The homepage suppresses `.cursor` in CSS, which hid
+     * the dot but left this component mounted — a requestAnimationFrame loop
+     * running for the life of the page, and a pointermove listener with a
+     * `closest()` on every event, to move something nobody can see.
+     *
+     * Hiding a thing is not the same as not running it.
+     */
+    if (document.querySelector('[data-look="hotel"]')) return;
+
     // Scheduled, not synchronous: this depends on matchMedia, which only
     // resolves on the client, and a synchronous setState here would cascade a
     // second render on every mount.

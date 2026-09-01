@@ -45,6 +45,7 @@
 @import "./patterns.css" layer(components);
 @import "./atmosphere.css" layer(components);
 @import "./direction-d.css" layer(components);
+@import "./hotel.css" layer(components);
 @import "./register.css" layer(register);
 
 @layer primitives {

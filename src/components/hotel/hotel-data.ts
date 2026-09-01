@@ -81,10 +81,27 @@ function villaFrame(key: string): { src: string; alt: string } {
  * than a code change — the same shape `content/image-sources.md` §5 already
  * specifies for the hero the owner has not yet supplied.
  */
+/*
+ * ALL THREE ARE A-GRADE, and the third one was not.
+ *
+ * The hero used "Aerial of white villas above a blue sea" — `Ritual-drone.webp`,
+ * graded **B** in the full grading pass and absent from `photo-selects.json`
+ * altogether. Direction F's brief welcomes B-grade frames, and that is true of
+ * its cards; it is not true of the hero. The curation ruling is specific about
+ * full-bleed, and `tests/parity.spec.ts` asserts it: the frame a visitor meets
+ * first is A-grade or it is not full-bleed. The B-grade frame was on the most
+ * prominent surface of the site.
+ *
+ * Replaced with a frame that is A-grade and whose PRIMARY SUBJECT NOUN differs
+ * from the other two — umbrellas, then a villa exterior, then the seafront
+ * itself. All three read as dusk, which is not a composition choice: the
+ * library's A-grades are overwhelmingly golden hour, and that is recorded in
+ * RESERVOIR.md rather than papered over here.
+ */
 export const HERO = [
   bySubject("Beach umbrellas and loungers, golden hour, sea behind"),
   bySubject("Villa exterior at dusk, pool lit green-blue"),
-  bySubject("Aerial of white villas above a blue sea"),
+  bySubject("Sunset over rocky seafront and horizon"),
 ].map((f) => ({ src: f.path, alt: f.subject }));
 
 export const MANIFESTO = {

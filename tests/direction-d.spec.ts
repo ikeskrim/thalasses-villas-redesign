@@ -25,6 +25,31 @@ const VILLA_ROUTES = ROUTES.filter((r) => r.startsWith("/en/villas/"));
 const WIDTHS = [360, 390, 768, 1024, 1440, 1920];
 const CEILING = 96;
 
+/**
+ * DIRECTION D STILL OWNS THE INNER PAGES. IT NO LONGER OWNS `/`.
+ *
+ * `DECISIONS.md` D-001 made Direction F the homepage, and D's homepage
+ * composition — the villa plates, the litany, the three-act showcase, the hero
+ * and its press mark — went with it. The components are still in
+ * `src/components/sections/`; nothing mounts them.
+ *
+ * So several guards below have no subject. They are PARKED, not deleted:
+ * deleting them would mean that whoever remounts a villa plate next month
+ * inherits none of the rules that were written after two rejections. Each says
+ * which selector it is waiting for, and `PARKED` names the reason once.
+ *
+ * The test at the bottom of this file is the other half of the arrangement: it
+ * asserts the vocabulary really is unmounted, and fails the day it comes back —
+ * which is the day these guards need turning on again.
+ */
+const PARKED =
+  "Parked by DECISIONS.md D-001: Direction F is the homepage and this selector " +
+  "renders on no route. See `the parked guards are parked for a true reason` at " +
+  "the end of this file.";
+
+/** Where Direction D still renders, for tests that need a D page to stand on. */
+const D_PAGE = "/en/the-estate";
+
 test.describe("D1 — the display ceiling", () => {
   for (const width of WIDTHS) {
     test(`no legible type exceeds ${CEILING}px @ ${width}`, async ({ page }) => {
@@ -58,6 +83,7 @@ test.describe("D1 — the display ceiling", () => {
 
 test.describe("D2 — one idea per viewport, and air between beats", () => {
   test("no beat is butted against the next", async ({ page }) => {
+    test.skip(true, PARKED + " (.d-plate)");
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.goto("/", { waitUntil: "load" });
     await page.waitForSelector(".d-plate");
@@ -80,6 +106,7 @@ test.describe("D2 — one idea per viewport, and air between beats", () => {
   });
 
   test("a villa plate leaves the viewport room to end", async ({ page }) => {
+    test.skip(true, PARKED + " (.d-plate-frame)");
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.goto("/", { waitUntil: "load" });
     const h = await page.locator(".d-plate-frame").first().evaluate((e) => e.getBoundingClientRect().height);
@@ -89,6 +116,7 @@ test.describe("D2 — one idea per viewport, and air between beats", () => {
 
 test.describe("D3 — a name never sits over-and-larger than its photograph", () => {
   test("every villa name is below its frame, and smaller than it", async ({ page }) => {
+    test.skip(true, PARKED + " (.d-plate-name)");
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.goto("/", { waitUntil: "load" });
     await page.waitForSelector(".d-plate");
@@ -112,6 +140,7 @@ test.describe("D3 — a name never sits over-and-larger than its photograph", ()
 
 test.describe("D4 — the ground, and the rarity of the dark", () => {
   test("the page is light, with exactly two deep interludes", async ({ page }) => {
+    test.skip(true, PARKED + " (.acts-sticky)");
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.goto("/", { waitUntil: "load" });
     await page.waitForSelector(".acts-sticky", { timeout: 15000 });
@@ -160,6 +189,7 @@ test.describe("D5 — conversion", () => {
   });
 
   test("press proof is off the hero", async ({ page }) => {
+    test.skip(true, PARKED + " (.d-hero, .d-proof)");
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.goto("/", { waitUntil: "load" });
     const inHero = await page.evaluate(() => {
@@ -192,6 +222,7 @@ test.describe("D6 — every image goes through the single resolver", () => {
   });
 
   test("every villa plate actually paints a photograph", async ({ page }) => {
+    test.skip(true, PARKED + " (.d-plate-frame img)");
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.goto("/", { waitUntil: "load" });
     await page.evaluate(async () => {
@@ -214,6 +245,7 @@ test.describe("D6 — every image goes through the single resolver", () => {
 
 test.describe("D7 — text over photography is legible by construction", () => {
   test("the hero copy band carries enough scrim for AA", async ({ page }) => {
+    test.skip(true, PARKED + " (.d-hero-scrim)");
     // Limestone needs the ground at or below sRGB ~105 for 4.5:1, which over a
     // pure-white sky means alpha >= 0.68. Asserted against the declared stops
     // rather than a sampled pixel, because the worst case is a frame we may not
@@ -427,11 +459,11 @@ test.describe("D9 — every call to action passes AA", () => {
 test.describe("D10 — page transitions", () => {
   test("focus lands on the new page's #main after navigating", async ({ page }) => {
     await page.setViewportSize({ width: 1440, height: 900 });
-    await page.goto("/", { waitUntil: "load" });
+    await page.goto(D_PAGE, { waitUntil: "load" });
 
     // Navigate the way a keyboard user would: activate a real link.
-    await page.locator('.nav-register a[href="/en/the-estate"]').click();
-    await page.waitForURL("**/en/the-estate");
+    await page.locator('.nav-register a[href="/en/gallery"]').click();
+    await page.waitForURL("**/en/gallery");
     await page.waitForTimeout(400);
 
     const landed = await page.evaluate(() => ({
@@ -439,12 +471,12 @@ test.describe("D10 — page transitions", () => {
       tag: document.activeElement?.tagName ?? "",
       path: location.pathname,
     }));
-    expect(landed.path).toContain("/en/the-estate");
+    expect(landed.path).toContain("/en/gallery");
     expect(landed.id, `focus was left on <${landed.tag}> instead of #main`).toBe("main");
   });
 
   test("the wipe cleans itself up and never blocks the page", async ({ page }) => {
-    await page.goto("/", { waitUntil: "load" });
+    await page.goto(D_PAGE, { waitUntil: "load" });
     await page.locator('.nav-register a[href="/en/experiences"]').click();
     await page.waitForURL("**/en/experiences");
     // Well past the 520ms animation.
@@ -458,7 +490,7 @@ test.describe("D10 — page transitions", () => {
   test("reduced motion navigates with no sheet at all", async ({ browser }) => {
     const ctx = await browser.newContext({ reducedMotion: "reduce" });
     const page = await ctx.newPage();
-    await page.goto("/", { waitUntil: "load" });
+    await page.goto(D_PAGE, { waitUntil: "load" });
     await page.locator('.nav-register a[href="/en/location"]').click();
     await page.waitForURL("**/en/location");
     expect(await page.locator(".d-wipe").count()).toBe(0);
@@ -633,5 +665,52 @@ test.describe("D13 — gallery lightbox", () => {
     for (const c of captions) {
       expect(c.trim().length, "an empty caption element was rendered").toBeGreaterThan(0);
     }
+  });
+});
+
+test.describe("D-001 — the parked guards", () => {
+  test("the parked guards are parked for a true reason", async ({ page }) => {
+    /*
+     * THE OTHER HALF OF `PARKED`.
+     *
+     * Seven guards above are skipped because Direction D's homepage vocabulary
+     * renders on no route since `/` became Direction F. That is a claim about
+     * the world, and a claim nobody checks is how a skipped test becomes a
+     * permanently dead one.
+     *
+     * So it is checked. If any of these selectors comes back — someone remounts
+     * the villa plates, or the three acts, or D's hero on some page — this
+     * fails and names the route, and the guards it names are the ones to turn
+     * back on. A test that unskips its own siblings is the only kind of skip
+     * worth keeping.
+     */
+    const UNMOUNTED = [
+      ".d-plate",
+      ".d-plate-frame",
+      ".d-plate-name",
+      ".acts-sticky",
+      ".d-hero",
+      ".d-hero-scrim",
+      ".d-proof",
+    ];
+
+    const found: string[] = [];
+    for (const route of ROUTES) {
+      await page.goto(route, { waitUntil: "load" });
+      const hits = await page.evaluate(
+        (sels) => sels.filter((s) => document.querySelector(s) !== null),
+        UNMOUNTED
+      );
+      for (const h of hits) found.push(`${route} renders ${h}`);
+    }
+
+    expect(
+      found,
+      "Direction D's homepage vocabulary is rendering again:\n  " +
+        found.join("\n  ") +
+        "\n\nThe guards skipped with PARKED in this file were written for exactly " +
+        "these components, after two rejected rounds. Remove their `test.skip` " +
+        "lines, point them at the route above, and delete the matching entry here."
+    ).toEqual([]);
   });
 });

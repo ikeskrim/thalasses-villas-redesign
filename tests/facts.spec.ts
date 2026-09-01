@@ -178,7 +178,14 @@ test.describe("fact guard", () => {
     // The count-up once initialised at 0, so the estate ledger stated
     // "0 Bedrooms" in the server HTML and for anyone without JS. The truth is
     // the default state; the animation is the exception.
-    await page.goto("/", { waitUntil: "load" });
+    //
+    // IT READS THE ESTATE, NOT `/`. The ledger was on Direction D's homepage;
+    // the homepage is Direction F now (DECISIONS.md D-001) and has no count-up
+    // at all. Pointed at `/` this test still passed — it found zero ledger
+    // values and concluded that none of them were wrong, which is the same
+    // empty success CONVENTIONS §18 is about. The `length` assertion below is
+    // what caught it, and it is why the assertion is there.
+    await page.goto("/en/the-estate", { waitUntil: "load" });
     const ssr = await page.evaluate(() =>
       [...document.querySelectorAll(".ledger-spec-value")].map((e) => (e.textContent ?? "").trim())
     );

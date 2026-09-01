@@ -447,8 +447,16 @@
    control, and a contextual cursor designed for D's register has no place on a
    page whose whole argument is familiarity.
    ========================================================================== */
+/*
+ * THE SKIP LINK IS NOT IN THIS LIST, and it was, which was a defect.
+ *
+ * It was suppressed with the rest of Direction D's chrome, which left the
+ * production homepage with no skip-to-content at all — the one piece of D's
+ * header that is not decoration. It is off-screen until focused, so it costs
+ * Direction F nothing visually and gives a keyboard user the same first stop
+ * every other page has.
+ */
 body:has([data-look="hotel"]) .nav,
-body:has([data-look="hotel"]) .skip-link,
 body:has([data-look="hotel"]) .grain,
 body:has([data-look="hotel"]) .cursor {
   display: none !important;

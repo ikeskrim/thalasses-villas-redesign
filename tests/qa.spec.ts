@@ -76,7 +76,10 @@ test("no broken images on the homepage", async ({ page }) => {
 test("reduced motion renders the clause at final tracking", async ({ browser }) => {
   const ctx = await browser.newContext({ reducedMotion: "reduce" });
   const page = await ctx.newPage();
-  await page.goto("/", { waitUntil: "load" });
+  /* The clause is Direction D's signature element. The homepage is Direction F
+     now (DECISIONS.md D-001) and carries no clause; the estate page does, along
+     with every other inner page, so the guard follows its subject. */
+  await page.goto("/en/the-estate", { waitUntil: "load" });
 
   // Under reduced motion no character span may carry a translate.
   const moved = await page.evaluate(() =>
@@ -87,8 +90,26 @@ test("reduced motion renders the clause at final tracking", async ({ browser }) 
   );
   expect(moved).toBe(0);
 
-  // And the clause is still fully readable.
-  const label = await page.locator(".clause").first().getAttribute("aria-label");
-  expect(label).toBe("Living UNLIMITED");
+  /*
+   * And the clause is still fully readable.
+   *
+   * This used to assert the literal string "Living UNLIMITED", which was the
+   * homepage hero's clause and is now on no page at all. Hardcoding one page's
+   * copy made the guard a copy test rather than a motion test: it would have
+   * failed on a wording change and passed on a broken accessible name.
+   *
+   * What it is actually for is that splitting text into per-character spans
+   * must not cost the element its accessible name. So that is what it checks —
+   * the label exists and matches the text a sighted reader sees, whatever the
+   * page happens to say.
+   */
+  const clause = page.locator(".clause").first();
+  const label = await clause.getAttribute("aria-label");
+  expect(label, "the clause lost its accessible name when it was split").toBeTruthy();
+  const visible = (await clause.innerText()).replace(/\s+/g, " ").trim();
+  expect(
+    label!.replace(/\s+/g, " ").trim().toLowerCase(),
+    `the clause reads "${visible}" but announces "${label}"`
+  ).toBe(visible.toLowerCase());
   await ctx.close();
 });

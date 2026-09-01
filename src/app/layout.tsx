@@ -8,7 +8,6 @@ import { NAV_ENTRIES, SiteNav } from "@/components/ui/SiteNav";
 import { siteUrl } from "@/lib/site-url";
 
 import "./globals.css";
-import "./hotel.css";
 
 /**
  * Two files, self-hosted (DESIGN-PLAN §4.5).
