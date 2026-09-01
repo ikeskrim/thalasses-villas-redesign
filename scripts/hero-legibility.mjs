@@ -55,49 +55,45 @@ if (!(await reachable(BASE))) {
 }
 
 /**
- * REFUSE TO MEASURE AN UNSTYLED PAGE.
+ * DID THIS LOOK'S STYLESHEET ACTUALLY LOAD?
  *
- * This is not defensive padding; it is here because it already happened. A
- * previous `next start` kept holding port 3005 while a rebuild replaced
- * `.next` underneath it, so the new server never bound (EADDRINUSE, logged and
- * unread) and the old one carried on answering with HTML that referenced CSS
- * chunks which no longer existed. The pages served unstyled.
+ * Asked about the STYLESHEET now, not about a token, because the token version
+ * broke three times. It started by reading `--lk-ink` off the layout's outer
+ * wrapper, where custom properties do not inherit upward, and failed on every
+ * correctly styled page. Then Direction E arrived declaring `--te-ink` and it
+ * failed the one look that had never used `--lk-`. Then Direction F arrived
+ * declaring `--ho-` and it failed again — under a comment I had written saying
+ * a fifth direction could not resurrect it.
  *
- * Every number produced in that state was real, precise and about nothing. It
- * reported the hero eyebrow at 1.00:1 and I went looking for a design defect
- * that did not exist.
- *
- * `--lk-ink` is defined by `looks.css` and by nothing else, so if it resolves
- * the stylesheet arrived. Checked once, before any measurement.
+ * A list of token names is a list that must be edited every time, by somebody
+ * who has no reason to know it exists. So this asks the question it actually
+ * means: is there a CSS rule in this document that targets this look? If the
+ * stylesheet is missing there is not, and no naming convention has to hold.
  */
-async function assertStyled(page, where) {
-  /*
-   * `[data-look]`, NOT `[data-looks-root]`, and it accepts EITHER ink token.
-   *
-   * Two corrections, both from this guard being wrong rather than the page.
-   * First it asked the layout's outer wrapper — earlier in the tree, so what
-   * `querySelector` returns — but the token is declared on the INNER element
-   * and custom properties inherit downward, so it reported "" on a perfectly
-   * styled page. Then Direction E arrived declaring `--te-ink` in its own
-   * stylesheet, and a guard hard-coded to `--lk-ink` failed the one look that
-   * had never used it.
-   *
-   * A check that cannot pass is worse than no check: both times it sent me
-   * hunting a broken stylesheet that was working. It now asks for whichever
-   * ink the look actually declares, so adding a fifth direction cannot
-   * resurrect this.
-   */
-  const ink = await page.evaluate(() => {
-    const root = document.querySelector("[data-look]");
-    if (!root) return "";
-    const cs = getComputedStyle(root);
-    return (cs.getPropertyValue("--lk-ink") || cs.getPropertyValue("--te-ink")).trim();
-  });
-  if (!ink) {
+async function assertStyled(page, where, lookId) {
+  const styled = await page.evaluate((id) => {
+    const needle = `[data-look="${id}"]`;
+    for (const sheet of document.styleSheets) {
+      let rules;
+      try {
+        rules = sheet.cssRules;
+      } catch {
+        continue; /* cross-origin: not ours */
+      }
+      for (const rule of rules) {
+        if (rule.cssText && rule.cssText.includes(needle)) return true;
+      }
+    }
+    return false;
+  }, lookId);
+  if (!styled) {
     console.error(
-      `${where} rendered WITHOUT looks.css — the stylesheet did not load.\n` +
-        `  Almost always a stale server: an old \`next start\` still holding the port\n` +
-        `  over a rebuilt .next. Kill it and start again. Measuring this would produce\n` +
+      `${where} rendered WITHOUT its stylesheet — no CSS rule targets [data-look="${lookId}"].
+` +
+        `  Almost always a stale server: an old \`next start\` still holding the port
+` +
+        `  over a rebuilt .next. Kill it and start again. Measuring this would produce
+` +
         `  numbers about an unstyled page.`
     );
     process.exit(1);
@@ -134,6 +130,9 @@ const LOOKS = [
   { id: "editorial", root: ".lk-hero", text: ".lk-eyebrow, .lk-headline, .lk-headline-tail, .lk-lede, .lk-draft" },
   { id: "golden", root: ".lk-hero", text: ".lk-eyebrow, .lk-headline, .lk-headline-tail, .lk-lede, .lk-draft" },
   { id: "type-alive", root: ".te-hero", text: ".te-kicker, .te-display, .te-lede, .te-draft, .te-caption" },
+  /* Direction F puts its hero copy over a photograph behind a scrim, like the
+     photo-led three — so it is measured the same way and for the same reason. */
+  { id: "hotel", root: ".ho-hero", text: ".ho-hero-copy h1, .ho-hero-copy p" },
 ];
 const VIEWS = [
   ["desktop", 1440, 900],
@@ -150,7 +149,7 @@ for (const [label, width, height] of VIEWS) {
     const ROOT = look.root;
     await page.goto(`${BASE}/looks/${look.id}`, { waitUntil: "load", timeout: 90_000 });
     await page.waitForTimeout(1800); /* reveals settled — see capture-looks.mjs */
-    await assertStyled(page, `/looks/${look.id} @${label}`);
+    await assertStyled(page, `/looks/${look.id} @${label}`, look.id);
 
     /* Where the type is, what colour it is, and how big it renders. */
     const items = await page.evaluate(([sel, rootSel]) => {
@@ -166,6 +165,17 @@ for (const [label, width, height] of VIEWS) {
             what: el.className.split(" ")[0],
             text: (el.textContent ?? "").trim().slice(0, 34),
             color: cs.color,
+            /*
+             * The element's OWN background, if it has one.
+             *
+             * Hiding the text to see what is behind it removes the element's
+             * background too — so a chip with its own dark plate measured as if
+             * it were bare text on the photograph. Direction F's draft marker
+             * came out at exactly 1.00:1 that way, which is the signature of a
+             * thing that is not there, when in fact it was perfectly readable on
+             * its own plate. The plate is composited back in below.
+             */
+            bg: cs.backgroundColor,
             px: parseFloat(cs.fontSize),
             weight: cs.fontWeight,
             /* Relative to the hero, which is what gets screenshotted. */
@@ -197,14 +207,26 @@ for (const [label, width, height] of VIEWS) {
       if (!m) continue;
       const textLum = luminance(Number(m[1]), Number(m[2]), Number(m[3]));
 
+      /* An element's own background sits between its text and the photograph. */
+      const bg = /rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?/.exec(it.bg ?? "");
+      const plate = bg
+        ? { r: Number(bg[1]), g: Number(bg[2]), b: Number(bg[3]), a: bg[4] === undefined ? 1 : Number(bg[4]) }
+        : null;
+
       let worst = Infinity;
       let sampled = 0;
       const step = 3;
       for (let y = Math.max(0, it.y); y < Math.min(ih, it.y + it.h); y += step) {
         for (let x = Math.max(0, it.x); x < Math.min(iw, it.x + it.w); x += step) {
           const i = (y * iw + x) * channels;
-          const bg = luminance(data[i], data[i + 1], data[i + 2]);
-          const c = contrast(textLum, bg);
+          let r = data[i], g = data[i + 1], b = data[i + 2];
+          if (plate && plate.a > 0) {
+            r = plate.r * plate.a + r * (1 - plate.a);
+            g = plate.g * plate.a + g * (1 - plate.a);
+            b = plate.b * plate.a + b * (1 - plate.a);
+          }
+          const bgLum = luminance(r, g, b);
+          const c = contrast(textLum, bgLum);
           if (c < worst) worst = c;
           sampled++;
         }

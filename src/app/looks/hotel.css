@@ -1,0 +1,637 @@
+/* ==========================================================================
+   DIRECTION F — "THE CRETAN HOTEL"
+
+   Calibrated on the STRUCTURE AND DENSITY of a same-island competitor, never on
+   its identity. What is borrowed is the genre: Book Now always top-right, a slow
+   hero, villa cards that carry facts and two buttons, experience cards grouped
+   by kind, a weddings section, a press wall, a real hotel footer. What is not
+   borrowed is a single colour, letterform, phrase or photograph — a competitor
+   forty minutes down the coast is exactly the wrong thing to resemble.
+
+   IT IS DELIBERATELY DENSE. The other four directions all argue for restraint,
+   and restraint has now been rejected six times. This one fills the screen: many
+   medium images, B-grade frames welcome, facts on every card. The discipline is
+   that density must not become clutter, so the grid is strict and the type scale
+   is short.
+
+   PALETTE, MEASURED RATHER THAN CHOSEN BY EYE (WCAG on the ivory ground and on
+   the sand ground, in that order):
+
+     ink        #23201b   15.31 : 13.47
+     quiet      #5a544b    7.06 :  6.21
+     terracotta #a8442a    5.62 :  4.94     white on it: 5.96
+     olive      #55603a    6.35 :  5.59
+     aegean     #1c5e7a    6.76 :  5.95     white on it: 7.16
+
+   Every one clears AA on both grounds, so any accent may carry text anywhere.
+   Two warmer candidates were dropped after measuring: a lighter terracotta at
+   4.31 and a gold at 4.19 on sand, both below AA where they would have been
+   used.
+   ========================================================================== */
+
+[data-look="hotel"] {
+  --ho-ivory: #fbf8f2;
+  --ho-sand: #f1e9dc;
+  --ho-ink: #23201b;
+  --ho-quiet: #5a544b;
+  --ho-terracotta: #a8442a;
+  --ho-olive: #55603a;
+  --ho-aegean: #1c5e7a;
+  --ho-rule: 1px solid color-mix(in srgb, var(--ho-ink) 14%, transparent);
+
+  /* Classic serif + clean sans. Literata is vendored, variable, and carries
+     Greek — so the Greek site needs no second display face. */
+  --ho-serif: var(--font-literata), var(--font-literata-greek), Georgia, serif;
+  --ho-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+  /*
+   * A SHORT SCALE. Nothing oversized — the brief says legible, and two rounds
+   * were rejected for display type the owner could not read. The largest step
+   * here is 56px at 1440, well under the project's 96px ceiling, because a
+   * hotel page earns its confidence from density rather than from scale.
+   */
+  --ho-h1: clamp(2.25rem, 1.5rem + 2.4vw, 3.5rem);
+  --ho-h2: clamp(1.6rem, 1.25rem + 1.1vw, 2.25rem);
+  --ho-h3: clamp(1.15rem, 1.05rem + 0.45vw, 1.5rem);
+  --ho-body: clamp(0.95rem, 0.92rem + 0.15vw, 1.0625rem);
+  --ho-small: 0.8125rem;
+  --ho-micro: 0.6875rem;
+
+  background: var(--ho-ivory);
+  color: var(--ho-ink);
+  font-family: var(--ho-sans);
+  font-size: var(--ho-body);
+  line-height: 1.6;
+}
+
+/* ============================================================== top bar == */
+/*
+ * Book Now is top-right and it never leaves. That is the single most
+ * recognisable convention of the genre and the one the owner will look for
+ * first.
+ */
+[data-look="hotel"] .ho-bar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 0.75rem clamp(1rem, 3vw, 2.5rem);
+  background: color-mix(in srgb, var(--ho-ivory) 94%, transparent);
+  backdrop-filter: saturate(1.1) blur(8px);
+  border-bottom: var(--ho-rule);
+}
+
+[data-look="hotel"] .ho-mark {
+  font-family: var(--ho-serif);
+  font-size: 1.15rem;
+  letter-spacing: 0.06em;
+  text-decoration: none;
+  color: var(--ho-ink);
+  white-space: nowrap;
+}
+
+[data-look="hotel"] .ho-nav {
+  display: none;
+  gap: 1.5rem;
+  margin-inline-start: auto;
+}
+
+@media (min-width: 62rem) {
+  [data-look="hotel"] .ho-nav {
+    display: flex;
+  }
+}
+
+[data-look="hotel"] .ho-nav a {
+  font-size: var(--ho-small);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ho-quiet);
+  text-decoration: none;
+  padding-block: 0.25rem;
+  border-bottom: 2px solid transparent;
+  transition: color 180ms ease, border-color 180ms ease;
+}
+
+[data-look="hotel"] .ho-nav a:hover,
+[data-look="hotel"] .ho-nav a:focus-visible {
+  color: var(--ho-ink);
+  border-bottom-color: var(--ho-terracotta);
+}
+
+[data-look="hotel"] .ho-book {
+  margin-inline-start: auto;
+  background: var(--ho-terracotta);
+  color: #fff;
+  font-size: var(--ho-small);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 0.6rem 1.1rem;
+  border-radius: 2px;
+  white-space: nowrap;
+  transition: background 180ms ease;
+}
+
+@media (min-width: 62rem) {
+  [data-look="hotel"] .ho-book {
+    margin-inline-start: 1.5rem;
+  }
+}
+
+[data-look="hotel"] .ho-book:hover,
+[data-look="hotel"] .ho-book:focus-visible {
+  background: color-mix(in srgb, var(--ho-terracotta) 84%, #000);
+}
+
+/* ================================================================= hero == */
+[data-look="hotel"] .ho-hero {
+  position: relative;
+  height: min(78vh, 44rem);
+  min-height: 26rem;
+  overflow: hidden;
+  background: var(--ho-sand);
+}
+
+[data-look="hotel"] .ho-slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 1600ms ease-in-out;
+}
+
+[data-look="hotel"] .ho-slide[data-on="true"] {
+  opacity: 1;
+}
+
+[data-look="hotel"] .ho-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /*
+   * Ken Burns, per frame, until real footage exists. Slow enough to read as
+   * atmosphere rather than as movement — the brief asks for conventional
+   * luxury, and a fast push is the tell of a template.
+   */
+  transform: scale(1.06);
+  transition: transform 9000ms linear;
+}
+
+[data-look="hotel"] .ho-slide[data-on="true"] img {
+  transform: scale(1);
+}
+
+/*
+ * THE SCRIM, SET BY MEASUREMENT — and it took two goes, again.
+ *
+ * The first version bottomed at 0.72 and looked fine. Measured against the
+ * pixels actually behind the type, the headline came out at 2.22:1 and the
+ * paragraph at 3.37:1, both under AA, because the hero frame is a sunset and
+ * the copy sits over its brightest band. That is the same defect Golden Coast
+ * had, made a second time by tuning a gradient by eye.
+ *
+ * It is now dense enough that `npm run legibility` passes on both viewports,
+ * and the number is the reason for the value rather than a preference.
+ */
+[data-look="hotel"] .ho-hero-scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(18, 14, 10, 0.36) 0%,
+    rgba(18, 14, 10, 0.14) 24%,
+    rgba(18, 14, 10, 0.62) 54%,
+    rgba(18, 14, 10, 0.92) 100%
+  );
+}
+
+[data-look="hotel"] .ho-hero-copy {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  padding: clamp(1.5rem, 5vw, 4rem);
+  color: #fff;
+  max-width: 46rem;
+}
+
+[data-look="hotel"] .ho-hero-copy h1 {
+  font-family: var(--ho-serif);
+  font-weight: 400;
+  font-size: var(--ho-h1);
+  line-height: 1.1;
+  margin: 0 0 0.75rem;
+}
+
+[data-look="hotel"] .ho-hero-copy p {
+  margin: 0;
+  font-size: clamp(0.95rem, 0.9rem + 0.25vw, 1.125rem);
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.94);
+}
+
+/* Dots, because a slider the reader cannot see the shape of feels broken. */
+[data-look="hotel"] .ho-dots {
+  position: absolute;
+  right: clamp(1.5rem, 5vw, 4rem);
+  bottom: clamp(1.5rem, 5vw, 4rem);
+  display: flex;
+  gap: 0.5rem;
+}
+
+[data-look="hotel"] .ho-dots button {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+}
+
+[data-look="hotel"] .ho-dots button[aria-current="true"] {
+  background: #fff;
+}
+
+/* =============================================================== layout == */
+[data-look="hotel"] .ho-wrap {
+  max-width: 82rem;
+  margin-inline: auto;
+  padding-inline: clamp(1rem, 4vw, 2.5rem);
+}
+
+[data-look="hotel"] .ho-section {
+  padding-block: clamp(2.5rem, 6vh, 4.5rem);
+}
+
+[data-look="hotel"] .ho-section--sand {
+  background: var(--ho-sand);
+}
+
+[data-look="hotel"] .ho-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.75rem;
+}
+
+[data-look="hotel"] .ho-eyebrow {
+  font-size: var(--ho-micro);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ho-terracotta);
+  margin: 0 0 0.4rem;
+}
+
+[data-look="hotel"] h2 {
+  font-family: var(--ho-serif);
+  font-weight: 400;
+  font-size: var(--ho-h2);
+  line-height: 1.15;
+  margin: 0;
+}
+
+[data-look="hotel"] .ho-lede {
+  max-width: 46rem;
+  color: var(--ho-quiet);
+  margin: 0.5rem 0 0;
+}
+
+/* ================================================================ cards == */
+[data-look="hotel"] .ho-grid {
+  display: grid;
+  gap: clamp(1rem, 2vw, 1.5rem);
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 17rem), 1fr));
+}
+
+[data-look="hotel"] .ho-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--ho-ivory);
+  border: var(--ho-rule);
+  overflow: hidden;
+}
+
+[data-look="hotel"] .ho-card-figure {
+  overflow: hidden;
+  margin: 0;
+  background: var(--ho-sand);
+}
+
+[data-look="hotel"] .ho-card-figure img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  transition: transform 600ms ease;
+}
+
+/* Gentle hover zoom — the genre's own gesture, kept under 4%. */
+[data-look="hotel"] .ho-card:hover .ho-card-figure img {
+  transform: scale(1.035);
+}
+
+[data-look="hotel"] .ho-card-body {
+  padding: 1.1rem 1.1rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex: 1;
+}
+
+[data-look="hotel"] .ho-card h3 {
+  font-family: var(--ho-serif);
+  font-weight: 400;
+  font-size: var(--ho-h3);
+  margin: 0;
+}
+
+[data-look="hotel"] .ho-card p {
+  margin: 0;
+  font-size: var(--ho-small);
+  line-height: 1.55;
+  color: var(--ho-quiet);
+}
+
+[data-look="hotel"] .ho-actions {
+  margin-top: auto;
+  padding-top: 0.75rem;
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+[data-look="hotel"] .ho-btn {
+  font-size: var(--ho-micro);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 0.5rem 0.8rem;
+  border-radius: 2px;
+  border: 1px solid var(--ho-aegean);
+  color: var(--ho-aegean);
+  transition: background 180ms ease, color 180ms ease;
+}
+
+[data-look="hotel"] .ho-btn:hover,
+[data-look="hotel"] .ho-btn:focus-visible {
+  background: var(--ho-aegean);
+  color: #fff;
+}
+
+[data-look="hotel"] .ho-btn--solid {
+  background: var(--ho-aegean);
+  color: #fff;
+}
+
+[data-look="hotel"] .ho-btn--solid:hover,
+[data-look="hotel"] .ho-btn--solid:focus-visible {
+  background: color-mix(in srgb, var(--ho-aegean) 84%, #000);
+}
+
+/* The estate card spans two columns where there is room — a bigger room. */
+@media (min-width: 48rem) {
+  [data-look="hotel"] .ho-card--wide {
+    grid-column: span 2;
+  }
+  [data-look="hotel"] .ho-card--wide .ho-card-figure img {
+    aspect-ratio: 16 / 9;
+  }
+}
+
+/* ========================================================== experiences == */
+[data-look="hotel"] .ho-group + .ho-group {
+  margin-top: 2rem;
+}
+
+/*
+ * `> h3`, NOT `h3`.
+ *
+ * The descendant form matched every CARD title inside the group as well as the
+ * group's own label, and — equal specificity, later in the file — it won. Villa
+ * and experience names rendered as 11px uppercase labels with a rule under
+ * them, which looked deliberate enough that it took a screenshot to catch.
+ */
+[data-look="hotel"] .ho-group > h3 {
+  font-family: var(--ho-sans);
+  font-size: var(--ho-micro);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ho-olive);
+  margin: 0 0 0.85rem;
+  padding-bottom: 0.4rem;
+  border-bottom: var(--ho-rule);
+}
+
+/*
+ * A CARD WITH NO PHOTOGRAPH, and it says so.
+ *
+ * Fourteen of the twenty-one experiences have no own frame and are waiting on
+ * licensed stock under Tier B-Experiences. Rather than borrow an adjacent
+ * picture — a hot tub standing in for a massage — the card carries a plain sand
+ * panel and a marker. It is honest, and on a dense page it also reads as a
+ * deliberate texture rather than as a hole.
+ */
+/*
+ * A CARD WITH NO PHOTOGRAPH IS A TEXT CARD, not a hole.
+ *
+ * The first build gave it a 4:3 empty panel, and three of those in a row at the
+ * top of the Sea group read as a broken page rather than as a page waiting for
+ * photographs. Dropping the panel entirely turns it into a compact text card
+ * among picture cards — a pattern real hotel pages use anyway — and the grid
+ * gains rhythm instead of losing it.
+ *
+ * The marker stays. Nothing here pretends the imagery exists.
+ */
+[data-look="hotel"] .ho-card--text {
+  background: color-mix(in srgb, var(--ho-sand) 55%, var(--ho-ivory));
+  border-top: 3px solid var(--ho-olive);
+}
+
+[data-look="hotel"] .ho-tosource {
+  font-size: var(--ho-micro) !important;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ho-olive) !important;
+}
+
+/* =============================================================== quotes == */
+[data-look="hotel"] .ho-quote {
+  text-align: center;
+  padding-block: clamp(2rem, 5vh, 3.5rem);
+}
+
+[data-look="hotel"] .ho-quote blockquote {
+  font-family: var(--ho-serif);
+  font-size: var(--ho-h3);
+  line-height: 1.5;
+  margin: 0 auto;
+  max-width: 40rem;
+  color: var(--ho-ink);
+}
+
+[data-look="hotel"] .ho-slot {
+  display: inline-block;
+  font-family: var(--ho-sans);
+  font-size: var(--ho-small);
+  color: var(--ho-quiet);
+  border: 1px dashed color-mix(in srgb, var(--ho-quiet) 50%, transparent);
+  border-radius: 2px;
+  padding: 0.75rem 1rem;
+  max-width: 40rem;
+}
+
+/* ============================================================ distances == */
+[data-look="hotel"] .ho-distances {
+  display: grid;
+  gap: 0 clamp(1rem, 3vw, 2.5rem);
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 14rem), 1fr));
+}
+
+[data-look="hotel"] .ho-distances div {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.55rem 0;
+  border-bottom: var(--ho-rule);
+  font-size: var(--ho-small);
+}
+
+[data-look="hotel"] .ho-distances b {
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
+  color: var(--ho-ink);
+}
+
+[data-look="hotel"] .ho-distances span {
+  color: var(--ho-quiet);
+}
+
+/* ================================================================ press == */
+[data-look="hotel"] .ho-press {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 15rem), 1fr));
+  align-items: stretch;
+}
+
+[data-look="hotel"] .ho-press a,
+[data-look="hotel"] .ho-press div {
+  display: grid;
+  place-content: center;
+  text-align: center;
+  gap: 0.3rem;
+  padding: 1.5rem 1rem;
+  border: var(--ho-rule);
+  background: var(--ho-ivory);
+  text-decoration: none;
+  min-height: 7rem;
+}
+
+[data-look="hotel"] .ho-press a strong {
+  font-family: var(--ho-serif);
+  font-weight: 400;
+  font-size: 1.05rem;
+  color: var(--ho-ink);
+}
+
+[data-look="hotel"] .ho-press a em {
+  font-style: normal;
+  font-size: var(--ho-small);
+  color: var(--ho-quiet);
+}
+
+[data-look="hotel"] .ho-press .ho-press-slot {
+  border-style: dashed;
+  background: transparent;
+  color: var(--ho-quiet);
+  font-size: var(--ho-micro);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* =============================================================== footer == */
+[data-look="hotel"] .ho-footer {
+  background: var(--ho-ink);
+  color: #ece7dd;
+  padding-block: clamp(2.5rem, 6vh, 4rem);
+  font-size: var(--ho-small);
+}
+
+[data-look="hotel"] .ho-footer a {
+  color: #ece7dd;
+}
+
+[data-look="hotel"] .ho-footer-grid {
+  display: grid;
+  gap: clamp(1.5rem, 3vw, 2.5rem);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 13rem), 1fr));
+}
+
+[data-look="hotel"] .ho-footer h4 {
+  font-family: var(--ho-sans);
+  font-size: var(--ho-micro);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #b9b0a2;
+  margin: 0 0 0.75rem;
+  font-weight: 500;
+}
+
+[data-look="hotel"] .ho-footer ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.4rem;
+}
+
+[data-look="hotel"] .ho-licence {
+  margin-top: 2rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid rgba(236, 231, 221, 0.18);
+  color: #b9b0a2;
+  font-size: var(--ho-micro);
+  letter-spacing: 0.04em;
+}
+
+[data-look="hotel"] .ho-draft {
+  display: inline-block;
+  font-size: var(--ho-micro);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ho-quiet);
+  border: 1px solid currentColor;
+  border-radius: 2px;
+  padding: 0.2rem 0.5rem;
+}
+
+/*
+ * The draft marker was near-white and measured 1.00:1 on a phone — the exact
+ * signature of a thing that is not there at all. Of everything in the hero it
+ * is the worst element to lose: it is the only text saying the voice is not
+ * signed off.
+ */
+[data-look="hotel"] .ho-hero-copy .ho-draft {
+  color: #fff;
+  background: rgba(18, 14, 10, 0.72);
+  margin-top: 0.9rem;
+}
+
+/* ======================================================== reduced motion == */
+/*
+ * The slider stops on the CURRENT frame rather than reverting to the first —
+ * pulling the picture out from under a reader who has just arrived at it is its
+ * own kind of motion.
+ */
+@media (prefers-reduced-motion: reduce) {
+  [data-look="hotel"] .ho-slide,
+  [data-look="hotel"] .ho-slide img,
+  [data-look="hotel"] .ho-card-figure img {
+    transition: none !important;
+    transform: none !important;
+  }
+}

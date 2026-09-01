@@ -35,7 +35,7 @@ import picks from "../../../content/look-picks.json";
  * for the fourth, and both halves are recorded rather than the convenient one.
  */
 
-export const LOOK_IDS = ["aegean", "editorial", "golden", "type-alive"] as const;
+export const LOOK_IDS = ["aegean", "editorial", "golden", "type-alive", "hotel"] as const;
 export type LookId = (typeof LOOK_IDS)[number];
 
 export interface Frame {
@@ -200,6 +200,12 @@ const HERO_SLOTS_NEEDED: Record<LookId, number> = {
   editorial: WARDROBE.heroSlots,
   golden: WARDROBE.heroSlots,
   "type-alive": 3,
+  /*
+   * A hotel homepage heads every page with a photograph and fills the body with
+   * more. It needs the full ten, and it is the only direction that also needs
+   * real DEPTH behind them — which is why its card quotes support frames too.
+   */
+  hotel: WARDROBE.heroSlots,
 };
 
 function riskFor(id: LookId, r: Reservoir): string | null {
@@ -327,6 +333,28 @@ export const LOOKS: Look[] = [
       free: true,
       greek: true,
       bill: "Free face, newly added. Greek included, and it is variable — which is what lets the type move.",
+    },
+  }),
+  withSlots({
+    id: "hotel",
+    name: "The Cretan Hotel",
+    greekName: "Το Κρητικό Ξενοδοχείο",
+    promise:
+      "The dense, warm hotel homepage: Book Now always in reach, many photographs, every fact on the card.",
+    greekPromise:
+      "Η ζεστή, γεμάτη σελίδα ξενοδοχείου: κράτηση πάντα μπροστά σου, πολλές φωτογραφίες, όλα τα στοιχεία στην κάρτα.",
+    /* Calibrated on a same-island competitor's STRUCTURE, never its identity. */
+    anchors: ["acrosuites.com (structure and density only)"],
+    character: {
+      type: "Literata + Inter, nothing oversized",
+      palette: "Ivory and sand, terracotta, olive, Aegean blue",
+      motion: "Slider crossfades, gentle hover zooms.",
+    },
+    fonts: {
+      face: "Literata",
+      free: true,
+      greek: true,
+      bill: "Free face, already in the build. Greek included — the Greek site is covered.",
     },
   }),
 ];

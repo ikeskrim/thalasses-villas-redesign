@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 
 import "./looks.css";
 import "./type-alive.css";
+import "./hotel.css";
 
 /**
  * THE LOOK PROTOTYPES ARE NOT PART OF THE SITE.

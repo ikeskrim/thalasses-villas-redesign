@@ -27,7 +27,7 @@ import path from "node:path";
  * test below, where its absence is the finding rather than an oversight.
  */
 const PHOTO_LOOKS = ["aegean", "editorial", "golden"] as const;
-const ALL_LOOKS = [...PHOTO_LOOKS, "type-alive"] as const;
+const ALL_LOOKS = [...PHOTO_LOOKS, "type-alive", "hotel"] as const;
 const ROOT = process.cwd();
 
 /** Attributes that are ALLOWED to differ — they are the swap itself. */
@@ -177,7 +177,7 @@ test.describe("look prototypes", () => {
         /* Both look families: the photo-led `.lk-` classes and Direction E's `.te-`. */
         [
           ...document.querySelectorAll(
-            ".lk-headline, .lk-act-title, .lk-line, .te-display, .te-display-l, .te-display-m"
+            ".lk-headline, .lk-act-title, .lk-line, .te-display, .te-display-l, .te-display-m, .ho-hero-copy h1, [data-look='hotel'] h2"
           ),
         ].map((el) => ({
           what: el.className.split(" ")[0],
@@ -196,7 +196,7 @@ test.describe("look prototypes", () => {
   test("booking goes to the real engine on every look", async ({ page }) => {
     for (const look of ALL_LOOKS) {
       await page.goto(`/looks/${look}`, { waitUntil: "load" });
-      const href = await page.locator("a.lk-cta, a.te-cta").first().getAttribute("href");
+      const href = await page.locator("a.lk-cta, a.te-cta, a.ho-book").first().getAttribute("href");
       expect(href, `/looks/${look} has no booking link`).toContain("thalassesvillas.reserve-online.net");
       expect(href, `/looks/${look} booking link is missing lang`).toContain("lang=en");
     }
@@ -210,13 +210,35 @@ test.describe("look prototypes", () => {
      * the estate page shipped 48 photographs under 3 descriptions once, and the
      * fallback that caused it is the thing to keep out of new surfaces.
      */
-    const picks = JSON.parse(
-      fs.readFileSync(path.join(ROOT, "content", "look-picks.json"), "utf-8")
-    ) as { looks: Record<string, { frames: { src: string; subject: string }[] }> };
+    /*
+     * The known set is EVERY curator description, not just the look's own picks.
+     *
+     * Four of the five looks are dressed from `content/look-picks.json`, so the
+     * narrower set worked until Direction F — which takes its villa frames from
+     * the registry's own `gallery.heroImage` mapping, because a villa card
+     * asserts "this is Villa Thoi" and only the owner's CMS knows which building
+     * is which. Those alts are perfectly good curator subjects; they were simply
+     * not in the picks file, and the test called a correct page wrong.
+     *
+     * The invariant that actually matters is unchanged and still enforced: no
+     * alt text is generated. Every one has to be a sentence a person wrote while
+     * looking at the photograph.
+     */
+    const subjects = new Set<string>();
+    for (const f of (JSON.parse(fs.readFileSync(path.join(ROOT, "content", "photo-grades.json"), "utf-8")) as {
+      frames: { subject: string }[];
+    }).frames) {
+      subjects.add(f.subject);
+    }
+    for (const f of (JSON.parse(fs.readFileSync(path.join(ROOT, "content", "photo-selects.json"), "utf-8")) as {
+      selects: { subject: string }[];
+    }).selects) {
+      subjects.add(f.subject);
+    }
 
     for (const look of ALL_LOOKS) {
       await page.goto(`/looks/${look}`, { waitUntil: "load" });
-      const known = new Set(picks.looks[look]!.frames.map((f) => f.subject));
+      const known = subjects;
 
       const alts = await page.evaluate(() =>
         [...document.querySelectorAll("img")]

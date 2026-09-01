@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * PHOTOGRAPH THE FOUR LOOKS.
+ * PHOTOGRAPH THE FIVE LOOKS.
  *
  * A design deliverable that has only been typechecked has not been checked. This
  * shoots each prototype at desktop and phone, at three scroll positions, so the
@@ -35,56 +35,52 @@ if (!(await reachable(BASE))) {
 }
 
 /**
- * REFUSE TO MEASURE AN UNSTYLED PAGE.
+ * DID THIS LOOK'S STYLESHEET ACTUALLY LOAD?
  *
- * This is not defensive padding; it is here because it already happened. A
- * previous `next start` kept holding port 3005 while a rebuild replaced
- * `.next` underneath it, so the new server never bound (EADDRINUSE, logged and
- * unread) and the old one carried on answering with HTML that referenced CSS
- * chunks which no longer existed. The pages served unstyled.
+ * Asked about the STYLESHEET now, not about a token, because the token version
+ * broke three times. It started by reading `--lk-ink` off the layout's outer
+ * wrapper, where custom properties do not inherit upward, and failed on every
+ * correctly styled page. Then Direction E arrived declaring `--te-ink` and it
+ * failed the one look that had never used `--lk-`. Then Direction F arrived
+ * declaring `--ho-` and it failed again — under a comment I had written saying
+ * a fifth direction could not resurrect it.
  *
- * Every number produced in that state was real, precise and about nothing. It
- * reported the hero eyebrow at 1.00:1 and I went looking for a design defect
- * that did not exist.
- *
- * `--lk-ink` is defined by `looks.css` and by nothing else, so if it resolves
- * the stylesheet arrived. Checked once, before any measurement.
+ * A list of token names is a list that must be edited every time, by somebody
+ * who has no reason to know it exists. So this asks the question it actually
+ * means: is there a CSS rule in this document that targets this look? If the
+ * stylesheet is missing there is not, and no naming convention has to hold.
  */
-async function assertStyled(page, where) {
-  /*
-   * `[data-look]`, NOT `[data-looks-root]`, and it accepts EITHER ink token.
-   *
-   * Two corrections, both from this guard being wrong rather than the page.
-   * First it asked the layout's outer wrapper — earlier in the tree, so what
-   * `querySelector` returns — but the token is declared on the INNER element
-   * and custom properties inherit downward, so it reported "" on a perfectly
-   * styled page. Then Direction E arrived declaring `--te-ink` in its own
-   * stylesheet, and a guard hard-coded to `--lk-ink` failed the one look that
-   * had never used it.
-   *
-   * A check that cannot pass is worse than no check: both times it sent me
-   * hunting a broken stylesheet that was working. It now asks for whichever
-   * ink the look actually declares, so adding a fifth direction cannot
-   * resurrect this.
-   */
-  const ink = await page.evaluate(() => {
-    const root = document.querySelector("[data-look]");
-    if (!root) return "";
-    const cs = getComputedStyle(root);
-    return (cs.getPropertyValue("--lk-ink") || cs.getPropertyValue("--te-ink")).trim();
-  });
-  if (!ink) {
+async function assertStyled(page, where, lookId) {
+  const styled = await page.evaluate((id) => {
+    const needle = `[data-look="${id}"]`;
+    for (const sheet of document.styleSheets) {
+      let rules;
+      try {
+        rules = sheet.cssRules;
+      } catch {
+        continue; /* cross-origin: not ours */
+      }
+      for (const rule of rules) {
+        if (rule.cssText && rule.cssText.includes(needle)) return true;
+      }
+    }
+    return false;
+  }, lookId);
+  if (!styled) {
     console.error(
-      `${where} rendered WITHOUT looks.css — the stylesheet did not load.\n` +
-        `  Almost always a stale server: an old \`next start\` still holding the port\n` +
-        `  over a rebuilt .next. Kill it and start again. Measuring this would produce\n` +
+      `${where} rendered WITHOUT its stylesheet — no CSS rule targets [data-look="${lookId}"].
+` +
+        `  Almost always a stale server: an old \`next start\` still holding the port
+` +
+        `  over a rebuilt .next. Kill it and start again. Measuring this would produce
+` +
         `  numbers about an unstyled page.`
     );
     process.exit(1);
   }
 }
 
-const LOOKS = ["aegean", "editorial", "golden", "type-alive"];
+const LOOKS = ["aegean", "editorial", "golden", "type-alive", "hotel"];
 const VIEWS = [
   ["desktop", 1440, 900],
   ["phone", 390, 844],
@@ -113,7 +109,7 @@ for (const [label, width, height] of VIEWS) {
      * the text. A screenshot of a transition is not a screenshot of a design.
      */
     await page.waitForTimeout(1800);
-    await assertStyled(page, `/looks/${look} @${label}`);
+    await assertStyled(page, `/looks/${look} @${label}`, look);
 
     /* Top, then two scroll positions, revealing as it goes. */
     await page.screenshot({ path: path.join(OUT, `${look}-${label}-top.png`) });

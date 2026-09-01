@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import LookPage from "../LookPage";
+import HotelPage from "../HotelPage";
 import TypeAlivePage from "../TypeAlivePage";
 import { LOOK_IDS, getLook } from "../looks-data";
 
@@ -29,6 +30,8 @@ export default async function Page({ params }: { params: Promise<{ look: string 
   const { look } = await params;
   const l = getLook(look);
   if (!l) notFound();
-  /* Direction E composes differently on purpose — see TypeAlivePage's header. */
-  return l.id === "type-alive" ? <TypeAlivePage look={l} /> : <LookPage look={l} />;
+  /* E and F each compose differently on purpose — see their component headers. */
+  if (l.id === "type-alive") return <TypeAlivePage look={l} />;
+  if (l.id === "hotel") return <HotelPage />;
+  return <LookPage look={l} />;
 }

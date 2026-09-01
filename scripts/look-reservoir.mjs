@@ -176,6 +176,20 @@ const LOOKS = [
     wantsGraded: () => true,
     wantsUngraded: (m) => m.score >= 4.0,
   },
+  {
+    id: "hotel",
+    name: "The Cretan Hotel",
+    promise: "Dense, warm, conventional — many medium frames rather than a few perfect ones.",
+    /*
+     * B-GRADE FRAMES ARE THE POINT HERE, not a concession. A hotel homepage runs
+     * on forty photographs, and a direction that can only use the 33 A-grades
+     * cannot be one. This look takes the whole graded pool and asks a different
+     * question of it: not "is this frame a hero" but "is this frame honest and
+     * usable at card size", which is what grade B means.
+     */
+    wantsGraded: () => true,
+    wantsUngraded: (m) => m.score >= 3.9,
+  },
 ];
 
 /* Usable at all: on the disk, graded, and not carrying a content flag. */
