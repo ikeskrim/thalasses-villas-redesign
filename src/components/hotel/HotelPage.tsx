@@ -39,7 +39,7 @@ import {
  * direction's JavaScript is three crossfading images.
  */
 
-export default function HotelPage() {
+export function HotelPage() {
   return (
     <div data-look="hotel">
       {/*
@@ -50,7 +50,7 @@ export default function HotelPage() {
 
       {/* ---------------------------------------------------------- BAR -- */}
       <header className="ho-bar">
-        <Link className="ho-mark" href="/looks/hotel">
+        <Link className="ho-mark" href="/">
           Thalasses Villas
         </Link>
         <nav className="ho-nav" aria-label="Sections">
@@ -83,6 +83,13 @@ export default function HotelPage() {
                 <h2>Five houses, and the estate that holds them</h2>
               </div>
             </div>
+
+            {/*
+              THE ONE LEVEL-3 SHADER ON THE PAGE, and the directive puts it
+              here: the villa cards, on an otherwise Level-1 grid. Scoped to
+              this grid by id so the twenty-one experience cards below — which
+              must stay scannable — never get it.
+            */}
 
             <div className="ho-grid">
               {VILLAS.map((v) => (
@@ -302,6 +309,16 @@ export default function HotelPage() {
         </section>
 
         {/* --------------------------------------------------- FOOTER ---- */}
+        {/*
+          THE UNVEIL, KEPT — WITH F'S OWN CONTENT AT LEVEL 1.
+          The mechanic is worth keeping: a fixed layer behind an opaque page,
+          revealed as the content scrolls off, with no scroll listener and no
+          way to shift layout. What went is the set-piece that was wrapped
+          around it — an oversized wordmark on Direction D's footer, built
+          before D-001 was recorded. `MOTION-DIRECTIVE.md` puts the footer at
+          Level 1: this is a real hotel footer with contact, booking, socials
+          and the licence, revealed quietly.
+        */}
         <footer className="ho-footer" id="contact">
           <div className="ho-wrap">
             <div className="ho-footer-grid">

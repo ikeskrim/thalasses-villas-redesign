@@ -370,61 +370,36 @@
 }
 
 /* ==========================================================================
-   THE MEGA-FOOTER AND ITS REVEAL
+   THE FOOTER UNVEIL — kept as a mechanic, demoted to Level 1.
 
-   The footer sits BEHIND the page and is uncovered as the content scrolls off.
-   That is done with a fixed layer and an opaque page — no scroll listener, no
-   measurement, no JavaScript. The same picture ScrollTrigger would draw, at
-   none of the cost, and it cannot shift the layout because nothing is measured.
+   The footer sits BEHIND the page and is uncovered as the content scrolls off:
+   a fixed layer and an opaque page. No scroll listener, no measurement, no
+   JavaScript for the reveal itself, and no way to shift the layout because
+   nothing is measured.
 
-   `.footer-reveal` is the slot: it reserves exactly the scroll distance the
-   footer is revealed across. The footer is pinned to the viewport inside it.
+   What went with Direction F's approval (`DECISIONS.md` D-001) is the SET-PIECE
+   that had been wrapped around it — an oversized wordmark on Direction D's
+   footer, built while a brief's register was standing in for a decision.
+   `MOTION-DIRECTIVE.md` puts the footer at Level 1, so what is revealed now is
+   a real hotel footer: contact, booking, socials, and the operating licence.
 
-   ONLY ON A WIDE VIEWPORT AND ONLY WITH MOTION ALLOWED. On a phone a fixed
-   full-height layer is a paint cost for an effect nobody sees, and under
-   `reduce` an unveiling footer is exactly the kind of movement the setting
-   refuses. In both cases the slot collapses and this is an ordinary footer.
+   `.footer-reveal` is the slot; it reserves exactly the scroll distance the
+   footer is revealed across.
+
+   ONLY ON A WIDE VIEWPORT, ONLY WITH MOTION ALLOWED, AND ONLY ONCE SCRIPT ARMS
+   IT. Without JavaScript the footer stays an ordinary block in normal flow —
+   the correct fallback rather than a permanently invisible one — and at first
+   paint it is below the fold in flow, so it is not a paint candidate. As a
+   fixed layer from the start it painted a full viewport of type behind an
+   opaque page on every load, and Chrome reported it as the homepage's LCP
+   element.
    ========================================================================== */
-.footer-mega-line {
-  font-family: var(--font-display);
-  font-size: clamp(3rem, 1.5rem + 8vw, 9rem);
-  line-height: 0.92;
-  letter-spacing: -0.02em;
-  margin: 0 0 var(--spacing-step-4);
-  color: var(--color-preveli);
-  /* The ceiling holds here too: 9rem is 144px, above the 96px display cap, so
-     it is clamped down to it. Nothing on this site exceeds 96px. */
-  font-size: min(clamp(3rem, 1.5rem + 8vw, 9rem), 96px);
-}
-
-.footer-rule {
-  display: block;
-  width: 100%;
-  height: 1px;
-  color: var(--color-preveli);
-  opacity: 0.45;
-  margin-block: var(--spacing-step-5);
-}
-
 @media (min-width: 62rem) and (prefers-reduced-motion: no-preference) {
-  /*
-   * THE REVEAL ONLY ENGAGES ONCE SCRIPT ARMS IT — `--armed` is added by
-   * FooterReveal, never by this stylesheet, and that ordering is the fix for
-   * two problems at once.
-   *
-   * Without JavaScript the footer stays an ordinary block in normal flow,
-   * which is the correct fallback rather than a permanently invisible one.
-   *
-   * And at first paint it is below the fold in flow, so it is not a paint
-   * candidate: as a `position: fixed` layer from the start it was painting a
-   * full viewport of oversized type on every load behind an opaque page, and
-   * Chrome was reporting that word as the homepage's LCP element — wasted work
-   * and a misleading number for whoever profiles this next.
-   */
   .footer-reveal--armed {
     height: 100svh;
   }
 
+  .footer-reveal--armed .ho-footer,
   .footer-reveal--armed .site-footer {
     position: fixed;
     inset: auto 0 0 0;
@@ -435,18 +410,46 @@
     visibility: hidden;
   }
 
+  .footer-reveal--armed.is-near .ho-footer,
   .footer-reveal--armed.is-near .site-footer {
     visibility: visible;
   }
 
-  /*
-   * The page has to be opaque and above, or there is nothing to be revealed
-   * FROM behind. Scoped to the armed state so an unscripted page is untouched.
-   */
   body:has(.footer-reveal--armed) main {
     position: relative;
     z-index: 1;
     background: var(--color-limestone);
   }
+
+  /* Direction F's ground is ivory, not the site's limestone. */
+  body:has([data-look="hotel"]) main {
+    background: var(--ho-ivory, #fbf8f2);
+  }
 }
 
+
+
+
+/* ==========================================================================
+   DIRECTION F IS THE HOMEPAGE, AND IT BRINGS ITS OWN HEADER.
+
+   `.ho-bar` is Direction F's sticky bar with Book Now pinned top-right — the
+   one convention of the genre the owner approved. The site shell also renders
+   Direction D's `.nav`, and two headers on one page is not a design decision,
+   it is an accident of promotion.
+
+   So on a page carrying Direction F, D's navigation and its two atmospheric
+   layers stand down. Scoped by `:has()` to that page only: the inner routes are
+   still Direction D and still need all three.
+
+   The custom cursor is included deliberately. Direction F is conventional hotel
+   UX; the motion directive's avoid-list rules out cursor work over the booking
+   control, and a contextual cursor designed for D's register has no place on a
+   page whose whole argument is familiarity.
+   ========================================================================== */
+body:has([data-look="hotel"]) .nav,
+body:has([data-look="hotel"]) .skip-link,
+body:has([data-look="hotel"]) .grain,
+body:has([data-look="hotel"]) .cursor {
+  display: none !important;
+}

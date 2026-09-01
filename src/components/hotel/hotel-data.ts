@@ -1,7 +1,7 @@
-import experienceImagery from "../../../content/experience-imagery.json";
-import grades from "../../../content/photo-grades.json";
-import selects from "../../../content/photo-selects.json";
-import facts from "../../../content/verified-facts.json";
+import experienceImagery from "@content/experience-imagery.json";
+import grades from "@content/photo-grades.json";
+import selects from "@content/photo-selects.json";
+import facts from "@content/verified-facts.json";
 import { getAllExperiences, getVilla, localImage } from "@/lib/content";
 
 /**

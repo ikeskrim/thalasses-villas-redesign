@@ -8,6 +8,7 @@ import { NAV_ENTRIES, SiteNav } from "@/components/ui/SiteNav";
 import { siteUrl } from "@/lib/site-url";
 
 import "./globals.css";
+import "./hotel.css";
 
 /**
  * Two files, self-hosted (DESIGN-PLAN §4.5).
@@ -68,6 +69,42 @@ const cormorantItalic = localFont({
   fallback: ["Georgia", "serif"],
 });
 
+/**
+ * LITERATA — Direction F's display face, now a site font.
+ *
+ * It lived in the prototype layout while F was a candidate. F is production
+ * (`DECISIONS.md` D-001), so it moves here. Variable (`opsz 7-72`,
+ * `wght 200-900`) and it carries **Greek**, which Marcellus does not (T-176) —
+ * so when /el ships the homepage needs no second display face.
+ *
+ * Latin and Greek load as separate faces and are stacked rather than merged
+ * with `unicode-range`: per-glyph fallback routes between them for free, and
+ * both files are the same typeface.
+ *
+ * `preload: false` on both. The homepage's LCP is a photograph, not a heading,
+ * and preloading two more faces to paint a wordmark would compete with it.
+ */
+const literata = localFont({
+  src: [
+    { path: "./fonts/literata-latin.woff2", style: "normal" },
+    { path: "./fonts/literata-latin-ext.woff2", style: "normal" },
+  ],
+  variable: "--font-literata",
+  display: "swap",
+  preload: false,
+  fallback: ["Georgia", "serif"],
+  /* A serif needs a serif metric base — measured at 0.037 CLS without it. */
+  adjustFontFallback: "Times New Roman",
+});
+
+const literataGreek = localFont({
+  src: [{ path: "./fonts/literata-greek.woff2", style: "normal" }],
+  variable: "--font-literata-greek",
+  display: "swap",
+  preload: false,
+  fallback: ["Georgia", "serif"],
+});
+
 export const metadata: Metadata = {
   /*
    * Drives every canonical and every OpenGraph image URL on the site, and is
@@ -106,7 +143,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${marcellus.variable} ${marcellusSC.variable} ${cormorantItalic.variable} ${inter.variable}`}>
+    <html lang="en" className={`${marcellus.variable} ${marcellusSC.variable} ${cormorantItalic.variable} ${inter.variable} ${literata.variable} ${literataGreek.variable}`}>
       <head>
         {/*
           Framer Motion serialises its `initial` state into the server HTML, so

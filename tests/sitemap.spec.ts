@@ -38,7 +38,7 @@ function routesOnDisk(): string[] {
 }
 
 /** Kept in step with `EXCLUDED` in `src/app/sitemap.ts`, and asserted below. */
-const EXPECTED_EXCLUSIONS = ["/styleguide", "/looks"];
+const EXPECTED_EXCLUSIONS = ["/styleguide"];
 
 test.describe("sitemap", () => {
   test("every static route on disk is sitemapped or explicitly excluded", async ({ request }) => {
