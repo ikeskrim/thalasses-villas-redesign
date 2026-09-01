@@ -6,6 +6,7 @@ import { useRef, useState } from "react";
 
 import { Icon, type IconName } from "@/components/ui/Icons";
 import { LedgerInline, type LedgerEntry } from "@/components/ui/Ledger";
+import { LiquidActs } from "@/components/motion/LiquidActs";
 
 export interface ActCard {
   icon: IconName;
@@ -64,6 +65,12 @@ export function ActShowcase({ acts }: { acts: Act[] }) {
 
   return (
     <div ref={ref} className="acts" style={{ height: `${acts.length * 100}svh` }}>
+      {/*
+        The shader layer. Attaches to the act photography, one canvas, lazily,
+        desktop-pointer only, and never under reduced motion — see LiquidActs.
+        The <Image> underneath is untouched and remains what loads.
+      */}
+      <LiquidActs />
       <div className="acts-sticky">
         {/* ONE beat, three acts. The act eyebrows used to read "01 — Arrival",
             "02 — The stay", "03 — Together" — beat numbers, for things that are
@@ -100,7 +107,7 @@ export function ActShowcase({ acts }: { acts: Act[] }) {
               style={{ pointerEvents: i === active ? "auto" : "none" }}
               aria-hidden={i !== active}
             >
-              <div className="act-media echo">
+              <div className="act-media echo" data-cursor="View">
                 <Image
                   src={a.image}
                   alt={a.alt}
@@ -144,7 +151,7 @@ export function ActStack({ acts }: { acts: Act[] }) {
       <p className="micro acts-beat canon">02 — In three acts</p>
       {acts.map((a, i) => (
         <article key={a.title} className="act act--stacked">
-          <div className="act-media">
+          <div className="act-media" data-cursor="View">
             <Image
               src={a.image}
               alt={a.alt}

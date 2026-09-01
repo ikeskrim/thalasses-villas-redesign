@@ -368,3 +368,85 @@
     --ledger-clearance: 148px;
   }
 }
+
+/* ==========================================================================
+   THE MEGA-FOOTER AND ITS REVEAL
+
+   The footer sits BEHIND the page and is uncovered as the content scrolls off.
+   That is done with a fixed layer and an opaque page — no scroll listener, no
+   measurement, no JavaScript. The same picture ScrollTrigger would draw, at
+   none of the cost, and it cannot shift the layout because nothing is measured.
+
+   `.footer-reveal` is the slot: it reserves exactly the scroll distance the
+   footer is revealed across. The footer is pinned to the viewport inside it.
+
+   ONLY ON A WIDE VIEWPORT AND ONLY WITH MOTION ALLOWED. On a phone a fixed
+   full-height layer is a paint cost for an effect nobody sees, and under
+   `reduce` an unveiling footer is exactly the kind of movement the setting
+   refuses. In both cases the slot collapses and this is an ordinary footer.
+   ========================================================================== */
+.footer-mega-line {
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 1.5rem + 8vw, 9rem);
+  line-height: 0.92;
+  letter-spacing: -0.02em;
+  margin: 0 0 var(--spacing-step-4);
+  color: var(--color-preveli);
+  /* The ceiling holds here too: 9rem is 144px, above the 96px display cap, so
+     it is clamped down to it. Nothing on this site exceeds 96px. */
+  font-size: min(clamp(3rem, 1.5rem + 8vw, 9rem), 96px);
+}
+
+.footer-rule {
+  display: block;
+  width: 100%;
+  height: 1px;
+  color: var(--color-preveli);
+  opacity: 0.45;
+  margin-block: var(--spacing-step-5);
+}
+
+@media (min-width: 62rem) and (prefers-reduced-motion: no-preference) {
+  /*
+   * THE REVEAL ONLY ENGAGES ONCE SCRIPT ARMS IT — `--armed` is added by
+   * FooterReveal, never by this stylesheet, and that ordering is the fix for
+   * two problems at once.
+   *
+   * Without JavaScript the footer stays an ordinary block in normal flow,
+   * which is the correct fallback rather than a permanently invisible one.
+   *
+   * And at first paint it is below the fold in flow, so it is not a paint
+   * candidate: as a `position: fixed` layer from the start it was painting a
+   * full viewport of oversized type on every load behind an opaque page, and
+   * Chrome was reporting that word as the homepage's LCP element — wasted work
+   * and a misleading number for whoever profiles this next.
+   */
+  .footer-reveal--armed {
+    height: 100svh;
+  }
+
+  .footer-reveal--armed .site-footer {
+    position: fixed;
+    inset: auto 0 0 0;
+    min-height: 100svh;
+    z-index: 0;
+    display: grid;
+    align-content: center;
+    visibility: hidden;
+  }
+
+  .footer-reveal--armed.is-near .site-footer {
+    visibility: visible;
+  }
+
+  /*
+   * The page has to be opaque and above, or there is nothing to be revealed
+   * FROM behind. Scoped to the armed state so an unscripted page is untouched.
+   */
+  body:has(.footer-reveal--armed) main {
+    position: relative;
+    z-index: 1;
+    background: var(--color-limestone);
+  }
+}
+

@@ -67,8 +67,45 @@
   color: var(--color-basalt);
 }
 /* The native cursor stays available — this is an enhancement, not a replacement. */
-body.has-custom-cursor {
+/*
+ * THE OS POINTER IS HIDDEN — WITH TWO CARVE-OUTS THAT ARE NOT NEGOTIABLE.
+ *
+ * Hiding it is what makes the custom cursor read as bespoke rather than as a
+ * dot floating over a normal page. But two places keep the real pointer, and
+ * they are declared here rather than in the component so they hold even if the
+ * script fails:
+ *
+ *   TEXT ENTRY keeps its I-beam. A caret needs a cursor shaped like a caret.
+ *
+ *   THE BOOKING CONTROL keeps its pointer. It is the one element on this site
+ *   that earns money, and the motion directive's avoid-list names it: no
+ *   custom cursor that hides the real pointer over Book. A guest unsure whether
+ *   the button is clickable is a booking lost to decoration.
+ */
+body.has-custom-cursor,
+body.has-custom-cursor a,
+body.has-custom-cursor button {
+  cursor: none;
+}
+
+body.has-custom-cursor input,
+body.has-custom-cursor textarea,
+body.has-custom-cursor select,
+body.has-custom-cursor [contenteditable] {
   cursor: auto;
+}
+
+body.has-custom-cursor [data-cursor="Book"],
+body.has-custom-cursor [data-book],
+body.has-custom-cursor .nav-book,
+body.has-custom-cursor a[href*="reserve-online.net"] {
+  cursor: pointer;
+}
+
+/* The magnetic state: a touch larger, so the snap is felt as well as seen. */
+.cursor--magnetic {
+  width: 16px;
+  height: 16px;
 }
 
 /* ---- Magnetic ------------------------------------------------------------ */
@@ -431,5 +468,88 @@ body.has-custom-cursor {
 @media (max-width: 767px) {
   .hero-cue {
     display: none;
+  }
+}
+
+/* ------------------------------------------------------ the liquid canvas -- */
+/*
+ * Sits over the act photograph, never replaces it. The `<img>` underneath keeps
+ * its alt text and stays the element that loads — so with no WebGL, a lost
+ * context, or scripting off, the section is exactly what it was.
+ */
+.act-liquid {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  pointer-events: none;
+  z-index: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .act-liquid {
+    display: none !important;
+  }
+}
+
+/* --------------------------------------------------- the language switcher -- */
+/*
+ * Renders nothing until a second locale is published, so these rules are inert
+ * today. They are written now so the switcher arrives styled rather than raw on
+ * the day /el ships.
+ */
+.lang {
+  position: relative;
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+
+.lang-current {
+  color: var(--color-phrygana);
+  letter-spacing: 0.14em;
+}
+
+.lang-list {
+  display: flex;
+  gap: 0.75rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.lang-link {
+  display: inline-flex;
+  text-decoration: none;
+  color: var(--color-basalt);
+  letter-spacing: 0.14em;
+}
+
+/*
+ * The staggered reveal: each character rises through its own clip, with the
+ * delay set per letter at render. A transition rather than an animation so the
+ * letters travel back down on leave instead of snapping.
+ */
+.lang-ch {
+  display: inline-block;
+  transform: translateY(0.6em);
+  opacity: 0;
+  transition:
+    transform 280ms var(--ease-thalasses),
+    opacity 280ms var(--ease-thalasses);
+}
+
+.lang-list.is-open .lang-ch,
+.lang-link:focus-visible .lang-ch {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lang-ch {
+    transform: none;
+    opacity: 1;
+    transition: none;
   }
 }

@@ -1,7 +1,9 @@
 "use client";
 
 import Link from "next/link";
+
 import { useEffect, useRef, useState } from "react";
+import { LanguageSwitcher } from "@/components/ui/LanguageSwitcher";
 
 export interface NavEntry {
   n: string;
@@ -85,6 +87,10 @@ export function SiteNav({
               ))}
             </ul>
           </nav>
+
+          {/* Renders nothing until a second locale is published — see the
+              component. It is wired now so the day /el ships it simply appears. */}
+          <LanguageSwitcher />
 
           {/*
             Always reachable, at every width — but "Check availability" is 207px

@@ -30,7 +30,16 @@ import fs from "node:fs";
 import path from "node:path";
 
 const BASE = process.env.CAPTURE_BASE ?? "http://localhost:3005";
-const ROUTE = process.argv[2] ?? "/looks/hotel";
+/*
+ * Git Bash rewrites a bare "/" argument into the MSYS root, so the route
+ * arrives as "C:/Program Files/Git/" and Playwright reports "Cannot navigate to
+ * invalid URL" — which reads like a Playwright problem and is a shell problem.
+ * `scripts/look.mjs` hit this first and documented it; this is the same guard.
+ * Routes may therefore be given without a leading slash, or as "" for the home
+ * page.
+ */
+const RAW = process.argv[2] ?? "/looks/hotel";
+const ROUTE = /^[A-Za-z]:/.test(RAW) ? "/" : "/" + RAW.replace(/^\/+/, "");
 const OUT = path.join(process.cwd(), "qa", "looks");
 fs.mkdirSync(OUT, { recursive: true });
 
