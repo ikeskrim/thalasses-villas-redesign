@@ -36,7 +36,41 @@
    enough to keep: the cascade is decided by the line at the top of this file
    and by nothing else.
    ========================================================================== */
-@layer tokens, base, register, primitives, components, utilities;
+/*
+   TAILWIND'S OWN TWO LAYERS ARE NAMED HERE TOO, and they were not.
+
+   `tests/cascade-served.spec.ts` scans what the browser actually receives and
+   found `theme` and `properties` in the served sheet with no declared position.
+   Their order was an artifact of import order rather than a decision: this
+   statement established our six, so Tailwind's `theme` was first ENCOUNTERED at
+   the end of the bundle and became the HIGHEST-priority layer on the site —
+   above `components` and `utilities`.
+
+   Nothing collided (measured: 53 custom properties in `theme`, zero of them
+   redeclared anywhere else), so it changed no computed value. It was a trap
+   rather than a bug: the day someone set a `--color-*` in a component and again
+   in `@theme`, the wrong one would win and the reason would be invisible.
+
+   Naming them here moves `theme` from the top of the cascade to the bottom,
+   which is both Tailwind v4's own documented order and the one that makes sense
+   — its tokens are the substrate ours override. `properties` holds the
+   `@supports` initial values for Tailwind's `--tw-*` internals and belongs down
+   there with it.
+
+   WHAT ACTUALLY SHIPS IS NOT THIS LINE. Lightning CSS prunes the statement to
+   `@layer tokens;` and the browser takes the order from each layer's first
+   appearance in the bundle instead. Measured before and after: `theme` moved
+   from character 78,939 (last, and therefore ABOVE `components`) to 4,884
+   (below everything of ours), which is the whole point of the edit — but the
+   emitted order is `properties, theme, base, register, primitives, components,
+   utilities`, not the order typed above. `properties` and `theme` swap, which
+   changes nothing, and `tokens` is declared-but-empty.
+
+   So this line is a request, not a guarantee, and
+   `tests/cascade-served.spec.ts` asserts the SERVED order rather than trusting
+   it — because the served order is the one the cascade uses.
+   ========================================================================== */
+@layer theme, properties, tokens, base, register, primitives, components, utilities;
 
 @import "tailwindcss";
 @import "./sections.css" layer(components);
