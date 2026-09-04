@@ -3,6 +3,134 @@
 **Read this first. It is written at HEAD and updated as each task lands, so it
 is the truthful position — not a plan, not a memory.**
 
+# TRANCHE TEN — nine licensed frames, a structural cascade guard, and F+ Phase 2
+
+**Holding for the owner's review on the live URL.** Three things landed, each
+its own commit, each pushed: the served-cascade guard (ratified), the sourced
+stock under Tier B-Experiences, and Phase 2 of the motion directive. The owner
+items named as open — the press list, the mantinada, the sister properties, and
+whether the chauffeur and helipad get their own cards — are untouched and still
+labelled on the page.
+
+## The eight defects, confirmed closed at HEAD
+
+Asserted against a running build of HEAD rather than read from the commit
+message: the skip link and its `#main`; `hotel.css` inside `layer(components)`
+in the SERVED sheet; a canonical of `/` and a description of its own; the nav
+at `#villas`; all twenty-one experiences, eighteen by name and three placed
+(chauffeur and helipad in Discover Crete, the wedding as its own section); the
+hero rotating through selected frames only, `Ritual-drone.webp` gone; the
+shader painting on `canvas.ho-liquid`; and the figure it paints on positioned.
+Eight of eight.
+
+## Stock: nine placed, five refused, and the reason on the card
+
+Fourteen activities went to Pexels and Unsplash, each candidate then handed to
+an independent verifier told to refute it against the seven conditions. Nine
+survived and are placed: boat-trip, scuba-diving, jet-ski-safari, hiking,
+jeep-safari, exclusive-tour, massage, therapist, wine-production. Every one is
+Greek by its source page; three are location-tagged Crete. Each is logged with
+file, source URL, photographer, licence wording and date in
+`content/experience-stock.json` and tabled in `content/image-sources.md` §7.
+Resized only — never toned, and `tests/flagged.spec.ts` measures that.
+
+**Two verifier acceptances were overruled here, on sight.** Quad-safari was a
+parked quad beside a whitewashed Cycladic cube on Mykonos — a Cretan reader
+places it instantly, and it is not the mountain track the card describes.
+Personal-trainer was a lit, recognisable profile on a public beachfront deck in
+Israel, the only frame outside Greece. Bike-tours' verifier never ran (a
+session limit); checked here, the Málaga road frame's riders are specks. With
+running (logos or a face on every candidate) and the helipad (livery or a
+registration on every candidate), five slots keep their typographic treatment,
+and the reason is printed on the card in the labelled-slot register. The owner
+may veto any of the nine on the live page; `DECISIONS.md` D-002 records that
+review as pending.
+
+**A gap the sourcing exposed.** The twelve inherited `pending-licence` frames
+— which the ruling says do not return without paperwork — were still rendering
+as the heroes of their experience detail pages. The ratchet allowed them because
+they were logged; logged is not licensed. Every surface now resolves through
+one function, `experienceFrame`, and the ratchet asserts a pending frame renders
+nowhere, on every one of the twenty-one detail pages. The ratchet also gained
+the structural half it lacked: a NEW stock file was in no grading pass, so the
+old rule could not have seen an unlogged one. Membership of `public/images/
+_stock/` is now the fact it holds the site to.
+
+## Phase 2
+
+**The weddings set-piece is a sticky deck, and the photography chose it.** The
+Rituals library is one evening in order — gathered by the water in low sun, the
+tables laid at golden hour, dinner under the festoon lights, then the dancing
+at dusk — seven A-grades and some fifty Bs of one venue. A drag strip flattens
+a sequence into a row; a deck stacks in time. CSS `position: sticky` does the
+stacking with no script, so touch gets the set-piece without a gesture handler;
+GSAP adds only the settle (scale 0.96, dim) on a fine pointer; under `reduce`
+it is four photographs in a column. All four are the property's own.
+
+**The villa morph** runs on the browser's own View Transitions API with the
+hand-off Next does not provide done by hand: the card names its photograph,
+starts the transition, and the villa page names its hero on mount and resolves
+the commit. Focus still lands on `#main`; back returns to the card (asserted
+within 120px); reduced motion is a 120ms cross-fade with no morph. One
+delegated island over plain anchors, not a client Link per card.
+
+**Discover Crete** carries the estate aerial with ≤8% parallax on a fine
+pointer only, and the ten distances count up from the registry's own string —
+the server prints the truth, the animation lands on it, and "The beach — 0 m"
+stays 0 m because that is the fact.
+
+## The gates, and what the measuring found
+
+| | LCP | CLS | worst interaction | TBT | motion JS |
+|---|---|---|---|---|---|
+| desktop | 700–1500ms | 0 | 24–48ms | 51–125ms | 67.9 kB gzip |
+| phone | 1200–1244ms | 0 | 32–40ms | **318–400ms** | (budget ~70) |
+
+Lab, 4× CPU / Slow 4G on the phone profile, several runs; CrUX is unobtainable
+until deployment. Hero legibility 6 runs, 0 below AA, worst 5.84:1. Suite: 498
+passed, 19 skipped, 0 failed.
+
+**Phone TBT, the named watch item, first rose to 433–462ms.** It was
+attributed rather than accepted, with an A/B under the gate's own profile:
+motion layer off, stock images blocked, deck images blocked. Every long task
+was in the load phase; none during scroll or hover — the deck, the parallax and
+the stock cost nothing. Three causes, three fixes: `next/link` prefetching all
+five villa routes as the cards scrolled in (now on intent — hover or focus);
+the GSAP setup as one 110ms task (now staged on idle with a yield between
+stages); and ten client islands where one would do (one `Distances`, one
+delegated `VillaMorph`). Result 318–400ms across runs, against 312–377ms in the
+same session with the motion layer removed entirely — so the motion layer's
+share is now within the lab's own noise. What remains is framework: a
+~250–300ms hydration task, and a ~160ms task at 2.4s that a CPU profile
+attributes to the 70 kB React/Next runtime finishing its Slow-4G download and
+evaluating. Both predate this tranche and are the next thing to look at,
+honestly named rather than absorbed.
+
+**Two defects found by the measuring, not by the tests.** The Phase 1 motion
+setup had been dying on a temporal-dead-zone ReferenceError before its final
+refresh — `gsap.context(() => { ctx.add(…) })` references `ctx` inside the
+constructor that assigns it — and no test listened for page errors; Phase 2's
+code sat after the throw and never ran until a probe heard it. The suite now
+fails on any uncaught error on `/`. And `/` had been running two Lenis
+instances, the shell's and Phase 1's own, the fighting-loops stutter the handle's
+comment names; the motion layer attaches to the shell's now.
+
+## Evidence
+
+`qa/walkthrough/home-1440-*.png`, `home-390-*.png`, and `qa/video/home-1440.webm`,
+`home-390.webm` — with the eleven other routes alongside. `qa/looks/HOTEL-CWV.md`
+and `LEGIBILITY.md` are the gate's own output.
+
+## Background tasks that failed or stopped
+
+Every "failed" background task this session was `npx next start -p 3005`: the
+harness tears the server down when its shell ends, or a later shell reclaimed
+the port. The one marked "stopped" was the same server across a session
+boundary. None matters: every measurement in this report was taken against a
+server confirmed answering 200 before the run, and the suites start their own.
+
+---
+
 # TRANCHE NINE — Direction F is production
 
 **The chooser is gone. `/` is Direction F.** The owner approved it before this
