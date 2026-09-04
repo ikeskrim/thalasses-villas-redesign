@@ -45,3 +45,48 @@ a real hotel footer with the operating licence in it.
   `content/flagged-quarantine.json`). Still owner-pending.
 - The section quote, the press wall beyond its single verified mention, and the
   group's sister properties. All still labelled slots.
+
+---
+
+## D-002 · Tier B-Experiences stock — sourced, placed, and awaiting the owner's veto
+
+**Decided:** September 2026, by the owner: free-licence sources only
+(Pexels/Unsplash class), zero budget, nothing purchased, nothing generated;
+source the fourteen unphotographed experiences under the Tier B-Experiences
+rule; reject rather than stretch; the owner reviews every placed frame on the
+live page and may veto any.
+**Relayed to the repository:** this entry, `content/image-sources.md` §7,
+`content/experience-stock.json`.
+**Status:** placed — **owner review pending.**
+
+### What was placed (nine)
+
+boat-trip · scuba-diving · jet-ski-safari · hiking · jeep-safari ·
+exclusive-tour · massage · therapist · wine-production. Each with file, source
+URL, photographer, licence wording and retrieval date in
+`content/experience-stock.json`, and each rendered only on its experience card,
+the register, and its own detail page — never in a Tier A context, which
+`tests/flagged.spec.ts` asserts.
+
+### What was not (five), and why
+
+running · bike-tours · quad-safari · personal-trainer · private-helipad. The
+reasons are printed on the cards themselves and tabled in
+`content/image-sources.md` §7. Two of these — quad-safari and personal-trainer —
+were accepted by their verifiers and overruled on sight in this session; the
+overruling is recorded there with the reason, so the owner can disagree with it.
+
+### What the owner decides next
+
+- **Veto any of the nine** on the live page. Removing one is a single line in
+  `content/experience-stock.json` and a regenerate; the card returns to its
+  typographic treatment.
+- **The twelve inherited `pending-licence` frames** stay out until a licence is
+  produced. They were found still rendering as detail-page heroes and are now
+  off every surface.
+
+### Still open, not guessed
+
+Whether the chauffeur and the helipad should have their own experience cards
+rather than being woven into the Discover Crete prose. They are placed, not
+carded, until the owner says otherwise.

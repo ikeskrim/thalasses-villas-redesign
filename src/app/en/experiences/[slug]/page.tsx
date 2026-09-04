@@ -5,7 +5,7 @@ import { notFound } from "next/navigation";
 
 import { ImageReveal, Reveal } from "@/components/motion/Reveal";
 import { Draft, PageHead, PageShell } from "@/components/sections/PageShell";
-import { getAllExperiences, getExperience, localImage } from "@/lib/content";
+import { experienceFrame, getAllExperiences, getExperience } from "@/lib/content";
 import { alternatesFor } from "@/lib/locale";
 
 /**
@@ -59,7 +59,15 @@ export default async function ExperiencePage({
   const e = getExperience(slug);
   if (!e) notFound();
 
-  const hero = localImage(e.heroImage);
+  /*
+   * Through `experienceFrame`, the one resolver, rather than the registry's
+   * `heroImage`. That field is the LEGACY site's frame — for twelve of these
+   * pages an inherited stock photograph with no known licence, which the
+   * owner's ruling says does not come back until a licence is produced. This
+   * page was still rendering them while the homepage card said "Imagery to
+   * source". Now the two agree, and a page with no cleared frame has no hero.
+   */
+  const hero = experienceFrame(slug);
   const others = getAllExperiences()
     .filter((x) => x.slug !== e.slug && x.categoryProposed === e.categoryProposed)
     .slice(0, 3);
@@ -73,8 +81,8 @@ export default async function ExperiencePage({
         <section className="d-exp-hero">
           <ImageReveal className="d-exp-frame">
             <Image
-              src={hero}
-              alt={`${e.name}, Thalasses Villas`}
+              src={hero.src}
+              alt={hero.tier === "A" ? `${e.name}, Thalasses Villas` : hero.alt}
               fill
               sizes="100vw"
               quality={82}
@@ -124,7 +132,7 @@ export default async function ExperiencePage({
           </Reveal>
           <ul className="d-others-grid">
             {others.map((o) => {
-              const src = localImage(o.heroImage);
+              const src = experienceFrame(o.slug)?.src ?? null;
               return (
                 <li key={o.slug}>
                   <Link href={`/en/experiences/${o.slug}`} className="d-other">

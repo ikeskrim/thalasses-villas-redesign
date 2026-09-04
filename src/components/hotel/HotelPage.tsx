@@ -115,6 +115,12 @@ export function HotelPage() {
                     <p>{v.lines[0]}</p>
                     <p>{v.lines[1]}</p>
                     <div className="ho-actions">
+                      {/*
+                        A plain anchor, as it was. Only the photograph carries
+                        the morph: a second client Link per card was five more
+                        hydrations on the page whose phone blocking time is the
+                        named watch item, for a button that already worked.
+                      */}
                       <a className="ho-btn" href={`/en/villas/${v.slug}`}>
                         Explore
                       </a>
@@ -189,6 +195,9 @@ export function HotelPage() {
                             height={600}
                             sizes="(min-width: 72rem) 22vw, (min-width: 48rem) 45vw, 92vw"
                             quality={80}
+                            /* A portrait stock frame keeps its subject in a
+                               4:3 crop; the value travels with the log entry. */
+                            style={e.position ? { objectPosition: e.position } : undefined}
                           />
                         </figure>
                       ) : null}
@@ -201,7 +210,14 @@ export function HotelPage() {
                           B-Experiences; borrowing a picture of something
                           adjacent would be the dishonest fix.
                         */}
-                        {e.needsImagery ? <p className="ho-tosource">Imagery to source</p> : null}
+                        {e.needsImagery ? (
+                          <p className="ho-tosource">
+                            Imagery to source
+                            {/* Why it is still empty after the sourcing pass —
+                                the owner's labelled-slot register, on the page. */}
+                            {e.note ? <em>{e.note}</em> : null}
+                          </p>
+                        ) : null}
                         <div className="ho-actions">
                           <a className="ho-btn" href={`/en/experiences/${e.slug}`}>
                             Explore

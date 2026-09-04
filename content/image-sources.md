@@ -124,3 +124,53 @@ Two are out for a second reason and do not come back even with paperwork:
 | Composited wine barrel, bottles, glasses and grapes before a vineyard at sunset | Textbook composited stock. It reads as an advertisement, not as an evening here. |
 
 Both carry `status: "withdrawn"`, and the suite fails if either renders again.
+
+## 7. `public/images/_stock/` — 9 files · **Tier B-Experiences, sourced**
+
+Free-licence stock for the experience cards the estate has never photographed, sourced under the
+Tier B-Experiences rule above on the owner's final authorisation: Pexels and Unsplash only, zero
+budget, nothing purchased, nothing generated. Fourteen activities were searched; each candidate
+was then handed to an independent verifier instructed to **refute** it against the seven
+conditions; nine survived. Resized to 1800px on the long edge and JPEG q82 — **never graded,
+toned or filtered** (condition 7). `scripts/fetch-stock.mjs` fetches and logs;
+`content/experience-stock.json` is the log of record; `scripts/experience-imagery.mjs` merges it.
+
+**The owner reviews all nine on the live page and may veto any.** That review is recorded as
+pending in `DECISIONS.md` (D-002).
+
+| experience | file | source | id | photographer | licence | retrieved |
+|---|---|---|---|---|---|---|
+| `boat-trip` | `boat-trip--unsplash-bkQw8TB4uwc.jpg` | Unsplash | [bkQw8TB4uwc](https://unsplash.com/photos/bkQw8TB4uwc) | Elena Dimaki | Free to use under the Unsplash License | 2026-09-04 |
+| `exclusive-tour` | `exclusive-tour--pexels-15248184.jpg` | Pexels | [15248184](https://www.pexels.com/photo/ruins-of-arkadi-monastery-in-greece-15248184/) | Mike Kw | Free to use | 2026-09-04 |
+| `hiking` | `hiking--pexels-13720991.jpg` | Pexels | [13720991](https://www.pexels.com/photo/a-man-walking-beside-the-river-13720991/) | Jeremy de Blok | Free to use | 2026-09-04 |
+| `jeep-safari` | `jeep-safari--unsplash-GDooCGr61UY.jpg` | Unsplash | [GDooCGr61UY](https://unsplash.com/photos/a-group-of-cars-driving-down-a-dirt-road-GDooCGr61UY) | Daan Sonneveld | Free to use under the Unsplash License | 2026-09-04 |
+| `jet-ski-safari` | `jet-ski-safari--pexels-18582039.jpg` | Pexels | [18582039](https://www.pexels.com/photo/jet-ski-on-blue-sea-18582039/) | Pit | Free to use | 2026-09-04 |
+| `massage` | `massage--pexels-38407789.jpg` | Pexels | [38407789](https://www.pexels.com/photo/relaxing-back-massage-therapy-at-spa-38407789/) | Tommaso | Free to use | 2026-09-04 |
+| `scuba-diving` | `scuba-diving--unsplash-qInbZtAP2OQ.jpg` | Unsplash | [qInbZtAP2OQ](https://unsplash.com/photos/a-person-scubas-in-the-water-near-a-rock-formation-qInbZtAP2OQ) | Artists Eyes | Free to use under the Unsplash License | 2026-09-04 |
+| `therapist` | `therapist--pexels-18187122.jpg` | Pexels | [18187122](https://www.pexels.com/photo/woman-on-jetty-at-sunset-18187122/) | Wolfgang Weiser | Free to use | 2026-09-04 |
+| `wine-production` | `wine-production--unsplash-xJ9Waej_omI.jpg` | Unsplash | [xJ9Waej_omI](https://unsplash.com/photos/a-person-working-on-a-machine-xJ9Waej_omI) | Carmen Laezza | Free to use under the Unsplash License | 2026-09-04 |
+
+Locations as stated on the source pages: boat-trip, jeep-safari and wine-production are
+location-tagged **Crete**; hiking is the Samaria Gorge; exclusive-tour is Arkadi Monastery,
+Rethymno; scuba-diving and jet-ski-safari are Rhodes; therapist is Kos; massage states no
+location and shows nothing but hands and linen. Every one is Greek.
+
+### Five slots stay empty, and the card says why
+
+Reject rather than stretch — an adjacent picture is worse than no picture. Each of these keeps
+its typographic treatment, and the reason is printed on the card in the labelled-slot register
+until a frame is found or the owner supplies one.
+
+| experience | why nothing was placed |
+|---|---|
+| `private-helipad` | every candidate carried an operator's livery or a legible registration, which condition 4 names as an outright rejection |
+| `running` | the only Cretan frame is a front-on, recognisable face; the two back-view frames carry a LURBEL logo on the shorts |
+| `quad-safari` | the verifier accepted a parked quad beside a whitewashed cube on Mykonos; overruled here — a Cretan reader places it at once, and it is not the mountain track the card describes |
+| `personal-trainer` | the verifier accepted a TRX row on a beachfront deck at Herzliya; overruled here on sight — a lit, recognisable profile on a public deck, and the only frame outside Greece |
+| `bike-tours` | its verifier never ran (session limit); checked here instead — two riders too small to read as cycling at card size on a Costa del Sol road |
+
+The twelve inherited `pending-licence` frames remain out. They were still rendering as the
+heroes of their experience detail pages — logged, so the ratchet allowed them, but logged is not
+licensed. Every surface now resolves through one function (`experienceFrame`), and
+`tests/flagged.spec.ts` asserts a pending frame renders nowhere, including all twenty-one detail
+pages.

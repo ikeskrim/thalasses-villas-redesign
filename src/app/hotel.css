@@ -679,3 +679,14 @@
     display: none !important;
   }
 }
+
+/* The sourcing note on an empty card — the owner's labelled-slot register. */
+[data-look="hotel"] .ho-tosource em {
+  display: block;
+  font-style: normal;
+  text-transform: none;
+  letter-spacing: 0;
+  margin-top: 0.2rem;
+  color: var(--ho-quiet);
+}
+

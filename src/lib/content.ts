@@ -147,6 +147,67 @@ export const getBookingConfig = () => readJson<BookingConfig>("booking.json");
 export const getImageIndex = () =>
   readJson<Record<string, { width: number; height: number; path: string }>>("image-index.json");
 
+/* ------------------------------------------------------ experience frames -- */
+
+type ImageryEntry = {
+  tier: "A" | "B-Experiences";
+  status: string;
+  src?: string;
+  alt?: string;
+  source?: string;
+  sourceUrl?: string;
+  licence?: string;
+  photographer?: string;
+  retrieved?: string;
+  /** Crop focus for a portrait stock frame on a 4:3 card. */
+  position?: string;
+  /** Why the slot is empty, printed on the card until it is not. */
+  note?: string;
+};
+
+/**
+ * THE ONE PLACE AN EXPERIENCE'S PICTURE IS DECIDED.
+ *
+ * Four surfaces show a picture for an experience — the homepage card, the
+ * register on /en/experiences, the detail page's hero, and the "more of this
+ * kind" cards under it — and until this function existed they did not agree.
+ * The homepage read the Tier B-Experiences log; the other three read the
+ * registry's `heroImage`, which is the frame the LEGACY site used. So the
+ * homepage showed "Imagery to source" for a massage while the massage page
+ * itself rendered the inherited stock frame whose licence is unknown — one of
+ * the twelve `pending-licence` frames the owner's ruling says do NOT come back
+ * until a licence is produced. The ratchet allowed it, because it only fails
+ * on UNLOGGED frames and those were logged. Logged is not licensed.
+ *
+ * Now every surface asks here, and here reads the log (`experience-imagery.json`,
+ * regenerated from own frames plus the hand-maintained stock log). Cleared means
+ * either the property's own photograph or a sourced frame with its licence on
+ * record; anything else means no picture, everywhere, rather than a different
+ * answer per page.
+ */
+export function experienceFrame(
+  slug: string
+): { src: string; alt: string; tier: "A" | "B-Experiences"; position?: string } | null {
+  const log = readJson<{ experiences: Record<string, ImageryEntry> }>("experience-imagery.json");
+  const e = log.experiences[slug];
+  if (!e || e.status !== "cleared" || !e.src) return null;
+  /* Own frames still go through the alias/blocked resolver; stock is its own store. */
+  const src = e.tier === "A" ? localImage(e.src) : e.src;
+  if (!src) return null;
+  return { src, alt: e.alt ?? slug, tier: e.tier, position: e.position };
+}
+
+/**
+ * Why an experience has no frame — for the card to say so on the live page.
+ * `null` when it has one.
+ */
+export function experienceImageryNote(slug: string): string | null {
+  const log = readJson<{ experiences: Record<string, ImageryEntry> }>("experience-imagery.json");
+  const e = log.experiences[slug];
+  if (!e || e.status === "cleared") return null;
+  return e.note ?? null;
+}
+
 /* ---------------------------------------------------------------- images -- */
 
 const HASH_RE = /lodgeContent\/([0-9a-f]{32})\.(jpg|jpeg|png)/i;

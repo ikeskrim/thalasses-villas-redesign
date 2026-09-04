@@ -2,6 +2,7 @@ import "server-only";
 
 import { estateCta } from "@/lib/booking";
 import {
+  experienceFrame,
   getAllExperiences,
   getBookingConfig,
   getEstate,
@@ -60,7 +61,15 @@ export function getHomepageData() {
   const experiences = getAllExperiences();
   const rows = toRegisterRows(experiences).map((r) => {
     const e = experiences.find((x) => x.slug === r.slug);
-    return { ...r, image: localImage(e?.heroImage ?? null), category: e?.categoryProposed };
+    /*
+     * Through `experienceFrame`, not `localImage(heroImage)`. The registry's
+     * heroImage is the LEGACY site's frame, and for twelve experiences that is
+     * an inherited stock photograph whose licence is unknown — logged as
+     * `pending-licence`, which the owner's ruling says does not come back until
+     * a licence is produced. This register was still rendering them. One
+     * resolver, one answer per experience, on every surface.
+     */
+    return { ...r, image: experienceFrame(r.slug)?.src ?? null, category: e?.categoryProposed };
   });
 
   /**

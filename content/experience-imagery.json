@@ -3,13 +3,15 @@
   "_rule": "content/image-sources.md — Tier B-Experiences",
   "generated": {
     "dressedFromOwnFrames": 7,
-    "needsLicensedStock": 14
+    "dressedFromLicensedStock": 9,
+    "needsLicensedStock": 5
   },
   "experiences": {
     "bike-tours": {
       "tier": "B-Experiences",
       "status": "needs-licensed-stock",
       "why": "Routes are around Crete, not on the estate.",
+      "note": "the only clean frame was a Spanish coast road with the riders too small to read",
       "brief": "Plausibly this activity in Crete or the Mediterranean; no landmark from elsewhere; no third-party branding; licence recorded here."
     },
     "biological-garden": {
@@ -23,9 +25,18 @@
     },
     "boat-trip": {
       "tier": "B-Experiences",
-      "status": "needs-licensed-stock",
-      "why": "Happens at sea, off the estate. No own frame of a boat exists in the library.",
-      "brief": "Plausibly this activity in Crete or the Mediterranean; no landmark from elsewhere; no third-party branding; licence recorded here."
+      "status": "cleared",
+      "src": "/images/_stock/boat-trip--unsplash-bkQw8TB4uwc.jpg",
+      "alt": "A small open motorboat turning on turquoise water below pale limestone cliffs, Crete",
+      "source": "Unsplash",
+      "sourceUrl": "https://unsplash.com/photos/bkQw8TB4uwc",
+      "sourceId": "bkQw8TB4uwc",
+      "photographer": "Elena Dimaki (@elenadimaki)",
+      "licence": "Free to use under the Unsplash License",
+      "location": "Crete, Greece (page location line; tags: crete, crete greece, greece beach)",
+      "retrieved": "2026-09-04",
+      "verifier": "Candidate 0 survives every check independently: Unsplash free licence wording confirmed on the page, not AI-generated, location line Crete, and the frame (inspected at full size and 3x crop) shows a single private open motorboat with outboard on turquoise water beneath a white limestone cove with no third-party branding (hull text is a Greek name/registry), no recognisable face, and no compositing. Candidates 1 and 2 were rejected: 1 is a moored, engineless traditional tender with an HDR sky and a crowded Balos beach behind it; 2 is a green, built-up Ionian inlet where the boat is a speck. Log",
+      "why": "Happens at sea, off the estate. No own frame of a boat exists in the library."
     },
     "breakfast-on-the-beach": {
       "tier": "A",
@@ -65,27 +76,65 @@
     },
     "exclusive-tour": {
       "tier": "B-Experiences",
-      "status": "needs-licensed-stock",
-      "why": "Rethymno town and monasteries; these are Tier B named places, photographed off-site.",
-      "brief": "Plausibly this activity in Crete or the Mediterranean; no landmark from elsewhere; no third-party branding; licence recorded here."
+      "status": "cleared",
+      "src": "/images/_stock/exclusive-tour--pexels-15248184.jpg",
+      "alt": "The Venetian facade and bell tower of Arkadi Monastery, Rethymno",
+      "source": "Pexels",
+      "sourceUrl": "https://www.pexels.com/photo/ruins-of-arkadi-monastery-in-greece-15248184/",
+      "sourceId": "15248184",
+      "photographer": "Mike Kw (pexels.com/@mike-kw-318038097), published 2023-01-24 (JSON-LD datePublished 2023-01-24T01:00:32Z)",
+      "licence": "Free to use",
+      "location": "Rethimnon, Griekenland (Rethymno, Greece) — Pexels location line / JSON-LD contentLocation",
+      "retrieved": "2026-09-04",
+      "verifier": "Candidate 0 (Arkadi Monastery, Pexels 15248184) survives every check with evidence rather than inference: raw Pexels HTML confirms 'Free to use', datePublished 2023-01-24, no AI-generation markers; my own inspection of the downloaded frame (C:\\Users\\mcapt\\AppData\\Local\\Temp\\claude\\C--Users-mcapt-Downloads-------------\\ef487ef2-0bed-4d94-8c46-edb2db20c150\\scratchpad\\arkadi_15248184.jpg and the doorway crop v_arkadi_doors.jpg) shows an empty forecourt, no people, no branding, natural light, and an unmistakable Cretan heritage landmark 20 km from the estate. Log line: Pexels | https://www.pexels.",
+      "why": "Rethymno town and monasteries; these are Tier B named places, photographed off-site."
     },
     "hiking": {
       "tier": "B-Experiences",
-      "status": "needs-licensed-stock",
-      "why": "The gorges are inland. The estate's paths are garden paths, not trails.",
-      "brief": "Plausibly this activity in Crete or the Mediterranean; no landmark from elsewhere; no third-party branding; licence recorded here."
+      "status": "cleared",
+      "src": "/images/_stock/hiking--pexels-13720991.jpg",
+      "alt": "A lone hiker, seen from behind, on the stony riverbed of the Samaria Gorge between sunlit limestone walls",
+      "source": "Pexels",
+      "sourceUrl": "https://www.pexels.com/photo/a-man-walking-beside-the-river-13720991/",
+      "sourceId": "13720991",
+      "photographer": "Jeremy de Blok (@jrdb99)",
+      "licence": "Free to use",
+      "location": "Greece (Pexels location line); tags include \"Samarian Gorge\", \"Back View\"; same photographer's sibling frame 13422715 is located \"Samaria village, Griekenland\"",
+      "retrieved": "2026-09-04",
+      "verifier": "Candidate 0 survives every check independently: free Pexels licence with no AI marker, location and tags place it in the Samaria Gorge (corroborated by the photographer's sibling frame located \"Samaria village, Griekenland\"), upload date confirmed from page metadata (2022-09-21), and the frame itself — viewed — shows a lone hiker from behind in the sunlit limestone narrows with no face, no legible branding, and a natural un-filtered edit. It is the gorge-and-hiker-from-behind picture the brief describes, not an adjacent one. Candidate 1 is an honest Samaria frame but carries a stylised teal gr",
+      "position": "50% 65%",
+      "why": "The gorges are inland. The estate's paths are garden paths, not trails."
     },
     "jeep-safari": {
       "tier": "B-Experiences",
-      "status": "needs-licensed-stock",
-      "why": "Inland mountain tracks.",
-      "brief": "Plausibly this activity in Crete or the Mediterranean; no landmark from elsewhere; no third-party branding; licence recorded here."
+      "status": "cleared",
+      "src": "/images/_stock/jeep-safari--unsplash-GDooCGr61UY.jpg",
+      "alt": "Two open-top 4x4s on a dusty dirt track through dry scrub and olive terraces in central Crete",
+      "source": "Unsplash",
+      "sourceUrl": "https://unsplash.com/photos/a-group-of-cars-driving-down-a-dirt-road-GDooCGr61UY",
+      "sourceId": "GDooCGr61UY",
+      "photographer": "Daan Sonneveld (@daan_snvld)",
+      "licence": "Free to use under the Unsplash License",
+      "location": "Crete, Greece",
+      "retrieved": "2026-09-04",
+      "verifier": "Candidate 0 survives every check independently re-verified against the live page and the full-resolution file: free Unsplash License wording confirmed, no AI marking, location-tagged and visually unmistakable central Crete (Heraklion plate, olive terraces, dry limestone/marl), the exact activity as delivered (a real Jimny convoy on a dirt track), no legible brand badge, and faces limited to backs/masked/mirror-scale details. Its only shortfall against the brief is a wide interior panorama instead of a sea view, which is a lesser preference, not a dishonesty. Condition for use: deliver at card ",
+      "why": "Inland mountain tracks."
     },
     "jet-ski-safari": {
       "tier": "B-Experiences",
-      "status": "needs-licensed-stock",
-      "why": "Open water, operated off-site.",
-      "brief": "Plausibly this activity in Crete or the Mediterranean; no landmark from elsewhere; no third-party branding; licence recorded here."
+      "status": "cleared",
+      "src": "/images/_stock/jet-ski-safari--pexels-18582039.jpg",
+      "alt": "Two jet skis leaving white wakes across open turquoise sea, seen from above",
+      "source": "Pexels",
+      "sourceUrl": "https://www.pexels.com/photo/jet-ski-on-blue-sea-18582039/",
+      "sourceId": "18582039",
+      "photographer": "Pit (pexels.com/@pit-716706405)",
+      "licence": "Free to use",
+      "location": "Kolympia, Greece (Rhodes) — tags include Kolympia, Greece, Mediterranean, Drone Photography",
+      "retrieved": "2026-09-04",
+      "verifier": "Chosen: index 1, pexels 18582039. LOG: pexels | https://www.pexels.com/photo/jet-ski-on-blue-sea-18582039/ | \"Free to use\" (Pexels License) | Pit (pexels.com/@pit-716706405) | created 2023-10-01 (Pexels JSON created_at 2023-10-01T15:58:42Z; the page text exposes no date, so the proposer's 'published 2023-10-04' is unverified) | 4282x5481 portrait, download https://images.pexels.com/photos/18582039/pexels-photo-18582039.jpeg. It is the only candidate whose pixels I could confirm free of any writing on the craft, it is the literal jet-ski subject the slug names, both jet skis survive a centred 4",
+      "position": "50% 60%",
+      "why": "Open water, operated off-site."
     },
     "learn-the-secrets-of-cretan-cuisine": {
       "tier": "A",
@@ -98,51 +147,92 @@
     },
     "massage": {
       "tier": "B-Experiences",
-      "status": "needs-licensed-stock",
-      "why": "In-villa, but never photographed. A hot tub is not a massage.",
-      "brief": "Plausibly this activity in Crete or the Mediterranean; no landmark from elsewhere; no third-party branding; licence recorded here."
+      "status": "cleared",
+      "src": "/images/_stock/massage--pexels-38407789.jpg",
+      "alt": "Hands giving an oiled back massage on white linen",
+      "source": "Pexels",
+      "sourceUrl": "https://www.pexels.com/photo/relaxing-back-massage-therapy-at-spa-38407789/",
+      "sourceId": "38407789",
+      "photographer": "Tommaso (page credit: tommy picone, @tommaso)",
+      "licence": "Free to use",
+      "location": "not stated",
+      "retrieved": "2026-09-04",
+      "verifier": "Candidate 3 is the first in ranked order that survives every check. Candidates 1 and 2 both fail on independent visual inspection rather than on their page text: candidate 1 shows Thai-spa props (herbal compress ball, lemongrass) and a woven towel logo — an Asian-spa interior with branding, not a Cretan villa room; candidate 2 is a provenance-hiding crop of a bamboo-roofed tropical pavilion (frangipani, painted columns visible in sibling frames, one column visible in-frame), which the owner's \\\"reject rather than stretch\\\" rule excludes. Candidate 3 is a real, unlabelled, free-licence Pexels p",
+      "why": "In-villa, but never photographed. A hot tub is not a massage."
     },
     "personal-trainer": {
       "tier": "B-Experiences",
       "status": "needs-licensed-stock",
       "why": "No gym or training frame exists.",
+      "note": "the only clean frame showed a recognisable face on a public deck",
       "brief": "Plausibly this activity in Crete or the Mediterranean; no landmark from elsewhere; no third-party branding; licence recorded here."
     },
     "private-helipad": {
       "tier": "B-Experiences",
       "status": "needs-licensed-stock",
       "why": "The only helicopter frame in the library carries a watermark and is flagged unsure.",
+      "note": "every helicopter frame carried an operator's livery or registration",
       "brief": "Plausibly this activity in Crete or the Mediterranean; no landmark from elsewhere; no third-party branding; licence recorded here."
     },
     "quad-safari": {
       "tier": "B-Experiences",
       "status": "needs-licensed-stock",
       "why": "Inland tracks. The inherited frame is withdrawn — its landscape is not Crete.",
+      "note": "the only clean frame was a parked quad on Mykonos, not a mountain track",
       "brief": "Plausibly this activity in Crete or the Mediterranean; no landmark from elsewhere; no third-party branding; licence recorded here."
     },
     "running": {
       "tier": "B-Experiences",
       "status": "needs-licensed-stock",
       "why": "No own frame of the activity; a garden path is not a running route.",
+      "note": "every candidate carried a kit logo or a recognisable face",
       "brief": "Plausibly this activity in Crete or the Mediterranean; no landmark from elsewhere; no third-party branding; licence recorded here."
     },
     "scuba-diving": {
       "tier": "B-Experiences",
-      "status": "needs-licensed-stock",
-      "why": "Underwater. Nothing comparable in the library.",
-      "brief": "Plausibly this activity in Crete or the Mediterranean; no landmark from elsewhere; no third-party branding; licence recorded here."
+      "status": "cleared",
+      "src": "/images/_stock/scuba-diving--unsplash-qInbZtAP2OQ.jpg",
+      "alt": "A scuba diver, seen from behind, finning along a sandy channel between limestone boulders in clear blue water",
+      "source": "Unsplash",
+      "sourceUrl": "https://unsplash.com/photos/a-person-scubas-in-the-water-near-a-rock-formation-qInbZtAP2OQ",
+      "sourceId": "qInbZtAP2OQ",
+      "photographer": "Artists Eyes (@artistseyes)",
+      "licence": "Free to use under the Unsplash License",
+      "location": "Kolymbia, Greece (Rhodes) - published July 15, 2024; scanned film (Plustek OpticFilm 8200i); licence verified 2026-09-03",
+      "retrieved": "2026-09-04",
+      "verifier": "Candidate 2 (Unsplash qInbZtAP2OQ, Kolymbia, Rhodes) is the first in ranked order to survive every check independently: Unsplash License wording confirmed on the live page, no AI marking, genuine film-scanner EXIF, a back-view scuba diver over Mediterranean limestone and sand with no legible branding, no face, and no non-Mediterranean cue. Candidate 1 is the only true-Crete frame but its masked face is turned toward camera at centre-frame while faceless alternatives exist, so it fails the owner's 'no recognisable faces where avoidable' clause; candidate 3 lacks any upload date for the required",
+      "why": "Underwater. Nothing comparable in the library."
     },
     "therapist": {
       "tier": "B-Experiences",
-      "status": "needs-licensed-stock",
-      "why": "Same. No own frame depicts a treatment.",
-      "brief": "Plausibly this activity in Crete or the Mediterranean; no landmark from elsewhere; no third-party branding; licence recorded here."
+      "status": "cleared",
+      "src": "/images/_stock/therapist--pexels-18187122.jpg",
+      "alt": "A woman in silhouette practising yoga on a jetty over calm Aegean water at sunrise",
+      "source": "Pexels",
+      "sourceUrl": "https://www.pexels.com/photo/woman-on-jetty-at-sunset-18187122/",
+      "sourceId": "18187122",
+      "photographer": "Wolfgang Weiser",
+      "licence": "Free to use (Pexels License, page badge links to /license/)",
+      "location": "Kos, Greece (page location line: Kos, Griechenland)",
+      "retrieved": "2026-09-04",
+      "verifier": "Candidate 0 (Pexels 18187122, Wolfgang Weiser, Kos, Greece) survives every check after independent page re-verification and visual inspection of the frame: Pexels 'Free to use', no AI label, honest Greek-island sea/jetty scene with no non-Mediterranean cue, no branding, silhouette with no recognisable face, natural single frame, true landscape. Candidates 1 and 2 were both misdescribed by the proposer — both are portrait, candidate 1 is an infinity-pool edge rather than a pier, and candidate 2 is an acrobatic pose on an outdoor-gym bar with palms, not yoga on a terrace.",
+      "why": "Same. No own frame depicts a treatment."
     },
     "wine-production": {
       "tier": "B-Experiences",
-      "status": "needs-licensed-stock",
-      "why": "A working winery, off-site. The inherited frame is withdrawn as composited stock.",
-      "brief": "Plausibly this activity in Crete or the Mediterranean; no landmark from elsewhere; no third-party branding; licence recorded here."
+      "status": "cleared",
+      "src": "/images/_stock/wine-production--unsplash-xJ9Waej_omI.jpg",
+      "alt": "Harvest at a working Cretan winery: grapes tipped into the crusher before steel tanks",
+      "source": "Unsplash",
+      "sourceUrl": "https://unsplash.com/photos/a-person-working-on-a-machine-xJ9Waej_omI",
+      "sourceId": "xJ9Waej_omI",
+      "photographer": "Carmen Laezza (@_elleci)",
+      "licence": "Free to use under the Unsplash License",
+      "location": "Diamantakis Winery, Kato Asites, Greece (Heraklion, Crete; geotag 35.21N 24.99E)",
+      "retrieved": "2026-09-04",
+      "verifier": "Candidate 0 (Unsplash xJ9Waej_omI, Carmen Laezza, 'Free to use under the Unsplash License', published 2022-09-07) survives every check independently: licence and no-AI status re-read on the live page; geotag verified against external sources as Diamantakis Winery, Kato Asites, Heraklion, Crete; pixels inspected at full resolution show grapes being tipped into a crusher-destemmer at a working Cretan winery with no recognisable face and no legible brand mark (truck side-on, maker plate illegible, Greek commemorative shirt print, tank number only). The contradictory 'southern italy' tags are refu",
+      "position": "50% 45%",
+      "why": "A working winery, off-site. The inherited frame is withdrawn as composited stock."
     },
     "wine-tasting": {
       "tier": "A",

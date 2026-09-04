@@ -85,6 +85,24 @@ const NEEDS_LICENSED = {
   "private-helipad": "The only helicopter frame in the library carries a watermark and is flagged unsure.",
 };
 
+/**
+ * WHY A SLOT IS STILL EMPTY AFTER THE SOURCING PASS — printed on the card.
+ *
+ * Fourteen activities went to two free-licence sources with an adversarial
+ * verifier on every candidate, and nine came back clean. These five did not,
+ * and the owner asked that a card with no honest match keep its typographic
+ * treatment and SAY WHY. So the reason is on the live page, in the same
+ * labelled-slot register as the press wall, until a frame is found or the
+ * owner supplies one.
+ */
+const SOURCING_NOTES = {
+  running: "every candidate carried a kit logo or a recognisable face",
+  "bike-tours": "the only clean frame was a Spanish coast road with the riders too small to read",
+  "quad-safari": "the only clean frame was a parked quad on Mykonos, not a mountain track",
+  "personal-trainer": "the only clean frame showed a recognisable face on a public deck",
+  "private-helipad": "every helicopter frame carried an operator's livery or registration",
+};
+
 /* --------------------------------------------------- the inherited frames -- */
 const quarantine = JSON.parse(
   fs.readFileSync(path.join(ROOT, "content", "flagged-quarantine.json"), "utf-8")
@@ -122,8 +140,27 @@ const bySubject = new Map();
 for (const f of usable) if (!bySubject.has(f.subject)) bySubject.set(f.subject, f);
 
 const experiences = {};
+/*
+ * The sourced-stock log is HAND-MAINTAINED and lives in its own file precisely
+ * because this one is generated: a sourced frame written straight into
+ * experience-imagery.json would vanish on the next `npm run experience-imagery`.
+ * scripts/fetch-stock.mjs writes it; this merges it.
+ */
+const STOCK = fs.existsSync(path.join(ROOT, "content", "experience-stock.json"))
+  ? JSON.parse(fs.readFileSync(path.join(ROOT, "content", "experience-stock.json"), "utf-8"))
+  : { frames: {} };
+for (const slug of Object.keys(STOCK.frames)) {
+  if (OWN[slug]) {
+    throw new Error(
+      `${slug} has both an own frame and a stock entry. Condition 1 — own frames first — ` +
+        `means the stock entry is dead; remove it from content/experience-stock.json.`
+    );
+  }
+}
+
 const problems = [];
 let dressed = 0;
+let dressedFromStock = 0;
 
 for (const file of fs.readdirSync(EXP).filter((f) => f.endsWith(".json")).sort()) {
   const e = JSON.parse(fs.readFileSync(path.join(EXP, file), "utf-8"));
@@ -150,10 +187,52 @@ for (const file of fs.readdirSync(EXP).filter((f) => f.endsWith(".json")).sort()
     continue;
   }
 
+  /*
+   * SOURCED STOCK, from the hand-maintained log. Condition 1 says own frames
+   * first, and the branch above has already had its chance — a slug that is in
+   * both OWN and the stock log never reaches here, so a sourced frame can never
+   * displace the property's own photograph.
+   *
+   * The file must exist. A log line for a file that is not on disk is a claim
+   * with nothing behind it, and it fails the build rather than the page.
+   */
+  const stock = STOCK.frames[slug];
+  if (stock) {
+    const onDisk = path.join(ROOT, "public", stock.file);
+    if (!fs.existsSync(onDisk)) {
+      problems.push(`${slug}: stock log names ${stock.file}, which is not in public/images/_stock/`);
+    }
+    for (const k of ["sourceUrl", "licence", "photographer", "retrieved", "alt"]) {
+      if (!stock[k]) problems.push(`${slug}: stock log entry has no ${k}`);
+    }
+    experiences[slug] = {
+      tier: "B-Experiences",
+      status: "cleared",
+      src: stock.file,
+      alt: stock.alt,
+      source: stock.source,
+      sourceUrl: stock.sourceUrl,
+      sourceId: stock.sourceId,
+      photographer: stock.photographer,
+      licence: stock.licence,
+      location: stock.location,
+      retrieved: stock.retrieved,
+      verifier: stock.verifier,
+      /* Crop focus for a portrait frame on a 4:3 card — the photographer's
+         framing survives; nothing is toned. */
+      position: stock.position,
+      why: NEEDS_LICENSED[slug] ?? "No own frame depicts this activity.",
+    };
+    dressedFromStock++;
+    continue;
+  }
+
   experiences[slug] = {
     tier: "B-Experiences",
     status: "needs-licensed-stock",
     why: NEEDS_LICENSED[slug] ?? "No own frame depicts this activity.",
+    /* Shown on the card, so the owner sees on the live page why it is empty. */
+    note: SOURCING_NOTES[slug],
     /* What a sourced frame has to satisfy, so filling this needs no re-reading. */
     brief: "Plausibly this activity in Crete or the Mediterranean; no landmark from elsewhere; no third-party branding; licence recorded here.",
   };
@@ -170,7 +249,11 @@ fs.writeFileSync(
         "non-property frame the site renders that is not logged here, and on any frame marked " +
         "withdrawn. Regenerate with `npm run experience-imagery`.",
       _rule: "content/image-sources.md — Tier B-Experiences",
-      generated: { dressedFromOwnFrames: dressed, needsLicensedStock: Object.values(experiences).filter((x) => x.status === "needs-licensed-stock").length },
+      generated: {
+        dressedFromOwnFrames: dressed,
+        dressedFromLicensedStock: dressedFromStock,
+        needsLicensedStock: Object.values(experiences).filter((x) => x.status === "needs-licensed-stock").length,
+      },
       experiences,
       inherited,
     },
@@ -181,6 +264,7 @@ fs.writeFileSync(
 
 const needs = Object.entries(experiences).filter(([, v]) => v.status === "needs-licensed-stock");
 console.log(`${dressed} experiences dressed from the property's own frames`);
+console.log(`${dressedFromStock} dressed from licensed stock (content/experience-stock.json)`);
 console.log(`${needs.length} need licensed stock under Tier B-Experiences:`);
 for (const [slug, v] of needs) console.log(`   ${slug.padEnd(36)} ${v.why}`);
 console.log(`\ninherited log: ${inherited.length} frames — ` +

@@ -1,8 +1,13 @@
-import experienceImagery from "@content/experience-imagery.json";
 import grades from "@content/photo-grades.json";
 import selects from "@content/photo-selects.json";
 import facts from "@content/verified-facts.json";
-import { getAllExperiences, getVilla, localImage } from "@/lib/content";
+import {
+  experienceFrame,
+  experienceImageryNote,
+  getAllExperiences,
+  getVilla,
+  localImage,
+} from "@/lib/content";
 
 /**
  * DIRECTION F — "THE CRETAN HOTEL", and everything on it comes from the registry.
@@ -202,10 +207,6 @@ export const ESTATE = {
 };
 
 /* ------------------------------------------------------------ experiences -- */
-const IMAGERY = experienceImagery as {
-  experiences: Record<string, { status: string; src?: string; alt?: string }>;
-};
-
 export interface ExperienceCard {
   slug: string;
   name: string;
@@ -213,6 +214,10 @@ export interface ExperienceCard {
   frame: { src: string; alt: string } | null;
   /** True when Tier B-Experiences licensed stock is still to be sourced. */
   needsImagery: boolean;
+  /** Crop focus for a portrait stock frame on a 4:3 card. */
+  position?: string;
+  /** Why the slot is still empty after sourcing — shown on the card. */
+  note: string | null;
 }
 
 /**
@@ -228,14 +233,16 @@ export const EXPERIENCES: Record<string, ExperienceCard[]> = (() => {
   for (const e of getAllExperiences()) {
     const group = e.categoryProposed;
     if (!group || !(group in out)) continue;
-    const mapped = IMAGERY.experiences[e.slug];
-    const cleared = mapped?.status === "cleared" && mapped.src;
+    /* One resolver for every surface — see `experienceFrame` in lib/content. */
+    const frame = experienceFrame(e.slug);
     out[group]!.push({
       slug: e.slug,
       name: e.name,
       blurb: (e.shortDescription ?? "").trim(),
-      frame: cleared ? { src: mapped.src!, alt: mapped.alt ?? e.name } : null,
-      needsImagery: !cleared,
+      frame: frame ? { src: frame.src, alt: frame.alt } : null,
+      needsImagery: !frame,
+      position: frame?.position,
+      note: frame ? null : experienceImageryNote(e.slug),
     });
   }
   /*
