@@ -680,6 +680,98 @@
   }
 }
 
+/* ================================================= phase 2 — the wedding deck == */
+/*
+ * FOUR FRAMES OF ONE EVENING, STACKED IN TIME.
+ *
+ * `position: sticky` does the set-piece. Every card sticks at the same offset
+ * below the bar, so each one that arrives covers the one before it, and the
+ * DOM order is the stacking order. No script is needed for the stack itself:
+ * touch gets the same deck with no gesture handler, and HotelMotion only adds
+ * the settle — the covered card easing back and dimming — on a fine pointer.
+ *
+ * Under `reduce` the cards are simply four photographs in a column. Nothing is
+ * hidden, nothing moves, and the section reads top to bottom as prose would.
+ */
+[data-look="hotel"] .ho-deck {
+  display: grid;
+  gap: 1.25rem;
+  margin-top: 1.75rem;
+}
+
+[data-look="hotel"] .ho-deck-card {
+  position: sticky;
+  top: 4.75rem;
+  background: var(--ho-ivory);
+  border: var(--ho-rule);
+  transform-origin: 50% 0;
+  will-change: transform, opacity;
+}
+
+[data-look="hotel"] .ho-deck-card figure {
+  margin: 0;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: var(--ho-sand);
+}
+
+[data-look="hotel"] .ho-deck-card img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+[data-look="hotel"] .ho-deck-card figcaption {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.7rem 1rem;
+  font-size: var(--ho-small);
+  color: var(--ho-quiet);
+}
+
+[data-look="hotel"] .ho-deck-card figcaption b {
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
+  color: var(--ho-ink);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-look="hotel"] .ho-deck-card {
+    position: static;
+    will-change: auto;
+  }
+}
+
+/* ====================================================== phase 2 — discover crete == */
+/*
+ * One photograph, the estate from the air, with the Level-2 parallax the
+ * directive allows: the image is 12% taller than its frame and drifts by at
+ * most 8% of its height as the section scrolls — on a fine pointer only.
+ * Touch and `reduce` get a still frame at 100% with no transform at all.
+ */
+[data-look="hotel"] .ho-crete-figure {
+  margin: 0 0 1.75rem;
+  aspect-ratio: 21 / 9;
+  overflow: hidden;
+  background: var(--ho-sand);
+}
+
+[data-look="hotel"] .ho-crete-figure img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  [data-look="hotel"] .ho-crete-figure img {
+    height: 112%;
+    will-change: transform;
+  }
+}
+
 /* The sourcing note on an empty card — the owner's labelled-slot register. */
 [data-look="hotel"] .ho-tosource em {
   display: block;
@@ -690,3 +782,14 @@
   color: var(--ho-quiet);
 }
 
+/* The photograph as a link (VillaCardLink). A block, no underline, and the
+   focus ring drawn on the figure so a keyboard reader sees which card. */
+[data-look="hotel"] .ho-card-link {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+[data-look="hotel"] .ho-card-link:focus-visible {
+  outline: 2px solid var(--ho-aegean);
+  outline-offset: 2px;
+}

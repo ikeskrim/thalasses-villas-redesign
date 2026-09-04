@@ -57,6 +57,14 @@ export function RouteTransition() {
 
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
+    /*
+     * A villa morph is its own transition (lib/view-transition.ts): the card's
+     * photograph is travelling to become the page's hero on the browser's own
+     * View Transitions API, with a cross-fade behind it. A pelagos sheet wiping
+     * up over that would fight it. The focus hand-off above still happened.
+     */
+    if (document.documentElement.hasAttribute("data-vt")) return;
+
     // The sheet is a transient visual, not application state, so it is a DOM
     // node that removes itself rather than a `useState` that costs a render on
     // every navigation. It also cannot survive a fast double-navigation as a

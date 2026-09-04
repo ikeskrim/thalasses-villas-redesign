@@ -124,6 +124,45 @@ export const MANIFESTO = {
   status: "draft — voice not signed off (T-256)",
 } as const;
 
+/* ---------------------------------------------------------- the wedding deck -- */
+/**
+ * PHASE 2'S SET-PIECE FOR WEDDINGS, AND WHY IT IS A STICKY DECK.
+ *
+ * `MOTION-DIRECTIVE.md` §G offers a sticky deck or a drag-to-explore strip and
+ * says to choose by what the photography supports. The Rituals library is not
+ * a gallery of one register; it is an EVENING, photographed in order: guests
+ * gathered by the water in low sun, the tables laid around the pool at golden
+ * hour, dinner under the festoon lights as the sky goes, and then the dancing
+ * at dusk. Seven A-grades and some fifty Bs of one venue, one night.
+ *
+ * A drag strip scans laterally and flattens a sequence into a row; a deck
+ * stacks in time, which is what these frames already do. The deck also
+ * degrades honestly: CSS `position: sticky` does the stacking with no script,
+ * so touch gets the same set-piece without a gesture handler, and under
+ * `reduce` it is simply four photographs in a column.
+ *
+ * Every frame is the property's own — a wedding at Thalasses is a Tier A
+ * subject and no sourced stock may appear here. Named by exact subject so a
+ * re-grade fails the build rather than sliding onto a different night.
+ */
+export const WEDDING_DECK = [
+  bySubject("Wedding gathering by the water, backlit"),
+  bySubject("Dressed banquet tables and folding chairs around a seafront pool at golden hour"),
+  bySubject("Guests dining at tables under festoon lights with a lit pool and the sea beyond"),
+  bySubject("Wedding guests dancing on a seafront pool deck at dusk beneath palms"),
+].map((f, i) => ({ src: f.path, alt: f.subject, grade: f.grade, n: i + 1 }));
+
+/* ------------------------------------------------------- discover crete -- */
+/**
+ * The one photograph in Discover Crete: the estate from the air, with the
+ * farmland that is literally where you are. Own material; it carries the
+ * section's ≤8% parallax (Phase 2, Level 2) and is the only image there.
+ */
+export const CRETE_FIGURE = (() => {
+  const f = bySubject("Aerial of white villas beside the sea at golden hour, farmland in the foreground");
+  return { src: f.path, alt: f.subject };
+})();
+
 /* ----------------------------------------------------------------- villas -- */
 const E = facts as {
   estate: { bedrooms: number; bathrooms: number; sleepsInBeds: number; privatePools: number; diningTableSeats: number; villas: number };

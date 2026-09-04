@@ -4,6 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { Magnetic } from "@/components/motion/Magnetic";
+import { ViewTransitionTarget } from "@/components/motion/ViewTransitionTarget";
 import { ImageReveal, Reveal } from "@/components/motion/Reveal";
 import { Inventory } from "@/components/sections/Inventory";
 import { SiteFooter } from "@/components/sections/SiteFooter";
@@ -203,6 +204,8 @@ export default async function VillaPage({ params }: { params: Promise<{ slug: st
       />
 
       <main id="main">
+        {/* The receiving end of the card→page morph (lib/view-transition). */}
+        <ViewTransitionTarget />
         {/* ------------------------------------------------------ 01 HERO -- */}
         <Field
           src={villa.gallery.heroImage ?? ""}

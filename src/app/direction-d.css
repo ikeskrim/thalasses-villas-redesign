@@ -1148,3 +1148,45 @@ main:focus-visible {
   text-decoration: underline;
   text-underline-offset: 0.35em;
 }
+
+/* ==========================================================================
+   THE VILLA MORPH — card photograph to page hero, on the browser's own API.
+
+   lib/view-transition.ts drives it: the card names its `<img>` `villa-hero`,
+   starts the transition, and the villa page names its hero the same on mount.
+   The group below is the one element the browser morphs between its two
+   rectangles; everything else cross-fades. `html[data-vt]` is set only while
+   a morph is in flight, so these rules never touch the pelagos wipe's own
+   `::view-transition-*` rules above.
+
+   Reduced motion is an instant cross-fade, not nothing (Phase 2 brief, ≤150ms):
+   `data-vt="reduced"` shortens root to 120ms and names no group at all.
+   ========================================================================== */
+::view-transition-group(villa-hero) {
+  animation-duration: 520ms;
+  animation-timing-function: var(--ease-thalasses);
+}
+::view-transition-old(villa-hero),
+::view-transition-new(villa-hero) {
+  animation: none;
+  mix-blend-mode: normal;
+  height: 100%;
+  overflow: clip;
+  object-fit: cover;
+}
+html[data-vt]::view-transition-old(root) {
+  animation: d-vt-out 360ms ease both;
+}
+html[data-vt]::view-transition-new(root) {
+  animation: d-vt-in 360ms ease both;
+}
+html[data-vt="reduced"]::view-transition-old(root),
+html[data-vt="reduced"]::view-transition-new(root) {
+  animation-duration: 120ms;
+}
+@keyframes d-vt-out {
+  to { opacity: 0; }
+}
+@keyframes d-vt-in {
+  from { opacity: 0; }
+}

@@ -193,6 +193,29 @@ test.describe("fact guard", () => {
     expect(ssr.length).toBeGreaterThan(0);
   });
 
+  test("the homepage distances count up from the truth, never from zero", async ({ page }) => {
+    /*
+     * Phase 2 put count-ups on Discover Crete (Distance.tsx). Same guard, same
+     * reason: the server must print the registry's own string, and the
+     * animation must land on it. Read from the SERVER HTML, not the DOM after
+     * hydration — the DOM is what the animation has already touched.
+     */
+    const html = await (await page.request.get("/")).text();
+    const distances = JSON.parse(
+      fs.readFileSync(path.join(process.cwd(), "content", "verified-facts.json"), "utf-8")
+    ).distances as { name: string; value: string }[];
+    expect(distances.length).toBeGreaterThan(0);
+    for (const d of distances) {
+      expect(html, `server HTML does not print "${d.value}" for ${d.name}`).toContain(`data-distance="${d.value}">${d.value}<`);
+    }
+    /*
+     * A zero SHOWN for a non-zero TRUTH is the fabrication. "The beach — 0 m"
+     * is the registry's own figure, so a blanket "never zero" would fail on a
+     * fact; the guard is the mismatch, not the digit.
+     */
+    expect(html).not.toMatch(/data-distance="(?!0 )[^"]+">0(\.0+)? (m|km)</);
+  });
+
   test("the guard actually catches a fabrication", () => {
     // A regression test for the guard itself: the string that got through.
     const fabricated = "Nine acres of it, marked.";

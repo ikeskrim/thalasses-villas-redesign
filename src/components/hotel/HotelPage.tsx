@@ -5,7 +5,10 @@ import HotelHero from "./HotelHero";
 import { FooterReveal } from "@/components/motion/FooterReveal";
 import { LiquidCards } from "@/components/motion/LiquidCards";
 import HotelMotion from "./HotelMotion";
+import { Distances } from "./Distance";
+import { VillaMorph } from "./VillaMorph";
 import {
+  CRETE_FIGURE,
   DISTANCES,
   ESTATE,
   EXPERIENCES,
@@ -16,6 +19,7 @@ import {
   PRESS,
   SECTION_QUOTE,
   VILLAS,
+  WEDDING_DECK,
 } from "./hotel-data";
 
 /**
@@ -96,20 +100,31 @@ export function HotelPage() {
               must stay scannable — never get it.
             */}
             <LiquidCards selector="#villas .ho-card-figure" />
+            {/* One island for the card→page morph, by delegation. */}
+            <VillaMorph />
 
             <div className="ho-grid">
               {VILLAS.map((v) => (
                 <article className="ho-card" key={v.slug}>
-                  <figure className="ho-card-figure">
-                    <Image
-                      src={v.frame.src}
-                      alt={v.frame.alt}
-                      width={800}
-                      height={600}
-                      sizes="(min-width: 72rem) 22vw, (min-width: 48rem) 45vw, 92vw"
-                      quality={80}
-                    />
-                  </figure>
+                  {/*
+                    The photograph is the link, and it travels: a plain anchor
+                    in the HTML, and on a browser with View Transitions the
+                    card's frame morphs into the villa page's hero — one
+                    delegated island (VillaMorph) over all five, not a client
+                    Link per card. Everywhere else it is a link to the page.
+                  */}
+                  <a className="ho-card-link" href={`/en/villas/${v.slug}`} aria-label={`${v.name} — explore`}>
+                    <figure className="ho-card-figure">
+                      <Image
+                        src={v.frame.src}
+                        alt={v.frame.alt}
+                        width={800}
+                        height={600}
+                        sizes="(min-width: 72rem) 22vw, (min-width: 48rem) 45vw, 92vw"
+                        quality={80}
+                      />
+                    </figure>
+                  </a>
                   <div className="ho-card-body">
                     <h3>{v.name}</h3>
                     <p>{v.lines[0]}</p>
@@ -270,6 +285,36 @@ export function HotelPage() {
                 </a>
               </div>
             </div>
+
+            {/*
+              PHASE 2'S SET-PIECE: one evening at Rituals, four frames stacked in
+              time. CSS sticky does the stacking, HotelMotion adds the settle on
+              a fine pointer, and under `reduce` it is four photographs in a
+              column. Every frame is the property's own — see WEDDING_DECK.
+            */}
+            <div className="ho-deck" aria-label="An evening at Thalasses Rituals, in four frames">
+              {WEDDING_DECK.map((f) => (
+                <article className="ho-deck-card" key={f.src}>
+                  <figure>
+                    <Image
+                      src={f.src}
+                      alt={f.alt}
+                      width={1600}
+                      height={900}
+                      sizes="(min-width: 82rem) 80rem, 92vw"
+                      quality={80}
+                      loading="lazy"
+                    />
+                    <figcaption>
+                      <span>{f.alt}</span>
+                      <b>
+                        {f.n} / {WEDDING_DECK.length}
+                      </b>
+                    </figcaption>
+                  </figure>
+                </article>
+              ))}
+            </div>
           </div>
         </section>
 
@@ -303,15 +348,28 @@ export function HotelPage() {
               </div>
             </div>
 
-            {/* Every figure from the locked distance table, none rounded. */}
-            <div className="ho-distances">
-              {DISTANCES.map((d) => (
-                <div key={d.name}>
-                  <span>{d.name}</span>
-                  <b>{d.value}</b>
-                </div>
-              ))}
-            </div>
+            {/*
+              Where you are, from the air. Own material; carries the section's
+              ≤8% parallax on a fine pointer (HotelMotion) and is still on touch.
+            */}
+            <figure className="ho-crete-figure">
+              <Image
+                src={CRETE_FIGURE.src}
+                alt={CRETE_FIGURE.alt}
+                width={1600}
+                height={686}
+                sizes="(min-width: 82rem) 80rem, 92vw"
+                quality={80}
+                loading="lazy"
+              />
+            </figure>
+
+            {/*
+              Every figure from the locked distance table, none rounded. Each
+              counts up once on entry (Distance.tsx); the server prints the
+              registry's own string, so nothing ever reads "0 km".
+            */}
+            <Distances items={DISTANCES} />
           </div>
         </section>
 
