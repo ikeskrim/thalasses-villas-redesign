@@ -198,7 +198,7 @@ export default function HotelMotion() {
        */
       ctx.add((self) => {
         const reveal = document.querySelectorAll<HTMLElement>(
-          ".ho-card, .ho-press a, .ho-press div, .ho-distances div, .ho-head, .ho-group > h3"
+          ".ho-card, .ho-credential, .ho-mantinada, .ho-distances div, .ho-head, .ho-group > h3"
         );
         gsap.set(reveal, HIDDEN);
         ScrollTrigger.batch(reveal, {

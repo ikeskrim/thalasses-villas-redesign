@@ -48,9 +48,12 @@ Decide deliberately. Doing nothing is option 1 by default.
 
 Nothing below blocks launch technically, but each is a claim on a live page:
 
-- The **helipad exclusivity** wording — "the only seafront villas with helipad".
-  Its geographic scope has never been confirmed.
-- The **hero sub-line**, shipping as a working default.
+- The **helipad exclusivity** wording. Resolved as a default by `DECISIONS.md`
+  D-010: the page says "with private helipad" and never "the only". Restoring
+  the superlative needs the owner to confirm its geographic scope.
+- The **hero sub-line** — approved as the working line (D-008).
+- **The reviewer defaults D-003 to D-010** — their veto window closes at step 0
+  below, or on 2026-09-25, whichever comes first.
 - **Villa Pueblo's** bathroom detail, view and distance (T-212).
 - The **eight beach distances**.
 - The **terms**: they name another company, *Ink Hotel*, seven times. The site

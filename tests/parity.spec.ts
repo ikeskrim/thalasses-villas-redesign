@@ -74,17 +74,17 @@ test.describe("homepage content parity", () => {
     expect(expected).toBe(21);
 
     /*
-     * ALL TWENTY-ONE ARE ON THE PAGE. EIGHTEEN OF THEM ARE IN THE GRID.
+     * ALL TWENTY-ONE ARE ON THE PAGE. TWENTY OF THEM ARE IN THE GRID.
      *
-     * Direction F groups the experiences by kind — Sea, Land, Taste, Wellness —
-     * and the three the registry files under "Service" are placed where they
-     * belong instead: the wedding has its own section, and the helipad and the
-     * chauffeur sit in Discover Crete as arrival. That is the standing rule
-     * working as intended (reorganise, never delete), and it is exactly the
-     * kind of move that hides a deletion, so the deletion is what is checked.
+     * Direction F groups the experiences by kind — Sea, Land, Taste, Wellness,
+     * and Arrival. D-003 carded the chauffeur and the helipad under Arrival;
+     * the wedding, the third "Service" entry, keeps its own section. That is
+     * the standing rule working as intended (reorganise, never delete), and it
+     * is exactly the kind of move that hides a deletion, so the deletion is
+     * what is checked.
      *
-     * Counting `.ho-card` in `#experiences` would have passed at 18 and said
-     * nothing. Every experience is looked up BY NAME across the whole page.
+     * Counting `.ho-card` in `#experiences` alone would pass at any number and
+     * say nothing. Every experience is looked up BY NAME across the whole page.
      */
     const names = fs
       .readdirSync(path.join(CONTENT, "experiences"))
@@ -106,9 +106,9 @@ test.describe("homepage content parity", () => {
      * So each of the three names the SECTION it moved to and a phrase only its
      * own offer would produce. Move it again and this fails, which is the point.
      */
+    /* D-003: the chauffeur and the helipad are cards now, under Arrival, and
+       are asserted by name with the rest. Only the wedding is placed. */
     const RELOCATED: Record<string, { section: string; proof: RegExp }> = {
-      Chauffeur: { section: "#crete", proof: /meet you at the airport or the port/i },
-      "Private Helipad": { section: "#crete", proof: /helicopter/i },
       "Dream Wedding on the Beach": { section: "#weddings", proof: /wedding/i },
     };
 
@@ -131,7 +131,7 @@ test.describe("homepage content parity", () => {
     ).toEqual([]);
 
     /* And the grid itself still carries the four groups it claims to. */
-    await expect(page.locator("#experiences .ho-card")).toHaveCount(18);
+    await expect(page.locator("#experiences .ho-card")).toHaveCount(20);
   });
 
   test("Estate figures match the locked capacity table", async ({ page }) => {

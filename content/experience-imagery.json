@@ -2,9 +2,9 @@
   "_note": "Experience-card imagery under the Tier B-Experiences rule in content/image-sources.md. `experiences` maps a slug to the frame its card should use; `inherited` is the log of the fourteen flagged frames the rebuild received. tests/flagged.spec.ts fails on any non-property frame the site renders that is not logged here, and on any frame marked withdrawn. Regenerate with `npm run experience-imagery`.",
   "_rule": "content/image-sources.md — Tier B-Experiences",
   "generated": {
-    "dressedFromOwnFrames": 7,
+    "dressedFromOwnFrames": 8,
     "dressedFromLicensedStock": 9,
-    "needsLicensedStock": 5
+    "needsLicensedStock": 4
   },
   "experiences": {
     "bike-tours": {
@@ -168,11 +168,15 @@
       "brief": "Plausibly this activity in Crete or the Mediterranean; no landmark from elsewhere; no third-party branding; licence recorded here."
     },
     "private-helipad": {
-      "tier": "B-Experiences",
-      "status": "needs-licensed-stock",
-      "why": "The only helicopter frame in the library carries a watermark and is flagged unsure.",
-      "note": "every helicopter frame carried an operator's livery or registration",
-      "brief": "Plausibly this activity in Crete or the Mediterranean; no landmark from elsewhere; no third-party branding; licence recorded here."
+      "tier": "A",
+      "status": "cleared",
+      "src": "/images/_pool/2ca530376f629c92eadcd526ba9f25c9.jpg",
+      "alt": "Aerial view of villas between a concrete helipad and ploughed fields by the sea",
+      "grade": "C",
+      "source": "The property's own photography",
+      "licence": "Owner's material",
+      "position": "30% 55%",
+      "belowGrade": "Graded C (reads as a site survey). Used because it is the only unflagged frame that shows the pad, the villas and the sea together — the card's one claim, in the property's own photograph."
     },
     "quad-safari": {
       "tier": "B-Experiences",

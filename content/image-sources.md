@@ -155,7 +155,7 @@ location-tagged **Crete**; hiking is the Samaria Gorge; exclusive-tour is Arkadi
 Rethymno; scuba-diving and jet-ski-safari are Rhodes; therapist is Kos; massage states no
 location and shows nothing but hands and linen. Every one is Greek.
 
-### Five slots stay empty, and the card says why
+### Four slots stay empty, and the card says why
 
 Reject rather than stretch — an adjacent picture is worse than no picture. Each of these keeps
 its typographic treatment, and the reason is printed on the card in the labelled-slot register
@@ -163,7 +163,6 @@ until a frame is found or the owner supplies one.
 
 | experience | why nothing was placed |
 |---|---|
-| `private-helipad` | every candidate carried an operator's livery or a legible registration, which condition 4 names as an outright rejection |
 | `running` | the only Cretan frame is a front-on, recognisable face; the two back-view frames carry a LURBEL logo on the shorts |
 | `quad-safari` | the verifier accepted a parked quad beside a whitewashed cube on Mykonos; overruled here — a Cretan reader places it at once, and it is not the mountain track the card describes |
 | `personal-trainer` | the verifier accepted a TRX row on a beachfront deck at Herzliya; overruled here on sight — a lit, recognisable profile on a public deck, and the only frame outside Greece |
@@ -174,3 +173,10 @@ heroes of their experience detail pages — logged, so the ratchet allowed them,
 licensed. Every surface now resolves through one function (`experienceFrame`), and
 `tests/flagged.spec.ts` asserts a pending frame renders nowhere, including all twenty-one detail
 pages.
+
+**The helipad is no longer one of them (D-003).** Stock was refused — every candidate carried a
+livery or a registration — and the card now carries the property's OWN aerial of the pad, the
+villas and the sea (`/images/_pool/2ca530376f629c92eadcd526ba9f25c9.jpg`). It is graded C in the
+curation pass, because it reads as a site survey; it is used on that one card, because it is the
+only unflagged frame that shows the pad, and a real photograph of the real pad is the card's whole
+claim. The grade and the reason travel with its entry in `content/experience-imagery.json`.

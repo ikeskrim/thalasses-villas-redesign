@@ -1,0 +1,33 @@
+{
+  "_note": "The Discover Crete quote (DECISIONS.md D-005). A traditional, anonymous Cretan mantinada TAKEN from a published folk collection — never composed. Every field below was read off the page scans themselves, not off the OCR text: the OCR of this page is wrong in the second line (it cannot be trusted to have read 'χλωρὸν τυρὶ', fresh cheese). The page prints a monotonic transcription of the 1876 polytonic setting; `asPrinted` keeps the original. There is no English rendering on the page — a translation would be composition, and the Greek corpus is the owner's to sign off. `gloss` is for the owner's reading only and is not rendered.",
+  "decision": "D-005",
+  "lines": [
+    "Να 'χα τη θάλασσα κρασί και τα καράβια κούπα",
+    "Και τα βουνά χλωρόν τυρί και την αγάπ' απού 'χα."
+  ],
+  "attribution": "Παραδοσιακή κρητική μαντινάδα",
+  "cite": "Άσματα κρητικά μετά διστίχων και παροιμιών, εκδ. Anton Jeannaraki, Λειψία 1876, σ. 277, αρ. 153",
+  "asPrinted": [
+    "Νά 'χα τὴ θάλασσα κρασὶ καὶ τὰ καράβια κοῦπα",
+    "Καὶ τὰ βουνὰ χλωρὸν τυρὶ καὶ τὴν ἀγάπ' ἀποῦ 'χα."
+  ],
+  "transcription": "Polytonic to monotonic only: breathings and graves dropped, circumflex to acute, the accent removed from the monosyllable Νά. Spelling, dialect forms (χλωρόν, απού) and punctuation are the book's.",
+  "gloss": "If only I had the sea for wine and the ships for cups, the mountains for fresh cheese, and the love I had.",
+  "source": {
+    "editor": "Anton Jeannaraki (Αντώνιος Ιαννάρακης) — the name as printed on the title page",
+    "title": "Ἄσματα κρητικὰ μετὰ διστίχων καὶ παροιμιῶν / Kretas Volkslieder nebst Distichen und Sprichwörtern, in der Ursprache mit Glossar",
+    "place": "Leipzig",
+    "publisher": "F. A. Brockhaus",
+    "year": 1876,
+    "section": "Μαντινάδες (pp. 259–290 per the book's own table of contents)",
+    "page": 277,
+    "number": 153,
+    "scan": "https://archive.org/details/asmatakrtikamet00janngoog/page/n291",
+    "scanLeaf": 291,
+    "titlePageScan": "https://archive.org/details/asmatakrtikamet00janngoog/page/n7",
+    "catalogue": "Oxford University copy, digitised by Google Books (id 3AILAAAAQAAJ); archive.org status NOT_IN_COPYRIGHT",
+    "copyright": "Anonymous traditional verse, published 1876. Public domain.",
+    "verified": "2026-09-11, against the page scan (leaf 291) and the title page (leaf 7)"
+  },
+  "why": "Chosen for Discover Crete because it is Crete as a table: the sea, the ships, the mountains, the island's own cheese and wine — hospitality in fifteen syllables a line, and the one couplet in the section whose whole subject is the landscape the villas look at."
+}

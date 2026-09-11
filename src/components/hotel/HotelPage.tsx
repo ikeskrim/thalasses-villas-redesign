@@ -80,7 +80,6 @@ export function HotelPage() {
           frames={HERO}
           line={MANIFESTO.line}
           paragraph={MANIFESTO.paragraph}
-          status={MANIFESTO.status}
         />
 
         {/* ----------------------------------------------------- VILLAS -- */}
@@ -189,8 +188,8 @@ export function HotelPage() {
                 <p className="ho-eyebrow">Experiences</p>
                 <h2>Twenty-one things we can arrange</h2>
                 <p className="ho-lede">
-                  Grouped by where they happen. The wedding has its own section below; the
-                  helipad and the chauffeur belong to arrival, and sit under Discover Crete.
+                  Grouped by where they happen, with arrival — the chauffeur and the helipad —
+                  as its own row. The wedding has its own section below.
                 </p>
               </div>
             </div>
@@ -244,23 +243,6 @@ export function HotelPage() {
                 </div>
               </div>
             ))}
-          </div>
-        </section>
-
-        {/* ------------------------------------------------ THE QUOTE ---- */}
-        <section className="ho-section ho-quote">
-          <div className="ho-wrap">
-            {SECTION_QUOTE.text ? (
-              <blockquote>{SECTION_QUOTE.text}</blockquote>
-            ) : (
-              /*
-                Deliberately empty. A mantinada is a real cultural form with real
-                authorship; writing a plausible one and setting it large on a
-                Cretan family's own site would be exactly the invention this
-                project forbids.
-              */
-              <p className="ho-slot">{SECTION_QUOTE.placeholder}</p>
-            )}
           </div>
         </section>
 
@@ -349,6 +331,37 @@ export function HotelPage() {
             </div>
 
             {/*
+              THE DISCOVER CRETE QUOTE (D-005). A traditional mantinada TAKEN
+              from a published folk collection — editor, year, page and number
+              in content/mantinada.json — set in Greek and attributed to the
+              tradition. Nothing composed; no invented translation. With no
+              couplet on file, the slot stays labelled.
+            */}
+            {SECTION_QUOTE.lines ? (
+              <figure className="ho-mantinada" lang="el">
+                {/*
+                  Each line is its own block with a hanging indent. A mantinada
+                  is a couplet of fifteen-syllable lines, and on a phone the
+                  second line is wider than the screen; set as verse, the wrapped
+                  remainder indents under its own line instead of reading as a
+                  third one.
+                */}
+                <blockquote>
+                  <p>
+                    <span className="ho-verse">{SECTION_QUOTE.lines[0]}</span>
+                    <span className="ho-verse">{SECTION_QUOTE.lines[1]}</span>
+                  </p>
+                </blockquote>
+                <figcaption>
+                  {SECTION_QUOTE.attribution}
+                  <cite>{SECTION_QUOTE.cite}</cite>
+                </figcaption>
+              </figure>
+            ) : (
+              <p className="ho-slot">{SECTION_QUOTE.placeholder}</p>
+            )}
+
+            {/*
               Where you are, from the air. Own material; carries the section's
               ≤8% parallax on a fine pointer (HotelMotion) and is still on touch.
             */}
@@ -374,33 +387,26 @@ export function HotelPage() {
         </section>
 
         {/* ----------------------------------------------------- PRESS --- */}
-        <section className="ho-section">
+        {/*
+          ONE CREDENTIAL, ONE LINE (D-007). The inventory holds one real mention;
+          a wall of tiles with three empty would read as a wall waiting to be
+          filled. The wall returns when the owner supplies more.
+        */}
+        <section className="ho-section ho-press-line" aria-label="Press">
           <div className="ho-wrap">
-            <div className="ho-head">
-              <div>
-                <p className="ho-eyebrow">Press &amp; Awards</p>
-                <h2>What has been written</h2>
-              </div>
-            </div>
-
-            <div className="ho-press">
-              {PRESS.real.map((p) => (
-                <a key={p.title} href={p.href} rel="noopener noreferrer" target="_blank">
-                  <strong>{p.title}</strong>
-                  <em>{p.detail}</em>
-                </a>
+            <p className="ho-credential">
+              <span className="ho-credential-lead">{PRESS.lead}</span>
+              <span className="ho-credential-dash" aria-hidden="true"> — </span>
+              {PRESS.real.map((p, i) => (
+                <span className="ho-credential-name" key={p.title}>
+                  {i > 0 ? " · " : null}
+                  <a href={p.href} rel="noopener noreferrer" target="_blank">
+                    {p.title}
+                  </a>
+                  , {p.year}
+                </span>
               ))}
-              {/*
-                Labelled slots, not filler. The inventory holds exactly one
-                mention; a press wall padded with invented accolades is the
-                fastest way to lose a client.
-              */}
-              {Array.from({ length: PRESS.slots }, (_, i) => (
-                <div className="ho-press-slot" key={i}>
-                  {PRESS.slotLabel}
-                </div>
-              ))}
-            </div>
+            </p>
           </div>
         </section>
 
@@ -464,20 +470,21 @@ export function HotelPage() {
               </div>
 
               <div>
-                <h4>{FOOTER.group.name}</h4>
+                {/*
+                  D-006: names and links only. No logo is re-hosted until the
+                  owner supplies the files; the unconfirmed group name is not
+                  printed.
+                */}
+                <h4>Sister properties</h4>
                 <ul>
-                  {FOOTER.group.properties.map((p) => (
-                    <li key={p}>{p}</li>
+                  {FOOTER.sisters.map((p) => (
+                    <li key={p.name}>
+                      <a href={p.url} rel="noopener noreferrer" target="_blank">
+                        {p.name}
+                      </a>
+                    </li>
                   ))}
                 </ul>
-                {/*
-                  Marked, not asserted. Nothing in the inventory links these
-                  brands to Thalasses, and a footer claiming a corporate
-                  relationship is making a legal statement.
-                */}
-                <p className="ho-draft" style={{ marginTop: "0.6rem" }}>
-                  {FOOTER.group.status}
-                </p>
               </div>
             </div>
 

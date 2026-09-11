@@ -1,0 +1,29 @@
+{
+  "_note": "Display-side copy rulings. The registry files in content/ are the Phase 0 record and are NEVER edited to satisfy a ruling — they keep the owner's original wording and figures. These rulings are applied at the one place content is read (readJson in src/lib/content.ts), so no page can print the ruled-out text, and tests/copy-rulings.spec.ts scans every rendered route to prove it. Each ruling names the DECISIONS.md entry it implements.",
+  "rulings": [
+    {
+      "id": "pool-heating-price",
+      "decision": "D-009",
+      "pattern": "with additional\\s*\\d+(?:[.,]\\d+)?\\s*€\\s*per day upon request",
+      "flags": "gi",
+      "replace": "with an additional charge per day upon request",
+      "why": "Pool heating is available on request at an extra charge; the 35 € figure stays in the registry for the owner and is not printed. The replacement is the registry's OWN unpriced wording — villas 200, 201 and 202 already say exactly this — so nothing is composed, and the villa page's de-duplication folds the two variants into one line."
+    },
+    {
+      "id": "helipad-superlative",
+      "decision": "D-010",
+      "pattern": "\\s*also are the only seafront villas with private helipad(?: in the property)?",
+      "flags": "gi",
+      "replace": ", with private helipad",
+      "why": "The geographic scope of 'the only seafront villas with private helipad' has never been verified. Until the owner verifies it, the page says 'with private helipad' and nothing more."
+    },
+    {
+      "id": "helipad-superlative-bare",
+      "decision": "D-010",
+      "pattern": "\\b(?:the )?only seafront villas with (?:a )?(?:private )?helipad",
+      "flags": "gi",
+      "replace": "with private helipad",
+      "why": "The same claim in any other phrasing — the Crete Holiday Home facts record carries it as a bare phrase."
+    }
+  ]
+}

@@ -100,10 +100,32 @@ const SOURCING_NOTES = {
   "bike-tours": "the only clean frame was a Spanish coast road with the riders too small to read",
   "quad-safari": "the only clean frame was a parked quad on Mykonos, not a mountain track",
   "personal-trainer": "the only clean frame showed a recognisable face on a public deck",
-  "private-helipad": "every helicopter frame carried an operator's livery or registration",
 };
 
 /* --------------------------------------------------- the inherited frames -- */
+/**
+ * OWN FRAMES BELOW THE CURATION GRADE — used only where the grade is the lesser
+ * failure, and said so.
+ *
+ * D-003: the helipad card searches the graded library and the Crete Holiday
+ * Home set for a real frame that shows the pad, aerials first. Every frame that
+ * does is graded C — they read as site surveys, dry fields and a service yard —
+ * so the A/B lookup above cannot reach any of them. But the card makes one
+ * claim, "there is a pad", and a C-grade photograph of the real pad is truer
+ * than no picture and far truer than stock. The one chosen shows the pad, the
+ * villas and the sea in a single honest frame, carries no flag, and is used on
+ * this card and nowhere else. The grade and the reason travel with the entry.
+ */
+const OWN_BELOW_GRADE = {
+  "private-helipad": {
+    subject: "Aerial view of villas between a concrete helipad and ploughed fields by the sea",
+    position: "30% 55%",
+    why:
+      "Graded C (reads as a site survey). Used because it is the only unflagged frame that shows the pad, " +
+      "the villas and the sea together — the card's one claim, in the property's own photograph.",
+  },
+};
+
 const quarantine = JSON.parse(
   fs.readFileSync(path.join(ROOT, "content", "flagged-quarantine.json"), "utf-8")
 );
@@ -166,6 +188,28 @@ for (const file of fs.readdirSync(EXP).filter((f) => f.endsWith(".json")).sort()
   const e = JSON.parse(fs.readFileSync(path.join(EXP, file), "utf-8"));
   const slug = e.slug;
   const wanted = OWN[slug];
+  const below = OWN_BELOW_GRADE[slug];
+
+  if (below) {
+    const frame = [...frames.entries()].map(([pth, fr]) => ({ path: pth, ...fr })).find((fr) => fr.subject === below.subject);
+    if (!frame || frame.flag) {
+      problems.push(`${slug}: below-grade frame "${below.subject}" is missing or now flagged`);
+    } else {
+      experiences[slug] = {
+        tier: "A",
+        status: "cleared",
+        src: frame.path,
+        alt: frame.subject,
+        grade: frame.grade,
+        source: "The property's own photography",
+        licence: "Owner's material",
+        position: below.position,
+        belowGrade: below.why,
+      };
+      dressed++;
+      continue;
+    }
+  }
 
   if (wanted) {
     const frame = bySubject.get(wanted);

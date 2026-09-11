@@ -1,3 +1,4 @@
+import mantinada from "@content/mantinada.json";
 import grades from "@content/photo-grades.json";
 import selects from "@content/photo-selects.json";
 import facts from "@content/verified-facts.json";
@@ -121,7 +122,7 @@ export const MANIFESTO = {
     "Five villas on the north coast of Crete, each with its own pool, fifty metres above a " +
     "private beach. Come as a family, or take the four seafront houses together and sit " +
     "eighteen at one table. The sea is the first thing you see and the last thing you hear.",
-  status: "draft — voice not signed off (T-256)",
+  /* D-008: approved as the working line. The pending marker is gone from the page. */
 } as const;
 
 /* ---------------------------------------------------------- the wedding deck -- */
@@ -260,17 +261,23 @@ export interface ExperienceCard {
 }
 
 /**
- * Four groups, and the three the registry files under "Service" are not among
- * them — they appear where they belong on this page instead. The wedding is its
- * own section; the helipad and the chauffeur are arrival, and sit in Discover
- * Crete. Inventing a fifth group to hold them would be tidier and less true.
+ * Five groups. The registry files three experiences under "Service"; two of
+ * them are ARRIVAL — the chauffeur who meets a guest at the airport or the port,
+ * and the helipad — and D-003 gives them their own cards under that name, which
+ * is what both of them are. The third, the wedding, keeps its own section.
+ *
+ * They were placed in the Discover Crete prose before, and that line stays: it
+ * is true, and it is where a guest reads about getting here.
  */
-export const EXPERIENCE_GROUPS = ["Sea", "Land", "Taste", "Wellness"] as const;
+export const EXPERIENCE_GROUPS = ["Sea", "Land", "Taste", "Wellness", "Arrival"] as const;
+
+/** D-003: the two Service experiences that are arrival, carded as such. */
+const ARRIVAL = new Set(["chauffeur", "private-helipad"]);
 
 export const EXPERIENCES: Record<string, ExperienceCard[]> = (() => {
-  const out: Record<string, ExperienceCard[]> = { Sea: [], Land: [], Taste: [], Wellness: [] };
+  const out: Record<string, ExperienceCard[]> = { Sea: [], Land: [], Taste: [], Wellness: [], Arrival: [] };
   for (const e of getAllExperiences()) {
-    const group = e.categoryProposed;
+    const group = ARRIVAL.has(e.slug) ? "Arrival" : e.categoryProposed;
     if (!group || !(group in out)) continue;
     /* One resolver for every surface — see `experienceFrame` in lib/content. */
     const frame = experienceFrame(e.slug);
@@ -303,42 +310,56 @@ export const EXPERIENCES: Record<string, ExperienceCard[]> = (() => {
 export const DISTANCES = E.distances;
 
 /**
- * The section quote is EMPTY on purpose.
+ * THE DISCOVER CRETE QUOTE — a traditional mantinada, from a published
+ * collection, never composed (DECISIONS.md D-005).
  *
- * The brief asks for a Cretan proverb or a mantinada. There is no proverb in
- * the inventory, and a mantinada is a real cultural form with real authorship —
- * writing a plausible-sounding one and setting it in 40px type on a Cretan
- * family's own website would be the worst kind of invention this project
- * forbids. The slot is built, labelled, and waiting.
+ * A mantinada is a real cultural form with real, if anonymous, authorship.
+ * Writing a plausible one would be the worst kind of invention this project
+ * forbids, so the couplet is TAKEN — from a printed folk collection, with its
+ * editor, year, page and number recorded in `content/mantinada.json` — and set
+ * in Greek, attributed as the tradition it belongs to. There is no English
+ * rendering on the page: a translation would be composition, and the Greek
+ * corpus is the owner's to sign off.
+ *
+ * If the file carries no couplet, the slot stays labelled.
  */
+type Mantinada = {
+  lines: [string, string] | null;
+  attribution: string;
+  cite: string;
+};
+const M = mantinada as unknown as Mantinada;
 export const SECTION_QUOTE = {
-  text: null as string | null,
+  lines: M.lines,
+  attribution: M.attribution,
+  cite: M.cite,
   placeholder: "[owner to supply — a mantinada or a Cretan proverb, in his own choice and approval]",
 };
 
 /* ----------------------------------------------------------------- press -- */
 /**
- * ONE real mention, and it is real: the inventory holds a Condé Nast Traveler
- * 2024 badge served from the site host, linked to the magazine's Crete story.
+ * ONE CREDENTIAL, SET AS ONE LINE (D-007).
  *
- * THE BADGE IMAGE IS NOT RE-HOSTED. It is a third-party trademark, and
- * `content/assets-manifest.json` marks assets of that kind "do not re-host
- * without permission". The mention is set as type and linked instead, which is
- * also the better design.
+ * The inventory holds exactly one mention, and it is real: a Condé Nast
+ * Traveler badge served from the owner's site, linked to the magazine's Crete
+ * story. A wall of four tiles with three of them empty read as a wall waiting
+ * to be filled; one line in the site's own type reads as a credential. The wall
+ * returns when the owner supplies more — `real` is still a list for that day.
  *
- * Everything else is an empty labelled slot. A press wall padded with invented
- * accolades is the single fastest way to lose a client's trust.
+ * "Traveler", the magazine's own spelling: the owner's badge carries the US
+ * masthead and links to cntraveler.com. The badge image itself is not re-hosted
+ * — it is a third-party trademark, and `content/assets-manifest.json` marks
+ * assets of that kind "do not re-host without permission".
  */
 export const PRESS = {
+  lead: "As featured in",
   real: [
     {
       title: "Condé Nast Traveler",
-      detail: "2024 — “Where to Stay in Crete”",
+      year: "2024",
       href: "https://www.cntraveler.com/story/where-to-stay-in-crete",
     },
   ],
-  slots: 3,
-  slotLabel: "[owner to add — award, magazine or guide]",
 };
 
 /* ---------------------------------------------------------------- footer -- */
@@ -352,15 +373,17 @@ export const FOOTER = {
     { platform: "YouTube", url: "https://www.youtube.com/channel/UCiHumP-cMIBORj4fVf9tCvw/videos" },
   ],
   /**
-   * The group's other properties, as given to me and NOT as found in this
-   * repository — nothing in the inventory names a Domisi group or links these
-   * brands to Thalasses. Marked for the owner rather than asserted, because a
-   * footer that claims a corporate relationship is making a legal statement.
+   * SISTER PROPERTIES (D-006) — names and links only.
+   *
+   * Given by the owner's delegated reviewer; each address checked to resolve to
+   * the brand's own site before it went in. No logo is re-hosted until the owner
+   * supplies the files, and the group name is not printed because it has not
+   * been confirmed.
    */
-  group: {
-    name: "Domisi",
-    properties: ["Ink Hotels", "Domisignature"],
-    status: "[owner to confirm the group name and the full list]",
-  },
+  sisters: [
+    { name: "Ink Hotels", url: "https://inkhotels.gr/" },
+    { name: "Domisignature", url: "https://www.domisignature.com/" },
+    { name: "Crete Holiday Home", url: "https://creteholidayhome.com/" },
+  ],
   booking: BOOK,
 };

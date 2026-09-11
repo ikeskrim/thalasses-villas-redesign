@@ -13,7 +13,7 @@ export const contentType = OG_CONTENT_TYPE;
  * its own. Its frame is the homepage hero, read from the same resolver the
  * homepage uses rather than named again here — one hero, one source.
  *
- * The sub-line is the hero sub-line shipping as a working default (T-256). If
+ * The sub-line is the hero sub-line, approved as the working line (D-008). If
  * the owner changes it on the page it must change here too; that is why it is
  * written once in this file and nowhere else in the OG layer.
  */

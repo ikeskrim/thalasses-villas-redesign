@@ -42,12 +42,10 @@ export default function HotelHero({
   frames,
   line,
   paragraph,
-  status,
 }: {
   frames: HeroFrame[];
   line: string;
   paragraph: string;
-  status: string;
 }) {
   const [slide, setSlide] = useState(0);
   /* Set only by a click. Choosing a frame by hand stops the rotation. */
@@ -109,7 +107,6 @@ export default function HotelHero({
       <div className="ho-hero-copy">
         <h1>{line}</h1>
         <p>{paragraph}</p>
-        <p className="ho-draft">{status}</p>
       </div>
 
       <div className="ho-dots">

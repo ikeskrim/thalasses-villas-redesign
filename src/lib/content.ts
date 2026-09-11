@@ -3,6 +3,7 @@ import "server-only";
 import fs from "node:fs";
 import path from "node:path";
 
+import copyRulings from "../../content/copy-rulings.json";
 import imageAliases from "../../content/image-aliases.json";
 
 import type {
@@ -19,9 +20,46 @@ import type {
  */
 const CONTENT_DIR = path.join(process.cwd(), "content");
 
+/**
+ * COPY RULINGS — applied here, at the one door content comes through.
+ *
+ * Two owner-delegated rulings (DECISIONS.md D-009, D-010) say a page must not
+ * print something the registry says: the 35 € pool-heating figure, and "the
+ * only seafront villas with private helipad". The registry is the Phase 0
+ * record and is never edited to satisfy a ruling — it keeps the owner's words
+ * and figures, which is the point of it. So the ruling is applied on READ.
+ *
+ * On read, and here, rather than at each component, for the reason the image
+ * resolver is one function: the pool price was printing on three routes —
+ * a villa's practical notes, its gallery captions, and the site gallery — and
+ * a per-component filter is one forgotten component away from printing it on a
+ * fourth. `tests/copy-rulings.spec.ts` scans every rendered route to prove none
+ * does, and asserts the registry still holds the originals.
+ */
+type CopyRuling = { id: string; decision: string; pattern: string; flags: string; replace: string };
+const RULINGS = (copyRulings as { rulings: CopyRuling[] }).rulings.map((r) => ({
+  ...r,
+  re: new RegExp(r.pattern, r.flags),
+}));
+
+export function applyCopyRulings<T>(value: T): T {
+  if (typeof value === "string") {
+    let s: string = value;
+    for (const r of RULINGS) s = s.replace(r.re, r.replace);
+    return s as T;
+  }
+  if (Array.isArray(value)) return value.map((v) => applyCopyRulings(v)) as T;
+  if (value && typeof value === "object") {
+    const out: Record<string, unknown> = {};
+    for (const [k, v] of Object.entries(value as Record<string, unknown>)) out[k] = applyCopyRulings(v);
+    return out as T;
+  }
+  return value;
+}
+
 function readJson<T>(...segments: string[]): T {
   const file = path.join(CONTENT_DIR, ...segments);
-  return JSON.parse(fs.readFileSync(file, "utf-8")) as T;
+  return applyCopyRulings(JSON.parse(fs.readFileSync(file, "utf-8")) as T);
 }
 
 function readDir(...segments: string[]): string[] {
