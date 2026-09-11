@@ -3,6 +3,176 @@
 **Read this first. It is written at HEAD and updated as each task lands, so it
 is the truthful position — not a plan, not a memory.**
 
+# TRANCHE ELEVEN — the delegated defaults, F+ Phase 3, and the launch dress rehearsal
+
+**Holding. The owner reviews on the live URL.** Four commits, each pushed:
+the defaults recorded before anything was applied (`a0922f6`), the defaults
+applied (`15a45bd`), Phase 3 (`9134190`), and the rehearsal (`b33b1d1`).
+
+## The eight defaults, D-003 to D-010
+
+Each carries an owner veto window that closes at launch-day step 0 or on
+**2026-09-25**, whichever is first. A veto is a new entry in `DECISIONS.md`.
+
+- **D-003 — Chauffeur and Private Helipad are cards**, grouped *Arrival*. The
+  chauffeur keeps the property's own entrance-sign frame. For the helipad, every
+  frame in the graded library and the Crete Holiday Home set that shows the pad
+  is graded C, because they read as site surveys. The seaward aerial of the pad,
+  the villas and the sea together is used on that card only, with its grade and
+  reason recorded. **This is the default most worth the owner's eye.**
+- **D-004 — the nine licensed stock frames stand.**
+- **D-005 — the mantinada is sourced, not composed.** It is distich 153 from
+  Anton Jeannaraki, *Ἄσματα κρητικὰ μετὰ διστίχων καὶ παροιμιῶν / Kretas
+  Volkslieder*, Leipzig, F. A. Brockhaus, 1876, page 277, in the book's own
+  *Μαντινάδες* section:
+
+  > Να 'χα τη θάλασσα κρασί και τα καράβια κούπα
+  > Και τα βουνά χλωρόν τυρί και την αγάπ' απού 'χα.
+
+  In the owner's reading, not on the page: *"If only I had the sea for wine and
+  the ships for cups, the mountains for fresh cheese, and the love I had."* It
+  was read off the page scan, not the OCR, which cannot be trusted with the
+  second line. The imprint was confirmed on the title-page scan. It sits in
+  Discover Crete, in Greek, attributed *Παραδοσιακή κρητική μαντινάδα*, with
+  the full citation. Every field is in `content/mantinada.json`.
+- **D-006 — sister properties:** Ink Hotels (`inkhotels.gr`), Domisignature
+  (`domisignature.com`) and Crete Holiday Home (`creteholidayhome.com`). Names
+  and links only; the unconfirmed group name is not printed.
+- **D-007 — one credential line:** "As featured in — Condé Nast Traveler,
+  2024". It is spelled *Traveler* because the owner's own badge carries the US
+  masthead and links to cntraveler.com.
+- **D-008 — the hero sub-line** has no pending marker.
+- **D-009 — no price for pool heating on any page.** It had been printing on
+  three routes. The page now uses the registry's own unpriced sentence, and the
+  registry keeps the 35 € figure.
+- **D-010 — "with private helipad"**, never "the only".
+
+D-009 and D-010 are applied where content is read, and tested both ways: absent
+from every rendered route, still present in the registry.
+
+**Found while looking:** the desktop footer had been one narrow column ever
+since its reveal was armed. The armed footer is a grid, and a grid item with
+auto margins shrinks to its content. It shows four columns across now.
+
+## F+ Phase 3
+
+- **The colour ground.** A pane pinned inside `main` warms the page from ivory
+  to sand across Experiences and Discover Crete by opacity alone. A test checks
+  every text colour against every tenth of the blend at AA.
+- **Two curtain seams**, done with CSS sticky and no animation. The hero's
+  photograph holds while the villas rise over it, and Experiences holds its last
+  screen while Weddings rises over it. The brief said "villas → weddings", but
+  Experiences sits between them on this page, so the second seam is the join
+  into Weddings.
+- **The easing pass** puts every entrance on `power3.out`.
+
+The legibility gate caught two real defects:
+
+1. **Copy clipped at rest.** Holding the whole hero put its copy half under the
+   rising sheet on a phone. Now only the photograph is curtained, and the copy
+   and slider dots travel with the scroll.
+2. **Dots inside the paragraph.** Removing the draft marker had left the
+   paragraph's box ending on the slider dots. The copy now has clearance, and
+   the gate itself was not changed.
+
+| gate, lab, 3 runs | desktop | phone |
+|---|---|---|
+| LCP | 652–1456ms | 1156–1176ms |
+| CLS | 0 | 0 |
+| worst interaction | 32–48ms | 24–32ms |
+| TBT | 53–106ms | 262–341ms |
+
+- **Motion JS:** 68.2 kB gzip, against a budget of about 70.
+- **Hero legibility:** 0 runs below AA; the worst is 6.60:1.
+- **Suite:** 519 passed, 19 skipped, 0 failed.
+- **Phone TBT**, the named watch item, is lower than tranche ten's 318–400ms.
+
+## LAUNCH-READINESS
+
+The rehearsal was run against the Vercel deployment of `9134190`, not
+localhost, with `scripts/launch-rehearsal.mjs`. The report is
+`qa/launch/LAUNCH-REHEARSAL.md`. **11 green, 5 amber, 0 red.**
+
+### Green
+
+- **Redirects:** 51 of 51 are permanent and each lands on a 200. The gaps file
+  is empty, and the parity certificate reads Legacy URLs 51/51.
+- **Link integrity:** 40 internal destinations, 0 broken, and no fragment that
+  names nothing.
+- **Structured data:** 6 JSON-LD blocks across 35 routes parse, declare
+  schema.org, and agree with the registry.
+- **Indexing:** `robots.txt` still disallows everything, by design.
+- **The noindex flip, rehearsed locally:** built, served, and byte-for-byte
+  identical to LAUNCH.md step 5. `robots.ts` was restored and nothing was
+  committed.
+- **`SITE_URL`:** a staging origin moves every canonical, the OG image, the
+  sitemap and the robots Sitemap line. A trailing slash is normalised, and a
+  path fails the build loudly. The deployment agrees on one origin throughout.
+- **Booking links:** every engine link uses the real host, carries `lang=en`,
+  and passes nothing but dates and party size.
+
+### Amber — none blocks launch
+
+- **The booking engine refuses scripts.** Its CDN answers 403 to every
+  automated request, for this property and for another brand's on the same
+  platform, while WebHotelier's own site answers 200. It is not worked around,
+  and a human click is the check that counts. LAUNCH.md step 2 now says so.
+- **The deployment announces its own origin**, which is correct until
+  `SITE_URL` is set.
+- **VacationRental markup** lacks `identifier`, 8 or more images, and occupancy
+  inside `containsPlace`. Google restricts that rich result to Hotel Center
+  partners anyway.
+- **LodgingBusiness** has no `image`, `telephone` or `url`; all three are
+  recommended, not required.
+- **Three external links did not answer the crawler:** the two engine links
+  (the scripted 403 above) and `inkhotels.gr`, which answered 200 to a direct
+  request the same day.
+
+### What stands between HEAD and domain day — owner only
+
+Before the day:
+
+1. **Veto or let stand D-003 to D-010** before the window closes. The helipad's
+   C-grade aerial and the mantinada are the two to look at first.
+2. **The terms page names Ink Hotel seven times** and carries a
+   correction-pending notice. That notice must not be live at launch, and it is
+   a legal call. Ink Hotels is now linked as a sister property, which may be the
+   explanation — the owner should say which company is the booking party.
+3. **The 12 uninstallable redirect rows** (7 fragments, 5 templates): accept
+   the loss, which is the default, or ask for client-side routing (LAUNCH.md §2).
+4. **Where `/en/jet-ski-safari-1.html` should land** (LAUNCH.md §1).
+5. **Still gated and not delegated:** Villa Pueblo's details (T-212), the eight
+   beach distances, the minimum stay, the Greek corpus (it blocks only `/el`),
+   the three quarantined frames, and the hero MP4.
+
+Launch day, in LAUNCH.md's order:
+
+6. Set **`SITE_URL=https://thalasses.com`** in Vercel.
+7. Point the domain and wait for the certificate.
+8. Walk the site and **open a booking link by hand in a normal browser**; a
+   script cannot do this.
+9. Spot-check the 301s against the live domain.
+10. Look for the operating licence in the footer with your own eyes.
+11. Only then flip indexing — a developer change, rehearsed byte-for-byte.
+12. Set up Search Console.
+
+After launch: rotate the Maps key, add `RESEND_API_KEY` server-side for the
+enquiry form, wait at least two weeks before the Loggia sunset, and decide on
+analytics.
+
+Open engineering items, none blocking: `og:url` is missing on `/` and the
+estate, the LodgingBusiness recommended properties, and the phone TBT that
+belongs to the framework.
+
+## Evidence
+
+Stills and scripted-scroll videos of every route at 1440 and 390 are in
+`qa/walkthrough/` and `qa/video/`. Those folders are gitignored by the
+project's own rule, so they are on this machine and not in the repository. The
+rehearsal and gate outputs are `qa/launch/` and `qa/looks/`.
+
+---
+
 # TRANCHE TEN — nine licensed frames, a structural cascade guard, and F+ Phase 2
 
 **Holding for the owner's review on the live URL.** Three things landed, each
