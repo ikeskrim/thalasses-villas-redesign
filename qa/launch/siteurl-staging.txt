@@ -1,0 +1,7 @@
+canonical /:      <link rel="canonical" href="https://staging.thalasses.example"
+canonical villa:  <link rel="canonical" href="https://staging.thalasses.example/en/villas/villa-thoi"
+og:url /:         
+og:image /:       <meta property="og:image" content="https://staging.thalasses.example/opengraph-image?a7097c6e747f20df"
+sitemap loc[0]:   <loc>https://staging.thalasses.example
+robots Sitemap:   Sitemap: https://staging.thalasses.example/sitemap.xml
+thalasses.com anywhere in / head? 

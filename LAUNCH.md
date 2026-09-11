@@ -100,6 +100,17 @@ Walk it as a visitor: homepage, one villa, the estate, a booking link.
 Confirm a booking deep link opens the real engine at
 `thalassesvillas.reserve-online.net` with `lang=en`.
 
+**Do this in a normal browser, by hand. A script cannot.** Rehearsed on
+2026-09-11: the CDN in front of `reserve-online.net` answers **403** to every
+automated request — `curl`, a headless browser, and a fetcher on a different
+network — for this property and for others on the same platform, while
+WebHotelier's own site answers normally. So a scripted check of the booking
+link will fail on launch day and that failure means nothing; a human click that
+opens the engine in English means everything. Do not "fix" the scripted check
+by disguising it as a browser. `node scripts/launch-rehearsal.mjs` already
+verifies everything about the link that can be verified without opening it:
+the host, `lang=en`, and that nothing but dates and party size is passed.
+
 ### 3. Verify the 301s **against the live domain**
 
 Not against localhost. Spot-check by hand:

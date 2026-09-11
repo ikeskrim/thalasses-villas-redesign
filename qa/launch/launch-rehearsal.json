@@ -1,0 +1,95 @@
+{
+  "base": "https://thalasses-villas-redesign-9pvdbec1u-domisi.vercel.app",
+  "rows": [
+    {
+      "section": "Deployment",
+      "check": "sitemap reachable on the deployment",
+      "status": "GREEN",
+      "detail": "200, 35 URLs"
+    },
+    {
+      "section": "Redirects",
+      "check": "legacy URLs redirect permanently and land on a 200",
+      "status": "GREEN",
+      "detail": "51 / 51"
+    },
+    {
+      "section": "Redirects",
+      "check": "the gaps file is empty",
+      "status": "GREEN",
+      "detail": "0 open gaps in content/redirect-gaps.json"
+    },
+    {
+      "section": "Links",
+      "check": "every internal link resolves",
+      "status": "GREEN",
+      "detail": "40 internal destinations, 0 broken"
+    },
+    {
+      "section": "Links",
+      "check": "every in-page fragment names an element",
+      "status": "GREEN",
+      "detail": "0 fragments naming nothing"
+    },
+    {
+      "section": "Links",
+      "check": "external links answer (not a launch blocker)",
+      "status": "AMBER",
+      "detail": "9 external, 3 not answering a scripted request"
+    },
+    {
+      "section": "Structured data",
+      "check": "every JSON-LD block parses, declares schema.org and a type, and agrees with the registry",
+      "status": "GREEN",
+      "detail": "6 blocks across 35 routes"
+    },
+    {
+      "section": "Structured data",
+      "check": "VacationRental against Google's documented requirements",
+      "status": "AMBER",
+      "detail": "missing: identifier, image (8 or more), containsPlace.occupancy.value (occupancy is at the top level). Google restricts VacationRental rich results to partners connected through a Technical Account Manager and Hotel Center, so this markup cannot earn a rich result on this site today either way."
+    },
+    {
+      "section": "Structured data",
+      "check": "LodgingBusiness recommended properties",
+      "status": "AMBER",
+      "detail": "not present: image, telephone, url"
+    },
+    {
+      "section": "Indexing",
+      "check": "robots.txt still disallows everything (pre-launch, by design)",
+      "status": "GREEN",
+      "detail": "User-Agent: * ⏎ Disallow: / ⏎  ⏎ Sitemap: https://thalasses-villas-redesign.vercel.app/sitemap.xml"
+    },
+    {
+      "section": "Indexing",
+      "check": "X-Robots-Tag on the deployment",
+      "status": "GREEN",
+      "detail": "\"noindex\" — set by Vercel on a *.vercel.app deployment URL; it will not be present on thalasses.com"
+    },
+    {
+      "section": "SITE_URL",
+      "check": "every absolute URL on the deployment agrees on one origin",
+      "status": "GREEN",
+      "detail": "https://thalasses-villas-redesign.vercel.app — canonical /: https://thalasses-villas-redesign.vercel.app; canonical villa: https://thalasses-villas-redesign.vercel.app/en/villas/villa-thoi; og:url /: null; og:image /: https://thalasses-villas-redesign.vercel.app/opengraph-image?a7097c6e747f20df; sitemap <loc>: https://thalasses-villas-redesign.vercel.app; robots Sitemap:: https://thalasses-villas-redesign.vercel.app/sitemap.xml"
+    },
+    {
+      "section": "SITE_URL",
+      "check": "that origin is the launch domain",
+      "status": "AMBER",
+      "detail": "https://thalasses-villas-redesign.vercel.app — the deployment is announcing its own origin, which is the correct pre-launch behaviour; SITE_URL=https://thalasses.com on launch day switches every one of them at once"
+    },
+    {
+      "section": "Booking",
+      "check": "every WebHotelier link and form: the real engine, lang=en, dates-only parameters",
+      "status": "GREEN",
+      "detail": "2 distinct links on 35 routes, 0 forms"
+    },
+    {
+      "section": "Booking",
+      "check": "each distinct link opens the engine — by script",
+      "status": "AMBER",
+      "detail": "not verifiable by script: the platform's CDN refuses automated requests (ours 403, control property 403, webhotelier.net 200). Link construction is verified above; opening one by hand in a normal browser is LAUNCH.md step 2 and is the check that counts — https://thalassesvillas.reserve-online.net/?lang=en → 403, <html lang=\"?\">; https://thalassesvillas.reserve-online.net/?nights=5&adults=2&children=0&lang=en → 403, <html lang=\"?\">"
+    }
+  ]
+}

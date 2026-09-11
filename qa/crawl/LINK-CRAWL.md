@@ -12,7 +12,7 @@ None. Every internal link resolves.
 
 None. Every in-page anchor has a target.
 
-## External links — 5 checked, 2 not answering
+## External links — 9 checked, 3 not answering
 
 **These never fail the run.** A third party being down, or refusing a HEAD
 from a script, is not a defect in this site — and a crawl that cries wolf about
@@ -21,8 +21,12 @@ somebody else's server is a crawl nobody runs twice.
 | link | status | from |
 |---|---|---|
 | https://thalassesvillas.reserve-online.net/?lang=en | 403 | `/` |
-| https://thalassesvillas.reserve-online.net/?nights=5&adults=2&children=0&lang=en | 403 | `/` |
+| https://www.cntraveler.com/story/where-to-stay-in-crete | 200 | `/` |
 | https://www.facebook.com/villasthalasses | 200 | `/` |
 | https://www.instagram.com/thalasses_villas/ | 200 | `/` |
 | https://www.youtube.com/channel/UCiHumP-cMIBORj4fVf9tCvw/videos | 200 | `/` |
+| https://inkhotels.gr/ | TypeError: fetch failed | `/` |
+| https://www.domisignature.com/ | 200 | `/` |
+| https://creteholidayhome.com/ | 200 | `/` |
+| https://thalassesvillas.reserve-online.net/?nights=5&adults=2&children=0&lang=en | 403 | `/en/villas/villa-thoi` |
 

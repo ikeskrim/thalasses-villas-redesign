@@ -1,0 +1,2 @@
+<link rel="canonical" href="https://staging.thalasses.example"
+<link rel="canonical" href="https://staging.thalasses.example/en/terms"
