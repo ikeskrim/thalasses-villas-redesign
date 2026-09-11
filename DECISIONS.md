@@ -89,4 +89,76 @@ overruling is recorded there with the reason, so the owner can disagree with it.
 
 Whether the chauffeur and the helipad should have their own experience cards
 rather than being woven into the Discover Crete prose. They are placed, not
-carded, until the owner says otherwise.
+carded, until the owner says otherwise. **Answered by D-003.** The nine placed
+frames are confirmed as a default by D-004; the owner's veto stands.
+
+---
+
+## Reviewer defaults, D-003 to D-010
+
+**Decided:** 2026-09-11, by the reviewer the owner delegated these calls to.
+**Relayed to the repository:** these entries, before any of them was applied
+(`CONVENTIONS.md` §19).
+**Status:** in force as defaults, each with an **owner veto window** that closes
+at launch-day step 0 in `LAUNCH.md` (setting `SITE_URL`), or on **2026-09-25**,
+whichever comes first. A veto is recorded here as a new entry that reverses the
+default, never as a silent edit to this one. After the window closes the owner
+can still change any of them; the window exists so that nothing below goes live
+on the real domain without his having had the chance to stop it.
+
+### D-003 · Chauffeur and Private Helipad become their own experience cards
+
+They were placed in the Discover Crete prose rather than carded. Now they are
+cards, grouped as **Arrival** — which is what both are — and the prose line in
+Discover Crete stays, because it is true and it is where a guest reads about
+getting there.
+
+- The chauffeur keeps its entrance-sign frame, the property's own.
+- The helipad's frame is searched for in the graded library and the Crete
+  Holiday Home set, aerials first: **a real photograph that shows the pad.** If
+  none exists, the card stays typographic and prints why.
+
+### D-004 · The nine licensed stock frames stand
+
+The nine placed under D-002 stay unless the owner vetoes one. Veto is one line
+in `content/experience-stock.json` and a regenerate.
+
+### D-005 · The Discover Crete quote is a traditional mantinada, from a published collection
+
+A traditional, anonymous Cretan mantinada **taken from a published folk
+collection**, attributed on the page as *Παραδοσιακή κρητική μαντινάδα*, with
+its source — collection, editor, year, page and number — recorded in the report
+and in `content/`. **Nothing composed.** If no documented source can be cited,
+the slot stays labelled.
+
+### D-006 · Footer sister properties
+
+Ink Hotels, Domisignature, Crete Holiday Home. **Names and links only** — no
+logo is re-hosted until the owner supplies the files. The unconfirmed group name
+is not printed.
+
+### D-007 · The press wall collapses to one credential line
+
+"As featured in — Condé Nast Traveler, 2024", set in the site's own type. The
+wall layout returns when the owner supplies more mentions.
+
+### D-008 · The hero sub-line is the working line
+
+Approved as it stands; the pending marker comes off the page.
+
+### D-009 · Pool heating is never priced on the page
+
+The page says it is available on request at an extra charge. **The registry
+keeps the 35 € figure for the owner**; no page prints it.
+
+### D-010 · No superlative on the helipad
+
+"With private helipad" — never "the only seafront villas with private
+helipad" — everywhere, until the owner verifies the scope of that claim. The
+registry keeps the original wording as the Phase 0 record.
+
+### NOT delegated — these stay gated and labelled
+
+Villa Pueblo's capacity details (T-212), the eight beach distances, the Greek
+corpus, the three quarantined frames, and the hero MP4. None of the defaults
+above touches them.
