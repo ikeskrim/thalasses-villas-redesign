@@ -107,8 +107,8 @@ export function FooterReveal({ selector = ".site-footer" }: { selector?: string 
           gsap.to(rows, {
             autoAlpha: 1,
             y: 0,
-            duration: 0.7,
-            stagger: 0.07,
+            duration: 0.8,
+            stagger: 0.08,
             ease: "power3.out",
             scrollTrigger: { trigger: footer, start: "top 92%", once: true },
           });

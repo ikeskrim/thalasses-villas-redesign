@@ -212,6 +212,16 @@
   inset-inline: 0;
   bottom: 0;
   padding: clamp(1.5rem, 5vw, 4rem);
+  /*
+   * Clearance for the slider dots, which sit bottom-right at the same inset.
+   * While the draft marker was under the paragraph it pushed the copy up by
+   * its own height and nobody noticed the dots needed room; with the marker
+   * gone (D-008) the paragraph's box ended exactly on the dots' baseline, and
+   * on a phone the dots sat INSIDE it. No glyph touched them — the last line
+   * was short — but the legibility gate, which samples the whole box, read a
+   * white dot at 1.00:1, and a longer last line would have run into them.
+   */
+  padding-bottom: calc(clamp(1.5rem, 5vw, 4rem) + 1.75rem);
   color: #fff;
   max-width: 46rem;
 }
@@ -898,4 +908,70 @@
   [data-look="hotel"] .ho-credential-dash {
     display: none;
   }
+}
+
+/* ======================================= phase 3 · the colour ground == */
+/*
+ * Off until the motion layer arms it with `.ho-grounded` — so with no script
+ * and under reduced motion the sand sections keep their own sand and this pane
+ * does not exist in layout at all.
+ *
+ * `isolation` gives main its own stacking context, so the pane's z-index -1
+ * sits above main's background and below every section in it. The footer's
+ * fixed reveal layer is a positioned child of main and stays above the pane.
+ */
+[data-look="hotel"] .ho-ground {
+  display: none;
+}
+
+[data-look="hotel"].ho-grounded main {
+  position: relative;
+  isolation: isolate;
+}
+
+[data-look="hotel"].ho-grounded .ho-ground {
+  display: block;
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+
+[data-look="hotel"].ho-grounded .ho-ground-pin {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  background: var(--ho-sand);
+  opacity: 0;
+  will-change: opacity;
+}
+
+[data-look="hotel"].ho-grounded .ho-section--sand {
+  background: transparent;
+}
+
+/* ================================== phase 3 · the two curtain seams == */
+/*
+ * Nothing here animates. A section holds (sticky, bounded by its `.ho-seam`
+ * wrapper, so it releases at the wrapper's end and is never stranded behind
+ * the page) and the next section — opaque, one layer up — rises over it.
+ */
+[data-look="hotel"].ho-motion .ho-seam--hero > .ho-hero {
+  position: sticky;
+  top: 0;
+}
+
+[data-look="hotel"].ho-motion .ho-seam--weddings > #experiences {
+  position: sticky;
+  top: var(--ho-pin-top, 0px);
+}
+
+[data-look="hotel"].ho-motion .ho-seam--hero > #villas,
+[data-look="hotel"].ho-motion .ho-seam--weddings > #weddings {
+  position: relative;
+  z-index: 1;
+  background: var(--ho-ivory);
+  /* The sheet's leading edge: a hairline, so ivory rising over ivory-warm
+     still reads as a sheet. */
+  box-shadow: 0 -1px 0 color-mix(in srgb, var(--ho-ink) 12%, transparent);
 }

@@ -76,6 +76,25 @@ export function HotelPage() {
           other page one via PageShell; this page renders its own `<main>`,
           so it states it here. Without it the skip link points at nothing. */}
       <main id="main">
+        {/*
+          PHASE 3 — THE COLOUR GROUND. A pane pinned to the viewport, inside
+          main, behind every section. The motion layer warms it from ivory to
+          sand across Experiences and Discover Crete by OPACITY ALONE, so the
+          page changes temperature as a field rather than in hard bands. It is
+          display:none until the motion layer arms it — without JavaScript and
+          under reduced motion each section keeps its own ground.
+        */}
+        <div className="ho-ground" aria-hidden="true">
+          <div className="ho-ground-pin" />
+        </div>
+
+        {/*
+          CURTAIN SEAM ONE — manifesto → villas. With motion allowed the hero
+          holds (CSS sticky, bounded by this wrapper) while the villas rise over
+          it as a sheet; the letterbox bars closing on the hero are the same
+          handoff, so it is one set-piece, not two.
+        */}
+        <div className="ho-seam ho-seam--hero">
         <HotelHero
           frames={HERO}
           line={MANIFESTO.line}
@@ -179,7 +198,14 @@ export function HotelPage() {
             </div>
           </div>
         </section>
+        </div>
 
+        {/*
+          CURTAIN SEAM TWO — into Weddings. Experiences holds its LAST screen
+          (sticky, its top offset measured so it sticks only when its bottom
+          meets the viewport's) while Weddings rises over it.
+        */}
+        <div className="ho-seam ho-seam--weddings">
         {/* ------------------------------------------------ EXPERIENCES -- */}
         <section className="ho-section ho-section--sand" id="experiences">
           <div className="ho-wrap">
@@ -299,6 +325,7 @@ export function HotelPage() {
             </div>
           </div>
         </section>
+        </div>
 
         {/* ----------------------------------------------------- CRETE --- */}
         <section className="ho-section ho-section--sand" id="crete">

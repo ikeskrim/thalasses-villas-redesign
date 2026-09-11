@@ -140,16 +140,64 @@ export default function HotelMotion() {
           gsap.set(bars, { scaleY: 0 });
           gsap
             .timeline({
-              scrollTrigger: { trigger: hero, start: "top top", end: "bottom top", scrub: 0.6 },
+              /*
+               * Keyed to the VILLAS, not the hero. Phase 3 holds the hero with
+               * CSS sticky while the villas rise over it, and a trigger measured
+               * on a stuck element reads its STUCK position after any mid-page
+               * refresh. The villas never stick, so the same range is measured
+               * off them: from the hero's natural top reaching the viewport top
+               * (the villas one hero-height below it) to the villas reaching it.
+               */
+              scrollTrigger: {
+                trigger: "#villas",
+                start: () => `top ${hero.offsetHeight}px`,
+                end: "top top",
+                scrub: 0.6,
+                invalidateOnRefresh: true,
+              },
             })
             .to(bars, { scaleY: 1, ease: "none" }, 0)
             /* 8% travel — the directive's ceiling for parallax. */
             .to(frames, { yPercent: -8, ease: "none" }, 0);
+
+          /*
+           * THE PHOTOGRAPH HOLDS; THE WORDS DO NOT.
+           *
+           * Phase 3's first curtain holds the hero while the villas rise over
+           * it — and the hero's copy sits on its BOTTOM edge, the first thing a
+           * rising sheet reaches. Measured on a phone at 150px of scroll: the
+           * paragraph held at 487px while the sheet's edge had risen to 573px,
+           * covering its lower half mid-screen. Copy clipped at rest, which
+           * the directive's constitution forbids outright, and the legibility
+           * gate caught it at 1.00:1.
+           *
+           * So the copy and the slider dots travel UP by exactly the distance
+           * scrolled while the hero is held — `scrub: true`, not smoothed, so
+           * they keep pace with the page rather than easing behind it and
+           * letting the sheet's edge catch them. They leave the way any text
+           * leaves a scrolling page; only the photograph is curtained.
+           */
+          const words = hero.querySelectorAll<HTMLElement>(".ho-hero-copy, .ho-dots");
+          gsap.fromTo(
+            words,
+            { y: 0 },
+            {
+              y: () => -hero.offsetHeight,
+              ease: "none",
+              scrollTrigger: {
+                trigger: "#villas",
+                start: () => `top ${hero.offsetHeight}px`,
+                end: "top top",
+                scrub: true,
+                invalidateOnRefresh: true,
+              },
+            }
+          );
         }
         const heroCopy = document.querySelectorAll<HTMLElement>(".ho-hero-copy p");
         if (heroCopy.length) {
           gsap.set(heroCopy, HIDDEN);
-          gsap.to(heroCopy, { autoAlpha: 1, y: 0, duration: 0.7, delay: 0.25, stagger: 0.08, ease: "power2.out" });
+          gsap.to(heroCopy, { autoAlpha: 1, y: 0, duration: 0.7, delay: 0.25, stagger: 0.08, ease: "power3.out" });
         }
       });
 
@@ -205,7 +253,7 @@ export default function HotelMotion() {
           start: "top 88%",
           once: true,
           onEnter: (batch) =>
-            gsap.to(batch, { autoAlpha: 1, y: 0, duration: 0.5, stagger: 0.06, ease: "power2.out", overwrite: true }),
+            gsap.to(batch, { autoAlpha: 1, y: 0, duration: 0.6, stagger: 0.06, ease: "power3.out", overwrite: true }),
         });
         const sweep = () => {
           for (const el of reveal) {
@@ -272,6 +320,71 @@ export default function HotelMotion() {
         await yieldToMain();
         if (cancelled) return;
       }
+
+      /* ------------------------------ STAGE 5: PHASE 3, SECTION CINEMA -- */
+      /*
+       * THE COLOUR GROUND AND THE TWO CURTAIN SEAMS.
+       *
+       * The ground is one pane pinned to the viewport inside main
+       * (`.ho-ground-pin`, CSS sticky), behind every section. Armed, the sand
+       * sections drop their own backgrounds and the pane's OPACITY carries the
+       * colour: it warms to sand as Experiences and Discover Crete arrive and
+       * cools back as they leave, so the page changes temperature as one field
+       * instead of in bands with a hard line between. Every text colour on the
+       * page is AA on ivory AND on sand, and the blend lies between the two, so
+       * no mid-transition frame drops a line below AA — asserted, not argued.
+       *
+       * The seams are CSS `position: sticky`, bounded by their `.ho-seam`
+       * wrappers, and nothing animates at all: the hero holds while the villas
+       * rise over it, and Experiences holds its last screen while Weddings rises
+       * over it. The only number the script supplies is Experiences' sticky
+       * offset — its viewport height minus its own, measured on resize — so it
+       * sticks exactly when its bottom meets the viewport's.
+       *
+       * Arming is ONE class on the page root, added after the triggers exist and
+       * before the refresh, so there is no frame in which the sand sections are
+       * transparent and the pane has not yet been told where it should be.
+       */
+      ctx.add((self) => {
+        const root = document.querySelector<HTMLElement>("[data-look='hotel']");
+        const pin = document.querySelector<HTMLElement>(".ho-ground-pin");
+        const experiences = document.querySelector<HTMLElement>("#experiences");
+        const weddings = document.querySelector<HTMLElement>("#weddings");
+        const crete = document.querySelector<HTMLElement>("#crete");
+        if (!root || !pin || !experiences || !weddings || !crete) return;
+
+        const setPinTop = () => {
+          const top = Math.min(0, window.innerHeight - experiences.offsetHeight);
+          experiences.style.setProperty("--ho-pin-top", `${top}px`);
+        };
+        setPinTop();
+        const ro = new ResizeObserver(setPinTop);
+        ro.observe(experiences);
+        window.addEventListener("resize", setPinTop);
+
+        gsap.set(pin, { opacity: 0 });
+        const ground = (from: number, to: number, trigger: Element, start: string, end: string) =>
+          gsap.fromTo(
+            pin,
+            { opacity: from },
+            { opacity: to, ease: "none", immediateRender: false, scrollTrigger: { trigger, start, end, scrub: 0.4 } }
+          );
+        ground(0, 1, experiences, "top 85%", "top 35%");
+        /* Experiences is held behind the rising Weddings sheet, so its sand
+           cools only once the sheet has nearly covered it. */
+        ground(1, 0, weddings, "top 25%", "top top");
+        ground(0, 1, crete, "top 85%", "top 35%");
+        ground(1, 0, crete, "bottom 60%", "bottom 20%");
+
+        root.classList.add("ho-motion", "ho-grounded");
+
+        self.add(() => () => {
+          ro.disconnect();
+          window.removeEventListener("resize", setPinTop);
+          root.classList.remove("ho-motion", "ho-grounded");
+          experiences.style.removeProperty("--ho-pin-top");
+        });
+      });
 
       ScrollTrigger.refresh();
 
