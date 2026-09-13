@@ -2,11 +2,12 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 import { Clause } from "@/components/ui/Clause";
 import { Ledger, LedgerInline, type LedgerEntry } from "@/components/ui/Ledger";
 import { Magnetic } from "@/components/motion/Magnetic";
+import { useEstateMap3D } from "./estate-map-3d-gate";
 
 export interface Hotspot {
   id: string;
@@ -63,9 +64,18 @@ export function EstateMap({
   beat?: string | null;
 }) {
   const [open, setOpen] = useState<string | null>(null);
+  /*
+   * THE 3D DIAGRAM (feat/estate-3d, an experiment the owner says yes or no to).
+   * The server always renders the 2D frame below. The hook swaps in the 3D
+   * diagram only when WebGL exists, reduced motion is off, and the section is
+   * near the viewport — and swaps back if the context fails. Everything else
+   * in this section, the list included, is the same for every reader.
+   */
+  const sectionRef = useRef<HTMLElement>(null);
+  const { Map3D, onFail } = useEstateMap3D(sectionRef);
 
   return (
-    <section className="estate-map canon" aria-label="The estate">
+    <section ref={sectionRef} className="estate-map canon" aria-label="The estate">
       {beat === null ? null : <p className="micro">{beat} — The Estate</p>}
 
       {/*
@@ -83,6 +93,9 @@ export function EstateMap({
       </div>
       <Ledger entries={ledger} className="estate-map-ledger" />
 
+      {Map3D ? (
+        <Map3D onFail={onFail} />
+      ) : (
       <div className="estate-map-frame">
         <Image
           src={image}
@@ -138,6 +151,7 @@ export function EstateMap({
           );
         })}
       </div>
+      )}
 
       {/* The same information, always present, never behind an interaction. */}
       <ul className="estate-map-list">

@@ -497,6 +497,85 @@
   max-width: min(260px, calc(100vw - 2 * var(--page-margin)));
 }
 
+/* ---- The estate map as a 3D diagram (feat/estate-3d) --------------------
+   Same box as the 2D frame above (16/9; 4/3 below 768px), so swapping one for
+   the other moves nothing on the page. A diagram in the site's own palette:
+   limestone ground, basalt type, pelagos links. */
+.estate-map-frame--3d {
+  overflow: hidden;
+  background: var(--color-limestone);
+}
+.estate-map-3d-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.estate-map-3d-spot {
+  position: absolute;
+  transform: translate(-50%, -100%);
+  pointer-events: none;
+}
+.estate-map-3d-label {
+  pointer-events: auto;
+  display: inline-block;
+  padding: 0.35em 0.6em;
+  background: var(--color-limestone);
+  color: var(--color-basalt);
+  border: 1px solid rgb(22 38 43 / 0.25);
+  white-space: nowrap;
+}
+a.estate-map-3d-label {
+  color: var(--color-pelagos);
+  text-decoration: underline;
+  text-underline-offset: 0.35em;
+}
+a.estate-map-3d-label:focus-visible {
+  outline: 2px solid var(--color-pelagos);
+  outline-offset: 2px;
+}
+.estate-map-3d-note {
+  position: absolute;
+  left: var(--spacing-step-4);
+  right: var(--spacing-step-4);
+  bottom: var(--spacing-step-3);
+  margin: 0;
+  color: var(--color-basalt);
+}
+.estate-map-3d-note-short {
+  display: none;
+}
+/* On a phone the labels would collide; the numbered list beneath carries them,
+   exactly as it does for the 2D markers at this width.
+
+   The note cannot move below the frame: the diagram arrives after the section
+   is already near the reader, and a caption appearing under it then would push
+   the list down in front of them. So it stays inside the same box, shortened,
+   in a band across the top — over the sea, where nothing is drawn — with the
+   owner's open question kept word for word. */
+@media (max-width: 767px) {
+  .estate-map-3d-spot {
+    display: none;
+  }
+  .estate-map-3d-note {
+    top: 0;
+    bottom: auto;
+    left: 0;
+    right: 0;
+    padding: var(--spacing-step-2) var(--spacing-step-3);
+    background: rgb(232 233 227 / 0.92);
+    font-size: 0.6875rem;
+    line-height: 1.35;
+  }
+  .estate-map-3d-note-long {
+    display: none;
+  }
+  .estate-map-3d-note-short {
+    display: inline;
+  }
+}
+
 /* The primary CTA carries real sentences ("Enquire — we design your stay"),
    and at 360 that plus 40px of padding each side measures 366px — six pixels
    wider than the viewport, which is the whole horizontal scroll. Below the

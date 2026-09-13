@@ -251,3 +251,29 @@ the numbers are in `SESSION-REPORT.md` tranche twelve.
   'none'`). If a partner ever needs to embed a page, that is the line to change.
 - **Unknown `?enquiry=` subjects are dropped, never echoed.**
 - **Dependency fixes are patch or minor only.**
+
+### D-014 · The 3D estate map experiment (branch `feat/estate-3d` only)
+
+**Not on main.** This entry travels with the branch. It reaches main only if the
+owner says yes to the preview, and then it is re-dated as an owner decision.
+
+- **A diagram, never a picture.** It uses three.js primitives only: planes,
+  boxes and one disc, in the site's own colour tokens, with no textures and no
+  photographs. Blender is not installed on this machine, so there is no
+  modelled geometry, and none was substituted.
+- **Geometry only from evidence.** Positions are read off the estate's own
+  aerial photographs (`/images/_chh/Ritual-drone.webp`,
+  `/images/_chh/thalasses-all-2.webp`) and the villa copy's "front row" and
+  "rear row". The drawing is schematic, in unitless coordinates, and nothing
+  about it is claimed as a survey.
+- **Not drawn, and said so on the page.** Villa Pueblo is "set apart from the
+  other four", and no aerial on record shows which plot is its own.
+- **Marked for the owner:** which house in each row is which. The order follows
+  the 2D map's, and that map is placed over a photograph of one villa, not over
+  a plan. The page carries `[TODO: owner to confirm which house in each row is which]`.
+- **Who gets it:** WebGL present, reduced motion off, and the section within
+  600 px of the viewport. Everyone else keeps the 2D map and never downloads
+  three.js. A failed or lost context falls back to 2D.
+- **No layout shift by construction.** The diagram fills the 2D frame's exact
+  box. On a phone the note stays inside that box as a short band over the sea,
+  rather than being added below it.
