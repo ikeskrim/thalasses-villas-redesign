@@ -2,6 +2,8 @@
 
 import { useEffect, useRef, useState } from "react";
 
+import { ENQUIRY_LIMITS } from "@/lib/enquiry-limits";
+
 /**
  * THE ENQUIRY FORM — UI AND VALIDATION ONLY.
  *
@@ -55,12 +57,17 @@ export function EnquiryForm({
     const message = String(data.get("message") ?? "").trim();
 
     if (!name) next.name = "Please tell us your name.";
+    else if (name.length > ENQUIRY_LIMITS.name) next.name = `Please keep your name under ${ENQUIRY_LIMITS.name} characters.`;
     // Deliberately permissive. The only address this rejects with confidence is
     // one missing an @ or a dot after it. Stricter patterns reject real
     // addresses, and losing a genuine enquiry costs more than catching a typo.
     if (!email) next.email = "We need an email address to reply to.";
+    else if (email.length > ENQUIRY_LIMITS.email) next.email = "That address is longer than any address can be.";
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) next.email = "That address looks incomplete.";
     if (!message) next.message = "Tell us what you would like to arrange.";
+    else if (message.length > ENQUIRY_LIMITS.message) {
+      next.message = `Please keep the note under ${ENQUIRY_LIMITS.message} characters — we can talk through the rest.`;
+    }
     return next;
   }
 
@@ -94,7 +101,13 @@ export function EnquiryForm({
   const errorList = Object.entries(errors);
 
   return (
-    <form className="d-form" onSubmit={onSubmit} noValidate>
+    /*
+     * `method="post"`, although script handles every submit. Before hydration,
+     * or with scripting off, the browser submits the form itself — and a form
+     * with no method submits by GET, which writes the guest's name, email and
+     * message into the address bar, the history and the server's access log.
+     */
+    <form className="d-form" method="post" onSubmit={onSubmit} noValidate>
       <p className="micro d-exp-mark">Send a note</p>
 
       {errorList.length ? (
@@ -125,7 +138,7 @@ export function EnquiryForm({
           <label className="micro" htmlFor="f-subject">
             About
           </label>
-          <input id="f-subject" name="subject" type="text" defaultValue={subject} readOnly />
+          <input id="f-subject" name="subject" type="text" defaultValue={subject} maxLength={ENQUIRY_LIMITS.subject} readOnly />
         </div>
       ) : null}
 
@@ -138,6 +151,7 @@ export function EnquiryForm({
           name="name"
           type="text"
           autoComplete="name"
+          maxLength={ENQUIRY_LIMITS.name}
           aria-invalid={Boolean(errors.name)}
           aria-describedby={errors.name ? "e-name" : undefined}
         />
@@ -157,6 +171,7 @@ export function EnquiryForm({
           name="email"
           type="email"
           autoComplete="email"
+          maxLength={ENQUIRY_LIMITS.email}
           aria-invalid={Boolean(errors.email)}
           aria-describedby={errors.email ? "e-email" : undefined}
         />
@@ -175,6 +190,7 @@ export function EnquiryForm({
           id="f-message"
           name="message"
           rows={5}
+          maxLength={ENQUIRY_LIMITS.message}
           aria-invalid={Boolean(errors.message)}
           aria-describedby={errors.message ? "e-message" : undefined}
         />

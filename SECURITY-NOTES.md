@@ -85,3 +85,84 @@ merely resembles one still fails.
 - **Run `npm run scan:secrets` before every push and at every phase STOP.**
 - **If a secret is ever found:** rotate at the provider first, redact second,
   rewrite history third, and record it in section 1 above. In that order.
+
+---
+
+## 4. Audit — 2026-09-13 (tranche twelve)
+
+Structured pass over headers, dependencies, the enquiry form, embeds, outbound
+links, personal data in logs and URLs, and secrets. Every fix below is asserted
+in `tests/security.spec.ts` against the served build, not read out of config.
+
+### 4.1 Response headers — fixed
+
+Before: the project sent **none** of its own. Vercel adds HSTS on its own
+domains; nothing else was set.
+
+| Header | Now | Why this value |
+|---|---|---|
+| `Content-Security-Policy` | `default-src 'self'`; `script-src 'self' 'unsafe-inline'`; `style-src 'self' 'unsafe-inline'`; `img-src 'self' data: blob:`; `font-src 'self'`; `connect-src 'self'`; `media-src 'self'`; `worker-src 'self' blob:`; `manifest-src 'self'`; `frame-src 'none'`; `frame-ancestors 'none'`; `object-src 'none'`; `base-uri 'self'`; `form-action 'self'` | The site loads nothing third-party — fonts and images are self-hosted and booking is an outbound link — so everything except script and style is `'self'` or `'none'` |
+| `Strict-Transport-Security` | `max-age=63072000; includeSubDomains` | Two years. No `preload` — see deferrals |
+| `X-Frame-Options` | `DENY` | With `frame-ancestors 'none'`, for browsers that predate it. Nothing frames this site |
+| `X-Content-Type-Options` | `nosniff` | |
+| `Referrer-Policy` | `strict-origin-when-cross-origin` | The booking engine still sees the origin a guest came from; never the path |
+| `Permissions-Policy` | `camera=(), microphone=(), geolocation=(), payment=(), usb=(), browsing-topics=()` | None is used. Payment happens on the booking engine's own origin |
+| `Cross-Origin-Opener-Policy` | `same-origin` | Every new-tab link is already `noopener`; this makes it structural |
+
+The policy is exercised as well as asserted: seven routes are loaded and
+scrolled end to end with it on, and one `securitypolicyviolation` fails the run.
+
+### 4.2 Deferred, with reasons
+
+| Item | Why not now | What would change it |
+|---|---|---|
+| **Nonce- or hash-based `script-src`** (dropping `'unsafe-inline'`) | Next inlines its flight data and React its streaming scripts. On statically prerendered pages those differ per page and per build, so they cannot be hashed in a config file. A per-request nonce makes every page dynamic: no CDN-cached HTML, and a slower first byte on the connection this site is tuned for. The exposure `'unsafe-inline'` leaves is script injection, and the site has no user-generated content and renders no untrusted HTML — the one reflected parameter is now an allowlist (4.4) | A page that renders untrusted input, or Next shipping build-time hashes for prerendered inline scripts |
+| **HSTS `preload`** | Submitting the domain to the browser preload list binds every subdomain to HTTPS for years and is slow to undo. That is the owner's decision (`DECISIONS.md` D-013) | The owner confirming every subdomain is HTTPS, on launch day |
+| **A durable rate limit** | There is no endpoint to limit. The form delivers nothing until a mail provider is wired, and `src/lib/rate-limit.ts` is a per-instance stub that cannot bound a serverless deployment | The mail-provider route. It must use a shared store or Vercel's firewall rate limiting, and check `ENQUIRY_LIMITS` on the server |
+| **Server-side honeypot and validation** | Same reason — no server route yet | Same |
+
+### 4.3 Dependencies — patch and minor fixes only
+
+`npm audit` before the fix: **1 critical, 2 high**.
+
+| Package | Installed | Advisory | Fix |
+|---|---|---|---|
+| `next` (direct) | 16.3.1 | Critical: unauthenticated RCE on Windows-hosted servers (GHSA-p293-qw3h-jr36), and RCE in the image optimisation API with AVIF (GHSA-2xp9-vwfh-vxw4). The second applies to this site: `images.formats` serves AVIF | **16.3.5** (patch; `package.json`'s `^16.3.0` range already allowed it, so only the lockfile moved) |
+| `sharp` (transitive) | 0.35.3 | High: libheif (GHSA-rgj7-g3m4-5g8c). Reachable through image optimisation and the owner-material pipeline, which accepts HEIC | **0.35.4** (patch, through `next`) |
+| `js-yaml` (transitive) | 4.3.1 | High: merge keys not bounded, CPU use (GHSA-2883-xcg3-v3hh) | **4.3.2** (patch, through `@eslint/eslintrc`, dev only) |
+
+Applied with `npm audit fix`, **without** `--force`, so nothing outside the
+existing semver ranges could move: 6 packages changed in the lockfile. After:
+**0 vulnerabilities**.
+
+One warning worth recording: npm's allow-scripts check did not run
+`unrs-resolver`'s postinstall (a dev dependency of the lint toolchain). It was
+not added to the allowlist: lint was re-run against it instead. `npm run lint`
+exits 0 on the patched tree. The one notice it prints is `jsx-ast-utils`
+failing to resolve non-null (`!`) JSX props in `TheRun.tsx`, which predates this
+audit and is unrelated to the skipped script.
+
+### 4.4 The enquiry form's abuse surface
+
+| Finding | Before | Now |
+|---|---|---|
+| **Content spoofing through `?enquiry=`** | Any value was printed into the form's "About" field, so a link could put any sentence on the site's contact page — *"your booking is cancelled, call this number"* | An allowlist of the subjects the site's own CTAs send (villa slugs, `estate`, the experiences, Weddings & Events). Anything else is dropped. Next still carries the raw query in its router state, as the page segment's key in the inline flight payload. That is JSON-escaped and never rendered, and the spec asserts both halves: the text never reaches what a guest sees, and a `</script>` in the query cannot break out and run |
+| **Personal data into the URL** | The form had no `method`. A submit before hydration, or with scripting off, went by GET — name, email and message into the address bar, the history and the host's access log | `method="post"`. Asserted with scripting off |
+| **Size limits** | None | `maxLength` on every field, plus the same limits in validation, from one source (`src/lib/enquiry-limits.ts`) that the future server route must enforce again |
+| **Honeypot** | Present, client-side only | Unchanged, and now asserted. Server-side check deferred (4.2) |
+| **Rate limiting** | None | Stub in `src/lib/rate-limit.ts`, tested. The durable control is deferred (4.2) |
+
+### 4.5 Clean — checked, nothing to fix
+
+- **Third-party embeds:** none. No iframe, video embed or map frame on any route.
+  The YouTube channel is an outbound link. The spec fails if a frame ever
+  appears on a host other than `www.youtube-nocookie.com` (privacy-enhanced mode).
+- **Outbound links:** every `target="_blank"` link carries `rel="noopener
+  noreferrer"`, in source and in the rendered DOM.
+- **Personal data in logs:** the only `console` call in `src/` is the error
+  boundary, which logs Next's error digest and the error, never form input. The
+  owner-material pipeline never logs or stores a Drive ID (`DECISIONS.md` D-011).
+- **Secrets:** `npm run scan:secrets` over everything git can see — 460 text
+  files, 624 binaries skipped, **no credential-class match**. The Google Maps
+  key stays redacted (§1), and the public-by-design identifiers in §2 are
+  unchanged.

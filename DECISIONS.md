@@ -237,3 +237,17 @@ the numbers are in `SESSION-REPORT.md` tranche twelve.
 - **Not taken:** `font-display: optional`. It would remove the font-swap
   relayout by showing fallback type to a first-time guest on a slow connection.
   That is a typography decision, not a build one.
+
+### D-013 · The security audit
+
+- **CSP ships with `'unsafe-inline'` for scripts and styles. A per-request nonce
+  is deferred**, because a nonce makes every page dynamic: no CDN-cached HTML,
+  and a slower first byte on the connection the site is tuned for. Everything
+  else in the policy is `'self'` or `'none'`.
+- **HSTS runs two years with `includeSubDomains` and no `preload`.** Preload
+  binds every subdomain of the owner's domain to HTTPS for years and is hard to
+  undo, so it is the owner's call on launch day.
+- **The site cannot be framed** (`X-Frame-Options: DENY`, `frame-ancestors
+  'none'`). If a partner ever needs to embed a page, that is the line to change.
+- **Unknown `?enquiry=` subjects are dropped, never echoed.**
+- **Dependency fixes are patch or minor only.**

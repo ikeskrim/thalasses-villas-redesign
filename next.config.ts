@@ -3,6 +3,59 @@ import type { NextConfig } from "next";
 import generated from "./src/generated/redirects.json";
 
 /**
+ * RESPONSE HEADERS — `SECURITY-NOTES.md` §4 has the reasoning and the deferrals.
+ *
+ * The policy can be strict everywhere except scripts and styles because the
+ * site loads nothing from anywhere else: fonts and images are self-hosted,
+ * booking is an outbound link rather than an embed, and there is no analytics,
+ * map or video frame.
+ *
+ * `'unsafe-inline'` on script-src is the one real concession, and it is not an
+ * oversight. Next inlines its flight data and React its streaming scripts, and
+ * on statically prerendered pages those differ per page and per build, so they
+ * cannot be hashed in a config file. The alternative is a per-request nonce,
+ * which makes every page dynamic — no CDN-cached HTML, and a slower first byte
+ * for a guest on a Cretan mobile connection. That trade is deferred, not
+ * ignored. style-src needs it for the inline `style` attributes next/image and
+ * the motion libraries write.
+ *
+ * No `upgrade-insecure-requests`: HSTS already forces HTTPS in production, and
+ * the directive would break the site on `http://localhost` for every test run.
+ * HSTS has no `preload`: submitting the owner's domain to the browser preload
+ * list binds every subdomain to HTTPS for years and is the owner's call at
+ * launch (DECISIONS.md D-013).
+ */
+const CONTENT_SECURITY_POLICY = [
+  "default-src 'self'",
+  "script-src 'self' 'unsafe-inline'",
+  "style-src 'self' 'unsafe-inline'",
+  "img-src 'self' data: blob:",
+  "font-src 'self'",
+  "connect-src 'self'",
+  "media-src 'self'",
+  "worker-src 'self' blob:",
+  "manifest-src 'self'",
+  "frame-src 'none'",
+  "frame-ancestors 'none'",
+  "object-src 'none'",
+  "base-uri 'self'",
+  "form-action 'self'",
+].join("; ");
+
+const SECURITY_HEADERS = [
+  { key: "Content-Security-Policy", value: CONTENT_SECURITY_POLICY },
+  { key: "Strict-Transport-Security", value: "max-age=63072000; includeSubDomains" },
+  { key: "X-Frame-Options", value: "DENY" },
+  { key: "X-Content-Type-Options", value: "nosniff" },
+  { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+  {
+    key: "Permissions-Policy",
+    value: "camera=(), microphone=(), geolocation=(), payment=(), usb=(), browsing-topics=()",
+  },
+  { key: "Cross-Origin-Opener-Policy", value: "same-origin" },
+];
+
+/**
  * Legacy URL migration lives in content/url-map.md and is wired up in Phase 5.
  * Images are served from the local pool in public/images — nothing is hotlinked
  * from the old Loggia CDN, so no remotePatterns are needed.
@@ -28,6 +81,9 @@ const nextConfig: NextConfig = {
    */
   async redirects() {
     return generated.redirects;
+  },
+  async headers() {
+    return [{ source: "/:path*", headers: SECURITY_HEADERS }];
   },
   images: {
     formats: ["image/avif", "image/webp"],

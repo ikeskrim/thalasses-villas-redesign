@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { Reveal } from "@/components/motion/Reveal";
 import { PageHead, PageShell } from "@/components/sections/PageShell";
 import { EnquiryForm } from "@/components/ui/EnquiryForm";
-import { COLLECTION_VILLA_IDS, getVilla, getSite } from "@/lib/content";
+import { COLLECTION_VILLA_IDS, getAllExperiences, getVilla, getSite } from "@/lib/content";
 import { alternatesFor } from "@/lib/locale";
 
 export const metadata: Metadata = {
@@ -26,7 +26,15 @@ export const metadata: Metadata = {
  * risk missing one, the page accepts both and turns the slug into the villa's
  * real name — so the note the owner receives says "Villa Eeanthe", not
  * "villa-eeanthe".
+ *
+ * AN ALLOWLIST, NOT AN ECHO. The subject is printed into the form, so passing
+ * `?enquiry=` through would let any link put any sentence on this page under
+ * the site's name — "your booking is cancelled, call this number". Only the
+ * subjects the site's own CTAs emit resolve; anything else is dropped
+ * (`SECURITY-NOTES.md` §4). Asserted in `tests/security.spec.ts`.
  */
+const WEDDINGS_SUBJECT = "Weddings & Events";
+
 function resolveSubject(params: { enquiry?: string; villa?: string }): string | undefined {
   if (params.villa) {
     const match = COLLECTION_VILLA_IDS.map((k) => getVilla(k)).find(
@@ -35,7 +43,9 @@ function resolveSubject(params: { enquiry?: string; villa?: string }): string | 
     if (match) return match.name;
   }
   if (params.enquiry === "estate") return "The Entire Estate";
-  return params.enquiry || undefined;
+  const known = new Set<string>([WEDDINGS_SUBJECT, ...getAllExperiences().map((e) => e.name)]);
+  if (typeof params.enquiry === "string" && known.has(params.enquiry)) return params.enquiry;
+  return undefined;
 }
 
 export default async function ContactPage({
