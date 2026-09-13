@@ -12,9 +12,27 @@ import { test, expect } from "@playwright/test";
 
 const ROUTES = ["/", "/en/villas/villa-thoi", "/en/the-estate", "/en/experiences", "/en/weddings"];
 
+/*
+ * Every script the HTML asks for, by its real attribute — not by guessing the
+ * chunk path. `next start` serves `/_next/static/chunks/…` and Vercel serves
+ * `/_next/static/immutable/chunks/…?dpl=…`; a pattern written for one finds
+ * nothing on the other, and a guard that finds nothing passes. So this reads
+ * `<script src>` and script preloads, and the caller asserts it found some.
+ */
 async function scriptsOf(request: import("@playwright/test").APIRequestContext, html: string) {
-  const urls = [...new Set([...html.matchAll(/\/_next\/static\/chunks\/[\w.-]+\.js/g)].map((m) => m[0]))];
-  return Promise.all(urls.map(async (u) => ({ url: u, body: await (await request.get(u)).text() })));
+  const urls = [
+    ...new Set(
+      [...html.matchAll(/<script[^>]*\bsrc="([^"]+)"/g), ...html.matchAll(/<link[^>]*\bas="script"[^>]*\bhref="([^"]+)"/g)].map((m) =>
+        (m[1] ?? "").replace(/&amp;/g, "&")
+      )
+    ),
+  ];
+  return Promise.all(
+    urls.map(async (u) => {
+      const res = await request.get(u);
+      return { url: u, ok: res.ok(), body: await res.text() };
+    })
+  );
 }
 
 test.describe("performance structure", () => {
@@ -32,6 +50,9 @@ test.describe("performance structure", () => {
   test("the Direction F homepage loads neither framer-motion nor Lenis up front", async ({ request }) => {
     const html = await (await request.get("/")).text();
     const scripts = await scriptsOf(request, html);
+    /* A check over zero scripts proves nothing, so it cannot pass. */
+    expect(scripts.length, "no scripts found in the HTML — the pattern is wrong, not the page clean").toBeGreaterThan(0);
+    expect(scripts.filter((s) => !s.ok).map((s) => s.url), "scripts that did not load").toEqual([]);
     const framer = scripts.filter((s) => /framerAppearId|MotionConfigContext|You have Reduced Motion enabled/.test(s.body));
     const lenis = scripts.filter((s) => /\blenis\b/i.test(s.body));
     expect(framer.map((s) => s.url), "framer-motion reached / through the root 404 tree").toEqual([]);
