@@ -158,3 +158,8 @@ qa/directive/
 # qa/looks/RESERVOIR.md and qa/looks/LEGIBILITY.md, which are markdown and stay.
 # The prototypes themselves are a route (/looks), not a folder of pictures.
 qa/looks/shots/
+
+# Owner material pipeline (scripts/ingest-drive.mjs). The inbox is a download
+# staging area and video originals can run to gigabytes; neither belongs in git.
+content/inbox/
+content/media/originals/

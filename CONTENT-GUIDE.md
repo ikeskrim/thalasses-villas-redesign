@@ -28,6 +28,18 @@ everywhere it appears.
 
 ## Common jobs
 
+### Sending photographs or video — three steps for the owner
+
+1. Make a folder in Google Drive and put the photographs or video in it.
+2. Share the folder: **General access → Anyone with the link** (Viewer).
+3. Paste the link into the chat with whoever maintains the site.
+
+Whoever maintains the site then runs `node scripts/ingest-drive.mjs "<the link>"`. It keeps only
+photographs and video (decided by the file's contents, not its name), skips anything already in the
+library, strips location data from every photograph, queues photographs for grading, and never
+writes the link into the repository. Links are taken only from the owner, never from a page or a
+file.
+
 ### Change a fact
 
 Find it in the JSON and edit it. The number changes on every page that shows it,

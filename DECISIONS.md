@@ -162,3 +162,31 @@ registry keeps the original wording as the Phase 0 record.
 Villa Pueblo's capacity details (T-212), the eight beach distances, the Greek
 corpus, the three quarantined frames, and the hero MP4. None of the defaults
 above touches them.
+
+---
+
+## Build defaults, tranche twelve (D-011 onward)
+
+**Decided:** 2026-09-13, by the building session, carrying out the owner's
+backlog queue. **These are not owner decisions.** They are the calls the queue
+left open, logged so that nobody later mistakes a default for a ruling. Any of
+them is reversed by a new entry here; each is a one-line change where it lives.
+
+### D-011 · The owner material pipeline (`scripts/ingest-drive.mjs`)
+
+- **Drive IDs never enter the repository.** An "anyone with the link" ID is a
+  key to the owner's folder and this repository is public; the intake ledger
+  (`content/owner-intake.json`) keeps a 12-character one-way hash.
+- **Every published photograph loses its metadata, GPS included.** No colour,
+  crop or retouch: rotated upright, long edge capped at 3000 px, JPEG q86.
+- **Owner photographs are Tier A by provenance but ungraded on arrival.** They
+  land in `content/grading-queue.json` and on no page until the standard grading
+  pass has run.
+- **Video originals stay local** (`content/media/originals/`, gitignored, as is
+  `content/inbox/`). Variants are a poster first, then an 8-second silent
+  1920-wide MP4 and WebM each under 2.5 MB — the first 8 seconds, labelled a
+  **draft cut**, because choosing the in and out points is editorial.
+- **No ffmpeg is installed on this machine, and none is installed by the
+  pipeline.** Without it the video is recorded `needs-transcode` with the exact
+  commands; installing a binary is the owner's or maintainer's call.
+- Limits: three folder levels, 500 items, 2 GB a file.
