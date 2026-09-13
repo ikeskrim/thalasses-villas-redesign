@@ -1,8 +1,9 @@
 import Link from "next/link";
 
 import { PageShell } from "@/components/sections/PageShell";
-import { Clause } from "@/components/ui/Clause";
 import { Field } from "@/components/ui/Field";
+/* Lazy on purpose: see LazyClause — a direct import here ships on every route. */
+import { LazyClause as Clause } from "@/components/ui/LazyClause";
 import { byN } from "@/lib/selects";
 
 export const metadata = {

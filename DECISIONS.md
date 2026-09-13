@@ -190,3 +190,50 @@ them is reversed by a new entry here; each is a one-line change where it lives.
   pipeline.** Without it the video is recorded `needs-transcode` with the exact
   commands; installing a binary is the owner's or maintainer's call.
 - Limits: three folder levels, 500 items, 2 GB a file.
+
+### D-012 · The performance pass
+
+Measured on the phone profile (4× CPU, Slow 4G) with `scripts/perf-attribute.mjs`;
+the numbers are in `SESSION-REPORT.md` tranche twelve.
+
+- **The root `loading.tsx` is removed.** Its Suspense boundary made every
+  prerendered page arrive as a hidden segment that React's inline script then
+  moved into place, so the whole page was styled and laid out in one task of
+  250–340 ms, on every route. The same markup and CSS with scripts stripped had
+  no long task at all. Client navigations keep the outgoing page until the next
+  one is ready, under the existing pelagos wipe, so there was never a white
+  flash for the loading state to prevent.
+- **The clause in the root 404 tree loads through `next/dynamic`.** That covers
+  the 404's own clause and the one in the `SiteFooter` it renders, because the
+  App Router ships the root 404's client components on every route. It keeps
+  framer-motion off the Direction F homepage, which never uses it.
+- **Lenis is imported only where it runs** (fine pointer, no reduced motion), so
+  a phone never downloads it.
+- **HotelMotion's idle setup yields a rendering frame where a stage measures
+  right after the one before it wrote styles.** That falls between hiding the
+  reveals and `ScrollTrigger.batch`, before the ground triggers, and between
+  the hero's two scrubbed pieces. The effects, their timings and the motion
+  budget are unchanged. On the homepage the setup went from five or six long
+  tasks to two (traced).
+- **Tried and rejected:** `content-visibility: auto` on the homepage's
+  below-fold sections, which moved the cost into a 218 ms ScrollTrigger refresh
+  and put trigger positions at risk; and neutralising `text-wrap`, which had no
+  measurable effect. **Considered and rejected:** refreshing ScrollTrigger
+  before arming `.ho-motion`, because that class changes layout (sticky and
+  relative seams), so the triggers would measure positions without the seams.
+  **Built and rejected:** Suspense boundaries around the homepage's below-fold
+  sections, meant to let React hydrate them in interruptible slices. React
+  outlined them into four hidden segments swapped in by script, the same
+  pattern the `loading.tsx` removal got rid of. `tests/perf-structure.spec.ts`'s
+  check caught it before it was measured, and it was reverted.
+- **The TBT gate is taken from a trace.** `scripts/hotel-cwv.mjs` summed the
+  page's own `longtask` observer, which does not report the parser's rendering
+  before first paint. Removing the Suspense boundary moved the whole-page
+  layout into exactly that blind spot, and the observer's figure fell far more
+  than the real blocking did. The gate now reports Lighthouse's TBT (after
+  first contentful paint) from a Chrome trace, with load-blocking and the old
+  observer figure printed beside it. That makes it stricter, not looser: a
+  change can no longer pass by moving work out of the gate's sight.
+- **Not taken:** `font-display: optional`. It would remove the font-swap
+  relayout by showing fallback type to a first-time guest on a slow connection.
+  That is a typography decision, not a build one.

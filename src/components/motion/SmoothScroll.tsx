@@ -1,6 +1,6 @@
 "use client";
 
-import Lenis from "lenis";
+import type Lenis from "lenis";
 import { usePathname } from "next/navigation";
 import { useEffect } from "react";
 
@@ -26,6 +26,12 @@ import { getSmoothScroll, setSmoothScroll } from "@/lib/smooth-scroll";
  * position, including on a back navigation, and a hard `scrollTo(0)` here would
  * throw away the place a reader had returned to. The bug being fixed is a stale
  * measurement, not a stale position.
+ *
+ * LOADED ONLY WHERE IT RUNS. Lenis was a static import, so it sat in the site
+ * shell's chunk and every phone downloaded and evaluated it to reach the early
+ * return below. It is imported after the pointer and motion checks now; a
+ * desktop reader gets the identical instance a moment after hydration, and
+ * consumers already subscribe through `onSmoothScrollChange` for exactly that.
  */
 export function SmoothScroll() {
   const pathname = usePathname();
@@ -35,27 +41,37 @@ export function SmoothScroll() {
     const coarse = window.matchMedia("(pointer: coarse)").matches;
     if (reduced || coarse) return;
 
-    const lenis = new Lenis({
-      duration: 1.1,
-      easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      smoothWheel: true,
-      touchMultiplier: 0,
+    let lenis: Lenis | null = null;
+    let frame = 0;
+    let cancelled = false;
+
+    import("lenis").then(({ default: LenisImpl }) => {
+      if (cancelled) return;
+      const instance = new LenisImpl({
+        duration: 1.1,
+        easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        smoothWheel: true,
+        touchMultiplier: 0,
+      });
+      lenis = instance;
+
+      const raf = (time: number) => {
+        instance.raf(time);
+        frame = requestAnimationFrame(raf);
+      };
+      frame = requestAnimationFrame(raf);
+
+      /* Publish for anything that needs to attach — see lib/smooth-scroll.ts. */
+      setSmoothScroll(instance);
     });
 
-    let frame = 0;
-    const raf = (time: number) => {
-      lenis.raf(time);
-      frame = requestAnimationFrame(raf);
-    };
-    frame = requestAnimationFrame(raf);
-
-    /* Publish for anything that needs to attach — see lib/smooth-scroll.ts. */
-    setSmoothScroll(lenis);
-
     return () => {
+      cancelled = true;
       cancelAnimationFrame(frame);
-      setSmoothScroll(null);
-      lenis.destroy();
+      if (lenis) {
+        setSmoothScroll(null);
+        lenis.destroy();
+      }
     };
   }, []);
 

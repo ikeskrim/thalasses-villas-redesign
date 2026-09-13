@@ -1,6 +1,8 @@
 import Link from "next/link";
 
-import { Clause } from "@/components/ui/Clause";
+/* Lazy on purpose: the root 404 renders this footer, and the App Router ships
+   the root 404's client components on every route — see LazyClause. */
+import { LazyClause as Clause } from "@/components/ui/LazyClause";
 
 export interface SiteFooterProps {
   addressLines: string[];

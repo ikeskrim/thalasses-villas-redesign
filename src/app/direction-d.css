@@ -955,11 +955,9 @@ main:focus-visible {
 }
 
 /* ---- Error and edge states ---------------------------------------------- */
-/* The loading state is the ground, held — never white, never a spinner. */
-.d-loading {
-  min-height: 100svh;
-  background: var(--color-limestone);
-}
+/* No loading state: the root `loading.tsx` is gone, and why is in DECISIONS.md
+   D-012 — its Suspense boundary made every page arrive hidden and be moved into
+   place by script, in one long task. */
 .d-error {
   min-height: 100svh;
   background: var(--color-limestone);

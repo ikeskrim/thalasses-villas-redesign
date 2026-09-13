@@ -20,6 +20,26 @@
  * latency observed, plus total blocking time. A page that fails this would
  * certainly fail INP; a page that passes it might still.
  *
+ * TOTAL BLOCKING TIME COMES FROM A TRACE, NOT FROM THE PAGE'S OWN OBSERVER.
+ *
+ * Until tranche twelve this summed a `longtask` PerformanceObserver installed
+ * in the page. That observer turned out to be blind to exactly the task a
+ * performance change is most likely to move: removing the root Suspense
+ * boundary took the whole-page layout out of a script-triggered task (which
+ * the observer reported) and into the parser's own rendering before first
+ * paint (which it did not). The observer's figure fell from 295 to 104 ms on
+ * the phone profile; the trace showed the blocking after first paint had moved
+ * from 331 to 303 ms. A gate that can be passed by moving work out of its sight
+ * is not a gate.
+ *
+ * So TBT here is Lighthouse's definition, taken from a Chrome trace of the same
+ * session: main-thread tasks over 50 ms, counting only the part after first
+ * contentful paint. Two further figures stand beside it so nothing hides:
+ * `load-blocking` (every long task, before first paint included) and
+ * `observer` (the old figure, for continuity with earlier reports). Tasks that
+ * are the harness's own `page.evaluate` — script with no page URL and nothing
+ * of the page's in them — are excluded and the amount is printed.
+ *
  * Throttled to a mid-range phone (4× CPU, Slow 4G) because that is the device
  * the directive names for the Phase-2 gate and the one a guest actually holds.
  *
@@ -61,6 +81,60 @@ if (!(await reachable(BASE))) {
 }
 
 const BUDGET = { lcp: 2500, cls: 0.1, inp: 200 };
+const TRACE_CATEGORIES = ["devtools.timeline", "disabled-by-default-devtools.timeline", "loading", "blink.user_timing"];
+
+async function readTrace(cdp) {
+  const complete = new Promise((r) => cdp.once("Tracing.tracingComplete", r));
+  await cdp.send("Tracing.end");
+  const { stream } = await complete;
+  const parts = [];
+  for (;;) {
+    const { data, eof, base64Encoded } = await cdp.send("IO.read", { handle: stream, size: 8 * 1024 * 1024 });
+    parts.push(base64Encoded ? Buffer.from(data, "base64") : Buffer.from(data, "utf8"));
+    if (eof) break;
+  }
+  await cdp.send("IO.close", { handle: stream });
+  const parsed = JSON.parse(Buffer.concat(parts).toString("utf8"));
+  return Array.isArray(parsed) ? parsed : parsed.traceEvents;
+}
+
+/** Lighthouse-style blocking from a trace: after FCP, before it, and what was the harness's. */
+function blockingFromTrace(events) {
+  const key = (e) => `${e.pid}:${e.tid}`;
+  const urlOf = (e) => String(e.args?.data?.url ?? e.args?.beginData?.url ?? "");
+  const counts = new Map();
+  for (const e of events) {
+    if ((e.name === "EvaluateScript" || e.name === "v8.compile" || e.name === "ParseHTML") && urlOf(e).startsWith(BASE)) {
+      counts.set(key(e), (counts.get(key(e)) ?? 0) + 1);
+    }
+  }
+  const main = [...counts.entries()].sort((a, b) => b[1] - a[1])[0]?.[0];
+  if (!main) return null;
+  const pid = Number(main.split(":")[0]);
+  const fcp = events.filter((e) => e.name === "firstContentfulPaint" && e.pid === pid).sort((a, b) => a.ts - b.ts)[0]?.ts ?? null;
+
+  const onMain = events.filter((e) => key(e) === main && e.ph === "X" && typeof e.dur === "number");
+  const tasks = onMain.filter((e) => e.name === "RunTask" && e.dur > 50_000);
+  const scripts = onMain.filter((e) => e.name === "EvaluateScript" || e.name === "FunctionCall" || e.name === "v8.compile");
+
+  let afterFcp = 0;
+  let all = 0;
+  let harness = 0;
+  for (const t of tasks) {
+    const inside = scripts.filter((s) => s.ts >= t.ts && s.ts < t.ts + t.dur);
+    const isHarness = inside.length > 0 && inside.every((s) => !/^https?:/.test(urlOf(s)));
+    if (isHarness) {
+      harness += t.dur - 50_000;
+      continue;
+    }
+    all += t.dur - 50_000;
+    if (fcp !== null) {
+      const tail = t.ts + t.dur - Math.max(t.ts, fcp);
+      if (tail > 50_000) afterFcp += tail - 50_000;
+    }
+  }
+  return { tbt: afterFcp / 1000, loadBlocking: all / 1000, harness: harness / 1000, fcpFound: fcp !== null };
+}
 
 const browser = await chromium.launch();
 const rows = [];
@@ -92,7 +166,7 @@ for (const [label, width, height, mobile] of [
   });
 
   await page.addInitScript(() => {
-    window.__v = { cls: 0, lcp: 0, longest: 0, tbt: 0, lcpEl: "" };
+    window.__v = { cls: 0, lcp: 0, fcp: 0, longest: 0, tbt: 0, lcpEl: "" };
     new PerformanceObserver((l) => {
       for (const e of l.getEntries()) if (!e.hadRecentInput) window.__v.cls += e.value;
     }).observe({ type: "layout-shift", buffered: true });
@@ -103,8 +177,11 @@ for (const [label, width, height, mobile] of [
       window.__v.lcpEl = last.element ? last.element.tagName + "." + (last.element.className || "") : "";
     }).observe({ type: "largest-contentful-paint", buffered: true });
     new PerformanceObserver((l) => {
+      for (const e of l.getEntries()) if (e.name === "first-contentful-paint") window.__v.fcp = e.startTime;
+    }).observe({ type: "paint", buffered: true });
+    new PerformanceObserver((l) => {
+      /* The old figure, kept for continuity only — see the header. */
       for (const e of l.getEntries()) {
-        /* Total blocking time: the part of each long task over 50ms. */
         if (e.duration > 50) window.__v.tbt += e.duration - 50;
       }
     }).observe({ type: "longtask", buffered: true });
@@ -114,6 +191,11 @@ for (const [label, width, height, mobile] of [
         if (e.duration > window.__v.longest) window.__v.longest = e.duration;
       }
     }).observe({ type: "event", durationThreshold: 16, buffered: true });
+  });
+
+  await cdp.send("Tracing.start", {
+    transferMode: "ReturnAsStream",
+    traceConfig: { recordMode: "recordAsMuchAsPossible", includedCategories: TRACE_CATEGORIES },
   });
 
   await page.goto(BASE + ROUTE, { waitUntil: "load", timeout: 120_000 });
@@ -139,12 +221,17 @@ for (const [label, width, height, mobile] of [
   }
 
   const v = await page.evaluate(() => window.__v);
+  const blocking = blockingFromTrace(await readTrace(cdp));
   rows.push({
     view: label,
     lcp: Math.round(v.lcp),
+    fcp: Math.round(v.fcp),
     cls: +v.cls.toFixed(4),
     inp: Math.round(v.longest),
-    tbt: Math.round(v.tbt),
+    tbt: blocking ? Math.round(blocking.tbt) : NaN,
+    loadBlocking: blocking ? Math.round(blocking.loadBlocking) : NaN,
+    harness: blocking ? Math.round(blocking.harness) : NaN,
+    observer: Math.round(v.tbt),
     lcpEl: v.lcpEl,
   });
 
@@ -158,6 +245,7 @@ for (const r of rows) {
   if (r.lcp > BUDGET.lcp) fail.push(`${r.view}: LCP ${r.lcp}ms over ${BUDGET.lcp}ms`);
   if (r.cls > BUDGET.cls) fail.push(`${r.view}: CLS ${r.cls} over ${BUDGET.cls}`);
   if (r.inp > BUDGET.inp) fail.push(`${r.view}: worst interaction ${r.inp}ms over ${BUDGET.inp}ms`);
+  if (Number.isNaN(r.tbt)) fail.push(`${r.view}: TBT could not be read from the trace`);
 }
 
 let md = `# Direction F — the Phase 1 CWV gate
@@ -174,12 +262,17 @@ scroll, a card hover), which is a floor rather than the real number.
 Throttled to a mid-range phone: 4× CPU and Slow 4G on the phone profile, 2× CPU
 on desktop.
 
-| view | LCP | CLS | worst interaction | TBT | LCP element |
-|---|---|---|---|---|---|
+**TBT is taken from a Chrome trace** (main-thread tasks over 50 ms, the part after
+first contentful paint — Lighthouse's window). \`load-blocking\` counts every long
+task including those before first paint; \`observer\` is the page's own longtask
+observer, kept for continuity and known to miss pre-paint rendering tasks.
+
+| view | LCP | FCP | CLS | worst interaction | TBT (trace, after FCP) | load-blocking | observer | harness excluded | LCP element |
+|---|---|---|---|---|---|---|---|---|---|
 ${rows
   .map(
     (r) =>
-      `| ${r.view} | ${r.lcp}ms | ${r.cls} | ${r.inp}ms | ${r.tbt}ms | \`${r.lcpEl}\` |`
+      `| ${r.view} | ${r.lcp}ms | ${r.fcp}ms | ${r.cls} | ${r.inp}ms | ${r.tbt}ms | ${r.loadBlocking}ms | ${r.observer}ms | ${r.harness}ms | \`${r.lcpEl}\` |`
   )
   .join("\n")}
 
@@ -193,7 +286,9 @@ fs.writeFileSync(path.join(OUT, "HOTEL-CWV.md"), md);
 for (const r of rows) {
   console.log(
     `${r.view.padEnd(8)} LCP ${String(r.lcp).padStart(5)}ms  CLS ${String(r.cls).padEnd(7)} ` +
-      `worst-interaction ${String(r.inp).padStart(4)}ms  TBT ${String(r.tbt).padStart(5)}ms  [${r.lcpEl}]`
+      `worst-interaction ${String(r.inp).padStart(4)}ms  TBT ${String(r.tbt).padStart(5)}ms  ` +
+      `load-blocking ${String(r.loadBlocking).padStart(5)}ms  observer ${String(r.observer).padStart(5)}ms  ` +
+      `FCP ${String(r.fcp).padStart(5)}ms  harness ${String(r.harness).padStart(4)}ms  [${r.lcpEl}]`
   );
 }
 console.log("-> qa/looks/HOTEL-CWV.md   (LAB ONLY — field CrUX is not obtainable here)");

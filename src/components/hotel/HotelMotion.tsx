@@ -69,6 +69,15 @@ const idle = (timeout = 1500) =>
 /** Give the main thread back for a frame between stages. */
 const yieldToMain = () => new Promise<void>((resolve) => window.setTimeout(resolve, 0));
 
+/**
+ * Give the browser a whole rendering frame. Used where the next stage MEASURES
+ * right after the last one WROTE styles: without the frame, the style and
+ * layout pass the writes queued runs inside the measuring task instead of in
+ * the browser's own rendering step (tranche twelve, `qa/perf/`).
+ */
+const nextFrame = () =>
+  new Promise<void>((resolve) => window.requestAnimationFrame(() => window.setTimeout(resolve, 0)));
+
 export default function HotelMotion() {
   useEffect(() => {
     /*
@@ -159,7 +168,18 @@ export default function HotelMotion() {
             .to(bars, { scaleY: 1, ease: "none" }, 0)
             /* 8% travel — the directive's ceiling for parallax. */
             .to(frames, { yPercent: -8, ease: "none" }, 0);
+        }
+      });
 
+      /* The handoff and the words in separate tasks: together they crossed the
+         50ms line on the phone profile. Nothing between them is visible — both
+         are scrubbed, so neither moves until the reader scrolls. */
+      await yieldToMain();
+      if (cancelled) return;
+
+      ctx.add(() => {
+        const hero = document.querySelector<HTMLElement>(".ho-hero");
+        if (hero) {
           /*
            * THE PHOTOGRAPH HOLDS; THE WORDS DO NOT.
            *
@@ -244,11 +264,24 @@ export default function HotelMotion() {
        * decorates structure and never replaces it, so a sweep on scroll-idle
        * reveals anything at or above the fold that is somehow still hidden.
        */
-      ctx.add((self) => {
-        const reveal = document.querySelectorAll<HTMLElement>(
-          ".ho-card, .ho-credential, .ho-mantinada, .ho-distances div, .ho-head, .ho-group > h3"
-        );
+      const reveal = document.querySelectorAll<HTMLElement>(
+        ".ho-card, .ho-credential, .ho-mantinada, .ho-distances div, .ho-head, .ho-group > h3"
+      );
+      ctx.add(() => {
         gsap.set(reveal, HIDDEN);
+      });
+
+      /*
+       * A FRAME BETWEEN HIDING AND MEASURING. `batch` measures every element it
+       * is given; straight after forty style writes, that forced the whole style
+       * and layout pass into the same task. After a frame the browser has done
+       * that work in its rendering step, and the measurements read a clean
+       * layout. The elements are already hidden, so the frame shows nothing new.
+       */
+      await nextFrame();
+      if (cancelled) return;
+
+      ctx.add((self) => {
         ScrollTrigger.batch(reveal, {
           start: "top 88%",
           once: true,
@@ -345,6 +378,11 @@ export default function HotelMotion() {
        * before the refresh, so there is no frame in which the sand sections are
        * transparent and the pane has not yet been told where it should be.
        */
+      /* A clean layout for `setPinTop`'s read and the ground triggers' measures.
+         Arming and the refresh below stay in ONE task, for the reason given. */
+      await nextFrame();
+      if (cancelled) return;
+
       ctx.add((self) => {
         const root = document.querySelector<HTMLElement>("[data-look='hotel']");
         const pin = document.querySelector<HTMLElement>(".ho-ground-pin");
