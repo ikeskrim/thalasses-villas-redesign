@@ -170,3 +170,9 @@ content/media/originals/
 # photograph leaves here for public/images/_owner/ only when
 # scripts/merge-grades.mjs lands an A or B grade with no flag.
 content/owner-staging/
+# Site plans from `scripts/ingest-drive.mjs --plans`, stored byte for byte. A
+# plan shows the property's boundaries, access and buildings, and this
+# repository is public, so the drawings stay on the machine that ran the
+# ingest. Only their ledger is committed.
+content/plans/*
+!content/plans/manifest.json

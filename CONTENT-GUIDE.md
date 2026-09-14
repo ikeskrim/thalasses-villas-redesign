@@ -63,6 +63,33 @@ Links are taken only from the owner, never from a page or a file.
   often Drive changing its page than an empty folder. If the folder really is empty, add
   `--allow-empty`.
 
+### Sending a site plan
+
+A site plan, a survey or an architect's drawing is not a photograph. It goes in a folder of its
+own, so it can never be mistaken for one.
+
+1. Make a **separate** folder in Google Drive with only the plans in it: PDF, DWG, DXF, or a scan or
+   photograph of a paper plan. No photographs of the villas.
+2. Share it: **General access → Anyone with the link** (Viewer).
+3. Paste the link into the chat and say that it is the site plan.
+
+Whoever maintains the site then runs `node scripts/ingest-drive.mjs "<the link>" --plans` (add
+`--dry-run` to look first). In that run every file taken is a plan and nothing else. The type is
+decided by the file's contents: PDF, DWG, DXF and images are taken, while video, audio, text, web
+pages, SVG and office documents are refused. A run without `--plans` refuses a PDF, DWG or DXF, and
+its log says to run the link again with `--plans` if the file is a plan.
+
+- **Plans are stored, never published.** Each file is kept exactly as sent: not resized, re-encoded
+  or stripped. It goes into `content/plans/<date>/`, which git ignores, because a plan shows the
+  property's boundaries, access and buildings, and this repository is public. The files exist only
+  on the machine that ran the script. Plans are not graded, and nothing goes into `public/`.
+- **Only the ledger is committed.** `content/plans/manifest.json` records each plan's checksum,
+  type, version, filename and date, but never the Drive link or ID. If the stored files are lost,
+  running the same link again stores them again.
+- **Receiving a plan verifies nothing.** Every plan is recorded as `unverified`. Whether a plan
+  shows the estate as it is built is the owner's ruling, recorded by hand in `DECISIONS.md` (D-021).
+  No script makes that ruling.
+
 ### Change a fact
 
 Find it in the JSON and edit it. The number changes on every page that shows it,

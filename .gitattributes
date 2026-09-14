@@ -10,3 +10,7 @@
 *.woff2 binary
 *.mp4   binary
 *.pdf   binary
+# CAD drawings. An ASCII DXF is text, but a plan's sha256 is its provenance:
+# normalised to LF on commit, it would stop matching the hash recorded at ingest.
+*.dwg   binary
+*.dxf   binary

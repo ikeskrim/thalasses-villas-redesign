@@ -647,3 +647,44 @@ keeps the two tests in separate columns.
   - The shoreline is drawn but carries no label, because the site has no name for it on record. The numbered list beneath still carries "The private beach", as the 2D map does.
   - The pool-line label is anchored on the four villa pools by id. The plan also draws the Rituals pool, which is not one of them.
 - **Found, not changed.** "Set apart from the other four" (D-014, correction on merge) stays on the Pueblo pages. It is an owner question, not a silent edit.
+
+### D-023 · Site plans through the owner material pipeline (`scripts/ingest-drive.mjs --plans`)
+
+Carries out D-021's "accept plan files (PDF, image, DWG) from the owner's Drive link into `content/plans/`, with provenance". A build default, not a ruling. Built in an isolated worktree, reviewed by two adversarial reviewers (correctness and security; test adequacy), and fixed:
+
+- **A major defect, found by both reviewers.** A normal run described a binary DXF as "text" and gave no `--plans` hint. It compared the 18-character sentinel against a 16-byte slice.
+- **A minor defect.** DWG codes were prefix-matched, so `AC1.29` passed as `AC1.2`.
+- **Six gaps in the tests:**
+  - the photo-queue half of the dedupe rule;
+  - replacement of a ledger entry on a new date;
+  - the `%%EOF` and NUL byte bounds;
+  - the folder trail;
+  - the stored-status rule;
+  - `.gitignore` read as text, not as git applies it.
+
+All are fixed. The ingest spec passes 8 of 8, typecheck and lint are clean, and 10 deliberate mutations of the plans logic were each caught by the tests.
+
+- **Intent is declared, never guessed.** `node scripts/ingest-drive.mjs "<link>" --plans` treats every admitted file in that run as a plan and nothing in it as a photograph or a video.
+  - Folder names, a manifest inside the Drive folder, and pixel heuristics were all rejected. A misrouted plan image would enter photo grading, and a graded A or B is published to `public/`.
+  - A normal run still refuses a PDF, DWG or DXF, and the reason now says to re-run the link with `--plans`. A PDF is not auto-routed, because it could as easily be a contract.
+- **Recognised by content, not by name.**
+  - **PDF:** `%PDF-` plus a version, and `%%EOF` near the end, so a truncated file is refused.
+  - **DWG:** a version code from an allowlist taken from the local file(1) magic database, compared on all six bytes. The five-character codes AC1.2 and AC1.3 are stored NUL-terminated, so `AC1.29` is refused. The file also needs a NUL within the first 128 bytes, so a text file that begins `AC1015` is refused. `AC1035` is excluded, because it is not established as a real format code.
+  - **DXF:** the full 22-byte binary sentinel from Autodesk's DXF reference (not verified against a local sample), or ASCII group-code pairs opening a known section with no NUL anywhere.
+  - **Images:** photograph signatures reused.
+  - **Refused:** SVG, HTML, archives, text, audio and video are not plans.
+  - DXF was admitted beyond D-021's list, because CAD plans commonly travel as DXF.
+- **Stored byte-exact, off the public repository.**
+  - Plans go to `content/plans/<date>/<sha12>-<name>.<ext>`, which is gitignored, and are never decoded, resized, stripped, graded or published.
+  - A site plan shows boundaries, access and the helipad, and this repository is public. Only derived, owner-approved coordinates reach `content/estate-plan.json`.
+  - The committed ledger, `content/plans/manifest.json`, records for each plan:
+    - sha256, size, type and version;
+    - the Drive filename and folder;
+    - provenance `owner/drive/<date>`;
+    - verification `unverified`.
+
+    It records no Drive ID or resource key.
+- **The ingest never writes `owner-verified`.** That value is the owner's ruling and the key the 3D map's gate turns on (D-021, D-022). Receiving a plan verifies nothing, and the spec asserts the string appears nowhere the ingest writes.
+- **Dedupe.** A plan counts as taken when its ledger entry is stored and the file is still on disk. If the file is gone, as after a `git clean -X` or on another machine, it is stored again. The same bytes sent earlier as a photograph are not refused; the plan records `alsoPhotograph`.
+- **Owner-facing privacy note.** The Drive filename is committed in the ledger. A personal name in a filename would therefore be published, and only a maintainer reviewing the manifest before commit can prevent that.
+- **Not proven.** No real owner link has been run, and no real DWG, DXF or binary-DXF file was available: the fixtures are built to spec. CONTENT-GUIDE.md carries the owner's side.

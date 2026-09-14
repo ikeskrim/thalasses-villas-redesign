@@ -1,5 +1,6 @@
 import { test, expect } from "@playwright/test";
-import { spawn } from "node:child_process";
+import { spawn, spawnSync } from "node:child_process";
+import crypto from "node:crypto";
 import fs from "node:fs";
 import http from "node:http";
 import os from "node:os";
@@ -56,6 +57,9 @@ const IDS = {
   heic: "HEICfile00000000011",
   second: "SECONDphoto00000012",
   converted: "CONVERTEDjpg0000013",
+  dwgFile: "DWGfile000000000014",
+  dxfFile: "DXFfile000000000015",
+  binaryDxfFile: "BINDXFfile000000016",
   keyed: "KEYEDfolder00000020",
   keyedPhoto: "KEYEDphoto000000021",
   empty: "EMPTYfolder00000030",
@@ -177,6 +181,27 @@ async function fixtures() {
      sharp could not decode a real one either (its heif input is AVIF only). */
   const heic = Buffer.concat([box("ftyp", Buffer.from("heic", "latin1"), u32(0), Buffer.from("mif1heic", "latin1")), box("meta", Buffer.alloc(64, 1)), box("mdat", Buffer.alloc(2048, 9))]);
   return { photo, pdf, text, dupe, video, m4a, heic, second: await solid(200, 170, 120), converted: await solid(90, 140, 60) };
+}
+
+/* ------------------------------------------------------ plans, built to spec -- */
+
+/* A DWG header: the six-byte release code, then the NUL-padded bytes that follow
+   it in every release (zeros, a maintenance byte, a byte of 1), then body. */
+const dwg = (version: string) => Buffer.concat([Buffer.from(version, "latin1"), Buffer.alloc(5), Buffer.from([0x3f, 0x01]), Buffer.alloc(512, 0x5a)]);
+/* Binary DXF opens with a 22-byte sentinel (Autodesk's DXF reference). */
+const binaryDxf = () => Buffer.concat([Buffer.from("AutoCAD Binary DXF\r\n\x1a\0", "latin1"), Buffer.from("\0\0SECTION\0\x02\0HEADER\0", "latin1"), Buffer.alloc(64, 1)]);
+/* ASCII DXF: group code and value on alternate lines. */
+const dxfText = (lines: string[], eol = "\n") => Buffer.from(lines.join(eol) + eol, "latin1");
+const DXF = {
+  lf: dxfText(["0", "SECTION", "2", "HEADER", "9", "$ACADVER", "1", "AC1015", "9", "$INSBASE", "10", "0.0", "0", "ENDSEC", "0", "EOF"]),
+  crlf: dxfText(["999", "written by a test", "  0", "SECTION", "  2", "ENTITIES", "  0", "LINE", "  8", "0", " 10", "0.0", " 20", "0.0", "  0", "ENDSEC", "  0", "EOF"], "\r\n"),
+  bom: Buffer.concat([Buffer.from([0xef, 0xbb, 0xbf]), dxfText(["0", "SECTION", "2", "HEADER", "9", "$ACADVER", "1", "AC1032", "0", "ENDSEC", "0", "EOF"])]),
+  headerOnly: dxfText([" 0", "SECTION", " 2", "HEADER", " 9", "$ACADVER", " 1", "AC1027", " 0", "ENDSEC", " 0", "EOF"], "\r\n"),
+};
+
+function filesUnder(dir: string): string[] {
+  if (!fs.existsSync(dir)) return [];
+  return fs.readdirSync(dir, { withFileTypes: true }).flatMap((e) => (e.isDirectory() ? filesUnder(path.join(dir, e.name)) : [path.join(dir, e.name)]));
 }
 
 type Listing = { html: string; key?: string };
@@ -355,6 +380,74 @@ test.describe("owner material pipeline", () => {
     }
   });
 
+  test("a plan is decided by content too — PDF, DWG, DXF or an image of a plan, and nothing else", async () => {
+    const { sniff, sniffPlan } = await import("../scripts/ingest-drive.mjs");
+    const f = await fixtures();
+
+    /* PDF: a version, and an %%EOF at the end — a download cut short is not a plan. */
+    expect(sniffPlan(f.pdf)).toEqual({ kind: "plan", type: "pdf", version: "1.7" });
+    expect(sniffPlan(f.pdf.subarray(0, f.pdf.length - 7)), "a PDF with no %%EOF").toBeNull();
+    expect(sniffPlan(Buffer.from("%PDF-9.1\ntrailer << >>\n%%EOF\n", "latin1")), "no 1.x or 2.x version").toBeNull();
+    /* A file longer than the read window: the %%EOF is looked for in its tail, not the head. */
+    const head = Buffer.concat([Buffer.from("%PDF-1.4\n%%EOF\n", "latin1"), Buffer.alloc(4096, 0x20)]);
+    expect(sniffPlan(head, Buffer.concat([Buffer.alloc(4096, 0x20), Buffer.from("\n%%EOF\n", "latin1")]))).toEqual({ kind: "plan", type: "pdf", version: "1.4" });
+    expect(sniffPlan(head, Buffer.alloc(4096, 0x20)), "an %%EOF near the start is not the end of the file").toBeNull();
+    /* A file inside the read window has no tail: the %%EOF must be in the head's own last 1024 bytes. */
+    expect(sniffPlan(Buffer.concat([Buffer.from("%PDF-1.4\n%%EOF\n", "latin1"), Buffer.alloc(3000, 0x20)])), "a head-only PDF whose %%EOF is not near its end").toBeNull();
+    expect(sniffPlan(Buffer.concat([Buffer.from("%PDF-1.4\n", "latin1"), Buffer.alloc(3000, 0x20), Buffer.from("%%EOF\n", "latin1")]))).toEqual({ kind: "plan", type: "pdf", version: "1.4" });
+
+    /* DWG: a known release code, and NUL padding after it. */
+    for (const v of ["AC1015", "AC1018", "AC1021", "AC1024", "AC1027", "AC1032"]) {
+      expect(sniffPlan(dwg(v)), v).toEqual({ kind: "plan", type: "dwg", version: v });
+    }
+    expect(sniffPlan(dwg("AC9999")), "an unknown release code").toBeNull();
+    expect(sniffPlan(dwg("AC1035")), "AC1035, not established as a real code").toBeNull();
+    const textAboutDwg = Buffer.from(
+      "AC1015 is the release code a DWG from AutoCAD 2000 opens with. This note is plain text about it, and it runs well past the first one hundred and twenty-eight bytes.\n"
+    );
+    expect(sniffPlan(textAboutDwg), "a text file that opens with a release code").toBeNull();
+    const nulLate = Buffer.concat([Buffer.from("AC1015", "latin1"), Buffer.alloc(200, 0x41), Buffer.alloc(8)]);
+    expect(sniffPlan(nulLate), "a release code whose first NUL is past byte 128").toBeNull();
+    expect(sniffPlan(Buffer.from("AC10", "latin1")), "four bytes").toBeNull();
+    expect(sniffPlan(Buffer.from("AC1015", "latin1").subarray(0, 5)), "five bytes of a release code").toBeNull();
+    /* The two five-character codes end in a NUL; all six bytes are compared, never a prefix. */
+    expect(sniffPlan(dwg("AC1.2")), "AC1.2").toEqual({ kind: "plan", type: "dwg", version: "AC1.2" });
+    expect(sniffPlan(dwg("AC1.3")), "AC1.3").toEqual({ kind: "plan", type: "dwg", version: "AC1.3" });
+    expect(sniffPlan(dwg("AC1.40")), "AC1.40").toEqual({ kind: "plan", type: "dwg", version: "AC1.40" });
+    expect(sniffPlan(dwg("AC1.29")), "AC1.29 is not AC1.2").toBeNull();
+    expect(sniffPlan(dwg("AC1.3Z")), "AC1.3Z is not AC1.3").toBeNull();
+
+    /* DXF, ASCII and binary. */
+    expect(sniffPlan(DXF.lf), "LF").toEqual({ kind: "plan", type: "dxf", version: "AC1015", encoding: "ascii" });
+    expect(sniffPlan(DXF.crlf), "CRLF, padded codes, a 999 comment first").toEqual({ kind: "plan", type: "dxf", version: null, encoding: "ascii" });
+    expect(sniffPlan(DXF.bom), "a UTF-8 BOM").toEqual({ kind: "plan", type: "dxf", version: "AC1032", encoding: "ascii" });
+    expect(sniffPlan(binaryDxf()), "the binary sentinel").toEqual({ kind: "plan", type: "dxf", version: null, encoding: "binary" });
+    expect(sniffPlan(Buffer.concat([DXF.lf, Buffer.from("0\n\0\n", "latin1")])), "a well-formed ASCII DXF with a NUL in it is not text").toBeNull();
+    expect(sniffPlan(dxfText(["0", "SECTION", "2", "NOTES", "0", "ENDSEC"])), "an unknown section").toBeNull();
+    expect(sniffPlan(dxfText(["notes", "0", "SECTION", "2", "HEADER"])), "a SECTION that is not where a DXF opens").toBeNull();
+    expect(
+      sniffPlan(dxfText(["0", "SECTION", "2", "HEADER", "9", "$ACADVER", "1", "drawn by someone", "0", "ENDSEC"])),
+      "a $ACADVER that is not a release code is not recorded"
+    ).toEqual({ kind: "plan", type: "dxf", version: null, encoding: "ascii" });
+
+    /* An image of a plan, by the photograph signatures. */
+    expect(sniffPlan(f.photo)).toEqual({ kind: "plan", type: "jpeg" });
+    expect(sniffPlan(await sharp({ create: { width: 8, height: 8, channels: 3, background: "#fff" } }).tiff().toBuffer())).toEqual({ kind: "plan", type: "tiff" });
+
+    /* Not plans. */
+    const svg = Buffer.from('<?xml version="1.0"?>\n<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10"><script>alert(1)</script></svg>\n');
+    const html = Buffer.from("<!DOCTYPE html><html><body>site plan</body></html>\n");
+    const zip = Buffer.concat([Buffer.from("PK\x03\x04", "latin1"), Buffer.alloc(64)]);
+    for (const [label, b] of [["text", f.text], ["html", html], ["zip", zip], ["svg", svg], ["m4a", f.m4a], ["video", f.video]] as const) {
+      expect(sniffPlan(b), label).toBeNull();
+    }
+
+    /* And sniff() is unchanged: an ordinary run still refuses every plan format. */
+    for (const [label, b] of [["pdf", f.pdf], ["dwg", dwg("AC1015")], ["ascii dxf", DXF.lf], ["binary dxf", binaryDxf()]] as const) {
+      expect(sniff(b), label).toBeNull();
+    }
+  });
+
   test("a listing that yields nothing, or less than it shows, fails loudly; an ambiguous link with no listing is a file", async () => {
     const f = await fixtures();
     const drifted = `<div class="flip-entry" data-item="${IDS.photo}"><span>renamed.jpg</span></div>`;
@@ -442,6 +535,9 @@ test.describe("owner material pipeline", () => {
       [IDS.m4a]: { body: f.m4a },
       [IDS.heic]: { body: f.heic },
       [IDS.video]: { body: f.video, confirm: true },
+      [IDS.dwgFile]: { body: dwg("AC1024") },
+      [IDS.dxfFile]: { body: DXF.lf },
+      [IDS.binaryDxfFile]: { body: binaryDxf() },
     };
     const rootEntries = [
       entry(IDS.photo, "../../escape attempt.JPG", fileHref(IDS.photo)),
@@ -450,6 +546,10 @@ test.describe("owner material pipeline", () => {
       entry(IDS.text, "notes.txt", fileHref(IDS.text)),
       entry(IDS.dupe, "already-have-this.jpg", fileHref(IDS.dupe)),
       entry(IDS.heic, "IMG_0001.HEIC", fileHref(IDS.heic)),
+      /* Plans in a photograph folder: refused, each named for what it is, and pointed at --plans. */
+      entry(IDS.dwgFile, "villa layout.jpg", fileHref(IDS.dwgFile)),
+      entry(IDS.dxfFile, "boundary.dxf", fileHref(IDS.dxfFile)),
+      entry(IDS.binaryDxfFile, "levels.dxf", fileHref(IDS.binaryDxfFile)),
       entry(IDS.offsite, "click me.jpg", `https://evil.example/file/d/${IDS.offsite}/view`),
       entry(IDS.sub, "Videos", `https://drive.google.com/drive/folders/${IDS.sub}`),
     ];
@@ -485,9 +585,21 @@ test.describe("owner material pipeline", () => {
       expect(byName["second.jpg"].status).toBe("staged");
       expect(byName["sunset.jpg"].status).toBe("rejected");
       expect(byName["sunset.jpg"].reason).toContain("pdf");
+      expect(byName["sunset.jpg"].reason, "a refused PDF points at the plans run").toContain("--plans");
+      for (const [name, what] of [
+        ["villa layout.jpg", "dwg"],
+        ["boundary.dxf", "dxf"],
+        ["levels.dxf", "dxf"] /* the binary sentinel is longer than a 16-byte look */,
+      ] as const) {
+        expect(byName[name].status, name).toBe("rejected");
+        expect(byName[name].reason, name).toContain(`it is ${what},`);
+        expect(byName[name].reason, `a refused ${what} points at the plans run`).toContain("--plans");
+      }
       expect(byName["drone audio.mp4"].status).toBe("rejected");
       expect(byName["drone audio.mp4"].reason).toContain("audio");
+      expect(byName["drone audio.mp4"].reason).not.toContain("--plans");
       expect(byName["notes.txt"].status).toBe("rejected");
+      expect(byName["notes.txt"].reason).not.toContain("--plans");
       expect(byName["already-have-this.jpg"].status).toBe("duplicate");
       expect(byName["already-have-this.jpg"].of).toMatch(/^\/images\/_site\//);
       expect(byName["copy of photo.jpg"].status).toBe("duplicate");
@@ -695,6 +807,330 @@ test.describe("owner material pipeline", () => {
         for (const id of Object.values(IDS)) expect(text, `${rel} leaks ${id}`).not.toContain(id);
       }
       for (const text of printed) for (const id of Object.values(IDS)) expect(text).not.toContain(id);
+    } finally {
+      drive.server.close();
+      fs.rmSync(out, { recursive: true, force: true });
+    }
+  });
+
+  test("a plans folder: stored byte for byte, never near the photograph path, never verified, no key written", async () => {
+    const f = await fixtures();
+    const tiff = await sharp({ create: { width: 64, height: 48, channels: 3, background: { r: 250, g: 250, b: 245 } } }).tiff().toBuffer();
+    const misnamed = Buffer.from("%PDF-1.4\n1 0 obj << /Type /Catalog /Pages 2 0 R >> endobj\ntrailer << >>\n%%EOF\n", "latin1");
+    const P = {
+      root: "PLANSroot0000000040",
+      sub: "PLANSsub00000000041",
+      pdf: "PLANpdf00000000042",
+      dwg: "PLANdwg00000000043",
+      dxf: "PLANdxf00000000044",
+      photo: "PLANphoto000000045",
+      tiff: "PLANtiff0000000046",
+      misnamed: "PLANmisnamed000047",
+      pdfAgain: "PLANpdfAgain000048",
+      video: "PLANvideo000000049",
+      m4a: "PLANm4a00000000050",
+      text: "PLANtext0000000051",
+      svg: "PLANsvg00000000052",
+      broken: "PLANbroken00000053",
+      library: "PLANlibrary0000054",
+      binaryDxf: "PLANbinaryDxf00055",
+    };
+    const bodies = {
+      pdf: f.pdf,
+      dwg: dwg("AC1032"),
+      dxf: DXF.headerOnly,
+      binaryDxf: binaryDxf(),
+      photo: f.photo,
+      tiff,
+      misnamed,
+      library: f.dupe,
+    };
+    const files: Record<string, Stored> = {
+      [P.pdf]: { body: bodies.pdf },
+      [P.pdfAgain]: { body: bodies.pdf },
+      [P.dwg]: { body: bodies.dwg, key: KEYS.photo },
+      [P.dxf]: { body: bodies.dxf },
+      [P.photo]: { body: bodies.photo },
+      [P.tiff]: { body: bodies.tiff },
+      [P.misnamed]: { body: bodies.misnamed },
+      [P.library]: { body: bodies.library },
+      [P.video]: { body: f.video, confirm: true },
+      [P.m4a]: { body: f.m4a },
+      [P.text]: { body: f.text },
+      [P.svg]: { body: Buffer.from('<?xml version="1.0"?>\n<svg xmlns="http://www.w3.org/2000/svg"><script>alert(1)</script></svg>\n') },
+      [P.broken]: { body: f.pdf.subarray(0, 40) },
+      [P.binaryDxf]: { body: bodies.binaryDxf },
+    };
+    const listings: Record<string, Listing> = {
+      [P.root]: {
+        html: listing([
+          entry(P.pdf, "Site plan.pdf", fileHref(P.pdf)),
+          entry(P.dwg, "estate.dwg", `${fileHref(P.dwg)}&amp;resourcekey=${KEYS.photo}`),
+          entry(P.dxf, "estate.dxf", fileHref(P.dxf)),
+          entry(P.photo, "plan photo.jpg", fileHref(P.photo)),
+          entry(P.tiff, "survey scan.tif", fileHref(P.tiff)),
+          entry(P.misnamed, "drawing.dwg", fileHref(P.misnamed)),
+          entry(P.library, "aerial.jpg", fileHref(P.library)),
+          entry(P.video, "walkthrough.mp4", fileHref(P.video)),
+          entry(P.m4a, "voice note.m4a", fileHref(P.m4a)),
+          entry(P.text, "readme.txt", fileHref(P.text)),
+          entry(P.svg, "plan.svg", fileHref(P.svg)),
+          entry(P.broken, "old plan.pdf", fileHref(P.broken)),
+          entry(IDS.offsite, "click me.pdf", `https://evil.example/file/d/${IDS.offsite}/view`),
+          entry(P.sub, "Copies", `https://drive.google.com/drive/folders/${P.sub}`),
+        ]),
+      },
+      [P.sub]: { html: listing([entry(P.pdfAgain, "Site plan (1).pdf", fileHref(P.pdfAgain)), entry(P.binaryDxf, "site section.dxf", fileHref(P.binaryDxf))]) },
+    };
+    /* The Drive filename → the bytes Drive served for it, for every file that is a plan. */
+    const plansServed: Record<string, Buffer> = {
+      "Site plan.pdf": bodies.pdf,
+      "estate.dwg": bodies.dwg,
+      "estate.dxf": bodies.dxf,
+      "site section.dxf": bodies.binaryDxf,
+      "plan photo.jpg": bodies.photo,
+      "survey scan.tif": bodies.tiff,
+      "drawing.dwg": bodies.misnamed,
+      "aerial.jpg": bodies.library,
+    };
+    const drive = await mockDrive(listings, files);
+    const out = fs.mkdtempSync(path.join(os.tmpdir(), "ingest-drive-plans-"));
+    const sheetDir = path.join(out, "sheet");
+    const env = { INGEST_DRIVE_BASE: drive.base, INGEST_DOWNLOAD_BASE: drive.base, INGEST_OUT_ROOT: out, INGEST_DATE: DATE, ...NO_FFMPEG };
+    const link = `https://drive.google.com/drive/folders/${P.root}?usp=sharing`;
+    const read = (rel: string) => JSON.parse(fs.readFileSync(path.join(out, rel), "utf-8"));
+    const lastRun = () => {
+      const r = read("content/owner-intake.json").runs.at(-1);
+      return { counts: r.counts, byName: Object.fromEntries(r.files.map((x: { name: string }) => [x.name, x])) };
+    };
+    const onDisk = (rel: string) => path.join(out, ...rel.split("/"));
+    const sha256 = (b: Buffer) => crypto.createHash("sha256").update(b).digest("hex");
+    /* The owner's ruling on a plan (DECISIONS.md D-021). No ingest may write it. */
+    const RULING = "owner-verified";
+    const printed: string[] = [];
+    const noRuling = () => {
+      for (const file of filesUnder(out)) {
+        if (path.relative(out, file) === path.join("content", "photo-selects.json")) continue; /* copied from the repository below */
+        expect(fs.readFileSync(file).includes(RULING), `${path.relative(out, file)} carries the owner's ruling`).toBe(false);
+      }
+      for (const text of printed) expect(text).not.toContain(RULING);
+    };
+    try {
+      expect(fs.readFileSync(path.join(REPO, "scripts", "ingest-drive.mjs"), "utf-8"), "the ingest cannot write a ruling it does not contain").not.toContain(RULING);
+
+      /* ---- 1. A dry run looks, and writes nothing. -------------------------- */
+      const dry = await ingest([link, "--plans", "--dry-run"], env);
+      printed.push(dry.stdout, dry.stderr);
+      expect(dry.status, dry.stderr + dry.stdout).toBe(0);
+      expect(dry.stdout.match(/^\s+would-store\s/gm) ?? []).toHaveLength(8);
+      expect(dry.stdout).toMatch(/^\s+duplicate\s/m);
+      for (const rel of ["content/plans", "content/owner-intake.json", "content/grading-queue.json", "content/media", "content/owner-staging", "public"]) {
+        expect(fs.existsSync(path.join(out, rel)), `a dry run writes no ${rel}`).toBe(false);
+      }
+      expect(filesUnder(path.join(out, "content", "inbox")), "a dry run leaves no download behind").toEqual([]);
+
+      /* ---- 2. The run, over ledgers a checkout already holds. ----------------
+         The photograph queue already has the survey scan's bytes, graded and
+         published: `taken` for a photograph run, and NOT a reason to refuse the
+         plan. And the plans ledger has an entry for the DWG whose file is on disk
+         but whose status is not "stored": only a stored plan is taken. */
+      const scanPublished = `/images/_owner/2025-12-01/${sha256(bodies.tiff).slice(0, 12)}-survey-scan.jpg`;
+      const seededQueue = {
+        queue: [
+          {
+            staged: `content/owner-staging/2025-12-01/${sha256(bodies.tiff).slice(0, 12)}-survey-scan.jpg`,
+            publishAs: scanPublished,
+            published: scanPublished,
+            originalSha256: sha256(bodies.tiff),
+            provenance: "owner/drive/2025-12-01",
+            tier: "A",
+            origin: "camera",
+            status: "published",
+            grade: "B",
+            added: "2025-12-01",
+          },
+        ],
+      };
+      fs.mkdirSync(path.join(out, "content"), { recursive: true });
+      fs.writeFileSync(path.join(out, "content", "grading-queue.json"), JSON.stringify(seededQueue, null, 2));
+      const withdrawnRel = `content/plans/2025-12-31/${sha256(bodies.dwg).slice(0, 12)}-estate.dwg`;
+      fs.mkdirSync(path.dirname(onDisk(withdrawnRel)), { recursive: true });
+      fs.writeFileSync(onDisk(withdrawnRel), bodies.dwg);
+      fs.writeFileSync(
+        path.join(out, "content", "plans", "manifest.json"),
+        JSON.stringify({ _note: "seeded by the test", plans: [{ stored: withdrawnRel, sha256: sha256(bodies.dwg), bytes: bodies.dwg.length, type: "dwg", name: "estate.dwg", status: "withdrawn", verification: "unverified" }] }, null, 2)
+      );
+
+      const r = await ingest([link, "--plans"], env);
+      printed.push(r.stdout, r.stderr);
+      expect(r.status, r.stderr + r.stdout).toBe(0);
+      const { counts, byName } = lastRun();
+      expect(counts).toEqual({ stored: 8, duplicate: 1, rejected: 5, skipped: 1 });
+
+      const storedAs = (name: string, slugged: string, ext: string) => {
+        expect(byName[name], name).toMatchObject({ status: "stored", kind: "plan" });
+        expect(byName[name].stored, name).toMatch(new RegExp(`^content/plans/${DATE}/[0-9a-f]{12}-${slugged}\\.${ext}$`));
+      };
+      storedAs("Site plan.pdf", "site-plan", "pdf");
+      storedAs("estate.dwg", "estate", "dwg");
+      storedAs("estate.dxf", "estate", "dxf");
+      storedAs("site section.dxf", "site-section", "dxf");
+      storedAs("plan photo.jpg", "plan-photo", "jpg");
+      storedAs("survey scan.tif", "survey-scan", "tiff");
+      storedAs("aerial.jpg", "aerial", "jpg");
+      /* A PDF named .dwg is stored as the PDF it is. */
+      storedAs("drawing.dwg", "drawing", "pdf");
+      expect(byName["drawing.dwg"].type).toBe("pdf");
+      expect(byName["Site plan (1).pdf"]).toMatchObject({ status: "duplicate", of: byName["Site plan.pdf"].stored });
+      for (const [name, what] of [
+        ["walkthrough.mp4", "video"],
+        ["voice note.m4a", "audio"],
+        ["readme.txt", "text"],
+        ["plan.svg", "svg"],
+        ["old plan.pdf", "cut short"],
+      ] as const) {
+        expect(byName[name].status, name).toBe("rejected");
+        expect(byName[name].reason, name).toContain("not a plan");
+        expect(byName[name].reason, name).toContain(what);
+      }
+      expect(byName["click me.pdf"].status).toBe("skipped");
+      expect(drive.seen.has("asked-for-offsite-entry")).toBe(false);
+
+      /* The bytes stored are the bytes served: nothing decoded, resized, re-encoded or stripped. */
+      for (const [name, body] of Object.entries(plansServed)) {
+        const stored = fs.readFileSync(onDisk(byName[name].stored));
+        expect(stored.equals(body), `${name} is stored exactly as sent`).toBe(true);
+        expect(sha256(stored), name).toBe(byName[name].sha256);
+      }
+      const planPhoto = await sharp(onDisk(byName["plan photo.jpg"].stored)).metadata();
+      expect(planPhoto.exif, "a photograph of a plan keeps its EXIF, GPS included: it is never stripped").toBeDefined();
+
+      /* The committed ledger. */
+      const manifest = read("content/plans/manifest.json");
+      expect(manifest.plans).toHaveLength(8);
+      expect(manifest.plans.some((p: { stored: string }) => p.stored === withdrawnRel), "the entry that was not stored is replaced").toBe(false);
+      for (const p of manifest.plans) {
+        expect(p).toMatchObject({ provenance: `owner/drive/${DATE}`, origin: "owner-plan", verification: "unverified", status: "stored", added: DATE });
+        expect(p.sha256).toMatch(/^[0-9a-f]{64}$/);
+        expect(p.bytes).toBe(plansServed[p.name]!.length);
+        expect(fs.existsSync(onDisk(p.stored))).toBe(true);
+      }
+      const planNamed = (name: string) => manifest.plans.find((p: { name: string }) => p.name === name);
+      expect(planNamed("Site plan.pdf")).toMatchObject({ type: "pdf", version: "1.7", folder: null });
+      expect(planNamed("estate.dwg")).toMatchObject({ type: "dwg", version: "AC1032" });
+      expect(planNamed("estate.dxf")).toMatchObject({ type: "dxf", version: "AC1027", encoding: "ascii" });
+      expect(planNamed("site section.dxf"), "a plan in a subfolder records its folder").toMatchObject({ type: "dxf", version: null, encoding: "binary", folder: "Copies" });
+      expect(byName["estate.dwg"].status, "a plans-ledger entry that is not stored does not make a duplicate").toBe("stored");
+      expect(manifest.plans.filter((p: { sha256: string }) => p.sha256 === sha256(bodies.dwg))).toHaveLength(1);
+      expect(planNamed("survey scan.tif")).toMatchObject({ type: "tiff", version: null, alsoPhotograph: scanPublished });
+      expect(byName["survey scan.tif"].status, "bytes the photograph queue has taken are still stored as a plan").toBe("stored");
+      expect(planNamed("aerial.jpg").alsoPhotograph, "the same bytes as a library photograph: stored all the same, and the photograph named").toMatch(/^\/images\/_site\//);
+      expect(planNamed("plan photo.jpg").alsoPhotograph).toBeUndefined();
+      noRuling();
+
+      /* Nothing went near the photograph path. */
+      expect(read("content/grading-queue.json"), "no plan is queued for grading").toEqual(seededQueue);
+      expect(read("content/media/manifest.json").videos).toEqual([]);
+      for (const rel of ["content/owner-staging", "public", "content/image-provenance.json", "content/media/originals"]) {
+        expect(fs.existsSync(path.join(out, rel)), `a plans run writes no ${rel}`).toBe(false);
+      }
+      expect(filesUnder(path.join(out, "content", "inbox")), "nothing is left in the inbox").toEqual([]);
+      /* The rules as git applies them, not as text: a drawing is ignored, the ledger is not,
+         and neither kind of CAD file is ever line-ending normalised. */
+      const git = (...args: string[]) => spawnSync("git", args, { cwd: REPO, encoding: "utf-8" });
+      for (const rel of [byName["estate.dxf"].stored, byName["Site plan.pdf"].stored, "content/plans/x.dwg"]) {
+        const ignored = git("check-ignore", "--no-index", "-q", rel);
+        expect(ignored.status, `${rel} is ignored ${ignored.stderr}`).toBe(0);
+      }
+      const ledger = git("check-ignore", "--no-index", "-q", "content/plans/manifest.json");
+      expect(ledger.status, `the plans ledger is committed ${ledger.stderr}`).toBe(1);
+      const attrs = git("check-attr", "binary", "--", "content/plans/x.dwg", "content/plans/x.dxf");
+      expect(attrs.status, attrs.stderr).toBe(0);
+      expect(attrs.stdout).toContain("content/plans/x.dwg: binary: set");
+      expect(attrs.stdout).toContain("content/plans/x.dxf: binary: set");
+
+      /* ---- 3. The grading pass finds no photograph to grade. ----------------- */
+      fs.copyFileSync(path.join(REPO, "content", "photo-selects.json"), path.join(out, "content", "photo-selects.json"));
+      const sheet = await run("grading-sheet.mjs", [sheetDir, "--queue"], {}, out);
+      expect(sheet.status, sheet.stderr + sheet.stdout).toBe(0);
+      expect(sheet.stdout).toContain("no pending-grade photograph");
+      expect(fs.existsSync(sheetDir), "no sheet is built from plans").toBe(false);
+
+      /* ---- 4. Run again: every plan is a duplicate. -------------------------- */
+      const again = await ingest([link, "--plans"], env);
+      printed.push(again.stdout, again.stderr);
+      expect(again.status, again.stderr).toBe(0);
+      const second = lastRun();
+      expect(second.counts.stored ?? 0).toBe(0);
+      for (const name of [...Object.keys(plansServed), "Site plan (1).pdf"]) expect(second.byName[name].status, name).toBe("duplicate");
+      expect(read("content/plans/manifest.json").plans).toHaveLength(8);
+
+      /* ---- 5. The drawings are lost (gitignored: a clean, another checkout), the
+         committed ledger is not, and the run is on a later day. Each is stored
+         again under that day; its entry is replaced, not kept pointing at the
+         missing file. Meanwhile a photograph run has queued the plan photo's bytes
+         and its staged file is gone too: not `taken`, but still in the queue, so
+         it is named beside the plan. */
+      const LATER = "2026-01-03";
+      const later = { ...env, INGEST_DATE: LATER };
+      const pendingStaged = `content/owner-staging/2025-12-02/${sha256(bodies.photo).slice(0, 12)}-plan-photo.jpg`;
+      const queueNow = read("content/grading-queue.json");
+      queueNow.queue.push({
+        staged: pendingStaged,
+        publishAs: `/images/_owner/2025-12-02/${path.posix.basename(pendingStaged)}`,
+        originalSha256: sha256(bodies.photo),
+        provenance: "owner/drive/2025-12-02",
+        tier: "A",
+        origin: "camera",
+        status: "pending-grade",
+        added: "2025-12-02",
+      });
+      fs.writeFileSync(path.join(out, "content", "grading-queue.json"), JSON.stringify(queueNow, null, 2));
+      fs.rmSync(path.join(out, "content", "plans", DATE), { recursive: true, force: true });
+      const restored = await ingest([link, "--plans"], later);
+      printed.push(restored.stdout, restored.stderr);
+      expect(restored.status, restored.stderr).toBe(0);
+      const third = lastRun();
+      expect(third.counts.stored).toBe(8);
+      expect(third.byName["Site plan (1).pdf"].status).toBe("duplicate");
+      let plansNow = read("content/plans/manifest.json").plans;
+      expect(plansNow).toHaveLength(8);
+      for (const name of Object.keys(plansServed)) {
+        const entries = plansNow.filter((p: { name: string }) => p.name === name);
+        expect(entries, name).toHaveLength(1);
+        expect(entries[0], name).toMatchObject({ stored: third.byName[name].stored, added: LATER, provenance: `owner/drive/${LATER}`, status: "stored" });
+        expect(entries[0].stored, name).toMatch(new RegExp(`^content/plans/${LATER}/`));
+        expect(fs.existsSync(onDisk(entries[0].stored)), name).toBe(true);
+        expect(fs.readFileSync(onDisk(entries[0].stored)).equals(plansServed[name]!), name).toBe(true);
+      }
+      expect(plansNow.find((p: { name: string }) => p.name === "plan photo.jpg").alsoPhotograph, "a queued photograph is named even while its staging is gone").toBe(pendingStaged);
+      expect(read("content/grading-queue.json"), "the queue is read, never written, by a plans run").toEqual(queueNow);
+      /* And on that day, a further run finds every plan where the ledger says it is. */
+      const settled = await ingest([link, "--plans"], later);
+      printed.push(settled.stdout, settled.stderr);
+      expect(settled.status, settled.stderr).toBe(0);
+      const fourth = lastRun();
+      expect(fourth.counts.stored ?? 0).toBe(0);
+      for (const name of [...Object.keys(plansServed), "Site plan (1).pdf"]) expect(fourth.byName[name].status, name).toBe("duplicate");
+
+      /* ---- 6. All of content/plans is lost, ledger included. ----------------- */
+      fs.rmSync(path.join(out, "content", "plans"), { recursive: true, force: true });
+      const fresh = await ingest([link, "--plans"], later);
+      printed.push(fresh.stdout, fresh.stderr);
+      expect(fresh.status, fresh.stderr).toBe(0);
+      expect(lastRun().counts.stored).toBe(8);
+      plansNow = read("content/plans/manifest.json").plans;
+      expect(plansNow).toHaveLength(8);
+      for (const name of Object.keys(plansServed)) expect(plansNow.filter((p: { name: string }) => p.name === name), name).toHaveLength(1);
+      noRuling();
+
+      /* No Drive ID and no resource key written or printed. */
+      const secrets = [...Object.values(P), IDS.offsite, KEYS.photo];
+      for (const rel of ["content/plans/manifest.json", "content/owner-intake.json", "content/grading-queue.json", "content/media/manifest.json"]) {
+        const text = fs.readFileSync(path.join(out, rel), "utf-8");
+        for (const s of secrets) expect(text, `${rel} leaks ${s}`).not.toContain(s);
+      }
+      for (const text of printed) for (const s of secrets) expect(text).not.toContain(s);
     } finally {
       drive.server.close();
       fs.rmSync(out, { recursive: true, force: true });

@@ -5,5 +5,9 @@ export function parseFolderListing(
 ): ({ kind: "folder" | "file"; id: string; name: string; resourceKey?: string } | { kind: "skipped"; id: string; name: string; reason: string })[];
 export function sniff(buf: Uint8Array, tail?: Uint8Array): { kind: "image" | "video"; type: string } | null;
 export function sniffFile(file: string): { kind: "image" | "video"; type: string } | null;
+export function sniffPlan(
+  buf: Uint8Array,
+  tail?: Uint8Array
+): { kind: "plan"; type: "pdf" | "dwg" | "dxf" | (string & {}); version?: string | null; encoding?: "ascii" | "binary" } | null;
 export function heroVariantPlan(inputRel: string, dirRel: string): { name: string; budget: boolean; args: string[] }[];
 export function commandLine(args: string[], exe?: string): string;

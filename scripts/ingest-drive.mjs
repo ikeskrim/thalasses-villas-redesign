@@ -8,8 +8,15 @@
  * photographs into a gitignored staging area and the grading queue, video into
  * `content/media/` with hero-loop variants.
  *
- *   node scripts/ingest-drive.mjs "<Drive share link>"                 ingest
- *   node scripts/ingest-drive.mjs "<Drive share link>" --dry-run       look, change nothing
+ * A SITE PLAN comes through the same door, in a run of its own. With `--plans`
+ * the run admits plans ONLY — PDF, DWG, DXF, or an image of a plan — and stores
+ * each one byte for byte in `content/plans/<date>/`, which git ignores, with a
+ * committed ledger beside it. In that run nothing is a photograph or a video.
+ *
+ *   node scripts/ingest-drive.mjs "<Drive share link>"                 ingest photographs and video
+ *   node scripts/ingest-drive.mjs "<Drive share link>" --plans         ingest site plans, and only plans
+ *   node scripts/ingest-drive.mjs "<Drive share link>" --dry-run       look, change nothing (with or
+ *                                                                       without --plans)
  *   node scripts/ingest-drive.mjs "<Drive share link>" --allow-empty   an empty folder is not an error
  *   node scripts/ingest-drive.mjs --transcode-pending                  cut the variants of every
  *                                                                       clip left needs-transcode
@@ -26,7 +33,32 @@
  *   `sunset.jpg` is a PDF, and it is refused. An M4A named `drone.mp4` is audio,
  *   and it is refused too: MP4, Matroska and AVI are containers, not video, so a
  *   file is admitted as video only when its own track table (an AVI's stream
- *   headers) declares a video track.
+ *   headers) declares a video track. Under `--plans`, a PDF named `plan.dwg` is
+ *   stored as the PDF it is.
+ *
+ *   It never guesses that a file is a plan. In an ordinary run a PDF, DWG or DXF
+ *   is refused — a PDF is as likely a contract or an invoice — and the log says
+ *   to re-run the link with `--plans` if it is a plan. The person running this
+ *   declares what the link holds, the way the link itself comes only from its
+ *   argument: no folder name, no manifest inside the folder and no reading of
+ *   pixels decides it. A folder named "plans" is owner-typed listing data, and a
+ *   misspelling would send a drawing to the graders and, on a pass, to public/.
+ *   So in a `--plans` run nothing is a photograph or a video, and in any other
+ *   run nothing is a plan.
+ *
+ *   It publishes, grades, re-encodes and strips no plan. A plan is stored as the
+ *   owner's bytes, because its sha256 is its provenance and a re-encode would
+ *   degrade the line work; a phone photograph of a paper plan therefore keeps its
+ *   EXIF. It is stored where git does not look — `content/plans/*` is ignored and
+ *   only its ledger, `content/plans/manifest.json`, is committed — because a plan
+ *   shows the property's boundaries, access and buildings. No plan enters the
+ *   grading queue, owner-staging, public/ or content/image-provenance.json.
+ *
+ *   It never verifies a plan. Every ledger entry it writes says
+ *   `verification: "unverified"`. Receiving a drawing is not the owner
+ *   confirming the layout it shows: that is his ruling, relayed and recorded by
+ *   hand in DECISIONS.md (D-021), and the 3D estate map's gate keys on it. This
+ *   script never writes that ruling's value, anywhere.
  *
  *   It never writes a Drive ID or a resource key into the repository. This
  *   repository is public, and an "anyone with the link" ID is a key to the
@@ -52,7 +84,8 @@
  *   needs converting or needs transcoding is recorded as exactly that, and a
  *   re-run tries it again instead of calling it a duplicate of itself. So is a
  *   photograph still waiting for its grade whose staged file is no longer on
- *   this machine: it is staged again.
+ *   this machine: it is staged again. And so is a plan whose stored file is no
+ *   longer on this machine: it is stored again, and its ledger entry replaced.
  *
  * Environment, for tests only: INGEST_DRIVE_BASE, INGEST_DOWNLOAD_BASE (the two
  * Google hosts), INGEST_OUT_ROOT (where outputs go), INGEST_DATE, INGEST_MAX_BYTES,
@@ -375,10 +408,135 @@ export function sniffFile(file) {
   return sniff(head, tail);
 }
 
+/* ---------------------------------------------------------------- plans -- */
+
+/* DWG release codes: the six bytes at offset 0 of a DWG file. The list is the
+   DWG entries of file(1)'s magic database (Git for Windows,
+   usr/share/misc/magic.mgc, whose labels run from "Release 1.0" to "AutoCAD
+   2021"). Two of them, AC1.2 and AC1.3, are five characters long. file(1)
+   matches every code as a prefix at offset 0, but this does not: all six bytes
+   are compared, so a five-character code must be followed by the NUL that ends
+   it. Read as a prefix, "AC1.2" would also admit "AC1.29" or "AC1.3Z", codes
+   nobody has shown to exist — and an allowlist admits only what is known.
+   AC1035 is in that database too and is DELIBERATELY left out: it sits next to
+   the "AutoCAD 2021" label, but it was not established here that Autodesk ever
+   wrote a DWG with that code. A real AC1035 file is refused, loudly, and the
+   code is added once such a file exists. */
+const DWG_VERSIONS = [
+  "AC1.2\0", "AC1.3\0", "AC1.40", "AC1.50", "AC2.10", "AC2.21", "AC2.22",
+  "AC1001", "AC1002", "AC1003", "AC1004", "AC1006", "AC1009", "AC1012", "AC1013",
+  "AC1014", "AC1015", "AC1018", "AC1021", "AC1024", "AC1027", "AC1032",
+];
+/* The section names a DXF file's first SECTION may carry. */
+const DXF_SECTIONS = new Set(["HEADER", "CLASSES", "TABLES", "BLOCKS", "ENTITIES", "OBJECTS", "THUMBNAILIMAGE"]);
+/* A binary DXF opens with this 22-byte sentinel: "AutoCAD Binary DXF", CR, LF,
+   SUB, NUL. It is taken from Autodesk's DXF reference ("Binary DXF Files"). It
+   was NOT checked against a real binary DXF on this machine — file(1)'s magic
+   database has no entry for it. */
+const BINARY_DXF = Buffer.from("AutoCAD Binary DXF\r\n\x1a\0", "latin1");
+const isBinaryDxf = (b) => b.length >= BINARY_DXF.length && b.subarray(0, BINARY_DXF.length).equals(BINARY_DXF);
+/* What a version recorded from inside a DXF may look like. The ledger is
+   committed, so nothing free-form read out of an owner's file goes into it. */
+const ACADVER = /^AC[0-9.]{4,5}$/;
+
+/** A DWG's release code, or null. The code alone is six printable bytes — a text
+    file could open with "AC1015" — so the file must also hold a NUL within its
+    first 128 bytes, which every DWG header does and no text file does. The
+    version recorded is the code without the NUL a five-character one ends in. */
+function dwgVersion(b) {
+  if (b.length < 6) return null;
+  const opening = b.toString("latin1", 0, 6);
+  const code = DWG_VERSIONS.find((v) => opening === v);
+  return code && b.subarray(0, 128).includes(0) ? code.replace(/\0$/, "") : null;
+}
+
+/**
+ * An ASCII DXF, read as what it is: (group code, value) line pairs, LF or CRLF,
+ * codes possibly space-padded ("  0"). Leading 999 comments are skipped, then the
+ * file must open a SECTION (code 0) with a known section name (code 2). A loose
+ * "0 / SECTION" anywhere in a text file is not enough. Returns `{ version }` —
+ * the header's $ACADVER when it is there and shaped like a release code — or null.
+ */
+function asciiDxf(b) {
+  if (b.length < 8 || b.includes(0)) return null;
+  let pos = b[0] === 0xef && b[1] === 0xbb && b[2] === 0xbf ? 3 : 0; /* a UTF-8 BOM */
+  const line = () => {
+    if (pos >= b.length) return null;
+    let end = b.indexOf(0x0a, pos);
+    if (end === -1) end = b.length;
+    const stop = end > pos && b[end - 1] === 0x0d ? end - 1 : end;
+    const s = b.toString("latin1", pos, Math.min(stop, pos + 512));
+    pos = end + 1;
+    return s;
+  };
+  const pair = () => {
+    const code = line();
+    const value = line();
+    if (code === null || value === null || !/^[ \t]*-?\d{1,4}[ \t]*$/.test(code)) return null;
+    return { code: Number(code), value: value.trim() };
+  };
+  let p = pair();
+  while (p && p.code === 999) p = pair();
+  if (!p || p.code !== 0 || p.value !== "SECTION") return null;
+  p = pair();
+  if (!p || p.code !== 2 || !DXF_SECTIONS.has(p.value)) return null;
+  let version = null;
+  /* $ACADVER is the header's first variable in what AutoCAD writes; the next code 0 ends the section. */
+  for (let n = 0; n < 64 && (p = pair()) && p.code !== 0; n++) {
+    if (p.code === 9 && p.value === "$ACADVER") {
+      const v = pair();
+      if (v && v.code === 1 && ACADVER.test(v.value)) version = v.value;
+      break;
+    }
+  }
+  return { version };
+}
+
+/**
+ * What a file IS as a plan, from its bytes — for a `--plans` run only. `null`
+ * means not a plan. Same arguments as sniff(): the file from its first byte, and
+ * its last bytes when it is longer than that.
+ *
+ *   PDF   "%PDF-" and a 1.x or 2.x version, AND "%%EOF" within the file's last
+ *         1024 bytes: a PDF cut short in the download is not stored as a plan.
+ *   DWG   a known release code at offset 0 (DWG_VERSIONS), and a NUL in the
+ *         first 128 bytes.
+ *   DXF   the binary sentinel, or an ASCII file that opens a known SECTION.
+ *   image a photograph or scan of a plan, by sniff()'s own image signatures.
+ *
+ * Everything else is refused: video and audio, HTML, SVG (it can carry script),
+ * zip and office documents, plain text.
+ */
+export function sniffPlan(buf, tail) {
+  const b = asBuffer(buf);
+  const t = tail ? asBuffer(tail) : undefined;
+  if (b.length >= 5 && b.toString("latin1", 0, 5) === "%PDF-") {
+    const version = /^[12]\.\d/.exec(b.toString("latin1", 5, 8))?.[0];
+    const end = t ?? b;
+    const complete = end.subarray(Math.max(0, end.length - 1024)).includes("%%EOF", 0, "latin1");
+    return version && complete ? { kind: "plan", type: "pdf", version } : null;
+  }
+  const dwg = dwgVersion(b);
+  if (dwg) return { kind: "plan", type: "dwg", version: dwg };
+  if (isBinaryDxf(b)) return { kind: "plan", type: "dxf", version: null, encoding: "binary" };
+  const media = sniff(b, t);
+  if (media?.kind === "image") return { kind: "plan", type: media.type };
+  if (media) return null;
+  const dxf = asciiDxf(b);
+  return dxf ? { kind: "plan", type: "dxf", version: dxf.version, encoding: "ascii" } : null;
+}
+
+/* What describeRefused() names a file that a `--plans` run would take. */
+const PLAN_NAMES = new Set(["pdf", "dwg", "dxf"]);
+
 /** For the rejection log only: a name for what a refused file most likely is. */
 function describeRefused(b) {
   const a = Buffer.from(b).subarray(0, 16).toString("latin1");
   if (a.startsWith("%PDF")) return "pdf";
+  if (dwgVersion(asBuffer(b))) return "dwg";
+  /* The binary sentinel is 22 bytes, longer than `a`: it is compared on the
+     whole head, or a binary DXF would pass below as "text" with no --plans hint. */
+  if (isBinaryDxf(asBuffer(b)) || asciiDxf(asBuffer(b))) return "dxf";
   if (a.startsWith("PK")) return "zip or office document";
   if (a.slice(4, 8) === "ftyp") {
     const major = a.slice(8, 12);
@@ -388,8 +546,20 @@ function describeRefused(b) {
   if (a.startsWith("RIFF") && a.slice(8, 12) === "WAVE") return "audio (WAV)";
   if (a.startsWith("RIFF") && a.slice(8, 12) === "AVI ") return "an AVI container with no video stream in it, audio most likely";
   if (/^\s*<(!doctype|html)/i.test(a)) return "html";
+  const opening = asBuffer(b).subarray(0, 1024).toString("latin1");
+  if (/^\s*</.test(opening) && /<svg[\s>]/i.test(opening)) return "svg";
   if (/^[\x09\x0a\x0d\x20-\x7e]*$/.test(a)) return "text";
   return "unrecognised binary";
+}
+
+/** For a `--plans` run's rejection log: what a file that is not a plan most likely is. */
+function describeNotPlan(head, tail) {
+  const media = sniff(head, tail);
+  if (media?.kind === "video") return `a video (${media.type})`;
+  const what = describeRefused(head);
+  if (what === "pdf") return "a pdf with no 1.x or 2.x version in its header, or no %%EOF at its end — damaged, or cut short in the download";
+  if (what === "svg") return "an svg, which can carry script";
+  return what;
 }
 
 /* ------------------------------------------------------------- network -- */
@@ -694,11 +864,13 @@ async function main() {
   if (args.includes("--transcode-pending")) return transcodePending();
   const dry = args.includes("--dry-run");
   const allowEmpty = args.includes("--allow-empty");
+  const plans = args.includes("--plans");
   const link = args.find((a) => !a.startsWith("--"));
   const parsed = link ? parseDriveLink(link) : null;
   if (!parsed) {
     console.error(
-      'usage: node scripts/ingest-drive.mjs "https://drive.google.com/drive/folders/<id>" [--dry-run] [--allow-empty]\n' +
+      'usage: node scripts/ingest-drive.mjs "https://drive.google.com/drive/folders/<id>" [--dry-run] [--allow-empty]    photographs and video\n' +
+        '       node scripts/ingest-drive.mjs "https://drive.google.com/drive/folders/<id>" --plans [--dry-run]           site plans only\n' +
         "       node scripts/ingest-drive.mjs --transcode-pending\n" +
         "The link must be a Google Drive folder or file shared \"anyone with the link\"."
     );
@@ -708,7 +880,7 @@ async function main() {
   const runId = shortHash(`${parsed.id}|${DATE}`);
   const inbox = path.join(OUT, "content", "inbox", DATE);
   fs.mkdirSync(inbox, { recursive: true });
-  console.log(`ingest ${parsed.kind} ${shortHash(parsed.id)} → ${path.relative(ROOT, inbox) || inbox}${dry ? "  (dry run)" : ""}`);
+  console.log(`ingest ${parsed.kind} ${shortHash(parsed.id)} → ${path.relative(ROOT, inbox) || inbox}${plans ? "  (plans only)" : ""}${dry ? "  (dry run)" : ""}`);
 
   /* 1. What is there. */
   const items = [];
@@ -795,6 +967,28 @@ async function main() {
   for (const v of media.videos) if (v.status === "variants-ready" && v.originalSha256) taken.set(v.originalSha256, `content/media/${v.slug}`);
   const ffmpeg = ffmpegBinary();
 
+  /* Plans have a ledger of their own, and only a `--plans` run reads or writes it.
+     The drawings themselves are gitignored and exist on one machine, so a plan is
+     taken only while its stored file is on disk — the rule stagingStands applies to
+     a photograph. One whose file is gone is stored again and its entry replaced. */
+  const plansLedger = plans
+    ? readLedger("content/plans/manifest.json", {
+        _note:
+          "Site plans the owner sent through `scripts/ingest-drive.mjs --plans`. The drawings are stored byte for byte in content/plans/<date>/, which git ignores: a plan shows the property's boundaries, access and buildings, and this repository is public. Only this ledger is committed. No plan is published, graded, re-encoded or stripped. Every entry the ingest writes is verification 'unverified': receiving a plan does not confirm the layout it shows, and only the owner's own ruling, recorded by hand (DECISIONS.md D-021), changes that. Drive IDs and resource keys are never stored.",
+        plans: [],
+      })
+    : null;
+  const planStands = (p) => p.status === "stored" && typeof p.stored === "string" && fs.existsSync(path.join(OUT, ...p.stored.split("/")));
+  const plansTaken = new Map();
+  for (const p of plansLedger?.plans ?? []) if (p.sha256 && planStands(p)) plansTaken.set(p.sha256, p.stored);
+  /* The same bytes may also be a photograph the library or the queue already
+     holds. That does not make the plan a duplicate — evidence of the layout is a
+     separate use — so the plan is stored and the photograph named beside it. */
+  const photographOf = (sha) => {
+    const q = queue.queue.find((x) => x.originalSha256 === sha);
+    return library.get(sha) ?? q?.published ?? q?.staged ?? taken.get(sha);
+  };
+
   const record = { run: runId, date: DATE, provenance: PROVENANCE, link: { kind: parsed.kind, idHash: shortHash(parsed.id) }, files: [] };
   const batch = new Map();
   let sharpLib = null;
@@ -815,12 +1009,64 @@ async function main() {
     }
     const name = it.name ?? got.filename ?? base.idHash;
     const { head, tail } = readWindow(tmp);
-    const kind = sniff(head, tail);
     const entry = { ...base, name, bytes: got.bytes, sha256: got.sha256 };
 
+    if (plans) {
+      /* A plan run. Nothing here is a photograph or a video, and nothing here goes
+         near their path: no strip, no resize, no re-encode, no queue, no staging. */
+      const plan = sniffPlan(head, tail);
+      if (!plan) {
+        fs.rmSync(tmp, { force: true });
+        record.files.push({ ...entry, status: "rejected", reason: `not a plan — it is ${describeNotPlan(head, tail)}, whatever its name says` });
+        continue;
+      }
+      entry.type = plan.type;
+      const dupe = plansTaken.get(got.sha256) ?? batch.get(got.sha256);
+      if (dupe) {
+        fs.rmSync(tmp, { force: true });
+        record.files.push({ ...entry, status: "duplicate", of: dupe });
+        continue;
+      }
+      const storedRel = `content/plans/${DATE}/${got.sha256.slice(0, 12)}-${slug(name)}.${plan.type === "jpeg" ? "jpg" : plan.type}`;
+      batch.set(got.sha256, storedRel);
+      if (dry) {
+        fs.rmSync(tmp, { force: true });
+        record.files.push({ ...entry, status: "would-store", kind: "plan" });
+        continue;
+      }
+      /* The downloaded file itself is moved into place: the bytes stored are the
+         bytes Drive sent, whose sha256 was taken while they streamed. */
+      const storedAbs = path.join(OUT, ...storedRel.split("/"));
+      fs.mkdirSync(path.dirname(storedAbs), { recursive: true });
+      fs.renameSync(tmp, storedAbs);
+      const also = photographOf(got.sha256);
+      plansLedger.plans = plansLedger.plans.filter((p) => p.sha256 !== got.sha256 && p.stored !== storedRel);
+      plansLedger.plans.push({
+        stored: storedRel,
+        sha256: got.sha256,
+        bytes: got.bytes,
+        type: plan.type,
+        version: plan.version ?? null,
+        ...(plan.encoding ? { encoding: plan.encoding } : {}),
+        name,
+        folder: base.folder ?? null,
+        provenance: PROVENANCE,
+        origin: "owner-plan",
+        verification: "unverified",
+        status: "stored",
+        added: DATE,
+        ...(also ? { alsoPhotograph: also } : {}),
+      });
+      record.files.push({ ...entry, status: "stored", kind: "plan", stored: storedRel });
+      continue;
+    }
+
+    const kind = sniff(head, tail);
     if (!kind) {
       fs.rmSync(tmp, { force: true });
-      record.files.push({ ...entry, status: "rejected", reason: `not a photograph or a video — it is ${describeRefused(head)}, whatever its name says` });
+      const what = describeRefused(head);
+      const hint = PLAN_NAMES.has(what) ? " — if this is a plan, re-run the link with --plans" : "";
+      record.files.push({ ...entry, status: "rejected", reason: `not a photograph or a video — it is ${what}, whatever its name says${hint}` });
       continue;
     }
     entry.type = kind.type;
@@ -916,6 +1162,7 @@ async function main() {
     writeJson(ledgerPath("content/owner-intake.json"), intake);
     writeJson(ledgerPath("content/grading-queue.json"), queue);
     writeJson(ledgerPath("content/media/manifest.json"), media);
+    if (plansLedger) writeJson(ledgerPath("content/plans/manifest.json"), plansLedger);
   }
 
   for (const f of record.files) {
@@ -927,6 +1174,13 @@ async function main() {
       "next: grade them — `npm run grading:sheet -- <new empty sheetDir> --queue`, the grade-photo-library pass " +
         "with the arguments it prints, then `npm run grading:merge -- <output.json> <sheetDir>`, which publishes " +
         "only an A or B with no flag and declares its provenance"
+    );
+  }
+  if (!dry && (counts.stored ?? 0) > 0) {
+    console.log(
+      `next: nothing was published. The plans are in content/plans/${DATE}/ on this machine only (gitignored) and recorded ` +
+        "unverified in content/plans/manifest.json — commit the manifest, never the drawings. Whether a plan shows the " +
+        "estate as built is the owner's ruling, recorded by hand in DECISIONS.md; no script makes it."
     );
   }
   if (!dry && (counts["needs-transcode"] ?? 0) > 0) {
