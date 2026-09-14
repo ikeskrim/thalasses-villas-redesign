@@ -177,6 +177,28 @@ The estate page keeps the chunk, because `Clause`, `Inventory` and `Ledger` stil
 
 On the other five routes, the initial scripts are about 130 KB lighter, uncompressed. The byte counts compare two builds that differ in more than this change: base7ff predates later tranche-twelve commits. So they show that the chunk left, not an exact attribution of every byte.
 
-## 8. Still open
+## 8. Production, after the deploy of f45e850
 
+Vercel reported `success` on the tenth check. At 18:48Z, `prod-reveal-check.mjs` (session scratch) ran read-only GETs against the production alias.
+
+| route | status | reveal hosts | inline `opacity:0` | `translateY(24px)` | empty clip | server `data-reveal` | framer-motion in initial scripts |
+|---|---|---|---|---|---|---|---|
+| `/en/careers` | 200 | 2 | 0 | 0 | 0 | 0 | none |
+| `/en/gallery` | 200 | 66 | 0 | 0 | 0 | 0 | none |
+| `/en/terms` | 200 | 13 | 0 | 0 | 0 | 0 | none |
+| `/en/contact` | 200 | 2 | 0 | 0 | 0 | 0 | none |
+| `/en/experiences/boat-trip` | 200 | 6 | 0 | 0 | 0 | 0 | none |
+| `/en/the-estate` | 200 | 10 | **19** | 0 | 0 | 0 | present (expected) |
+
+**Production serves the finished page on every route where the reveal was Framer's only user.**
+
+The estate page's 19 are not the reveal. None of them is a reveal host:
+- 18 are `span.clause-char`, the Framer `Clause` headline characters, each served at `opacity:0` with a staggered `translateX`;
+- 1 is `div.inventory-flow`, the Framer `Inventory` panel, at `opacity:0; transform: translateY(10px)`.
+
+My check flagged the route only because it applied the no-hidden-state rule to its own positive control.
+
+## 9. Still open
+
+- **The estate page still serves hidden content from Framer.** Its clause headline and one inventory panel arrive at `opacity:0` and wait for hydration (§8). This predates D-026, lies outside D-021's two named failures, and is what `layout.tsx`'s `<noscript>` rule still exists for. Whether the remaining Framer components get the same treatment is a separate change, with its own measurement.
 - **The motion-on appearance.** `.plate-figure` now shows its box-shadow once revealed, which the Framer build clipped away. It needs a capture for the owner.
