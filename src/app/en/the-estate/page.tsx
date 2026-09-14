@@ -13,6 +13,7 @@ import { Ledger } from "@/components/ui/Ledger";
 import { HOTSPOTS } from "@/app/home-data";
 import { estateCta } from "@/lib/booking";
 import { getEstate, getEstateVillas, getFacilitiesForVilla, getSite } from "@/lib/content";
+import { estate3dPlanForPage } from "@/lib/estate-plan";
 import { buildInventory } from "@/lib/inventory";
 import { byN } from "@/lib/selects";
 import {
@@ -98,6 +99,12 @@ export default function EstatePage() {
     legal?: { operatingLicence?: string; operatingLicenceLabel?: string };
   };
   const contact = site.contact ?? {};
+  /*
+   * The 3D estate map's provenance gate, decided once at build time
+   * (DECISIONS.md D-021). `null` while content/estate-plan.json is not
+   * owner-verified: the 2D map is the page and no geometry is shipped.
+   */
+  const plan3d = estate3dPlanForPage();
 
   const figures = [
     { label: "Bedrooms", value: FACTS.bedrooms },
@@ -281,6 +288,7 @@ export default function EstatePage() {
           image={byN(42).path}
           alt={byN(42).alt}
           hotspots={HOTSPOTS}
+          plan3d={plan3d}
           ledger={figures.slice(0, 5)}
           ctaLabel={cta.label}
           ctaHref={cta.href}

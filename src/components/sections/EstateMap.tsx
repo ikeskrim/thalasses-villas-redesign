@@ -2,11 +2,13 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 import { Clause } from "@/components/ui/Clause";
 import { Ledger, LedgerInline, type LedgerEntry } from "@/components/ui/Ledger";
 import { Magnetic } from "@/components/motion/Magnetic";
+import type { RenderPlan } from "@/lib/estate-plan-gate";
+import { useEstateMap3D } from "./estate-map-3d-gate";
 
 export interface Hotspot {
   id: string;
@@ -44,6 +46,7 @@ export function EstateMap({
   ctaLabel,
   ctaHref,
   beat = "05",
+  plan3d = null,
 }: {
   image: string;
   alt: string;
@@ -61,11 +64,27 @@ export function EstateMap({
    * second half of a beat that has already announced itself.
    */
   beat?: string | null;
+  /**
+   * The 3D diagram's render plan, or `null`. Passed only by `/en/the-estate`,
+   * and only when the provenance gate is open (DECISIONS.md D-021). The
+   * homepage never passes one, so it never considers the 3D map at all.
+   */
+  plan3d?: RenderPlan | null;
 }) {
   const [open, setOpen] = useState<string | null>(null);
+  /*
+   * THE 3D DIAGRAM (approved by the owner, D-021, behind a provenance gate).
+   * The server always renders the 2D frame below. Without a render plan —
+   * the gate closed — nothing else happens. With one, the hook swaps in the 3D
+   * diagram only when WebGL2 exists, reduced motion is off, and the section is
+   * near the viewport, and swaps back if the context fails. Everything else in
+   * this section, the list included, is the same for every reader.
+   */
+  const sectionRef = useRef<HTMLElement>(null);
+  const { Map3D, onFail } = useEstateMap3D(sectionRef, plan3d);
 
   return (
-    <section className="estate-map canon" aria-label="The estate">
+    <section ref={sectionRef} className="estate-map canon" aria-label="The estate">
       {beat === null ? null : <p className="micro">{beat} — The Estate</p>}
 
       {/*
@@ -83,6 +102,9 @@ export function EstateMap({
       </div>
       <Ledger entries={ledger} className="estate-map-ledger" />
 
+      {Map3D && plan3d ? (
+        <Map3D plan={plan3d} onFail={onFail} />
+      ) : (
       <div className="estate-map-frame">
         <Image
           src={image}
@@ -138,6 +160,7 @@ export function EstateMap({
           );
         })}
       </div>
+      )}
 
       {/* The same information, always present, never behind an interaction. */}
       <ul className="estate-map-list">

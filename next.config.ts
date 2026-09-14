@@ -99,6 +99,12 @@ const SECURITY_HEADERS = [
  */
 const nextConfig: NextConfig = {
   reactStrictMode: true,
+  /**
+   * `.next` for every real build. `scripts/estate3d-preview.mjs` builds the 3D
+   * estate map's local review copy into `.next-estate3d`, so it can be served on
+   * its own port beside the build `npm run qa` tests without overwriting it.
+   */
+  distDir: process.env.NEXT_DIST_DIR || ".next",
   // NOTE: `experimental.viewTransition` was tried here and this Next version
   // rejects it as an invalid key — there is no such option in its config
   // schema. The route wipe is therefore a controlled overlay

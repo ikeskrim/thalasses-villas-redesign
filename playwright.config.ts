@@ -23,6 +23,8 @@ const PORT = 3005;
 
 export default defineConfig({
   testDir: "./tests",
+  /* The 3D estate map's diagram tests need the local review build on :3035 (playwright.estate3d.config.ts). */
+  testIgnore: /estate-3d-preview\.spec\.ts/,
   fullyParallel: false,
   forbidOnly: !!process.env.CI,
   retries: 0,

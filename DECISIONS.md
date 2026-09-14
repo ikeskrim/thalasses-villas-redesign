@@ -252,6 +252,22 @@ the numbers are in `SESSION-REPORT.md` tranche twelve.
 - **Unknown `?enquiry=` subjects are dropped, never echoed.**
 - **Dependency fixes are patch or minor only.**
 
+### D-014 · The 3D estate map experiment (written on `feat/estate-3d`; merged under D-021)
+
+**Merged into main under the owner's approval, D-021.** This entry was written on the branch, before that approval. D-021 is the owner decision. This entry records what the experiment built, and where D-021 or a later entry says otherwise, the later entry wins.
+
+- **A diagram, never a picture.** It uses three.js primitives only: planes, boxes and one disc, in the site's own colour tokens, with no textures and no photographs. Blender is not installed on this machine, so there is no modelled geometry, and none was substituted.
+- **Geometry only from evidence.** On the branch, positions were typed into `estate-plan.ts` from two aerial frames (`/images/_chh/Ritual-drone.webp`, `/images/_chh/thalasses-all-2.webp`) and the villa copy's front and rear rows. The drawing was schematic, in unitless coordinates, and nothing about it was claimed as a survey. Under D-021 the geometry lives in `content/estate-plan.json`, where every element carries its own provenance and the basis for each value.
+- **Not drawn, and said so on the page.** Villa Pueblo: no aerial on record shows which plot is its own.
+- **Correction on merge: "set apart from the other four".** The branch entry gave that phrase as the reason Pueblo is not drawn, but it has no source text.
+  - It is redesign copy: `src/lib/villa-page.ts:155`, `src/lib/meta-copy.ts:68`, and "Apart from the four" at `src/app/home-data.ts:208`.
+  - The Phase 0 source says only "Unwind in utter seclusion" (`content/villas/pueblo.json:20`).
+  - It is withdrawn as evidence about Pueblo's position.
+  - The copy is still on those pages. Whether it stays is an owner question; the Greek reconciliation already marks its translation for the owner (`content/el/RECONCILIATION.md:534`).
+- **Marked for the owner:** which house in each row is which. The branch's order followed the 2D map's, and that map is placed over a photograph of one villa, not over a plan.
+- **Who got it, on the branch:** a reader with WebGL, reduced motion off, and the section within 600 px of the viewport. Everyone else kept the 2D map and never downloaded three.js. A failed or lost context fell back to 2D. Under D-021 the provenance gate decides first, on the server, before any of those checks runs.
+- **No layout shift by construction.** The diagram fills the 2D frame's exact box. On a phone the note stays inside that box as a short band over the sea, rather than being added below it.
+
 ### D-015 · D-011 corrected: what the owner material pipeline actually does
 
 **Decided:** 2026-09-14, by the building session, closing the audit of ask 1 and the review that followed. **Not an owner decision.** D-011 was logged as a build default and described behaviour the code did not have. This entry replaces it where the two disagree.
@@ -500,6 +516,30 @@ keeps the two tests in separate columns.
   - The Service/Arrival taxonomy split between `/en/experiences` and the homepage.
   - Whether `feat/estate-3d` replaces the 2D estate map. That is the owner's yes or no. **Answered by D-021.**
 
+### D-020 · Addendum to D-014: what the 3D estate map leaves out, and what it costs (written on `feat/estate-3d`; merged under D-021)
+
+**Merged into main with D-014, under the owner's approval in D-021.** This entry records defaults the branch took without saying so, as they stood at `1179011`. The provenance gate (D-021) and the build defaults logged after it change several of them. Where a later entry says otherwise, the later entry wins.
+
+- **The diagram does not carry every hotspot.** The 2D map has nine: five villas, the private beach, the pool line, the long table and the vegetable garden. The diagram labels six of them: four villas, the beach and, since this addendum, the pool line, as a label with no link, the same as its 2D hotspot. **The long table and the vegetable garden are not placed**, because no aerial on record establishes where they are, and a label would invent a position. Villa Pueblo stays undrawn (D-014). The diagram's note says so in both lengths: "The list below carries every place" on desktop, and "Villa Pueblo not drawn; all listed" in the shorter phone length. The numbered list beneath the map is unchanged and carries all nine. On the 3D path, `tests/estate-3d.spec.ts` checks that the two unplaced names are absent from the drawing and present in the list, and that the list has one item per 2D hotspot, in order and by name.
+- **No card detail survives in the diagram.** The 2D hotspot cards carry a line, a ledger (Beds/Sleeps per villa, 50 m to the beach, Pools 4, Seats 18) and, where the hotspot has one, a link. The 3D labels are bare names, and the villa and helipad labels are links. The list shows name and line but no ledger. A reader on the 3D path does not see those ledgers in the map section.
+- **A link the 2D map never had.** The helipad label links to `/en/experiences/private-helipad`. There was no helipad hotspot in 2D.
+- **Labels are hidden below 768 px** (`patterns.css`, `@media (max-width: 767px)`). On a phone the diagram has no labels, and the list is the whole map. The 2D markers are hidden at that width too, so no function is lost against main. It is still a default, and it is logged here. D-021 asks for tap-to-focus, which reopens this.
+- **Render defaults:** an orthographic camera with the sea at the top of the frame. Render on demand, with no animation loop (one frame after build, one per resize). Device pixel ratio capped at 1.5. `powerPreference: "low-power"`. Everything disposed and the context released on unmount.
+- **The pool line hangs below its anchor.** The anchor is the lane-side end of the column of drawn pools nearest the lane, derived from the plan rather than typed in, and chosen geometrically rather than by villa. Three placements were projected against the other labels at 768–1920 px: standing above the pools' centre, standing above each pool column's midpoint, and hanging below that column's end. Only the last cleared every other label at every width, by an estimated 15–29 px (from glyph widths). No other anchor was tried. Screenshots of the rebuilt branch at 1440, 1024, 768 and 390 px then showed no label overlapping another.
+- **What it costs, and it stays under the phone TBT target.**
+  - **Bundle.** three.js 0.186.0 loads as one lazy chunk, 546,208 B raw (533 KiB) and 132 KiB gzip on the final branch build. Initial JavaScript was 224 kB gzip on both builds when measured at `7fa6fb7`, and has not been measured again since.
+  - **Figures of record.** Interleaved against main's final candidate on `/en/the-estate`, three runs each, trace gate:
+    - **phone TBT after FCP 85 → 139 ms** (runs 85/97/78 → 139/137/149);
+    - load-blocking 204 → 273 ms;
+    - desktop TBT 0 → 27 ms;
+    - CLS 0/0.
+
+    All three branch phone runs are under ask 2's 200 ms target.
+  - **Superseded first measurement.** It gave 123 → 286 ms, with every branch run over the target. The branch's worktree was missing the gitignored photographs, and why that raised the figures was not established.
+  - **Where the time goes.** A phone trace of each build shows two long tasks that only the branch has, both while the reader scrolls towards the map: 65 ms evaluating the three.js chunk, then 141 ms inside it. That second task covers the renderer, the shaders and the first frame, which a minified profile cannot separate. **INP was not measured on this route.** The harness drove no interaction that Event Timing records there: the page has no `.ho-dots` or `.ho-card` to click or hover, and a wheel scroll is not an Event Timing type. The "0 ms worst interaction" is the observer's starting value, not a reading. Evidence: `qa/perf/ESTATE3D-cost.md` and `qa/perf/AB-tranche12-estate3d-final.md`.
+- **No site plan exists on record.** Every coordinate in `estate-plan.ts` was read off the aerial photographs (D-014), and nothing is surveyed. A site plan, if one exists, joins the owner questions beside which house is which and where Villa Pueblo's plot is. D-021 records that the owner will send one.
+- **Correction on merge.** The branch described its axes and camera in compass terms ("x west → east", "from the south-west"). No aerial on record carries a bearing, so those words had no basis. The plan's frame is now defined by the shore and the lane (`content/estate-plan.json`).
+
 ---
 
 ## D-021 · The 3D estate map is approved, behind a provenance gate — and the tranche-twelve owner questions answered
@@ -543,3 +583,67 @@ keeps the two tests in separate columns.
 - **Where `owner-verified` comes from.** The status means the owner's own confirmation, relayed and recorded in this file. No session sets it from its own reading of a plan or a photograph.
 - **The site plan and the owner's Google Drive link** are still to arrive. The link will carry the photographs, the helipad, the MP4 and the phone video. Everything that does not depend on them is built now.
 - **Carried, and still open:** Villa Pueblo's capacity details (T-212), the eight beach distances, the Greek corpus and the three quarantined frames.
+
+---
+
+## Build defaults, tranche thirteen (D-022 onward)
+
+**Decided:** 2026-09-14, by the building session, carrying out D-021. **These are not owner decisions.** They are the calls D-021 left open, logged so that nobody later mistakes a default for a ruling. Any of them is reversed by a new entry here.
+
+### D-022 · The 3D estate map on main: the gate, the plan file, and the review build
+
+- **What opens the gate.** D-021 says two things. The 3D map is public only when provenance is `owner-verified`. And until an element is verified, no public page presents its position as fact. Read together, the gate (`src/lib/estate-plan-gate.ts`) opens only when:
+  - every element the diagram draws is `owner-verified`;
+  - the four villas are among the drawn elements.
+
+  Two consequences:
+  - The context shapes the diagram draws count as elements: the lane, the compound outline, the helipad apron and the shore.
+  - An element with no position is not drawn and does not block the gate. The note names it, and the numbered list carries it.
+- **`owner-verified` names its entry.** An element marked `owner-verified` must carry `decision: "D-0NN"`, the entry that relayed the owner's confirmation. Otherwise the build fails, and `tests/estate-plan.spec.ts` checks that the entry exists.
+- **"A data edit, not a rebuild" means no code change.** `/en/the-estate` is prerendered, so a change to `content/estate-plan.json` reaches the public page on the next deploy of main.
+  - **Rendering per request was not chosen.** It would put the estate page in the class of per-request pages Vercel answers with 500 on percent-encoded spellings (SECURITY-NOTES.md §4.1). It would also give up the prerendered HTML that D-012 and D-016 protect.
+- **The plan's frame.**
+  - schematic units, not metres;
+  - origin at the centre of the four-villa compound;
+  - negative z is sea-ward, and negative x is the side where the lane and the helipad apron are;
+  - bearing null.
+
+  No aerial on record carries a bearing, so the branch's compass words are withdrawn (D-020, correction on merge).
+- **Populated conservatively.**
+  - **How it was built.** Two independent readings, one from the most nearly overhead frame (`758a144c`) and one from the oblique drone frames, then a conservative merge. Three refutation passes followed, on identity, layout and invention. Of the 57 claims they checked, 1 was refuted, 22 were overstated and 34 held. A final correction applied all 30 corrections and rejected none.
+  - **Placed, all `inferred-from-aerials, unverified` (15):**
+    - the compound's outer wall;
+    - the four villas and their four pools;
+    - the Rituals pool and venue terrace;
+    - the shoreline;
+    - the helipad, its apron and the lane.
+  - **Not established (3), with position, orientation and footprint null:**
+    - Villa Pueblo: leads only, no identity.
+    - The long table: the frames show four separate tables under the shade sail, not one table for 18.
+    - The vegetable garden: its only match fits an older state of the site.
+  - **Assumed, not observed.** Which house in each row is which. The rows come from `content/villas/203.json:23`; the sides copy the 2D map's order. Which pool belongs to which villa follows from that assumption, and each element's `basis.identity` says so.
+  - **Names come from the source, or say they have none.** "the complex"; "Private swimming pool"; "Shoreline (no site name on record)". "Private beach" is kept only as a stated caption, because those captions sit on a garden-path photograph and a sunbed sign.
+  - **No metres.** The units are schematic. The "50 m to the beach" caption and a layout that puts the water 75–100 units from the villas are recorded as unreconciled, not resolved.
+  - **Site states.** The frames show at least four states of the site, and every cross-state combination is stated in the file. The helipad's H comes from the frames where it is painted, placed against the compound wall. The apron outline is marked cross-state.
+  - **The base frame.** `758a144c` is flagged "unsure" in `content/photo-grades.json`. Its layout passes every ordering check made against the frames whose identity is anchored.
+  - **Kept in the file.** 34 recorded disagreements between readings stay with the plan.
+- **The review build.**
+  - **How it opens.** `ESTATE_3D_PREVIEW=1` opens the gate for a local build only: `npm run build:estate3d` into `.next-estate3d`, served on :3035.
+  - **Never on Vercel.** The gate throws on any Vercel build, because preview deployments here are public by link (DEPLOY.md, deployment protection disabled).
+  - **Labelled.** The diagram says "Preview — unverified" on its face.
+  - **Two test runs.** `npm run qa` keeps testing the closed public build; `npm run qa:estate3d` tests the diagram.
+- **What the public build proves.** `tests/estate-3d.spec.ts` sets up the conditions under which the 3D map would mount: WebGL2 present, motion allowed, the section in range. It then checks:
+  - no 3D frame and no canvas;
+  - nine 2D markers;
+  - no three.js fetched;
+  - no render plan in the HTML or the flight data.
+
+  `scripts/check-estate-gate.mjs <origin>` checks the same on a deployment against the committed plan, so it needs no edit the day the plan is verified.
+- **Changed on merge.**
+  - The probe asks for WebGL2 only: three.js r163+ refuses WebGL1, which used to download the chunk and fall back anyway.
+  - The helipad's H is basalt, not gold (DESIGN-PLAN.md bans gold, ochre and brass).
+  - Main's motion-allowed 2D map specs (a11y, nav, patterns) are kept. The branch had moved them under reduced motion to avoid racing a 3D swap that a closed gate no longer makes.
+  - The note is derived from the plan rather than typed for one state of it.
+  - The shoreline is drawn but carries no label, because the site has no name for it on record. The numbered list beneath still carries "The private beach", as the 2D map does.
+  - The pool-line label is anchored on the four villa pools by id. The plan also draws the Rituals pool, which is not one of them.
+- **Found, not changed.** "Set apart from the other four" (D-014, correction on merge) stays on the Pueblo pages. It is an owner question, not a silent edit.

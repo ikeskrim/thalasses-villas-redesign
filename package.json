@@ -26,6 +26,9 @@
     "taste": "node scripts/taste-audit.mjs",
     "look": "node scripts/look.mjs",
     "qa:webkit": "playwright test --project=webkit",
+    "build:estate3d": "node scripts/estate3d-preview.mjs build",
+    "start:estate3d": "node scripts/estate3d-preview.mjs start",
+    "qa:estate3d": "playwright test -c playwright.estate3d.config.ts",
     "coverage": "node scripts/registry-coverage.mjs",
     "chh": "node scripts/extract-chh.mjs",
     "parity": "node scripts/parity-certificate.mjs",
@@ -53,7 +56,8 @@
     "next": "^16.3.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
-    "server-only": "^0.0.1"
+    "server-only": "^0.0.1",
+    "three": "^0.186.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.6",
@@ -62,6 +66,7 @@
     "@types/node": "^24.10.1",
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.2",
+    "@types/three": "^0.186.0",
     "eslint": "^10.8.1",
     "eslint-config-next": "^16.3.0",
     "eslint-config-prettier": "^10.1.8",

@@ -15,6 +15,7 @@ const eslintConfig = [
   {
     ignores: [
       ".next/**",
+      ".next-estate3d/**",
       "node_modules/**",
       "content/raw/**",
       "content/raw-js/**",

@@ -30,6 +30,8 @@ node_modules/
 
 # ---- Build output -----------------------------------------------------------
 .next/
+# The 3D estate map's local review build (scripts/estate3d-preview.mjs).
+.next-estate3d/
 out/
 build/
 dist/

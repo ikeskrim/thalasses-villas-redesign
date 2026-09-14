@@ -1,0 +1,1057 @@
+{
+  "$comment": [
+    "THE ESTATE PLAN — the single source of the 3D estate map's geometry (DECISIONS.md D-021, D-022).",
+    "Nothing here is fact until an element's provenance is \"owner-verified\", which only the owner's relayed confirmation sets, with the DECISIONS entry that relayed it. The 3D map renders publicly only when every drawn element is owner-verified (src/lib/estate-plan-gate.ts); until then the 2D hotspot map is the page.",
+    "Populated 2026-09-14 from the estate's aerial and drone frames by two independent readings, a conservative merge, three adversarial refutations and a final correction. Every value says where it comes from in `basis`; \"assumed:\" marks what was not observed.",
+    "Scale: UNITS: schematic, relative diagram units, NOT metres. No metre conversion is adopted, because pixel-to-metre scales disagree by about 30% between references. No frame has a compass bearing, so bearing = null.\n\nBASE FRAME: proportions were measured on 758a144c at its 2000x1367 display size.\n- Reading A: 8.0 display px per unit, origin at display (1017.5, 741).\n- Reading B: 7.87 px per unit, origin at (1012, 740.5).\n- Merged mapping, used by the merge, refutation and editor passes: x = (iy - 740.75)/7.93 and z = (1014.75 - ix)/7.93. One unit is about 7.93 display px, or 8.9 px on the 2248x1536 original.\n- Where a value is a compromise between readings or a combination of observations, its basis is labelled 'derived' and states the rule. 'aerial' is used only where the value is read directly off a frame.\n\nSCALE CHOICE: the compound is the outer wall enclosing the four villas and the walled plot on their sea-ward side.\n- Its longer side runs perpendicular to the shore and is roughly 40 units: 37.5 on the lane-side wall and 41.0 on the crop-side wall.\n- The two differ because the sea-ward wall runs obliquely: a merge-pass pixel scan of 758a finds it at ix 1152, 1156, 1163 and 1169 at iy 612, 640, 700 and 760.\n- Without the walled plot the villa block is about 31.6 x 30 units, so including the plot is what makes the long axis run along z.\n\nORIGIN: the compound centre. The trapezoid's centroid lies about 0.4 unit inland of the origin, within precision, so the plan is not re-centred.\n\nAXES:\n- z is perpendicular to the general shoreline; negative z is sea-ward (image +ix in 758a).\n- x is parallel to the general shoreline; negative x is the lane and helipad-apron side (image -iy in 758a).\n- Reading A found the chord of the traced shore within about 1.3 degrees of x.\n- 0c52 maps to the plan by rotation without mirroring. All passes agree on handedness: the thatched-umbrella cove is on -x, the car park's cove and the row crops on +x.\n\nORIENTATION: orientation.deg is the rotation of the long axis from +x, counter-clockwise seen from above; +deg turns +x toward -z (the three.js rotation.y sign). Every non-null value is 0 or 90, so the sign convention changes no value.\n\nFOOTPRINT CONVENTIONS:\n- {w,d}: when orientation is non-null, w runs along the element's axis and d across it. When orientation is null, w runs along plan x and d along plan z, and the box is only an axis-aligned outline, not a claimed long axis.\n- {points}: [x,z] vertices. Compound, apron and venue are closed polygons; lane and shore are open polylines. For point-shapes, position is the centroid or the anchor stated in basis.position.\n\nPRECISION (estimates):\n- about ±1 unit for villas and pools; villa footprints are rounded to whole units.\n- about ±2-3 for the lane, apron and venue; the helipad centre is ±3 along z, rounded to whole units, and its diameter ±1.5.\n- about ±3-5 for the shoreline, whose vertices and anchor are rounded to whole units.\n- Lens distortion is not calibrated. The oblique frames (0c52 included) disagree with 758a on some along-strip offsets by several units; see disagreements.\n\nTEXT FIGURES are never used as geometry: 60 m2 indoor area, 20 m2 villa pool, 150 m2 Rituals pool, 97 m2 Rituals specs, 240 m2 estate row, 50 m to the beach.\n\nFRAME FLAG: 758a is flagged in photo-grades.json (g0397) as not attributable. Its match to the estate rests on visual correspondence with the captioned and page frames.",
+    "Site states: The frames show at least four states of the site. Capture dates are not established, and neither is the order of the middle states; photo-metrics.json has no date fields, per the prior notes.\n- State A (2c985c96): garden newly planted; the compound's walled sea-ward plot planted in rows; a terracotta, bougainvillea-covered building on the later Rituals site; a paved apron with no H.\n- State B (758a144c, 12e099d0): the Rituals pool terrace is built; the apron is an unmarked paved yard with trucks and cars and no H. 12e0's order relative to 758a and to state C is unknown.\n- State C (0c52479b = ritual-drone-1, fe9ae318, 84d095ea, 9a16ab0a, Ritual-drone = thalasses-all-2, Helipad-2s): the yellow H circle is painted on the apron, a see-through post-and-brace fence with a gate runs along the apron's lane edge, and a paved lower plaza lies sea-ward of the venue pool.\n- State D (01e51076): as state C, plus a new white flat-roofed building directly landward of the venue pool.\n\nCombinations made in this plan, stated openly:\n1. State B (758a) supplies the compound, villas, villa pools, lane, Rituals terrace, Rituals pool and shoreline (including the rock tongue). The Rituals venue outline is now single-state: it ends at the 758a terrace wall, and the state-C lower plaza is not drawn.\n2. The helipad (state C) is placed along the strip by comparing the H centre directly with the compound's lane-side sea-ward wall end, a feature constant across states, in the state-C frames (0c52, 84d0, 9a16, fe9a, Ritual-drone). Across the strip it uses state-C across-apron ratios applied to the apron outline below. Its diameter is a state-C ratio applied to that outline.\n3. The apron polygon is the state-B yard (758a) for its landward and lane-side edges, combined with H-state proportions for its sea-ward limit and far edge. It is not the state-C apron: 0c52 and 84d0 suggest the state-C landward edge lies nearer z -12.5 to -13. The helipad is not positioned by ratio on this outline.\n\nNot drawn:\n- the state-A planted plot (the vegetable-garden match fits only state A)\n- the state-D white building\n- the state-C venue lower plaza\n- Villa Pueblo\n\nConstant across states: the compound walls, the four villas and their pool slots, and the lane, in every frame checked."
+  ],
+  "version": 1,
+  "frame": {
+    "units": "schematic",
+    "origin": "the centre of the four-villa compound's outer walled enclosure",
+    "x": "parallel to the general shoreline; negative x is the side of the compound where the lane and the helipad apron are",
+    "z": "perpendicular to the general shoreline; negative z is sea-ward",
+    "bearing": null,
+    "orientation": "orientation.deg turns an element's long axis from +x, counter-clockwise seen from above (+deg turns +x toward -z); null when not established"
+  },
+  "elements": [
+    {
+      "id": "compound",
+      "kind": "compound",
+      "name": "the complex",
+      "href": null,
+      "position": {
+        "x": 0,
+        "z": 0
+      },
+      "orientation": {
+        "deg": 90
+      },
+      "footprint": {
+        "points": [
+          [
+            -15.8,
+            20
+          ],
+          [
+            15.8,
+            20
+          ],
+          [
+            15.8,
+            -21
+          ],
+          [
+            -15.8,
+            -17.5
+          ]
+        ]
+      },
+      "storeys": null,
+      "provenance": "inferred-from-aerials, unverified",
+      "basis": {
+        "identity": "aerial: 758a, 0c52, 84d0, 9a16, 12e0, Ritual-drone, 01e5, 2c98 — one walled enclosure holding four white villas and their pools, a curving central garden, a playground and shade sail, carports and an entrance sign, and a walled plot on its sea-ward side inside the same side walls. 84d0, 9a16 and 0c52 show the crop-side outer wall running unbroken from the villa block to the plot's sea-ward corner, with a hedge between block and plot. text: the four villas in two rows, content/villas/203.json:23 and content/text/en__property__2142.txt:71; 'the 4 villas of the complex', content/text/en__property__201.txt:93.",
+        "position": "derived: the origin is defined as the centre of this enclosure. The merged display origin (1014.75, 740.75) in 758a lies between A's (1017.5, 741) and B's (1012, 740.5).",
+        "orientation": "aerial: 758a — the long axis runs perpendicular to the shore, 37.5-41 units against 31.6 across; 0c52 shows the same proportion. This holds only when the walled sea-ward plot is included, and both readings include it.",
+        "footprint": "aerial: 758a — inland wall ix≈855 (z +20.0); lane-side wall iy≈613-616 (x -15.8); crop-side wall iy≈866-868 (x +15.8). Sea-ward wall: a merge-pass pixel scan finds it running ix 1152→1169 between iy 612 and 760 and reaching about ix 1181 at the crop-side wall, so z ≈ -17.5 at the lane-side end and -21.0 at the crop-side end. A read it straight at -19.9, B oblique. 0c52 also shows the plot deeper on the crop side, and the layout refutation pass confirmed each wall on a grid-overlaid crop."
+      },
+      "stated": [
+        {
+          "fact": "front villas Thoi and Persi single-storey; rear villas Eeanthe and Melia two-storey ('two different types of villas in the complex')",
+          "source": "content/villas/203.json:23"
+        },
+        {
+          "fact": "playground, vegetable garden, breakfast area and parking 'shared between the 4 villas of the complex'",
+          "source": "content/text/en__property__201.txt:93"
+        },
+        {
+          "fact": "estate listing row (CMS 2142): 12 beds, 6 baths, sleeps 24, 240 m2 indoor, 4 pools. Mixed scope: the same listing's text describes 'five luxurious independent villas… 5 seafront buildings with 12 bedrooms, 9 bathrooms' (en__property__2142.txt:63), while the four villas give 9 bedrooms. Which buildings the 240 m2 and 4 pools cover is not established.",
+          "source": "content/inventory.md:180"
+        },
+        {
+          "fact": "the site uses 'Thalasses Villas' for five villas, including Villa Pueblo: 'Thalasses Villas are five luxurious independent villas' (only :66 says 'four')",
+          "source": "content/text/en__property__2142.txt:63"
+        },
+        {
+          "fact": "'one of our five Thalasses Villas, Villa Pueblo'",
+          "source": "content/text/en__villa-pueblo-1.txt:52"
+        }
+      ],
+      "sources": [
+        "content/text/en__property__201.txt:93 (name: 'the 4 villas of the complex')",
+        "content/text/en__property__2142.txt:71 ('two different types of villas in the complex')",
+        "content/villas/203.json:23",
+        "content/inventory.md:125",
+        "content/inventory.md:180",
+        "content/text/en__property__2142.txt:63",
+        "content/text/en__property__2142.txt:66",
+        "content/text/en__villa-pueblo-1.txt:52",
+        "public/images/_pool/758a144c36418180fdd52885bd0871b0.jpg",
+        "public/images/_pool/0c52479bb31f3ca2493c565e6e13b4e0.jpg",
+        "public/images/_pool/84d095eab652d2a508f63adcca984100.jpg",
+        "public/images/_pool/9a16ab0a7035b82e849766b486fc1885.jpg",
+        "public/images/_pool/12e099d04cb17783bc4db654b766b369.jpg",
+        "public/images/_chh/Ritual-drone.webp"
+      ],
+      "notes": "The name uses the source's wording for this enclosure, 'the complex' of four villas. The site applies 'Thalasses Villas' to a five-villa brand that includes Villa Pueblo (inventory.md:125; en__property__2142.txt:63; en__villa-pueblo-1.txt:52), and this outline does not include Pueblo, so that name is not used here.\n\nThe outline is the outer wall, including the walled plot. The villa block (villas, pools, central garden, playground, carports) runs from z +20 to a hedge line at about z -10.2 (A -9.4, B -11). The walled plot lies between that hedge and the oblique sea-ward wall.\n\nAround the outline: the carports and entrance lawn sit at the +x inland corner, and the lane rounds the -x inland corner. A dirt track and row crops border the +x wall, and a dry field lies between the sea-ward wall and the car park. Neither is part of this outline."
+    },
+    {
+      "id": "thoi",
+      "kind": "villa",
+      "name": "Villa Thoi",
+      "href": "/en/villas/villa-thoi",
+      "position": {
+        "x": -9,
+        "z": -1.9
+      },
+      "orientation": null,
+      "footprint": {
+        "w": 7,
+        "d": 9
+      },
+      "storeys": 1,
+      "provenance": "inferred-from-aerials, unverified",
+      "basis": {
+        "identity": "assumed: row membership is text (content/villas/203.json:23; content/text/en__property__2142.txt:71 — Thoi is one of the two single-storey front villas). The lane-side (-x) slot within that row is assumed from the 2D hotspot x-order (src/app/home-data.ts:161 Thoi x=30, left of :173 Persi x=44), as copied by feat/estate-3d:src/components/sections/estate-plan.ts PLAN_VILLAS (Thoi x=-5). The 2D map separates the rows only by y (Thoi y=58, Persi y=62; Eeanthe y=44, Melia y=48; home-data.ts:162/174/186/198). Nothing in it maps its left-right order onto the lane side; that mapping comes only from the branch's PLAN_LANE at x=-13. No frame or text shows which sea-side house is Thoi.",
+        "position": "aerial: 758a — sea-side row, lane-side slot. The centre of the merge-pass bounding box (ix 993-1066, iy 642-697) is (-9.0,-1.9), the same rule as the footprint. Readings: A (-9.8,-1.9), B (-9.0,-2.5). Row and column order confirmed in 0c52, 84d0, 9a16, 12e0, Ritual-drone and 01e5. The slot is observed; its occupant is assumed.",
+        "orientation": "not-established: faces run parallel and perpendicular to the compound walls, but the roof is L-shaped with terrace parapets and an external stair, so no long axis can be read.",
+        "footprint": "derived: the merge-pass bounding box in 758a (ix 993-1066 by iy 642-697 → 6.9 across x, 9.2 along z, including the L-shaped roof's lower wing to iy≈697), rounded to whole units (precision ±1). Readings: A 5.3 x 7.6 (main roof only), B 7.0 x 9.5 (with parapets and courtyard walls)."
+      },
+      "stated": [
+        {
+          "fact": "60 m2 Indoor Area",
+          "source": "content/inventory.md:176"
+        },
+        {
+          "fact": "'Indoor Area' is not plot or footprint",
+          "source": "content/inventory.md:185"
+        },
+        {
+          "fact": "'It is a single-story building'",
+          "source": "content/inventory.md:195"
+        },
+        {
+          "fact": "front-row villa with Persi; rear row is Eeanthe and Melia",
+          "source": "content/villas/203.json:23"
+        }
+      ],
+      "sources": [
+        "content/inventory.md:176 (name)",
+        "src/app/en/villas/[slug]/page.tsx:38 (route villa-thoi)",
+        "content/villas/203.json:23",
+        "content/text/en__property__2142.txt:71",
+        "src/app/home-data.ts:161",
+        "feat/estate-3d:src/components/sections/estate-plan.ts PLAN_VILLAS",
+        "public/images/_pool/758a144c36418180fdd52885bd0871b0.jpg",
+        "public/images/_chh/Ritual-drone.webp",
+        "public/images/_pool/84d095eab652d2a508f63adcca984100.jpg",
+        "public/images/_pool/9a16ab0a7035b82e849766b486fc1885.jpg",
+        "public/images/_pool/12e099d04cb17783bc4db654b766b369.jpg"
+      ],
+      "notes": "This is the lane-side slot of the sea-side row (FH in the prior evidence notes). If Thoi is the other front villa, swap position and footprint with persi, and thoi-pool with persi-pool. The box is the bounding box of an L-shaped outline, so its sea-ward garden-side corner overlaps the pool. Storeys come from text only, and the 60 m2 indoor area is not used as geometry."
+    },
+    {
+      "id": "persi",
+      "kind": "villa",
+      "name": "Villa Persi",
+      "href": "/en/villas/villa-persi",
+      "position": {
+        "x": 9.5,
+        "z": -3.9
+      },
+      "orientation": null,
+      "footprint": {
+        "w": 9,
+        "d": 8
+      },
+      "storeys": 1,
+      "provenance": "inferred-from-aerials, unverified",
+      "basis": {
+        "identity": "assumed: row membership is text (content/villas/203.json:23; content/text/en__property__2142.txt:71 — single-storey front villa). The crop-side (+x) slot within that row is assumed from the 2D hotspot x-order (src/app/home-data.ts:173 Persi x=44, right of Thoi), as in feat/estate-3d estate-plan.ts PLAN_VILLAS (x=9). The 2D map separates rows only by y, and the lane-side mapping comes only from the branch's PLAN_LANE. Not established by any frame.",
+        "position": "aerial: 758a — sea-side row, crop-side slot. The centre of the merge-pass bounding box (ix 1015-1076, iy 780-852) is (9.5,-3.9). Readings: A (8.3,-3.5), B (10.0,-4.5). Order agrees in 0c52, 84d0, 9a16, 12e0, Ritual-drone and 01e5. The slot is observed; its occupant is assumed.",
+        "orientation": "not-established: faces are wall-aligned, but no long axis could be established (A read the roof as near-square).",
+        "footprint": "derived: the merge-pass bounding box in 758a (iy 780-852 → 9.1 across x; ix 1015-1076 → 7.7 along z; roof and terraces), rounded to whole units (precision ±1). Readings: A 6.5 x 6.4, which cuts the roof short at iy 833; B 9.5 x 7.5, with parapet terraces and external stair."
+      },
+      "stated": [
+        {
+          "fact": "60 m2 Indoor Area",
+          "source": "content/inventory.md:177"
+        },
+        {
+          "fact": "'Indoor Area' is not plot or footprint",
+          "source": "content/inventory.md:185"
+        },
+        {
+          "fact": "'It is a single-story building'",
+          "source": "content/inventory.md:221"
+        },
+        {
+          "fact": "front-row villa with Thoi",
+          "source": "content/villas/203.json:23"
+        }
+      ],
+      "sources": [
+        "content/inventory.md:177 (name)",
+        "src/app/en/villas/[slug]/page.tsx:39 (route villa-persi)",
+        "content/villas/203.json:23",
+        "src/app/home-data.ts:173",
+        "public/images/_pool/758a144c36418180fdd52885bd0871b0.jpg",
+        "public/images/_pool/0c52479bb31f3ca2493c565e6e13b4e0.jpg",
+        "public/images/_pool/84d095eab652d2a508f63adcca984100.jpg",
+        "public/images/_pool/9a16ab0a7035b82e849766b486fc1885.jpg",
+        "public/images/_chh/Ritual-drone.webp"
+      ],
+      "notes": "This is the crop-side slot of the sea-side row (FV). It stands next to the walled plot, and its pool lies directly sea-ward of it; the house box and pool box touch, overlapping by about 0.3 unit, within rounding. Its centre is about 2.0 units sea-ward of the thoi slot; Ritual-drone agrees in direction only."
+    },
+    {
+      "id": "eeanthe",
+      "kind": "villa",
+      "name": "Villa Eeanthe",
+      "href": "/en/villas/villa-eeanthe",
+      "position": {
+        "x": -10.1,
+        "z": 9.1
+      },
+      "orientation": null,
+      "footprint": {
+        "w": 6,
+        "d": 5
+      },
+      "storeys": 2,
+      "provenance": "inferred-from-aerials, unverified",
+      "basis": {
+        "identity": "assumed: row membership is text (content/villas/203.json:23 — Eeanthe and Melia are the two-storey rear villas). The lane-side (-x) slot within that row is assumed from the 2D hotspot x-order (src/app/home-data.ts:185 Eeanthe x=58, left of Melia x=70), as in feat/estate-3d estate-plan.ts PLAN_VILLAS (x=-5). The 2D map separates rows only by y, and the lane-side mapping comes only from the branch's PLAN_LANE. The nameplate frame 91d5812c (captions.json:2225) cannot be placed.",
+        "position": "aerial: 758a — inland row, lane-side slot. z is the centre of the white roof alone (ix 922-963 → 9.1), the same extent as the footprint; x is between the readings (A -10.2, B -10.0). The tall cube stands inland of the low pair in 84d0, 9a16, 12e0, 2c98 and Ritual-drone. The slot is observed; its occupant is assumed.",
+        "orientation": "not-established: faces are wall-aligned, and the white roof is near-square.",
+        "footprint": "aerial: 758a — the white roof only, rounded to whole units (precision ±1): 45 px across x (both readings 5.5-5.6) and ix 922-963 along z (A, 5.1). B added a grey patch on the inland side (ix 909-922), reaching 7.0. A merge-pass crop could not tell a lower roof from paving, so the patch is left out (see notes). The dark band along the roof's +x edge reads as the cube's shadow and is not included."
+      },
+      "stated": [
+        {
+          "fact": "60 m2 Indoor Area",
+          "source": "content/inventory.md:178"
+        },
+        {
+          "fact": "'Indoor Area' is not plot or footprint",
+          "source": "content/inventory.md:185"
+        },
+        {
+          "fact": "two-storey villa with sea view from the first-floor bedrooms and balcony",
+          "source": "content/inventory.md:241"
+        },
+        {
+          "fact": "rear-row villa with Melia",
+          "source": "content/villas/203.json:23"
+        }
+      ],
+      "sources": [
+        "content/inventory.md:178 (name)",
+        "src/app/en/villas/[slug]/page.tsx:40 (route villa-eeanthe)",
+        "content/villas/203.json:23",
+        "src/app/home-data.ts:185",
+        "public/images/_pool/758a144c36418180fdd52885bd0871b0.jpg",
+        "public/images/_chh/Ritual-drone.webp",
+        "public/images/_pool/84d095eab652d2a508f63adcca984100.jpg",
+        "public/images/_pool/9a16ab0a7035b82e849766b486fc1885.jpg",
+        "public/images/_pool/12e099d04cb17783bc4db654b766b369.jpg",
+        "public/images/_pool/2c985c96c990731af26b19772328d37c.jpg"
+      ],
+      "notes": "This is the lane-side slot of the inland row (RH). If the rear row is the other way round, swap with melia and swap the pools. A possible lower wing on the inland side (B's grey patch, which would take the depth to about 7) is unresolved and not drawn. The nadir frame reads roofs, and a tall building's roof is displaced slightly; the compound is near the frame centre, so the shift is small."
+    },
+    {
+      "id": "melia",
+      "kind": "villa",
+      "name": "Villa Melia",
+      "href": "/en/villas/villa-melia",
+      "position": {
+        "x": 9.9,
+        "z": 6
+      },
+      "orientation": null,
+      "footprint": {
+        "w": 10,
+        "d": 5
+      },
+      "storeys": 2,
+      "provenance": "inferred-from-aerials, unverified",
+      "basis": {
+        "identity": "assumed: row membership is text (content/villas/203.json:23 — two-storey rear villa). The crop-side (+x) slot within that row is assumed from the 2D hotspot x-order (src/app/home-data.ts:197 Melia x=70), as in feat/estate-3d estate-plan.ts PLAN_VILLAS (x=9). The 2D map separates rows only by y, and the lane-side mapping comes only from the branch's PLAN_LANE. The nameplate frame 9f6948a7 (captions.json:3021) cannot be placed.",
+        "position": "aerial: 758a — inland row, crop-side slot, beside the carports. The centre of the merge-pass outline (main roof ix 948-987 by iy 779-831, plus a lower white wing at iy 832-860, ix 951-982) is (9.9,6.0). Readings: A (7.9,7.7), B (10.5,5.5); both place it in the same slot. Order agrees in 84d0, 9a16, 12e0 and Ritual-drone. The slot is observed; its occupant is assumed.",
+        "orientation": "not-established: faces are wall-aligned. The outline is longer along x only because a lower wing is included, which is not a building long axis.",
+        "footprint": "derived: bounding box of the merge-pass outline in 758a (ix 948-987 → 4.9 along z; iy 779-860 → 10.2 along x, roof body plus lower white wing), rounded to whole units (precision ±1). Readings: A 6.5 x 7.3 (its inland extent to ix 927 falls on paving), B 10.0 x 5.5."
+      },
+      "stated": [
+        {
+          "fact": "60 m2 Indoor Area",
+          "source": "content/inventory.md:179"
+        },
+        {
+          "fact": "'Indoor Area' is not plot or footprint",
+          "source": "content/inventory.md:185"
+        },
+        {
+          "fact": "two-storey villa with sea view from the first-floor bedrooms and balcony",
+          "source": "content/inventory.md:263"
+        },
+        {
+          "fact": "rear-row villa with Eeanthe; ground-floor twin bedroom has direct access to the pool area",
+          "source": "content/villas/203.json:23"
+        }
+      ],
+      "sources": [
+        "content/inventory.md:179 (name)",
+        "src/app/en/villas/[slug]/page.tsx:41 (route villa-melia)",
+        "content/villas/203.json:23",
+        "src/app/home-data.ts:197",
+        "public/images/_pool/758a144c36418180fdd52885bd0871b0.jpg",
+        "public/images/_chh/Ritual-drone.webp",
+        "public/images/_pool/84d095eab652d2a508f63adcca984100.jpg",
+        "public/images/_pool/12e099d04cb17783bc4db654b766b369.jpg"
+      ],
+      "notes": "This is the crop-side slot of the inland row (RV). A round hot tub and an umbrella stand on its sea-ward lawn (758a display about 998,796). Its pool sits at the house's sea-ward corner on the crop-wall side. The two boxes overlap by about 0.3 unit, within rounding: in 758a the roof edge (ix 987) and the water (from ix 985) adjoin. The outline is larger than eeanthe's because of the lower wing. Both have the stated 60 m2 indoor area, which is not used as geometry."
+    },
+    {
+      "id": "pueblo",
+      "kind": "villa",
+      "name": "Villa Pueblo",
+      "href": "/en/villas/villa-pueblo",
+      "position": null,
+      "orientation": null,
+      "footprint": null,
+      "storeys": null,
+      "provenance": "not-established",
+      "basis": {
+        "identity": "not-established",
+        "position": "not-established",
+        "orientation": "not-established",
+        "footprint": "not-established"
+      },
+      "stated": [
+        {
+          "fact": "95 m2 indoor; 3 bedrooms, 3 baths, sleeps 6; 1 pool; not bookable",
+          "source": "content/inventory.md:181"
+        },
+        {
+          "fact": "'a large and private swimming pool, direct private beach access', with a private bar",
+          "source": "content/text/en__villa-pueblo-1.txt:56"
+        },
+        {
+          "fact": "'one of our five Thalasses Villas, Villa Pueblo'",
+          "source": "content/text/en__villa-pueblo-1.txt:52"
+        }
+      ],
+      "sources": [
+        "content/inventory.md:181 (name)",
+        "content/text/en__villa-pueblo-1.txt:52",
+        "content/text/en__villa-pueblo-1.txt:56",
+        "src/app/en/villas/[slug]/page.tsx:42 (route villa-pueblo)",
+        "src/app/home-data.ts:207",
+        "public/images/_pool/01e5107612a2f4f472c6b9d19d5025b9.jpg"
+      ],
+      "notes": "Not placed. No frame, caption or file name identifies Villa Pueblo's plot. 'Set apart from the other four' is redesign copy (src/app/home-data.ts:208; src/lib/villa-page.ts:155 per the prior notes), not source text.\n\nOwner leads, none adopted:\n(a) the new white flat-roofed building landward of the Rituals pool in 01e5 (state D only). It is equally a candidate for the accommodation behind the Rituals page's own 3-bedroom, 97 m2 specs (inventory.md:182, :331).\n(b) the wedding page's unnamed 'new villa' for 6 guests.\n(c) Pueblo's private bar, large pool and beach access resemble the Rituals terrace.\n\nStoreys are not stated."
+    },
+    {
+      "id": "thoi-pool",
+      "kind": "pool",
+      "name": "Private swimming pool",
+      "href": null,
+      "position": {
+        "x": -5.6,
+        "z": -4.9
+      },
+      "orientation": null,
+      "footprint": {
+        "w": 2.9,
+        "d": 3
+      },
+      "storeys": null,
+      "provenance": "inferred-from-aerials, unverified",
+      "basis": {
+        "identity": "aerial: 758a — the pool on the sea-side lane-side house's garden flank, inside that house's lot on the sea-side of the hedge line (display ix 1034-1056, iy 678-702). Paired to Thoi ONLY through the assumed within-row order (2D hotspot x-order, src/app/home-data.ts:161/:173). One pool per villa is text (content/inventory.md:176, Pools 1).",
+        "position": "aerial: 758a — on the garden-side (+x) flank of its slot's house, toward the sea-ward end. A (-5.6,-4.4), B (-5.5,-5.5); merge-pass water pixels ix 1044.5-1061.4, iy 687.7-703.7 give (-5.7,-4.8); the value is taken between. The same relation shows in Ritual-drone, 84d0, 0c52 and 2c98.",
+        "orientation": "not-established: the visible water is near-square in both readings and in the merge-pass scan (17 x 16 px).",
+        "footprint": "derived: axis-aligned outline of the visible water with its coping, taken between A 2.9 x 2.8 and B 2.8 x 3.2. The strict water extent from the merge-pass scan is smaller, about 2.1 x 2.0."
+      },
+      "stated": [
+        {
+          "fact": "20 square meters swimming pool",
+          "source": "content/facilities/200.json:410"
+        }
+      ],
+      "sources": [
+        "content/inventory.md:210 (name: the villa pages' Spaces tile 'Private swimming pool')",
+        "content/facilities/200.json:410",
+        "content/inventory.md:176",
+        "public/images/_pool/758a144c36418180fdd52885bd0871b0.jpg",
+        "public/images/_pool/0c52479bb31f3ca2493c565e6e13b4e0.jpg",
+        "public/images/_pool/84d095eab652d2a508f63adcca984100.jpg",
+        "public/images/_chh/Ritual-drone.webp"
+      ],
+      "notes": "The name is the site's own tile wording. The pairing to a villa lives only in the id and basis.identity, and it is assumed. The 20 m2 is text only and is not used as geometry. The pool does not sit at its villa's z, unlike the branch plan."
+    },
+    {
+      "id": "persi-pool",
+      "kind": "pool",
+      "name": "Private swimming pool",
+      "href": null,
+      "position": {
+        "x": 10.5,
+        "z": -8.8
+      },
+      "orientation": null,
+      "footprint": {
+        "w": 3.8,
+        "d": 2.4
+      },
+      "storeys": null,
+      "provenance": "inferred-from-aerials, unverified",
+      "basis": {
+        "identity": "aerial: 758a — the pool directly sea-ward of the sea-side crop-side house, inside that house's lot, with no other house near it. Paired to Persi ONLY through the assumed within-row order (src/app/home-data.ts:161/:173). One pool per villa is text (content/inventory.md:177).",
+        "position": "aerial: 758a — directly sea-ward of its slot's house at the crop-side end. A (10.5,-8.3), B (10.5,-9.5); merge-pass water pixels ix 1075.6-1090.7, iy 812.3-836.3 give (10.5,-8.6); the value is taken between. The same relation shows in 0c52, 84d0, 9a16 and 12e0.",
+        "orientation": "not-established: A read the long side along x (deg 0, low confidence); B left it null. In 758a the water is longer along x (merge-pass scan 24 x 15 px), but no second frame confirms it.",
+        "footprint": "derived: axis-aligned plan outline only, taken between A 3.6 x 2.4 and B 4.1 x 2.5. The w>d shape is the nadir outline, not an adopted long axis."
+      },
+      "stated": [
+        {
+          "fact": "20 square meters swimming pool",
+          "source": "content/facilities/201.json:366"
+        }
+      ],
+      "sources": [
+        "content/inventory.md:210 (name: the villa pages' Spaces tile 'Private swimming pool')",
+        "content/facilities/201.json:366",
+        "content/inventory.md:177",
+        "public/images/_pool/758a144c36418180fdd52885bd0871b0.jpg",
+        "public/images/_pool/0c52479bb31f3ca2493c565e6e13b4e0.jpg",
+        "public/images/_pool/84d095eab652d2a508f63adcca984100.jpg",
+        "public/images/_pool/9a16ab0a7035b82e849766b486fc1885.jpg",
+        "public/images/_pool/12e099d04cb17783bc4db654b766b369.jpg"
+      ],
+      "notes": "Sits at the villa block's sea-ward edge, just inland of the hedge line (about z -10.2). The name is the site's tile wording, and the villa pairing is assumed. The 20 m2 is text only."
+    },
+    {
+      "id": "melia-pool",
+      "kind": "pool",
+      "name": "Private swimming pool",
+      "href": null,
+      "position": {
+        "x": 13.3,
+        "z": 2.3
+      },
+      "orientation": null,
+      "footprint": {
+        "w": 2.9,
+        "d": 3
+      },
+      "storeys": null,
+      "provenance": "inferred-from-aerials, unverified",
+      "basis": {
+        "identity": "aerial: 758a — a dark hedge line at display ix≈1010-1012 (iy 780-870) puts this pool in the inland crop-side lot, together with the hot tub and umbrella. The sea-side crop-side house's own pool lies beyond that hedge (ix≈1074-1093). Paired to Melia ONLY through the assumed within-row order (src/app/home-data.ts:185/:197). One pool per villa is text (content/inventory.md:179).",
+        "position": "aerial: 758a — at its slot house's sea-ward corner on the crop-wall side. A (13.1,2.8), B (13.5,2.0); merge-pass water pixels ix 984.9-1003.6, iy 836.3-855 give (13.2,2.6); the value is taken between. The same relation shows in 84d0, 9a16 and 12e0.",
+        "orientation": "not-established: near-square in 758a (merge-pass scan 19 x 19 px); 12e0 and 84d0 read it differently from each other.",
+        "footprint": "derived: axis-aligned outline, taken between A 2.8 x 3.0 and B 3.0 x 3.3 (d at A's value)."
+      },
+      "stated": [
+        {
+          "fact": "20 square meters swimming pool",
+          "source": "content/facilities/203.json:377"
+        }
+      ],
+      "sources": [
+        "content/inventory.md:210 (name: the villa pages' Spaces tile 'Private swimming pool')",
+        "content/facilities/203.json:377",
+        "content/inventory.md:179",
+        "public/images/_pool/758a144c36418180fdd52885bd0871b0.jpg",
+        "public/images/_pool/84d095eab652d2a508f63adcca984100.jpg",
+        "public/images/_pool/9a16ab0a7035b82e849766b486fc1885.jpg",
+        "public/images/_pool/12e099d04cb17783bc4db654b766b369.jpg"
+      ],
+      "notes": "About 1 unit inside the crop-side compound wall (x +15.8). It adjoins the melia box (about 0.3 unit overlap, within rounding). The name is the site's tile wording, and the villa pairing is assumed. The 20 m2 is text only."
+    },
+    {
+      "id": "eeanthe-pool",
+      "kind": "pool",
+      "name": "Private swimming pool",
+      "href": null,
+      "position": {
+        "x": -9.2,
+        "z": 4.9
+      },
+      "orientation": null,
+      "footprint": {
+        "w": 3.8,
+        "d": 2.1
+      },
+      "storeys": null,
+      "provenance": "inferred-from-aerials, unverified",
+      "basis": {
+        "identity": "aerial: 758a — a hedge or lot line at display ix≈983 (iy 615-700) puts this pool inside the inland lane-side house's lot. The sea-side lane-side house's own pool lies beyond it. Paired to Eeanthe ONLY through the assumed within-row order (src/app/home-data.ts:185/:197). One pool per villa is text (content/inventory.md:178).",
+        "position": "aerial: 758a — directly sea-ward of its slot's house, between it and the sea-side row. A (-9.3,5.2), B (-9.0,4.5); merge-pass water pixels ix 968.9-981.3, iy 654.8-677.9 give (-9.4,5.0); the value is taken between. The same relation shows in 84d0, 12e0 and 01e5.",
+        "orientation": "not-established: A read the long side along x (deg 0, low confidence). B found 758a and 84d0 long along x but 12e0 and 9a16 long along z. Unresolved.",
+        "footprint": "aerial: 758a — axis-aligned plan outline from A (3.8 x 2.1; B gave no figures). The merge-pass scan confirms the nadir water is longer along x (23 x 12 px strict). The w>d shape is not an adopted long axis."
+      },
+      "stated": [
+        {
+          "fact": "20 square meters swimming pool",
+          "source": "content/facilities/202.json:377"
+        }
+      ],
+      "sources": [
+        "content/inventory.md:210 (name: the villa pages' Spaces tile 'Private swimming pool')",
+        "content/facilities/202.json:377",
+        "content/inventory.md:178",
+        "public/images/_pool/758a144c36418180fdd52885bd0871b0.jpg",
+        "public/images/_pool/84d095eab652d2a508f63adcca984100.jpg",
+        "public/images/_pool/12e099d04cb17783bc4db654b766b369.jpg",
+        "public/images/_pool/01e5107612a2f4f472c6b9d19d5025b9.jpg"
+      ],
+      "notes": "The pool blurred behind the Eeanthe nameplate (91d5812c) cannot be matched to this aerial pool. Dark umbrellas stand at both ends of the water in 758a. The name is the site's tile wording, and the villa pairing is assumed. The 20 m2 is text only."
+    },
+    {
+      "id": "rituals-pool",
+      "kind": "pool",
+      "name": "Thalasses Rituals pool",
+      "href": null,
+      "position": {
+        "x": -38.8,
+        "z": -61.5
+      },
+      "orientation": {
+        "deg": 90
+      },
+      "footprint": {
+        "w": 9.7,
+        "d": 7.6
+      },
+      "storeys": null,
+      "provenance": "inferred-from-aerials, unverified",
+      "basis": {
+        "identity": "ground and aerial: the Rituals page's own hero 8b9e368b (content/villas/rituals.json:15, :73) and gallery frame 029de06b (rituals.json:82) show this pool, with the thatched bar and curved steps beside it. It matches the large pool inside the walled terrace at the sea-ward end of the helipad strip in 758a, 0c52, fe9a, 01e5 and 12e0. text: the venue's unique 150 m2 salt-water pool (content/text/en__thalasses-rituals-1.txt:5; content/inventory.md:329). 'Only large pool' is not the basis: 758a also shows a neighbouring hotel's pool at the image's upper-left corner.",
+        "position": "aerial: 758a — A (-38.4,-60.8) from display ix 1465-1542, iy 404-463; B about (-38.9,-62.9); merge-pass scan ix 1462.6-1538.3, iy 403-461.7 gives (-38.9,-61.3); the value is taken between. It lies toward the terrace's far (-x) side in 758a and fe9a. The layout refutation pass confirmed the box sits on the water.",
+        "orientation": "aerial: 758a, 0c52, fe9a — the long side runs along the strip, perpendicular to the shore.",
+        "footprint": "aerial: 758a — A 9.6 x 7.4, B 9.9 x 7.9, merge-pass scan 76 x 59 px (9.6 x 7.4); the value is taken between. w is along the long axis."
+      },
+      "stated": [
+        {
+          "fact": "'Wedding Venue which features a unique pool of 150m2 with salt water'",
+          "source": "content/text/en__thalasses-rituals-1.txt:5"
+        },
+        {
+          "fact": "venue pool of 150 m2 with salt water (page meta)",
+          "source": "content/inventory.md:129"
+        },
+        {
+          "fact": "'150sqm' sea water pool (wedding page)",
+          "source": "content/text/en__dream-weadding-on-the-beach-1.txt:50"
+        }
+      ],
+      "sources": [
+        "content/text/en__thalasses-rituals-1.txt:5",
+        "content/inventory.md:129",
+        "content/inventory.md:329",
+        "content/text/en__dream-weadding-on-the-beach-1.txt:50",
+        "content/villas/rituals.json:15",
+        "content/villas/rituals.json:82",
+        "public/images/_pool/8b9e368b164eab6ade49d33722a0cbfa.jpg",
+        "public/images/_pool/029de06b0346b4ccb2f42dfbc187f754.jpg",
+        "public/images/_pool/758a144c36418180fdd52885bd0871b0.jpg",
+        "public/images/_pool/0c52479bb31f3ca2493c565e6e13b4e0.jpg",
+        "public/images/_pool/fe9ae3181b07bfa6f93c82f642809b13.jpg"
+      ],
+      "notes": "A context shape inside rituals-venue. The 150 m2 is text only and is not used as geometry. The name is descriptive."
+    },
+    {
+      "id": "beach-line",
+      "kind": "shore",
+      "name": "Shoreline (no site name on record)",
+      "href": null,
+      "position": {
+        "x": -6,
+        "z": -106
+      },
+      "orientation": {
+        "deg": 0
+      },
+      "footprint": {
+        "points": [
+          [
+            -90,
+            -80
+          ],
+          [
+            -80,
+            -80
+          ],
+          [
+            -70,
+            -80
+          ],
+          [
+            -62,
+            -82
+          ],
+          [
+            -55,
+            -84
+          ],
+          [
+            -48,
+            -86
+          ],
+          [
+            -42,
+            -88
+          ],
+          [
+            -36,
+            -91
+          ],
+          [
+            -28,
+            -97
+          ],
+          [
+            -22,
+            -96
+          ],
+          [
+            -16,
+            -93
+          ],
+          [
+            -13,
+            -101
+          ],
+          [
+            -8,
+            -105
+          ],
+          [
+            -6,
+            -106
+          ],
+          [
+            -5,
+            -98
+          ],
+          [
+            -4,
+            -84
+          ],
+          [
+            2,
+            -81
+          ],
+          [
+            8,
+            -79
+          ],
+          [
+            16,
+            -79
+          ],
+          [
+            24,
+            -79
+          ],
+          [
+            28,
+            -79
+          ],
+          [
+            36,
+            -81
+          ],
+          [
+            44,
+            -79
+          ],
+          [
+            52,
+            -80
+          ],
+          [
+            58,
+            -81
+          ],
+          [
+            64,
+            -82
+          ]
+        ]
+      },
+      "storeys": null,
+      "provenance": "inferred-from-aerials, unverified",
+      "basis": {
+        "identity": "aerial: 758a, 0c52 (= ritual-drone-1), fe9a, 01e5, 12e0 — the waterline is unambiguous. The site names a 'private beach' (captions.json:863, :878), but neither captioned frame shows a beach: a3dc2787 is the compound's central garden path and 7348b8c1 is a sunbed sign. Which cove, if either, is the private beach is therefore not established; the thatched-umbrella cove on -x is only a candidate.",
+        "position": "aerial: 758a — the anchor is the most sea-ward vertex: the tip of an emergent brown rock tongue at about x -15..-6, reaching z about -106. It lies sea-ward of the car park, not of the venue. The layout refutation pass found it on a grid-overlaid crop, and the editor's grid-overlaid crops of 758a show brown rock to about z -105 at x -12..-6. 12e0 and Ritual-drone also show the surf rocks sea-ward of the car park. A partly submerged reef shelf extends toward -x to about x -40; the readings' earlier anchors (A -25.1,-95.3; B -31,-99) lay on that shelf.",
+        "orientation": "derived: the plan's x axis is defined parallel to the general shoreline; A found the traced chord within about 1.3 degrees of x.",
+        "footprint": "derived: both 758a traces (A: 21 vertices, last sand or rock pixel before water; B: 13 vertices along the waterline) were resampled at shared x from -90 to +64, averaged in z, and rounded to whole units (precision ±3-5). Between x -22 and -4 the averaged traces had followed the sand line at the base of the rock tongue. Those vertices are replaced by an outline of the tongue from the layout refutation pass's 758a crop, which the editor crops confirm. The single-reading bump at x +31 (B only, about 3 units, within precision) is dropped. The line is clipped to the x range both traces cover."
+      },
+      "stated": [
+        {
+          "fact": "'Each villa will have private lux sun beds in our private beach which is 50m away' (caption on a3dc2787, a garden-path photo with no beach)",
+          "source": "content/captions.json:863"
+        },
+        {
+          "fact": "'Each villa has private sun beds on our Private Beach!' (caption on 7348b8c1, a sunbed sign with no beach)",
+          "source": "content/captions.json:878"
+        },
+        {
+          "fact": "Villas' private beach 50m",
+          "source": "content/inventory.md:508"
+        }
+      ],
+      "sources": [
+        "content/captions.json:863",
+        "content/captions.json:878",
+        "content/inventory.md:508",
+        "src/app/home-data.ts:219 (redesign label 'The private beach', not used)",
+        "public/images/_pool/a3dc2787980e29a39aa26c3099565138.jpg",
+        "public/images/_pool/7348b8c115ea46548478ebb275ee4061.jpg",
+        "public/images/_pool/758a144c36418180fdd52885bd0871b0.jpg",
+        "public/images/_chh/ritual-drone-1.webp",
+        "public/images/_pool/fe9ae3181b07bfa6f93c82f642809b13.jpg",
+        "public/images/_pool/01e5107612a2f4f472c6b9d19d5025b9.jpg",
+        "public/images/_pool/12e099d04cb17783bc4db654b766b369.jpg",
+        "public/images/_chh/Ritual-drone.webp"
+      ],
+      "notes": "The shore is two coves with rock between them.\n- Cove (a), -x side: thatched umbrellas around x -72 to -62, reached by a straight path.\n- Between cove (a) and the tongue: a partly submerged reef shelf (x about -40 to -15). The venue stands landward of it.\n- The emergent rock tongue (x -15..-6, to z about -106): sea-ward of the car park, on the venue's +x side.\n- Cove (b), +x side: sandy, with bathers, sea-ward of the compound. Its waterline runs from the tongue's base (x about -4) toward +x, past the dirt car park at the lane's end (B: x -17 to +1, z -56 to -72).\n\nThe polyline is clipped to 758a's frame, and both beaches continue beyond it. The name is descriptive: 'private beach' is kept only in stated. The '50m' figures are text and are not reconciled with the layout, which puts the waterline about 75-100 units sea-ward of the sea-side villas."
+    },
+    {
+      "id": "long-table",
+      "kind": "table",
+      "name": "dining table for 18 people",
+      "href": null,
+      "position": null,
+      "orientation": null,
+      "footprint": null,
+      "storeys": null,
+      "provenance": "not-established",
+      "basis": {
+        "identity": "not-established",
+        "position": "not-established",
+        "orientation": "not-established",
+        "footprint": "not-established"
+      },
+      "stated": [
+        {
+          "fact": "'We have also added a dining table for 18 people in order to enjoy al-fresco dining together.'",
+          "source": "content/text/en__property__2142.txt:89"
+        }
+      ],
+      "sources": [
+        "content/text/en__property__2142.txt:89 (name)",
+        "src/app/home-data.ts:235 ('The long table' is redesign copy)",
+        "public/images/_pool/62a8933b1030c475cde347e3f28b19e6.jpg",
+        "public/images/_pool/12e099d04cb17783bc4db654b766b369.jpg",
+        "public/images/_chh/Ritual-drone.webp",
+        "public/images/_pool/758a144c36418180fdd52885bd0871b0.jpg"
+      ],
+      "notes": "Not located. Two outdoor dining places are seen at the compound's inland end:\n- several separate tables under the shade sail, beside the trampoline and playhouse (62a8 shows at least four; 12e0; 758a about x 0, z +16);\n- a separate wooden bench table on the small lawn beside it (12e0 display ≈667,870; Ritual-drone ≈1165,995).\n\nNeither is identified as the table for 18, and 2c98 shows a pergola where the sail later stands. 'The long table' is the redesign's own label, not a source word."
+    },
+    {
+      "id": "vegetable-garden",
+      "kind": "garden",
+      "name": "vegetable garden",
+      "href": null,
+      "position": null,
+      "orientation": null,
+      "footprint": null,
+      "storeys": null,
+      "provenance": "not-established",
+      "basis": {
+        "identity": "not-established",
+        "position": "not-established",
+        "orientation": "not-established",
+        "footprint": "not-established"
+      },
+      "stated": [
+        {
+          "fact": "a vegetable garden shared between the 4 villas of the complex",
+          "source": "content/text/en__property__201.txt:93"
+        },
+        {
+          "fact": "a vegetable garden guests can use with the gardener's help and taste home-grown vegetables",
+          "source": "content/text/en__property__2142.txt:89"
+        },
+        {
+          "fact": "per-image caption 'Vegetable garden in which you can use with our gardener's help…' on b2010be47e7e0502b72db3ee67cb1e40.jpg",
+          "source": "content/captions.json:868"
+        }
+      ],
+      "sources": [
+        "content/text/en__property__2142.txt:89 (name)",
+        "content/text/en__property__201.txt:93",
+        "content/captions.json:868",
+        "src/app/home-data.ts:243 (redesign label)",
+        "public/images/_pool/46c1a1c5d6770b8c33d65771bf3be83d.jpg",
+        "public/images/_pool/2c985c96c990731af26b19772328d37c.jpg",
+        "public/images/_pool/758a144c36418180fdd52885bd0871b0.jpg",
+        "public/images/_chh/Ritual-drone.webp"
+      ],
+      "notes": "The current position is not established.\n\nThe only visual match is 46c1: a vegetable plot inside a low white wall, with palms, bougainvillea and sea beyond. That view fits the compound's walled sea-ward plot (between z about -10 and -17.5/-21) only as it stands in state A (2c98), when the plot was planted in rows and the bougainvillea building still stood. Later the plot is sparse or fallow (84d0, 9a16, 0c52), row-marked (Ritual-drone), or shows a dark rectangle and a green strip (758a). States are not combined. The row-crop fields outside the +x wall are not established as the estate's.\n\nA per-image captioned vegetable-garden frame exists (captions.json:868-869, b2010be47e7e0502b72db3ee67cb1e40.jpg), but it is not on disk under public/images (checked in the editor pass). Ingest it before any placement. Per the identity refutation pass, the private-beach captioned frame 51032332 is also absent."
+    },
+    {
+      "id": "helipad",
+      "kind": "helipad",
+      "name": "Private Helipad",
+      "href": "/en/experiences/private-helipad",
+      "position": {
+        "x": -32,
+        "z": -20
+      },
+      "orientation": {
+        "deg": 0
+      },
+      "footprint": {
+        "w": 12.5,
+        "d": 12.5
+      },
+      "storeys": null,
+      "provenance": "inferred-from-aerials, unverified",
+      "basis": {
+        "identity": "aerial: a painted yellow H in a circle on the apron in 0c52, fe9a, 9a16, 84d0, 01e5, Ritual-drone and Helipad-2s; absent in 758a, 12e0 and 2c98. text: page title 'Private Helipad' (content/text/en__private-helipad-1.txt:1). The caption 'Thalasses Villas - Private Helipad' (content/captions.json:653) is repeated on eight entries (:653-688), so it labels the album, not each image.",
+        "position": "derived, cross-state.\n- Along the strip (z): the H centre is measured directly against the compound's lane-side sea-ward wall end (z -17.5), a feature constant across states, in each state-C frame. 0c52: about 3-4.5 units sea-ward of it (wall end at about 0.25 of the apron length from its landward edge, H centre at about 0.48). 84d0: about 2 sea-ward. 9a16: level to about 3 sea-ward. fe9a: roughly level. Ritual-drone (strong oblique): about 4 landward. Adopted z about -20 (±3).\n- Across the strip (x): the H centre sits about 0.47-0.54 of the apron width from its lane edge (0c52, fe9a, 84d0). Per-frame values are -30.5 (0c52), -33.3 (fe9a), about -32 (84d0) and about -33.5 (9a16). On the corrected apron outline at z -20 (lane edge about -21.8, far edge -42.8) this gives about -32.\n- Rounded to whole units. Not placed by an along-strip ratio on the state-B apron outline.",
+        "orientation": "aerial: 0c52, fe9a, 9a16, 84d0 — the H's two long strokes run across the walled strip (parallel to the shore, plan x) and its crossbar runs along the strip. In 0c52 one column through the centre crosses two separate yellow bands (iy 245-250 and 275-280); in 84d0 the yellow bbox (170 x 82 px) is elongated across the strip; in 9a16 the strokes run parallel to the apron's landward fence line. deg applies to the painted glyph; the circle itself has no axis.",
+        "footprint": "derived: circle diameter as a fraction of the apron. Readings:\n- A: 0.58 of the apron width (0c52) and 0.57 of its length (fe9a) → 12.5.\n- B's own ratio (apron width / 1.75 on its 22.5-wide apron) → about 12.9. B's stated 10 is inconsistent with it.\n- merge-pass read of fe9a: 0.59-0.61 → 12.0-13.5.\n- layout refutation pass, 0c52: 0.57 of the width.\nRule: A's value, which lies inside the merge-read range and below B's ratio. Precision ±1.5. w = d = the diameter."
+      },
+      "stated": [
+        {
+          "fact": "album caption 'Thalasses Villas - Private Helipad', repeated on eight entries",
+          "source": "content/captions.json:653"
+        },
+        {
+          "fact": "'a nearby dock and heli-pad at your disposal' (wedding page)",
+          "source": "content/text/en__dream-weadding-on-the-beach-1.txt:49"
+        }
+      ],
+      "sources": [
+        "content/text/en__private-helipad-1.txt:1 (name)",
+        "content/captions.json:653-688",
+        "content/experiences/private-helipad.json:2 (slug 'private-helipad')",
+        "src/app/en/experiences/[slug]/page.tsx:23-24 (generateStaticParams over getAllExperiences; route /en/experiences/private-helipad)",
+        "public/images/_pool/0c52479bb31f3ca2493c565e6e13b4e0.jpg",
+        "public/images/_pool/fe9ae3181b07bfa6f93c82f642809b13.jpg",
+        "public/images/_pool/84d095eab652d2a508f63adcca984100.jpg",
+        "public/images/_pool/9a16ab0a7035b82e849766b486fc1885.jpg",
+        "public/images/_chh/Ritual-drone.webp",
+        "public/images/_pool/01e5107612a2f4f472c6b9d19d5025b9.jpg"
+      ],
+      "notes": "A state-C element, placed against the constant compound wall and beside an apron outline traced mostly in state B (758a). On that outline the H centre falls at about 0.65 of the yard's length from its landward edge. The state-C frames instead put it at about 0.47-0.5 of their apron, and 0c52 and 84d0 suggest the state-C apron's landward edge lies near z -12.5 to -13 rather than -7.1. Whether that is a change between states or frame geometry is unresolved; see disagreements.\n\nThe circle (z -13.75 to -26.25, x -38.25 to -25.75) lies inside the drawn outline. No helipad dimension is stated in content. The superlative 'only seafront villas with private helipad' is under a copy ruling and is not stated here."
+    },
+    {
+      "id": "helipad-apron",
+      "kind": "apron",
+      "name": "Helipad apron (no site name on record)",
+      "href": null,
+      "position": {
+        "x": -32.1,
+        "z": -16.6
+      },
+      "orientation": null,
+      "footprint": {
+        "points": [
+          [
+            -19.5,
+            -7.1
+          ],
+          [
+            -42.8,
+            -7.1
+          ],
+          [
+            -42.8,
+            -26.8
+          ],
+          [
+            -23.5,
+            -26.8
+          ]
+        ]
+      },
+      "storeys": null,
+      "provenance": "inferred-from-aerials, unverified",
+      "basis": {
+        "identity": "aerial: the paved area carrying the H in 0c52, fe9a, 84d0, 9a16, Ritual-drone and 01e5. In 758a and 12e0 the same area is a paved yard with vehicles and no H. It is the landward end of the walled strip. There is no solid wall on its lane side: in state C a see-through post-and-brace fence, with a gate at its landward corner, separates it from the lane (fe9a ≈(270-790,1120-1215); 9a16 ≈(964,604)-(1285,824), gate ≈(973-1019,604-650); 0c52 ix≈932-948, iy 171-396, gate ≈(935-958,174-203)). 758a (state B) was not checked for the fence.",
+        "position": "derived: centroid of the polygon below.",
+        "orientation": "not-established: its sides run parallel to the strip and compound walls, but it is near-square (about 21-23 by 20), so it has no long axis.",
+        "footprint": "derived, cross-state: the state-B yard (758a) for the landward and lane-side edges, combined with H-state proportions for the sea-ward limit and far edge.\n- Landward edge: 758a A z -6.2 (ix≈1067), B -8 (ix 1077) → -7.1. This is the state-B yard; 0c52 and 84d0 suggest the state-C apron's landward edge lies near -12.5 to -13, which is not adopted.\n- Sea-ward limit at the white planter structures: A -26.6, B -27 (set from H-state ratios) → -26.8.\n- Lane-side edge: -19.5 at the landward end. At the sea-ward end it is moved from -20.5 to -23.5 so the apron clears the lane (the lane centreline is about -21.1 there and the lane about 4 wide). This matches a faint kerb in 758a running from about x -19.3 at z -10 to about -23.7 at z -26.8.\n- Far edge: A -43.5 (a blend of 758a -42.3 and 0c52 about -45), B -42 → -42.8.\nThe helipad is not positioned by ratio on this outline."
+      },
+      "stated": [],
+      "sources": [
+        "public/images/_pool/758a144c36418180fdd52885bd0871b0.jpg",
+        "public/images/_pool/0c52479bb31f3ca2493c565e6e13b4e0.jpg",
+        "public/images/_pool/fe9ae3181b07bfa6f93c82f642809b13.jpg",
+        "public/images/_pool/84d095eab652d2a508f63adcca984100.jpg",
+        "public/images/_pool/9a16ab0a7035b82e849766b486fc1885.jpg",
+        "public/images/_chh/Ritual-drone.webp"
+      ],
+      "notes": "A service yard with white planter structures and a paved court (z about -26.8 to -45) joins the apron to the Rituals terrace; it is not drawn as a separate element. The outline mixes the pre-H yard (758a) with H-state proportions (see site_state_note). The lane edge is fenced in state C, not open and not walled. The site text names the pad ('heli-pad'), not the apron, so the name here is descriptive."
+    },
+    {
+      "id": "rituals-venue",
+      "kind": "venue",
+      "name": "Thalasses Rituals",
+      "href": "/en/weddings",
+      "position": {
+        "x": -37.2,
+        "z": -57.1
+      },
+      "orientation": {
+        "deg": 90
+      },
+      "footprint": {
+        "points": [
+          [
+            -27.3,
+            -45.2
+          ],
+          [
+            -47,
+            -45.2
+          ],
+          [
+            -47,
+            -69
+          ],
+          [
+            -27.3,
+            -69
+          ]
+        ]
+      },
+      "storeys": null,
+      "provenance": "inferred-from-aerials, unverified",
+      "basis": {
+        "identity": "ground and aerial: the Rituals page's own hero 8b9e368b (content/villas/rituals.json:15, :73) and gallery frame 029de06b (rituals.json:82, :130) show this terrace: its pool, thatched bar and amphitheatre steps, with the dirt car park beyond the right-hand wall and the rocky shore beyond. It matches the walled pool terrace with palms, curved steps and a thatched umbrella at the sea-ward end of the strip whose landward end is the helipad apron (758a, 0c52 = ritual-drone-1, fe9a, 01e5, 12e0). text: 'Thalasses Rituals', a wedding venue with a unique 150 m2 salt-water pool (content/inventory.md:129; content/text/en__thalasses-rituals-1.txt:5). Supporting only: the CHH file names Ritual-drone.webp and ritual-drone-1.webp (Ritual-drone.webp is framed on the villa compound), and the Dream Wedding album caption, which labels the whole album.",
+        "position": "derived: polygon centroid. A (-36.7,-56.9) and B (-37.5,-58.0) agree on relative placement: sea-ward end of the strip beyond the service yard, on the -x side of the lane with the car park on its +x side, landward of the partly submerged reef shelf. The layout refutation pass confirmed this in 758a, 0c52, fe9a, 12e0, Ritual-drone and 01e5.",
+        "orientation": "aerial: 758a, 0c52, fe9a — the terrace's long axis runs along the strip, perpendicular to the shore.",
+        "footprint": "derived: single-state outline from 758a (state B).\n- Lane-side wall, iy≈523: A -27.3, B -27 → -27.3 (layout pass -27.6).\n- Far wall: averaged over a step, from iy≈384 (-45.0) on the landward part to iy≈362 (-47.8) on the sea-ward part → -47.0.\n- Landward edge: where the grey terrace and its curved steps begin, ix≈1371 (-44.9). fe9a shows those steps at the terrace's landward corner with a service court landward of them; -45.2 is kept (A's -39.1 fell in the service yard).\n- Sea-ward edge: the terrace wall at ix≈1562 (-69.0). The merge pass read -67 to -69.5, the layout pass -67.4.\nNot drawn: the palm-planter strip beyond the wall (to about -75 in 758a) and the state-C paved lower plaza (fe9a about -72; 0c52 about one pool length past the pool, about -74 to -76)."
+      },
+      "stated": [
+        {
+          "fact": "'Wedding Venue which features a unique pool of 150m2 with salt water'",
+          "source": "content/text/en__thalasses-rituals-1.txt:5"
+        },
+        {
+          "fact": "page title 'Thalasses Rituals, Rethymno, Greece'; venue with a unique 150 m2 salt-water pool",
+          "source": "content/inventory.md:129"
+        },
+        {
+          "fact": "'150sqm' sea water pool (wedding page)",
+          "source": "content/text/en__dream-weadding-on-the-beach-1.txt:50"
+        },
+        {
+          "fact": "page specs: 3 bedrooms, 3 baths, sleeps 12, 97 m2 indoor, 1 pool. Flagged in the inventory as doubtful: the bedroom counter's argument is 0, and the facilities list is borrowed from Villa Pueblo.",
+          "source": "content/inventory.md:182; content/inventory.md:331-336"
+        }
+      ],
+      "sources": [
+        "content/inventory.md:129 (name)",
+        "content/inventory.md:182",
+        "content/inventory.md:331-336",
+        "content/text/en__thalasses-rituals-1.txt:5",
+        "content/text/en__dream-weadding-on-the-beach-1.txt:50",
+        "content/villas/rituals.json:15",
+        "content/villas/rituals.json:82",
+        "src/app/en/weddings/page.tsx:21 (alternatesFor('/en/weddings'))",
+        "src/generated/redirects.json:90 and :220 (legacy URLs redirect to /en/weddings)",
+        "DECISIONS.md:582",
+        "public/images/_pool/8b9e368b164eab6ade49d33722a0cbfa.jpg",
+        "public/images/_pool/029de06b0346b4ccb2f42dfbc187f754.jpg",
+        "public/images/_pool/758a144c36418180fdd52885bd0871b0.jpg",
+        "public/images/_chh/ritual-drone-1.webp",
+        "public/images/_pool/fe9ae3181b07bfa6f93c82f642809b13.jpg",
+        "public/images/_chh/Ritual-drone.webp",
+        "public/images/_pool/01e5107612a2f4f472c6b9d19d5025b9.jpg",
+        "public/images/_pool/12e099d04cb17783bc4db654b766b369.jpg"
+      ],
+      "notes": "The polygon is the state-B pool terrace only. It does not claim the named venue's full extent: no building matching the page's 3-bedroom, 97 m2 specs appears on this terrace in states B or C, and it leaves out the service yard landward of it. The rituals-pool element sits inside it; the pool's sea-ward end is at about -66.4, against the terrace wall at -69.\n\nBetween the terrace and the waterline lie palm planters, rock and sand, and the partly submerged reef shelf, about 17-28 units on the merged trace. The car park lies on its +x side. State D (01e5) adds a white building landward of the pool inside this outline, which is not drawn. DECISIONS.md:582 lists the Rituals venue's position as waiting on the site plan."
+    },
+    {
+      "id": "lane",
+      "kind": "lane",
+      "name": "Lane (no site name on record)",
+      "href": null,
+      "position": {
+        "x": -17.7,
+        "z": 0
+      },
+      "orientation": {
+        "deg": 90
+      },
+      "footprint": {
+        "points": [
+          [
+            7.5,
+            29.6
+          ],
+          [
+            7.7,
+            21.4
+          ],
+          [
+            -2.6,
+            21.9
+          ],
+          [
+            -12.8,
+            21
+          ],
+          [
+            -17.2,
+            17.6
+          ],
+          [
+            -17.7,
+            2.1
+          ],
+          [
+            -18.5,
+            -19.1
+          ],
+          [
+            -22.3,
+            -30.3
+          ],
+          [
+            -24.8,
+            -41.6
+          ],
+          [
+            -25.4,
+            -54.1
+          ],
+          [
+            -25.4,
+            -64
+          ],
+          [
+            -24.5,
+            -73.7
+          ]
+        ]
+      },
+      "storeys": null,
+      "provenance": "inferred-from-aerials, unverified",
+      "basis": {
+        "identity": "aerial: 758a, 0c52, fe9a, 84d0, 9a16, 12e0, Ritual-drone, 2c98, 01e5 — the paved lane. It arrives from inland, runs along the compound's inland wall, rounds its lane-side inland corner and runs along the lane-side wall. It then passes the fenced lane edge of the apron (a see-through post-and-brace fence with a gate in state C) and the strip's lane-side wall, and ends at the car park by cove (b).",
+        "position": "derived: the point where the centreline passes level with the origin; A -17.5, B -18. The layout refutation pass confirmed the inland run on a grid-overlaid 758a crop.",
+        "orientation": "aerial: 758a, Ritual-drone, 84d0 — the main run beside the compound is parallel to z. Past the compound it deflects toward -x (see disagreements); the bends are carried only in the points.",
+        "footprint": "derived: centreline.\n- Inland end: vertices averaged between A's 11 and B's 7, each reading interpolated at the other's z (or x on the inland run). A merge-pass crop confirms the approach road from inland at about x +7 to +9, the turn at the compound's +x inland corner (display ≈847,800), the run along the inland wall at z ≈21-22 and the turn round the lane-side inland corner (≈852,623). The first vertex is A's point on the approach road.\n- Beyond z -30: both traces had followed the dry field's boundary wall, which is the lane's +x edge (x -20.4 at z -30.7, -23.3 at -43.3, -23.5 at -61.6; layout refutation pass on a 758a crop). Those vertices are moved about 1.5-2 units toward -x, to the middle of the paved lane between that wall and the service-yard/venue lane-side wall (x -26.1 at z -34 to -27.5 at z -68).\n- The last vertex moves the same way, from between A (-18.9,-75.3) and B (-25.5,-72) to about (-24.5,-73.7)."
+      },
+      "stated": [],
+      "sources": [
+        "public/images/_pool/758a144c36418180fdd52885bd0871b0.jpg",
+        "public/images/_pool/0c52479bb31f3ca2493c565e6e13b4e0.jpg",
+        "public/images/_pool/fe9ae3181b07bfa6f93c82f642809b13.jpg",
+        "public/images/_pool/84d095eab652d2a508f63adcca984100.jpg",
+        "public/images/_pool/9a16ab0a7035b82e849766b486fc1885.jpg",
+        "public/images/_chh/Ritual-drone.webp",
+        "public/images/_chh/ritual-drone-1.webp"
+      ],
+      "notes": "The points trace the centreline. The lane is about 2.2-2.5 units wide beside the compound and about 3-4.5 units wide beyond it.\n\nBeside the compound it runs between the lane-side wall (x -15.8) and the apron's lane edge (x -19.5 at the landward end to -23.5 at the sea-ward end). That edge is a see-through fence with a gate in state C, not an open edge and not a solid wall. Further sea-ward it runs between the dry field's wall and the service-yard/venue lane-side wall.\n\nAt its inland end it continues beyond the first vertex to a main road outside the plan. A separate dirt track runs along the compound's +x wall; it is not this lane. The site text gives no name, so the name is descriptive."
+    }
+  ]
+}
