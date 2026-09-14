@@ -97,8 +97,9 @@ served build, not read out of config. The dependency fixes (4.3) are not a test:
 they rest on `npm audit`, whose current report is captured in `qa/security/`.
 The follow-up of 2026-09-14 (the nonce policy on the contact page, 4.1; the
 frame-policy consistency, 4.5; the captured audit, 4.3) is marked where it
-lands. **Its code and spec additions have not yet been built, served or run
-against a build**; 4.1 says what was checked instead.
+lands. Its code and spec additions were built, served and run on 2026-09-14,
+and the header count was repeated on the Vercel production deployment; 4.1 says
+exactly what ran where.
 
 ### 4.1 Response headers — fixed
 
@@ -176,8 +177,11 @@ policy was false. They are now in the spec and in the header script.
 
 One overlap is left, and it comes from Next. The proxy is also matched against
 the percent-decoded path, while header sources see the raw one. So
-`/en/%63ontact` (a 404 on the 56cb859 build) matches both, and both send the
-static policy.
+`/en/%63ontact` matches both, and both send the static policy. Locally it is a
+404. **On the Vercel production deployment it returns 500**, still with exactly
+one static policy (`qa/security/production-headers-2026-09-14.txt`). A server
+error on an odd spelling of a real path is recorded as open. It has not been
+investigated.
 
 **What was checked, and what was not.**
 
@@ -197,11 +201,17 @@ static policy.
   catch a missing or wrong policy, never a doubled one.
 - **Raw header count.** `node scripts/check-headers.mjs <url>` counts raw
   header lines. Against the Vercel deployment it is the only check here that
-  can show a doubled policy. It has **not** been run against a build that
-  contains `src/proxy.ts`, locally or on Vercel. It was run once against the
-  56cb859 build, which has no proxy, to exercise the script. Every
-  non-redirect response there carried exactly one static policy, and the three
-  nonce expectations failed, as they must on that build.
+  can show a doubled policy. On 2026-09-14 it passed against the served
+  candidate build that contains `src/proxy.ts`, and then against the **Vercel
+  production deployment of `3087312`**: exactly one policy on every response.
+  The nonce policy was on `/en/contact`, with a fresh nonce on a second request,
+  and on its query-string, `.rsc` and `_next/data` forms. The static policy was on
+  every other route and every other spelling of the contact path, the
+  segment-prefetch `/en/contact.segments/_tree.segment.rsc` included
+  (`qa/security/production-headers-2026-09-14.txt`). Production and local differ
+  in two status codes, not in policy: `/en/contact.rsc` is 200 on Vercel and 404
+  locally, and `/en/%63ontact` is 500 on Vercel (above). An earlier run against
+  the 56cb859 build, which has no proxy, only exercised the script.
 - **What the spec asserts.** The spec's `the nonce policy on /en/contact` block
   asserts:
   - a policy on the response;
@@ -213,9 +223,12 @@ static policy.
   - the prerendered routes still on the static policy;
   - the other contact spellings on the static policy.
 
-  None of these assertions, the navigation steps in the walk included, has run
-  against a build that contains the proxy.
-- **Production.** Nothing here is verified on production.
+  All of them, the navigation steps in the walk included, passed against the
+  served candidate build that contains the proxy: `tests/security.spec.ts`
+  20 of 20 on 2026-09-14, with the full QA suite at 553 passed / 0 failed and
+  WebKit smoke at 14 of 14 on the same build. The spec runs locally only.
+- **Production.** Verified by the raw header count on the Vercel deployment of
+  `3087312`, as recorded above. Nothing else here was run on production.
 
 ### 4.2 Deferred, with reasons
 

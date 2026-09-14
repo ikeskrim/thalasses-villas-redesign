@@ -1,0 +1,28 @@
+# Production header count, deployment of 3087312 (https://thalasses-villas-redesign-cm5cdmj3e-domisi.vercel.app), run 2026-09-14T11:51:08Z
+check-headers https://thalasses-villas-redesign-cm5cdmj3e-domisi.vercel.app at 2026-09-14T11:51:08.681Z
+
+PASS 200 /                                                CSP lines: 1 static
+PASS 200 /en/villas/villa-thoi                            CSP lines: 1 static
+PASS 200 /en/the-estate                                   CSP lines: 1 static
+PASS 200 /en/experiences                                  CSP lines: 1 static
+PASS 200 /en/weddings                                     CSP lines: 1 static
+PASS 200 /en/gallery                                      CSP lines: 1 static
+PASS 200 /en/contact                                      CSP lines: 1 nonce
+PASS 200 /en/contact                                      CSP lines: 1 nonce  — second fetch: the nonce must differ
+PASS 200 /en/contact?enquiry=estate                       CSP lines: 1 nonce
+PASS 200 /en/contact.rsc                                  CSP lines: 1 nonce
+PASS 200 /en/contact.segments/_tree.segment.rsc           CSP lines: 1 static
+PASS 404 /_next/data/check-headers/en/contact.json        CSP lines: 1 nonce
+PASS 404 /en/contact.html                                 CSP lines: 1 static
+PASS 404 /en/contact.txt                                  CSP lines: 1 static
+PASS 404 /en/contact.check-headers                        CSP lines: 1 static
+PASS 404 /en/contact/x                                    CSP lines: 1 static
+PASS 404 /EN/contact                                      CSP lines: 1 static
+PASS 404 /en/Contact                                      CSP lines: 1 static
+PASS 404 /en/contacts                                     CSP lines: 1 static
+PASS 404 /en/no-such-page                                 CSP lines: 1 static
+PASS 500 /en/%63ontact                                    CSP lines: 1 static
+info 308 /en/contact/                                     CSP lines: 0 (a redirect is not rendered; not judged)
+
+PASS: every response carries exactly the policy it should
+exit 0

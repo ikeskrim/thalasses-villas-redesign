@@ -325,10 +325,10 @@ the numbers are in `SESSION-REPORT.md` tranche twelve.
     - any `.…` or `/…` tail, which absorbs the `.json`, `.rsc` and segment-prefetch suffixes Next appends;
     - any `_next/data/<id>/` prefix.
   - **Replaces an earlier carve-out.** It replaces the first carve-out, written earlier the same day. That one gave `/en/contact.html`, `/en/contact.txt`, `/EN/contact` and similar spellings no policy, and gave `/_next/data/<id>/en/contact.json` two.
-  - **One overlap remains, from Next.** Next also matches the proxy against the percent-decoded path, so `/en/%63ontact` matches both sources, and both send the static policy.
+  - **One overlap remains, from Next.** Next also matches the proxy against the percent-decoded path, so `/en/%63ontact` matches both sources, and both send the static policy. That spelling is a 404 locally. On the Vercel production deployment it returns 500, still with exactly one static policy. That 500 is recorded as open and has not been investigated.
 - **Why a script as well as the spec.** Under `next start` the proxy's header replaces the config's (differently-cased keys, Node's `setHeader`). A local one-policy assertion therefore cannot detect stacking.
   - `node scripts/check-headers.mjs --compile` checks the partition with Next's own route compilers. It passed on 25,533 spellings. It models Next's routing and makes no request.
-  - `node scripts/check-headers.mjs <url>` counts raw header lines. It is the check for the Vercel deployment and has not been run there yet.
+  - `node scripts/check-headers.mjs <url>` counts raw header lines. It is the check for the Vercel deployment. It passed against the served candidate build, and then on the production deployment of `3087312` on 2026-09-14 (`qa/security/production-headers-2026-09-14.txt`): exactly one policy on every response, and a fresh nonce on the contact page's second request.
 - **The proxy runs on every request to these paths, prefetches included,** unlike the docs' example. A request it skipped would otherwise go out with no policy.
 - **The prerendered routes keep `'unsafe-inline'`.** A nonce there means giving up the prerendered HTML. The cost has not been measured, so this stays a deferral, not a finding.
   - `experimental.sri` is not enabled. In this Next version it hashes external chunks only (read from the source, not tried in a build), and the inline flight scripts are not hashed.
