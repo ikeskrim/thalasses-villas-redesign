@@ -738,5 +738,5 @@ Carries out D-021's "investigate `/en/%63ontact` → 500 as a path-encoding clas
   - Both were falsified against a build without the change, and check-headers against production before deploy fails exactly the seven class entries, on 500. **Record that failure until the deploy, never weaken the entries.**
 - **Not established:**
   - the exception behind the 500, which needs Vercel's runtime logs;
-  - whether Vercel runs the proxy before the step that fails. The production re-run after deploy decides it. If the class still fails, the next step needs those logs.
+  - ~~whether Vercel runs the proxy before the step that fails~~. **Established after the deploy of 85899ba:** it does. check-headers against production passes all 31 entries, the seven class entries as 308 to the literal page, and the encoding table's contact rows that were 500 are 308 (`qa/security/encoding-table-production-2026-09-14-after-85899ba.md`).
 - **Not changed:** prerendered pages still answer at their percent-encoded spellings, a duplicate-URL exposure (record §2).

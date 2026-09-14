@@ -149,18 +149,24 @@ The server log's `Error: Internal: NoFallbackError` lines are also Next's. Count
 - **check-headers against the same build:** every class entry failed on "Location (none)". That run is confounded: `base7ff` predates the nonce proxy, so its other contact entries fail too. Only the class lines count.
 - **check-headers against production before this change deploys** (17:28Z): exactly the 7 class entries failed, each as "a 500 fails every entry", each still carrying one CSP line. The other 23 entries passed, and `/en/contact/` was reported.
 
-### Still to run
+### Production, after the change deployed (85899ba)
 
-Once the change deploys, re-run on production:
-- `node scripts/check-headers.mjs https://thalasses-villas-redesign.vercel.app`;
-- `node scripts/encoding-table.mjs` with `--out`.
+Vercel reported the build `success` on the ninth check, 30 s apart. Everything below ran against the production alias between 17:42 and 17:44Z.
 
-Record whatever they show. If the class entries still fail, the platform fails before the proxy runs, and the next step needs Vercel's runtime logs.
+- **check-headers: PASS on all 31 entries.** The seven class entries are 308 to their exact Location, each with one static CSP line. The other 23 pass, and `/en/contact/` is reported. Before the deploy, the same run failed exactly those seven, on 500.
+- **The encoding table** (`encoding-table-production-2026-09-14-after-85899ba.md`), compared row by row with §2's table on status. Exactly eight rows changed, all on `/en/contact`, all from 500 to 308: the escaped letter, both hex cases, the encoded locale, `%2F`, the encoded trailing slash, `.rsc` and the RSC header. The other 52 rows, across all four routes, answer as they did.
+- **The redirect probe:**
+  - every class spelling, with and without a query, and both flight forms (with and without `_rsc`): 308 to the relative `/en/contact` plus the query, with one static policy;
+  - `?next=https://evil.example`: 308 to `/en/contact?next=https%3A%2F%2Fevil.example`;
+  - `/_next/data/x/en/%63ontact.json`: 308 to `/_next/data/x/en/contact.json`, same origin. Under `next start` the adapter answers this with `x-nextjs-redirect` and no Location;
+  - the non-class spellings: 404 with the static policy, `%2e` included, since Vercel does not resolve dot-segments;
+  - a forged Host header cannot be sent to Vercel at all: the TLS handshake is refused before any HTTP. That guarantee is established under `next start` only.
+
+**Established:** Vercel runs the proxy before the step that failed, for every spelling of the class. That was listed as not established until this deploy.
 
 ## 6. What is not established
 
-- **The exception behind the 500, and whether it is thrown in the proxy or in the page's function.** Finding it needs one of two things:
+- **The exception behind the 500, and whether it is thrown in the page's function or later.** The proxy now answers first, so the failure is no longer reachable. Finding it would need one of two things:
   - Vercel's runtime logs for the failing request ids. This session has no access to them.
   - A preview deployment with the proxy's matcher neutralised. That would be a public publish serving `/en/contact` without its nonce policy, so it was not done without permission.
-- **Whether Vercel runs the proxy before the failing step** for these spellings. The production re-run after deploy decides it.
 - **The duplicate-URL exposure on prerendered pages** (§2, point 2). This change does not address it.
