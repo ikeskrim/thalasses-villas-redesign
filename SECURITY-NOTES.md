@@ -176,12 +176,17 @@ got no policy, and `/_next/data/<id>/en/contact.json` got both. All of those are
 policy was false. They are now in the spec and in the header script.
 
 One overlap is left, and it comes from Next. The proxy is also matched against
-the percent-decoded path, while header sources see the raw one. So
-`/en/%63ontact` matches both, and both send the static policy. Locally it is a
-404. **On the Vercel production deployment it returns 500**, still with exactly
-one static policy (`qa/security/production-headers-2026-09-14.txt`). A server
-error on an odd spelling of a real path is recorded as open. It has not been
-investigated.
+the percent-decoded path, while header sources see the raw one. So a spelling
+like `/en/%63ontact.html` matches both, and both send the static policy.
+`/en/%63ontact` itself used to be the example. Locally it was a 404, but **on
+the Vercel production deployment it returned 500**, still with exactly one
+static policy (`qa/security/production-headers-2026-09-14.txt`).
+
+That 500 turned out to be a class: every percent-encoded spelling that decodes
+to the contact page, and no other page. The proxy now answers the whole class
+with a 308 to the literal `/en/contact` (D-025,
+`qa/security/ENCODING-tranche13.md`). The exception behind the 500 is still not
+established.
 
 **What was checked, and what was not.**
 

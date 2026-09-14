@@ -419,7 +419,7 @@ An addendum to D-012. The evidence is in `qa/perf/ISLANDS-tranche12.md`, `FONTS-
     - any `.…` or `/…` tail, which absorbs the `.json`, `.rsc` and segment-prefetch suffixes Next appends;
     - any `_next/data/<id>/` prefix.
   - **Replaces an earlier carve-out.** It replaces the first carve-out, written earlier the same day. That one gave `/en/contact.html`, `/en/contact.txt`, `/EN/contact` and similar spellings no policy, and gave `/_next/data/<id>/en/contact.json` two.
-  - **One overlap remains, from Next.** Next also matches the proxy against the percent-decoded path, so `/en/%63ontact` matches both sources, and both send the static policy. That spelling is a 404 locally. On the Vercel production deployment it returns 500, still with exactly one static policy. That 500 is recorded as open and has not been investigated.
+  - **One overlap remains, from Next.** Next also matches the proxy against the percent-decoded path, so `/en/%63ontact` matches both sources, and both send the static policy. That spelling is a 404 locally. On the Vercel production deployment it returns 500, still with exactly one static policy. That 500 is recorded as open and has not been investigated. **Answered by D-025.**
 - **Why a script as well as the spec.** Under `next start` the proxy's header replaces the config's (differently-cased keys, Node's `setHeader`). A local one-policy assertion therefore cannot detect stacking.
   - `node scripts/check-headers.mjs --compile` checks the partition with Next's own route compilers. It passed on 25,533 spellings. It models Next's routing and makes no request.
   - `node scripts/check-headers.mjs <url>` counts raw header lines. It is the check for the Vercel deployment. It passed against the served candidate build, and then on the production deployment of `3087312` on 2026-09-14 (`qa/security/production-headers-2026-09-14.txt`): exactly one policy on every response, and a fresh nonce on the contact page's second request.
@@ -718,3 +718,25 @@ All are fixed. The ingest spec passes 8 of 8, typecheck and lint are clean, and 
   - **Where.** An owner-pending bullet, a subsection under "After launch" placed after the Loggia sunset, and a Rollback sentence saying DNS cannot undo it.
   - **Nothing live changes.** The header stays `max-age=63072000; includeSubDomains`.
   - **Before it can be applied.** The owner's inventory of every hostname in the `thalasses.com` DNS zone, each serving HTTPS.
+
+### D-025 · The percent-encoded contact path: a 308 to the literal page (carrying out D-021)
+
+Carries out D-021's "investigate `/en/%63ontact` → 500 as a path-encoding class, with an encoding table across four routes". A build default, not a ruling. The record is `qa/security/ENCODING-tranche13.md`.
+
+- **The class.** On Vercel, every percent-encoded spelling that decodes to `/en/contact` returned 500: an escaped letter in either hex case, an encoded locale, `%2F`, an encoded trailing slash, and the flight-data forms. The same spellings of the prerendered estate page, a villa and an experience returned the page. Spellings that decode to no real path were 404 everywhere. `next start` answered the contact spellings 404, and minimal-mode emulation did not reproduce the 500.
+- **Chosen: a 308 in `src/proxy.ts`.** A path that decodes exactly to `/en/contact`, or `/en/contact/`, is redirected to the literal page with its own query.
+  - Flight-data forms are included, since no link on the site produces these URLs.
+  - The target is a fixed literal, so the decoded input never reaches it.
+  - Next's adapter writes the Location relative. With a forged Host header, measured locally, it stays `/en/contact`.
+- **Rejected:**
+  - **Redirecting every decoded spelling site-wide.** Broader than the fault: it would change the answer for every prerendered page that already works.
+  - **Leaving the flight forms at 500.**
+  - **A relative Location.** Next's proxy adapter parses the Location with `new NextURL()` and refuses a relative one, which turned every spelling into a 500 under `next start` (measured, then fixed). That failed attempt also established that the proxy runs for these spellings and sees the raw, still-encoded pathname, under `next start`.
+- **Checks added:**
+  - a ten-test "percent-encoded" block in `tests/security.spec.ts`;
+  - in `scripts/check-headers.mjs`: a 500 fails every entry, a redirect entry judges its status and Location, and the class is added as seven 308 entries.
+  - Both were falsified against a build without the change, and check-headers against production before deploy fails exactly the seven class entries, on 500. **Record that failure until the deploy, never weaken the entries.**
+- **Not established:**
+  - the exception behind the 500, which needs Vercel's runtime logs;
+  - whether Vercel runs the proxy before the step that fails. The production re-run after deploy decides it. If the class still fails, the next step needs those logs.
+- **Not changed:** prerendered pages still answer at their percent-encoded spellings, a duplicate-URL exposure (record §2).

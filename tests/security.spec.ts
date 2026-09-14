@@ -36,9 +36,10 @@ const STATIC_POLICY_ROUTES = ["/", "/en/villas/villa-thoi", "/en/the-estate", "/
 /*
  * Spellings src/proxy.ts's matcher admits besides the page, where next.config.ts
  * sends no policy. Before the matcher took every letter case and every `.…`/`/…`
- * tail these went out with none — a gap a local run CAN show. They are 404s, so
- * they must get the static policy: Next does not stamp a nonce on a 404, and a
- * nonce policy would refuse its scripts. /en/contacts is on the config's side.
+ * tail these went out with none — a gap a local run CAN show. They are 404s (bar
+ * `/en/%63ontact`, now a 308 to the page: see the percent-encoded block below),
+ * so they must get the static policy: Next does not stamp a nonce on a 404, and
+ * a nonce policy would refuse its scripts. /en/contacts is on the config's side.
  */
 const OTHER_CONTACT_SPELLINGS = ["/en/contact.html", "/en/contact.txt", "/en/contact.check-headers", "/en/contact/x", "/EN/contact", "/en/Contact", "/en/contacts", "/en/%63ontact"];
 
@@ -227,6 +228,71 @@ test.describe("security — the nonce policy on /en/contact", () => {
       const csp = cspHeaders(await request.get(path, { maxRedirects: 0 }));
       expect(csp, `a policy on ${path}`).toHaveLength(1);
       expect(directives(csp[0] ?? "")["script-src"], path).toBe("script-src 'self' 'unsafe-inline'");
+    }
+  });
+});
+
+test.describe("security — the contact path, percent-encoded", () => {
+  /*
+   * On Vercel every spelling that decodes to /en/contact returned 500
+   * (qa/security/ENCODING-tranche13.md); src/proxy.ts sends each one to the
+   * literal page with a 308. The Location is asserted exactly — the page plus
+   * the request's own query — because nothing a request carries may steer it.
+   */
+  const ENCODED_CONTACT = ["/en/%63ontact", "/en/c%6Fntact", "/en/c%6fntact", "/%65n/contact", "/en%2Fcontact", "/en/contact%2F"];
+
+  for (const path of ENCODED_CONTACT) {
+    test(`${path} is sent to /en/contact with its query`, async ({ request }) => {
+      for (const [query, location] of [["", "/en/contact"], ["?enquiry=estate", "/en/contact?enquiry=estate"]]) {
+        const res = await request.get(`${path}${query}`, { maxRedirects: 0 });
+        expect(res.status(), `${path}${query}`).toBe(308);
+        expect(res.headers()["location"], `${path}${query}`).toBe(location);
+        expect(cspHeaders(res), `a policy on ${path}${query}`).toHaveLength(1);
+      }
+    });
+  }
+
+  test("the flight-data forms are redirected too, never a 5xx", async ({ request }) => {
+    for (const [path, headers] of [["/en/%63ontact.rsc", {}], ["/en/%63ontact", { RSC: "1" }]] as const) {
+      const res = await request.get(path, { maxRedirects: 0, headers });
+      expect(res.status(), path).toBe(308);
+      expect(res.headers()["location"], path).toBe("/en/contact");
+    }
+  });
+
+  test("followed, the redirect lands on the page under its nonce policy", async ({ request }) => {
+    const res = await request.get("/en/%63ontact?enquiry=estate");
+    expect(res.status()).toBe(200);
+    const landed = new URL(res.url());
+    expect(`${landed.pathname}${landed.search}`).toBe("/en/contact?enquiry=estate");
+    const csp = cspHeaders(res);
+    expect(csp).toHaveLength(1);
+    expect(csp[0]).toMatch(NONCE_SOURCE);
+  });
+
+  test("neither the query nor the Host header steers the Location off the page", async ({ request, baseURL }) => {
+    const res = await request.get("/en/%63ontact?next=https://evil.example", { maxRedirects: 0 });
+    expect(res.status()).toBe(308);
+    expect(res.headers()["location"]).toMatch(/^\/en\/contact\?/);
+
+    /* Playwright's request API sends its own Host, so the forged one goes through node:http. */
+    const http = await import("node:http");
+    const base = new URL(baseURL ?? "");
+    const forged = await new Promise<{ status?: number; location?: string }>((resolve, reject) => {
+      http
+        .get({ hostname: base.hostname, port: base.port, path: "/en/%63ontact", headers: { host: "evil.example" } }, (r) => {
+          r.resume();
+          resolve({ status: r.statusCode, location: r.headers.location });
+        })
+        .on("error", reject);
+    });
+    expect(forged).toEqual({ status: 308, location: "/en/contact" });
+  });
+
+  test("spellings that do not decode to the page are not redirected", async ({ request }) => {
+    for (const path of ["/en/%2563ontact", "/EN/%63ontact", "/en/%63ontacts", "/en/%63ontact%2Fx", "/%2F%2Fevil.example/en/contact"]) {
+      const res = await request.get(path, { maxRedirects: 0 });
+      expect(res.status(), path).toBe(404);
     }
   });
 });

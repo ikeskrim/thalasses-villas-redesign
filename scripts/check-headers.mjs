@@ -64,7 +64,9 @@ const OTHER_SECURITY_HEADERS = [
  * What each URL must get. `static` and `nonce` name the policy; `one` accepts
  * either — for requests that are not documents (RSC payloads, a pages-router
  * data URL), where a browser enforces neither and the only fault is none or two.
- * `redirect` is reported and not judged: a 3xx body is never rendered.
+ * `redirect` judges the status and the Location when the entry names them, and
+ * never the headers: a 3xx body is never rendered. Any response of 500 or more
+ * fails, whatever the entry expects.
  *
  * The contact spellings are the ones src/proxy.ts's matcher admits besides the
  * page. Before the matcher took every letter case and every `.…`/`/…` tail, the
@@ -96,8 +98,24 @@ const ENTRIES = [
   { path: "/en/Contact", expect: "static" },
   { path: "/en/contacts", expect: "static" },
   { path: "/en/no-such-page", expect: "static" },
-  /* The proxy is also matched against the decoded path, header sources against the raw one: both apply, both static. */
-  { path: "/en/%63ontact", expect: "static", allowIdenticalDuplicate: true },
+  /*
+   * THE CONTACT PATH, PERCENT-ENCODED (qa/security/ENCODING-tranche13.md). Every
+   * spelling that decodes to the page returned 500 on Vercel; src/proxy.ts now
+   * sends it to the literal page, flight-data forms included (the proxy answers
+   * before Next's 307 for a bare `RSC: 1`). A deployment without that change
+   * fails these entries: record the failure, never weaken the entry.
+   */
+  { path: "/en/%63ontact", expect: "redirect", status: 308, location: "/en/contact" },
+  { path: "/en/c%6Fntact?enquiry=estate", expect: "redirect", status: 308, location: "/en/contact?enquiry=estate" },
+  { path: "/%65n/contact", expect: "redirect", status: 308, location: "/en/contact" },
+  { path: "/en%2Fcontact", expect: "redirect", status: 308, location: "/en/contact" },
+  { path: "/en/contact%2F", expect: "redirect", status: 308, location: "/en/contact" },
+  { path: "/en/%63ontact.rsc", expect: "redirect", status: 308, location: "/en/contact" },
+  { path: "/en/%63ontact", headers: { RSC: "1" }, expect: "redirect", status: 308, location: "/en/contact" },
+  /* Not the class, so not redirected. The proxy is also matched against the decoded path, header sources against the raw one: both apply, both static. */
+  { path: "/en/%63ontact.html", expect: "static", allowIdenticalDuplicate: true },
+  { path: "/en/%2563ontact", expect: "static", status: 404 },
+  { path: "/en/%74he-estate", expect: "static" },
   { path: "/en/contact/", expect: "redirect" },
 ];
 
@@ -326,15 +344,37 @@ async function network(baseArg) {
     const kinds = csp.map(kindOf);
     const problems = [];
 
+    /* A server error fails every entry, whatever it expects: /en/%63ontact was a 500 on Vercel while a policy-only check passed it. */
+    if (res.status >= 500) {
+      failures++;
+      console.log(`FAIL ${res.status} ${label.padEnd(48)} CSP lines: ${csp.length}\n     a ${res.status} fails every entry`);
+      continue;
+    }
+
     /*
      * A 3xx's headers are reported, not judged: a redirect's body is never
-     * rendered, and platforms vary in what they add to one. An entry that expects
-     * a rendered response still fails on a redirect.
+     * rendered, and platforms vary in what they add to one. Its status and its
+     * Location are judged when the entry names them — the Location resolved
+     * against the checked origin, so a relative one and a same-origin absolute
+     * one both pass and any other origin fails. An entry that expects a rendered
+     * response still fails on a redirect.
      */
     if (e.expect === "redirect" || (res.status >= 300 && res.status <= 399)) {
+      const sent = lines.location?.[0];
       if (e.expect === "redirect" && (res.status < 300 || res.status > 399)) problems.push(`expected a redirect, got ${res.status}`);
       if (e.expect !== "redirect") problems.push(`expected a ${e.expect} policy on a rendered response, got a ${res.status} redirect`);
-      console.log(`${problems.length ? "FAIL" : "info"} ${res.status} ${label.padEnd(48)} CSP lines: ${csp.length} (a redirect is not rendered; not judged)${problems.length ? `\n     ${problems.join("\n     ")}` : ""}`);
+      if (e.expect === "redirect" && e.status && res.status !== e.status) problems.push(`status ${res.status}, expected ${e.status}`);
+      if (e.expect === "redirect" && e.location !== undefined) {
+        let resolved = null;
+        try {
+          resolved = sent === undefined ? null : new URL(sent, base);
+        } catch {
+          /* reported below */
+        }
+        if (!resolved) problems.push(`Location ${sent ?? "(none)"}, expected ${e.location}`);
+        else if (resolved.origin !== base.origin || `${resolved.pathname}${resolved.search}` !== e.location) problems.push(`Location ${sent}, expected ${e.location} on ${base.origin}`);
+      }
+      console.log(`${problems.length ? "FAIL" : e.status || e.location ? "PASS" : "info"} ${res.status} ${label.padEnd(48)} → ${sent ?? "-"}  CSP lines: ${csp.length} (a redirect is not rendered; headers not judged)${problems.length ? `\n     ${problems.join("\n     ")}` : ""}`);
       failures += problems.length ? 1 : 0;
       continue;
     }

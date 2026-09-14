@@ -61,7 +61,56 @@ function policy(scriptSrc: string): string {
   ].join("; ");
 }
 
+/*
+ * THE CONTACT PATH, PERCENT-ENCODED — sent to the one literal spelling.
+ *
+ * On Vercel every percent-encoded spelling that decodes to /en/contact returned
+ * HTTP 500: an escaped letter in either hex case, an encoded locale, `%2F` between
+ * the segments, an encoded trailing slash, and their flight-data forms
+ * (qa/security/ENCODING-tranche13.md, production table). The same spellings of
+ * the prerendered pages returned the page; this is the one page rendered per
+ * request. `next start` answered them 404 before this branch, and Next's minimal
+ * mode with the platform's x-matched-path header did not reproduce the 500, so the
+ * exception itself is not established: that needs Vercel's runtime logs.
+ *
+ * Whatever the platform's failure is, a request in that shape is redirected (308)
+ * to "/en/contact" with its query. The target is that fixed literal, so the
+ * decoded input never reaches it, and a redirect to the literal cannot loop. It
+ * is built absolute on the request's own origin because Next's proxy adapter
+ * parses a Location with `new NextURL()` (server/web/adapter.js), which refuses a
+ * relative one: that was a 500 on every spelling, measured. The adapter then
+ * writes a same-host Location back as a relative path.
+ *
+ * Only a path that decodes exactly to the page, or the page plus one trailing
+ * slash, is touched: double encoding, `/EN/`, dot-segments and every other
+ * spelling answer as they did before. Flight-data requests are redirected too;
+ * no link on the site produces these URLs, so a client navigation turning into
+ * a hard one costs nothing a 500 did not.
+ *
+ * Whether Vercel runs this proxy before the step that fails is itself not
+ * established. If it does not, nothing changes, and the production table says so.
+ */
+const CONTACT_PATH = "/en/contact";
+
+function decodesToContact(pathname: string): boolean {
+  if (!pathname.includes("%")) return false;
+  let decoded: string;
+  try {
+    decoded = decodeURIComponent(pathname);
+  } catch {
+    return false;
+  }
+  return decoded === CONTACT_PATH || decoded === `${CONTACT_PATH}/`;
+}
+
 export function proxy(request: NextRequest) {
+  if (decodesToContact(request.nextUrl.pathname)) {
+    const target = new URL(`${CONTACT_PATH}${request.nextUrl.search}`, request.nextUrl.origin);
+    const response = NextResponse.redirect(target, 308);
+    response.headers.set("Content-Security-Policy", policy("script-src 'self' 'unsafe-inline'"));
+    return response;
+  }
+
   /*
    * The matcher below admits more than the page (see there), and next.config.ts
    * sends no policy on anything it admits, so every response from here must
