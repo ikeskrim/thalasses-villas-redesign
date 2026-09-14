@@ -335,3 +335,52 @@ the numbers are in `SESSION-REPORT.md` tranche twelve.
 - **`frame-src` stays `'none'`.** There are no embeds, and the policy is not loosened for a host nobody uses.
   - A YouTube embed needs `www.youtube-nocookie.com` in the markup and in `frame-src` in both policy files, on the same day.
   - The spec's no-frame guard then becomes a host check.
+
+### D-018 · Skills
+
+The queue asked for `frontend-design` and any UI/UX skill from
+`github.com/anthropics/skills`, and nothing else. The screening record, with one
+row for each of the repository's 19 skills at `main` `34040c9`, is
+`qa/skills/SCREENING-tranche12.md`. "Any UI/UX skill" was read generously
+(anything about designing, styling, building or testing an interface or a
+visual artefact), then filtered by whether it applies to this site. The file
+keeps the two tests in separate columns.
+
+- **One skill is installed: `frontend-design`**, at project scope in
+  `.claude/skills/frontend-design/`, with its Apache-2.0 `LICENSE.txt`. Both
+  files are byte-identical to upstream: local `git hash-object` equals the
+  GitHub blob SHA (`a5333457…`, `f433b1a5…`). `git ls-files .claude` lists
+  only these two files, so no community pack or other skill is tracked in the
+  repository.
+- **Five were read in full and declined.**
+  - `webapp-testing` is a UI testing skill that could run against :3005. It
+    has you write stand-alone Python Playwright scripts (SKILL.md:9, 53-63).
+    Its `with_server.py` helper is used only when no server is running; for a
+    running server it goes straight to navigate, screenshot and act
+    (SKILL.md:24-33). This project's QA is already a TypeScript
+    `@playwright/test` harness (`playwright.config.ts`, 34 specs, `npm run qa`
+    sharded), so the decline is a duplication call, not a safety ban. Server
+    lifecycle is not the difference: the harness also reuses a running :3005
+    and starts `npm run start` otherwise (`playwright.config.ts:50-55`).
+  - `web-artifacts-builder` is a React/Tailwind UI skill, but it builds
+    single-file claude.ai artifacts, not this Next.js site.
+  - `theme-factory` applies preset and generated palettes. Direction F's
+    palette and type are the owner's (D-001).
+  - `canvas-design` produces poster and art output, and generated imagery sits
+    badly beside the real-photography rule.
+  - `brand-guidelines` is Anthropic's own brand.
+- **The other thirteen were screened by description and a web-UI keyword grep,
+  and not installed:** academy-guide, algorithmic-art, claude-api,
+  discernment-nudge, doc-coauthoring, docx, internal-comms, mcp-builder, pdf,
+  pptx, skill-creator, slack-gif-creator, xlsx. None was read in full. Three
+  of them could reasonably be called visual design: algorithmic-art
+  (interactive p5.js artwork), pptx (slide design guidance) and
+  slack-gif-creator (animation). None of the thirteen applies to this site.
+- **The skill does not reopen Direction F.** Its own rule is that the brief's
+  words win where the brief pins a direction down, and D-001 is that brief. It
+  applies to new surfaces and as a critique lens. Where F sits close to a look
+  the skill calls a generated default (the cream, serif and warm-accent palette;
+  the all-caps eyebrow), that is recorded for the owner in
+  `DESIGN-REFERENCES.md` and not changed.
+- **Open for the owner:** whether to install `theme-factory` or `webapp-testing`
+  anyway. Either is a new entry here plus one copied folder from upstream.
