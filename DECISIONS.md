@@ -307,3 +307,31 @@ the numbers are in `SESSION-REPORT.md` tranche twelve.
   - Drive's folder listing format was captured live on 2026-09-14 from gdown's public test folder, and the parser reads all 16 entries on that page. That capture has no resource key.
   - The download and its large-file confirmation page are still modelled.
   - The pipeline has not yet been run against a real owner link.
+
+### D-017 · A nonce policy on the contact page; the static policy everywhere else
+
+- **When `/en/contact` is loaded as a document, `src/proxy.ts` sends it a per-request nonce CSP.** Its script-src is `'self' 'nonce-…' 'strict-dynamic'`, with no `'unsafe-inline'`.
+  - The page reads `searchParams`, so it is already rendered on every request. It is not in the prerender manifest and is served `private, no-store`, so the nonce costs it nothing.
+  - The mechanism is the one Next 16.3.5 documents: the policy is set on the request, and Next stamps the nonce on its own scripts.
+- **Where the nonce policy applies.** A CSP belongs to a document, so the nonce policy is in force on a direct visit, a reload, the legacy-URL 301, and the plain-`<a>` links (the homepage's enquiry buttons and the error page).
+  - The site's `next/link` CTAs into the contact page are client-side navigations: Weddings, each experience, each villa's "Enquire", and the 404 page's link. After one of those, the contact page runs under the static policy of the page the guest came from.
+  - Closing that would take a nonce on the prerendered routes (deferred below) or full page loads for those CTAs. Neither is done.
+- **Every other directive matches the static policy word for word,** and `tests/security.spec.ts` compares the two. style-src keeps `'unsafe-inline'`, because no nonce can cover `style` attributes.
+- **Each path gets its CSP from exactly one place, by construction.**
+  - `next.config.ts` sends the static CSP on every path the proxy's matcher does not admit.
+  - The proxy sends a policy on every path it does admit: the nonce policy on every request whose `nextUrl.pathname` is `/en/contact` (the document, and its RSC and `_next/data` requests, which Next normalises to that pathname before the proxy runs), and the static policy on every other spelling it admits. All of those are 404 pages.
+  - The config's exclusion and the proxy's matcher are one regex fragment, character for character:
+    - the contact path in any letter case, spelled with character classes, because Next matches header sources case-insensitively and proxy matchers case-sensitively;
+    - any `.…` or `/…` tail, which absorbs the `.json`, `.rsc` and segment-prefetch suffixes Next appends;
+    - any `_next/data/<id>/` prefix.
+  - **Replaces an earlier carve-out.** It replaces the first carve-out, written earlier the same day. That one gave `/en/contact.html`, `/en/contact.txt`, `/EN/contact` and similar spellings no policy, and gave `/_next/data/<id>/en/contact.json` two.
+  - **One overlap remains, from Next.** Next also matches the proxy against the percent-decoded path, so `/en/%63ontact` matches both sources, and both send the static policy.
+- **Why a script as well as the spec.** Under `next start` the proxy's header replaces the config's (differently-cased keys, Node's `setHeader`). A local one-policy assertion therefore cannot detect stacking.
+  - `node scripts/check-headers.mjs --compile` checks the partition with Next's own route compilers. It passed on 25,533 spellings. It models Next's routing and makes no request.
+  - `node scripts/check-headers.mjs <url>` counts raw header lines. It is the check for the Vercel deployment and has not been run there yet.
+- **The proxy runs on every request to these paths, prefetches included,** unlike the docs' example. A request it skipped would otherwise go out with no policy.
+- **The prerendered routes keep `'unsafe-inline'`.** A nonce there means giving up the prerendered HTML. The cost has not been measured, so this stays a deferral, not a finding.
+  - `experimental.sri` is not enabled. In this Next version it hashes external chunks only (read from the source, not tried in a build), and the inline flight scripts are not hashed.
+- **`frame-src` stays `'none'`.** There are no embeds, and the policy is not loosened for a host nobody uses.
+  - A YouTube embed needs `www.youtube-nocookie.com` in the markup and in `frame-src` in both policy files, on the same day.
+  - The spec's no-frame guard then becomes a host check.

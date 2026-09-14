@@ -91,8 +91,14 @@ merely resembles one still fails.
 ## 4. Audit — 2026-09-13 (tranche twelve)
 
 Structured pass over headers, dependencies, the enquiry form, embeds, outbound
-links, personal data in logs and URLs, and secrets. Every fix below is asserted
-in `tests/security.spec.ts` against the served build, not read out of config.
+links, personal data in logs and URLs, and secrets. Every **header** and
+**enquiry-form** fix below is asserted in `tests/security.spec.ts` against the
+served build, not read out of config. The dependency fixes (4.3) are not a test:
+they rest on `npm audit`, whose current report is captured in `qa/security/`.
+The follow-up of 2026-09-14 (the nonce policy on the contact page, 4.1; the
+frame-policy consistency, 4.5; the captured audit, 4.3) is marked where it
+lands. **Its code and spec additions have not yet been built, served or run
+against a build**; 4.1 says what was checked instead.
 
 ### 4.1 Response headers — fixed
 
@@ -111,12 +117,112 @@ domains; nothing else was set.
 
 The policy is exercised as well as asserted: seven routes are loaded and
 scrolled end to end with it on, and one `securitypolicyviolation` fails the run.
+Each of those loads is a new document, so since 2026-09-14 the walk also makes
+two client-side navigations, each with a check that it did not reload the page:
+from a `/en/contact` document to the estate and back, and from a villa to the
+contact page through its Enquire link. What each one proves is below.
+
+**/en/contact gets a stricter variant (2026-09-14).** The contact page reads
+`searchParams`, so Next renders it on every request already: it is absent from
+the build's prerender manifest (68 prerendered entries, contact not among them)
+and the served build sends it `Cache-Control: private, no-cache, no-store`. A
+per-request nonce therefore costs it nothing it was not already paying.
+`src/proxy.ts` — the Proxy file convention of Next 16 — generates a nonce per
+request and sends the same policy with `script-src 'self' 'nonce-…'
+'strict-dynamic'` and no script `'unsafe-inline'`. It sets the policy on the
+request as well as the response, which is where Next reads the nonce from to
+stamp it on its own chunk tags, inline flight data and React's streaming
+scripts (the mechanism in Next's own CSP guide, shipped in
+`node_modules/next/dist/docs/01-app/02-guides/content-security-policy.md`).
+Every other header is still sent on every route from `next.config.ts`.
+style-src is unchanged, because a nonce cannot cover the `style` attributes
+next/image and the motion libraries write, and would switch `'unsafe-inline'`
+off for them.
+
+**Where the nonce policy is in force, exactly.** A policy belongs to a
+document, and the nonce policy applies when `/en/contact` is loaded as one: a
+direct visit, a reload, the legacy-URL 301, the homepage's enquiry buttons and
+the error page's contact link (both plain `<a>`). The site's `next/link` CTAs
+into the contact page — Weddings, each experience, each villa's "Enquire", the
+404 page's contact link — are client-side navigations. After one of those the
+document is still the page the guest came from, under the static policy, and
+the contact page renders inside it under that policy. The reverse holds too: a
+guest who lands on `/en/contact` keeps the nonce policy on every page they then
+open client-side. The walk's first navigation exercises the nonce policy after
+a soft navigation. The second does not; it shows the contact page's client code
+is clean under the static policy it gets on the in-site path.
+
+**One source per response, by construction.** `next.config.ts` sends its
+static CSP on every path `src/proxy.ts`'s matcher does not admit. The proxy
+sends a policy on every path it does admit: the nonce one on every request
+whose `nextUrl.pathname` is `/en/contact` — the document, and its RSC and
+`_next/data` requests, which Next normalises to that pathname before the proxy
+runs — and the static one on every other spelling it admits, all of them 404
+pages. The config's exclusion and the proxy's matcher are the same regex
+fragment, character for character:
+
+- the contact path in any letter case, spelled with character classes, because
+  Next matches header sources case-insensitively but compiles the proxy
+  matcher into a case-sensitive RegExp;
+- with any `.…` or `/…` tail, which also absorbs the `.json`, `.rsc` and
+  segment-prefetch suffixes Next appends to a matcher;
+- with any `_next/data/<id>/` prefix.
+
+The first version of this carve-out (earlier on 2026-09-14) missed spellings.
+`/en/contact.html`, `/en/contact.txt`, `/en/contact.<anything>` and `/EN/contact`
+got no policy, and `/_next/data/<id>/en/contact.json` got both. All of those are
+404s with no reflected input, but the claim that every path got exactly one
+policy was false. They are now in the spec and in the header script.
+
+One overlap is left, and it comes from Next. The proxy is also matched against
+the percent-decoded path, while header sources see the raw one. So
+`/en/%63ontact` (a 404 on the 56cb859 build) matches both, and both send the
+static policy.
+
+**What was checked, and what was not.**
+
+- **Partition check.** `node scripts/check-headers.mjs --compile` needs no build
+  and no network. It reads both patterns and the nonce branch out of the two
+  files and compiles them with Next 16.3.5's own route compilers. It then walks
+  25,533 distinct spellings. It checks that each gets its policy from exactly
+  one place under `next start`'s matching, and under all four letter-case
+  combinations a platform could apply to the manifest regexes. The only
+  double match was the percent-decoded case above, with the static policy on
+  both sides. It ran on 2026-09-14 and passed. It models Next's routing; it
+  sends no request.
+- **Why a local spec run is not enough.** A spec run against `next start`
+  cannot show the two policies stacking. Next collects config and proxy headers
+  under differently-cased keys, and Node's case-insensitive `setHeader` lets
+  the proxy's value replace the config's. So the spec's one-policy assertions
+  catch a missing or wrong policy, never a doubled one.
+- **Raw header count.** `node scripts/check-headers.mjs <url>` counts raw
+  header lines. Against the Vercel deployment it is the only check here that
+  can show a doubled policy. It has **not** been run against a build that
+  contains `src/proxy.ts`, locally or on Vercel. It was run once against the
+  56cb859 build, which has no proxy, to exercise the script. Every
+  non-redirect response there carried exactly one static policy, and the three
+  nonce expectations failed, as they must on that build.
+- **What the spec asserts.** The spec's `the nonce policy on /en/contact` block
+  asserts:
+  - a policy on the response;
+  - a nonce and `'strict-dynamic'` in script-src, and no `'unsafe-inline'`
+    there;
+  - every other directive identical to the static policy;
+  - every `<script>` in the page's HTML carrying the header's nonce;
+  - a different nonce on a second request;
+  - the prerendered routes still on the static policy;
+  - the other contact spellings on the static policy.
+
+  None of these assertions, the navigation steps in the walk included, has run
+  against a build that contains the proxy.
+- **Production.** Nothing here is verified on production.
 
 ### 4.2 Deferred, with reasons
 
 | Item | Why not now | What would change it |
 |---|---|---|
-| **Nonce- or hash-based `script-src`** (dropping `'unsafe-inline'`) | Next inlines its flight data and React its streaming scripts. On statically prerendered pages those differ per page and per build, so they cannot be hashed in a config file. A per-request nonce makes every page dynamic: no CDN-cached HTML, and a slower first byte on the connection this site is tuned for. The exposure `'unsafe-inline'` leaves is script injection, and the site has no user-generated content and renders no untrusted HTML — the one reflected parameter is now an allowlist (4.4) | A page that renders untrusted input, or Next shipping build-time hashes for prerendered inline scripts |
+| **Nonce- or hash-based `script-src` on the prerendered routes** (dropping `'unsafe-inline'` everywhere but /en/contact, which has it when loaded as a document — 4.1) | Next inlines its flight data and React its streaming scripts. On statically prerendered pages those are written at build time and differ per page and per build, so they cannot be hashed in a config file. A nonce needs a per-request render, and Next's CSP guide says so plainly: on these routes it means giving up the prerendered HTML and its CDN caching. That cost has **not been measured** — the deferral is a judgement, not a benchmark. The exposure `'unsafe-inline'` leaves is script injection, and the site has no user-generated content and renders no untrusted HTML — the one reflected parameter is now an allowlist (4.4) | A measured first-byte and caching cost the owner accepts, a page that renders untrusted input, or Next shipping build-time hashes for prerendered inline scripts |
+| **`experimental.sri`** | Next 16.3.5 accepts it and wires it into the Turbopack build (`next/dist/build/turbopack-build/impl.js`, whose manifest loader writes a subresource-integrity manifest). It puts `integrity` on the external chunk scripts only (`next/dist/server/app-render/required-scripts.js`); the inline flight scripts get a nonce or nothing (`next/dist/server/app-render/use-flight-response.js`). Read from the source, so on a prerendered page it cannot remove `'unsafe-inline'`, and it would add a hash check to files that are already `'self'` and immutable. Not enabled, and not tried in a build | Next hashing its inline scripts at build time |
 | **HSTS `preload`** | Submitting the domain to the browser preload list binds every subdomain to HTTPS for years and is slow to undo. That is the owner's decision (`DECISIONS.md` D-013) | The owner confirming every subdomain is HTTPS, on launch day |
 | **A durable rate limit** | There is no endpoint to limit. The form delivers nothing until a mail provider is wired, and `src/lib/rate-limit.ts` is a per-instance stub that cannot bound a serverless deployment | The mail-provider route. It must use a shared store or Vercel's firewall rate limiting, and check `ENQUIRY_LIMITS` on the server |
 | **Server-side honeypot and validation** | Same reason — no server route yet | Same |
@@ -134,6 +240,15 @@ scrolled end to end with it on, and one `securitypolicyviolation` fails the run.
 Applied with `npm audit fix`, **without** `--force`, so nothing outside the
 existing semver ranges could move: 6 packages changed in the lockfile. After:
 **0 vulnerabilities**.
+
+**Captured (2026-09-14).** Neither report was saved at the time, and npm's own
+logs from then have rotated away, so the before figures above rest on this
+record and the lockfile diff, not on a saved report. The after state was re-run
+read-only (`npm audit`, `npm audit --json`; no `fix`) at 06:46 UTC on HEAD
+`56cb859`: **found 0 vulnerabilities** across 450 dependencies (26 prod, 386
+dev, 89 optional). The raw output is `qa/security/npm-audit-tranche12.json` and
+`qa/security/npm-audit-tranche12.txt`, the latter with the date and commit in
+its header line.
 
 One warning worth recording: npm's allow-scripts check did not run
 `unrs-resolver`'s postinstall (a dev dependency of the lint toolchain). It was
@@ -154,15 +269,39 @@ audit and is unrelated to the skipped script.
 
 ### 4.5 Clean — checked, nothing to fix
 
-- **Third-party embeds:** none. No iframe, video embed or map frame on any route.
-  The YouTube channel is an outbound link. The spec fails if a frame ever
-  appears on a host other than `www.youtube-nocookie.com` (privacy-enhanced mode).
+- **Third-party embeds:** none. No iframe, video embed or map frame on any route,
+  and the policy says so: `frame-src 'none'`. The YouTube channel is an outbound
+  link. The spec fails if any frame appears on the four routes it loads (2026-09-14;
+  it used to allow `www.youtube-nocookie.com`, which the policy would have
+  blocked anyway). **A future YouTube embed needs both halves at once:** the
+  privacy-enhanced host `www.youtube-nocookie.com` (the ordinary one sets cookies
+  on load) **and** `frame-src` opened to exactly that host in `next.config.ts`
+  and `src/proxy.ts`, with the spec's no-frame guard turned into a host check.
+  Changed markup alone gets a frame the browser refuses. Clean today means "no
+  embeds", not "privacy-enhanced mode enforced".
 - **Outbound links:** every `target="_blank"` link carries `rel="noopener
-  noreferrer"`, in source and in the rendered DOM.
+  noreferrer"`. In source, all eight sites in `src/` (a grep). In the rendered
+  DOM, on the four routes the spec loads — `/`, `/en/villas/villa-thoi`,
+  `/en/contact`, `/en/weddings`. `/en/the-estate`, `/en/experiences` and
+  `/en/gallery` rest on the source check only.
 - **Personal data in logs:** the only `console` call in `src/` is the error
   boundary, which logs Next's error digest and the error, never form input. The
   owner-material pipeline never logs or stores a Drive ID (`DECISIONS.md` D-011).
-- **Secrets:** `npm run scan:secrets` over everything git can see — 460 text
-  files, 624 binaries skipped, **no credential-class match**. The Google Maps
-  key stays redacted (§1), and the public-by-design identifiers in §2 are
-  unchanged.
+- **Secrets:** `npm run scan:secrets` over everything git can see — 474 text
+  files, 624 binaries skipped on 2026-09-14, **no credential-class match**. The
+  Google Maps key stays redacted (§1), and the public-by-design identifiers in §2
+  are unchanged.
+- **An ignored `.env.local` sits in the working tree (found 2026-09-14, when
+  `next build` reported loading it).** It holds one key, `VERCEL_OIDC_TOKEN`,
+  with a value; the value was not printed or copied anywhere. The file was
+  created on 2026-08-17, before this audit, by the look of it by the Vercel CLI,
+  which writes this file on `vercel link` or `vercel env pull` (an inference, not
+  checked). It is gitignored (`.gitignore:110`, `.env*`) and has never been
+  tracked. A search of the built client chunks (`.next/static`) finds no
+  `VERCEL_OIDC`: Next inlines only `NEXT_PUBLIC_` variables into the browser
+  bundle. Vercel's OIDC tokens are short-lived, so this one has very likely
+  expired (also an inference). `scan:secrets` cannot see it, by design, because
+  it scans only what git can see. It is still a credential in the tree, which
+  the standing policy (§3) rules out even in an ignored file. **Owner or
+  maintainer action:** delete the file, or say it is wanted. The CLI writes it
+  again on the next `vercel env pull`. This session did not touch it.

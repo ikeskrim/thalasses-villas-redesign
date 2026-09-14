@@ -8,16 +8,29 @@ import generated from "./src/generated/redirects.json";
  * The policy can be strict everywhere except scripts and styles because the
  * site loads nothing from anywhere else: fonts and images are self-hosted,
  * booking is an outbound link rather than an embed, and there is no analytics,
- * map or video frame.
+ * map or video frame. `frame-src 'none'` means exactly that. A YouTube embed,
+ * if one is ever built, needs `https://www.youtube-nocookie.com` here AND in
+ * src/proxy.ts, and the no-frame guard in tests/security.spec.ts turned into a
+ * host check at the same time — markup changed alone gets a frame the browser
+ * refuses to load.
  *
  * `'unsafe-inline'` on script-src is the one real concession, and it is not an
  * oversight. Next inlines its flight data and React its streaming scripts, and
- * on statically prerendered pages those differ per page and per build, so they
- * cannot be hashed in a config file. The alternative is a per-request nonce,
- * which makes every page dynamic — no CDN-cached HTML, and a slower first byte
- * for a guest on a Cretan mobile connection. That trade is deferred, not
- * ignored. style-src needs it for the inline `style` attributes next/image and
- * the motion libraries write.
+ * on statically prerendered pages those are written at build time and differ
+ * per page and per build, so they cannot be hashed in a config file —
+ * `experimental.sri` hashes the external chunks only. The alternative is a
+ * per-request nonce, which needs a per-request render: on a prerendered route
+ * that means giving up the prerendered HTML. That trade is deferred, not
+ * ignored, and its cost has not been measured. style-src needs
+ * `'unsafe-inline'` for the inline `style` attributes next/image and the motion
+ * libraries write.
+ *
+ * THE EXCEPTION IS /en/contact. It reads `searchParams`, so it is rendered per
+ * request already and a nonce costs it nothing: src/proxy.ts sends the strict
+ * variant there when the page is loaded as a document. This file's CSP stays
+ * off every spelling of that path the proxy's matcher admits, and the proxy
+ * sends the static policy on the ones that are not the page
+ * (STATIC_CSP_SOURCE).
  *
  * No `upgrade-insecure-requests`: HSTS already forces HTTPS in production, and
  * the directive would break the site on `http://localhost` for every test run.
@@ -42,8 +55,32 @@ const CONTENT_SECURITY_POLICY = [
   "form-action 'self'",
 ].join("; ");
 
+/**
+ * Every path src/proxy.ts's matcher does NOT admit. The lookahead is that
+ * matcher's fragment character for character — the contact path in any letter
+ * case, with any `.…` or `/…` tail and any `_next/data/<id>/` prefix — and
+ * src/proxy.ts sends a policy on everything it admits, so a request gets its CSP
+ * from exactly one of the two places. The reasons for each part of the fragment
+ * are at the matcher.
+ *
+ * Why it matters: without the carve-out the contact page would get this policy
+ * from here and the nonce policy from the proxy under the same header name.
+ * `next start` would hide that — config headers and proxy headers are collected
+ * under differently-cased keys (server/lib/router-utils/resolve-routes.js) and
+ * Node's case-insensitive `setHeader` lets the proxy's overwrite this one — so a
+ * one-header check on a local build cannot fail either way. What a platform that
+ * appends instead would send is measured, not assumed:
+ * `node scripts/check-headers.mjs <deployment url>` counts raw header lines, and
+ * `--compile` checks the partition with Next's own route compilers.
+ *
+ * The one known overlap is Next's, not the pattern's: the proxy is also matched
+ * against the percent-decoded path, so `/en/%63ontact` matches both, and the
+ * proxy sends it this same static policy (src/proxy.ts).
+ */
+const STATIC_CSP_SOURCE =
+  "/((?!(?:_[nN][eE][xX][tT]/[dD][aA][tT][aA]/[^/]+/)*[eE][nN]/[cC][oO][nN][tT][aA][cC][tT](?:[./].*)?$).*)";
+
 const SECURITY_HEADERS = [
-  { key: "Content-Security-Policy", value: CONTENT_SECURITY_POLICY },
   { key: "Strict-Transport-Security", value: "max-age=63072000; includeSubDomains" },
   { key: "X-Frame-Options", value: "DENY" },
   { key: "X-Content-Type-Options", value: "nosniff" },
@@ -83,7 +120,13 @@ const nextConfig: NextConfig = {
     return generated.redirects;
   },
   async headers() {
-    return [{ source: "/:path*", headers: SECURITY_HEADERS }];
+    return [
+      { source: "/:path*", headers: SECURITY_HEADERS },
+      {
+        source: STATIC_CSP_SOURCE,
+        headers: [{ key: "Content-Security-Policy", value: CONTENT_SECURITY_POLICY }],
+      },
+    ];
   },
   images: {
     formats: ["image/avif", "image/webp"],

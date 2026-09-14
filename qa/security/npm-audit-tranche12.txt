@@ -1,0 +1,3 @@
+# npm audit (read-only report; not `npm audit fix`) - captured 2026-09-14T06:46:10Z - HEAD 56cb8592def2c79220ea0df2c3fb8faa0811988a (main) - node v24.19.0, npm 11.17.0 - exit 0. JSON form: npm-audit-tranche12.json
+
+found 0 vulnerabilities

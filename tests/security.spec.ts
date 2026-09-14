@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { test, expect, type APIResponse } from "@playwright/test";
 
 import { createRateLimiter } from "../src/lib/rate-limit";
 
@@ -11,31 +11,82 @@ import { createRateLimiter } from "../src/lib/rate-limit";
  * exercised: every route the audit names is loaded and scrolled with the
  * policy on, and a single violation fails, because a CSP that breaks the page
  * is the kind that gets switched off in a hurry.
+ *
+ * Two policies ship. The prerendered routes get next.config.ts's static one;
+ * /en/contact, which is rendered per request anyway, gets a per-request nonce
+ * from src/proxy.ts. The nonce is only worth anything if Next actually stamps
+ * it on every script it writes and never repeats it, so both are asserted on
+ * the raw HTML — a browser hides `nonce` from the DOM once the page has loaded.
+ *
+ * WHAT A RUN AGAINST `next start` CANNOT SHOW: the two policies stacking. Next
+ * collects config headers and proxy headers under differently-cased keys and
+ * writes them with Node's case-insensitive `setHeader`, so the proxy's CSP
+ * replaces the config's and a response carries one either way. The
+ * one-policy assertions below catch a MISSING policy, or the wrong one; they
+ * cannot catch a doubled one. That the two sources never overlap is checked by
+ * `node scripts/check-headers.mjs --compile` (Next's own route compilers), and
+ * what a deployment really sends by `node scripts/check-headers.mjs <url>`,
+ * which counts raw header lines.
  */
 
 const HEADER_ROUTES = ["/", "/en/villas/villa-thoi", "/en/the-estate", "/en/contact"];
 const POLICY_ROUTES = ["/", "/en/villas/villa-thoi", "/en/the-estate", "/en/experiences", "/en/weddings", "/en/gallery", "/en/contact"];
+/* Prerendered in the build (`.next/prerender-manifest.json`), so they keep the static policy. */
+const STATIC_POLICY_ROUTES = ["/", "/en/villas/villa-thoi", "/en/the-estate", "/en/weddings"];
+/*
+ * Spellings src/proxy.ts's matcher admits besides the page, where next.config.ts
+ * sends no policy. Before the matcher took every letter case and every `.…`/`/…`
+ * tail these went out with none — a gap a local run CAN show. They are 404s, so
+ * they must get the static policy: Next does not stamp a nonce on a 404, and a
+ * nonce policy would refuse its scripts. /en/contacts is on the config's side.
+ */
+const OTHER_CONTACT_SPELLINGS = ["/en/contact.html", "/en/contact.txt", "/en/contact.check-headers", "/en/contact/x", "/EN/contact", "/en/Contact", "/en/contacts", "/en/%63ontact"];
+
+/* The pattern Next itself reads the nonce with (server/app-render/get-script-nonce-from-header). */
+const NONCE_SOURCE = /'nonce-([A-Za-z0-9+/_-]+={0,2})'/;
+
+/* Every Content-Security-Policy header Playwright reports. Under `next start` one or none — never two; see the top of the file. */
+function cspHeaders(res: APIResponse): string[] {
+  return res
+    .headersArray()
+    .filter((h) => h.name.toLowerCase() === "content-security-policy")
+    .map((h) => h.value);
+}
+
+function directives(csp: string): Record<string, string> {
+  return Object.fromEntries(
+    csp
+      .split(";")
+      .map((d) => d.trim())
+      .filter(Boolean)
+      .map((d) => [d.split(/\s+/)[0], d])
+  );
+}
 
 test.describe("security — response headers", () => {
   for (const route of HEADER_ROUTES) {
     test(`${route} is sent the full header set`, async ({ request }) => {
-      const h = (await request.get(route)).headers();
+      const res = await request.get(route);
+      const h = res.headers();
       expect(h["x-content-type-options"]).toBe("nosniff");
       expect(h["x-frame-options"]).toBe("DENY");
       expect(h["referrer-policy"]).toBe("strict-origin-when-cross-origin");
       expect(h["cross-origin-opener-policy"]).toBe("same-origin");
-      for (const feature of ["camera=()", "microphone=()", "geolocation=()", "payment=()"]) {
+      for (const feature of ["camera=()", "microphone=()", "geolocation=()", "payment=()", "usb=()", "browsing-topics=()"]) {
         expect(h["permissions-policy"]).toContain(feature);
       }
       expect(h["strict-transport-security"]).toMatch(/^max-age=(\d+); includeSubDomains$/);
       expect(Number(/max-age=(\d+)/.exec(h["strict-transport-security"] ?? "")?.[1])).toBeGreaterThanOrEqual(31_536_000);
 
+      expect(cspHeaders(res), "a policy is sent (a doubled one cannot show here — see the top of the file)").toHaveLength(1);
       const csp = h["content-security-policy"] ?? "";
       for (const directive of [
         "default-src 'self'",
         "img-src 'self' data: blob:",
         "font-src 'self'",
         "connect-src 'self'",
+        /* No frames at all — see the links-and-embeds guard below. */
+        "frame-src 'none'",
         "frame-ancestors 'none'",
         "object-src 'none'",
         "base-uri 'self'",
@@ -49,7 +100,7 @@ test.describe("security — response headers", () => {
   }
 
   test("the policy blocks nothing the site actually uses", async ({ page }) => {
-    test.setTimeout(180_000);
+    test.setTimeout(240_000);
     await page.addInitScript(() => {
       (window as unknown as { __csp: string[] }).__csp = [];
       document.addEventListener("securitypolicyviolation", (e) => {
@@ -60,34 +111,146 @@ test.describe("security — response headers", () => {
     page.on("console", (m) => {
       if (/Content Security Policy|Refused to (load|execute|apply|connect|frame)/i.test(m.text())) console.push(m.text());
     });
-    for (const route of POLICY_ROUTES) {
-      await page.goto(route, { waitUntil: "load" });
+    const scrollThrough = async () => {
       const height = await page.evaluate(() => document.body.scrollHeight);
       for (let y = 0; y < height; y += 900) {
         await page.mouse.wheel(0, 900);
         await page.waitForTimeout(60);
       }
       await page.waitForTimeout(600);
-      const seen = await page.evaluate(() => (window as unknown as { __csp: string[] }).__csp);
-      expect(seen, `violations on ${route}`).toEqual([]);
+    };
+    const violations = () => page.evaluate(() => (window as unknown as { __csp: string[] }).__csp);
+
+    for (const route of POLICY_ROUTES) {
+      await page.goto(route, { waitUntil: "load" });
+      await scrollThrough();
+      expect(await violations(), `violations on ${route}`).toEqual([]);
     }
+
+    /*
+     * Every goto above is a new document, and a policy belongs to the document
+     * it arrived with. So the loop proves each route clean under the policy it
+     * is SENT, and nothing about a page rendered client-side under a policy it
+     * inherited. Two client-side navigations cover that:
+     *
+     *  1. Land on /en/contact (the nonce policy), open the estate from the nav,
+     *     come back. The estate page and the re-rendered contact page load every
+     *     chunk they need under 'strict-dynamic' with no script 'unsafe-inline' —
+     *     what a guest who arrives at the contact page directly and browses on
+     *     actually runs.
+     *  2. Land on a villa (the static policy) and follow its Enquire link. The
+     *     contact page renders under the VILLA's document policy. That is not the
+     *     nonce policy — it is what a guest gets on the contact page after any of
+     *     the site's own `next/link` CTAs — and this proves the page's client code
+     *     is clean under it.
+     *
+     * A marker set on the landing document must survive each step; if it is gone
+     * the step was a full reload, and proves nothing about a soft navigation.
+     */
+    const markDocument = () => page.evaluate(() => void ((window as unknown as { __landed?: boolean }).__landed = true));
+    const sameDocument = () => page.evaluate(() => (window as unknown as { __landed?: boolean }).__landed === true);
+
+    await page.goto("/en/contact", { waitUntil: "load" });
+    await markDocument();
+    await page.locator('.nav-register a[href="/en/the-estate"]').click();
+    await page.waitForURL("**/en/the-estate");
+    await scrollThrough();
+    await page.goBack();
+    await page.waitForURL("**/en/contact");
+    await scrollThrough();
+    expect(await sameDocument(), "contact → estate → back reloaded the page; it was not a client-side navigation").toBe(true);
+    expect(await violations(), "violations after client-side navigation from a /en/contact document").toEqual([]);
+
+    await page.goto("/en/villas/villa-thoi", { waitUntil: "load" });
+    await markDocument();
+    /* By href, not class alone: the villa page has two `.d-villa-cta-secondary`
+       elements, the Enquire link and the fact-sheet download. */
+    await page.locator('a.d-villa-cta-secondary[href="/en/contact?villa=villa-thoi"]').click();
+    await page.waitForURL(/\/en\/contact\?villa=villa-thoi$/);
+    await scrollThrough();
+    expect(await sameDocument(), "villa → Enquire reloaded the page; it was not a client-side navigation").toBe(true);
+    expect(await violations(), "violations on /en/contact reached client-side from a villa").toEqual([]);
+
     expect(console).toEqual([]);
+  });
+});
+
+test.describe("security — the nonce policy on /en/contact", () => {
+  test("script-src is a nonce with 'strict-dynamic'; every other directive is the static policy's", async ({ request }) => {
+    const contact = cspHeaders(await request.get("/en/contact"));
+    const home = cspHeaders(await request.get("/"));
+    expect(contact, "a policy on /en/contact (a doubled one cannot show here — see the top of the file)").toHaveLength(1);
+    const strict = directives(contact[0] ?? "");
+    const scriptSrc = strict["script-src"] ?? "";
+    expect(scriptSrc).toMatch(NONCE_SOURCE);
+    expect(scriptSrc).toContain("'strict-dynamic'");
+    expect(scriptSrc).not.toContain("'unsafe-inline'");
+
+    /* The proxy writes its own copy of the policy; this is what keeps it honest. */
+    const rest = (d: Record<string, string>) => Object.entries(d).filter(([name]) => name !== "script-src");
+    expect(rest(strict)).toEqual(rest(directives(home[0] ?? "")));
+  });
+
+  test("every script tag in the HTML carries the header's nonce", async ({ request }) => {
+    const res = await request.get("/en/contact");
+    const nonce = NONCE_SOURCE.exec(cspHeaders(res)[0] ?? "")?.[1];
+    expect(nonce, "no nonce in the policy").toBeTruthy();
+    const tags = (await res.text()).match(/<script\b[^>]*>/g) ?? [];
+    /* A check over zero scripts proves nothing, so it cannot pass. */
+    expect(tags.length, "no script tags found — the pattern is wrong, not the page clean").toBeGreaterThan(0);
+    expect(tags.filter((t) => /\bnonce="([^"]*)"/.exec(t)?.[1] !== nonce)).toEqual([]);
+  });
+
+  test("the nonce is fresh on every request", async ({ request }) => {
+    const nonces: (string | undefined)[] = [];
+    for (let i = 0; i < 2; i++) {
+      const res = await request.get("/en/contact");
+      nonces.push(NONCE_SOURCE.exec(cspHeaders(res)[0] ?? "")?.[1]);
+      /* The page's scripts must follow the header, not a nonce cached from an earlier render. */
+      expect(await res.text()).toContain(`nonce="${nonces[i]}"`);
+    }
+    expect(nonces[0]).toBeTruthy();
+    expect(nonces[1]).not.toBe(nonces[0]);
+  });
+
+  test("the prerendered routes keep the static policy, without a nonce", async ({ request }) => {
+    for (const route of STATIC_POLICY_ROUTES) {
+      const csp = cspHeaders(await request.get(route));
+      expect(csp, `a policy on ${route}`).toHaveLength(1);
+      expect(directives(csp[0] ?? "")["script-src"], route).toBe("script-src 'self' 'unsafe-inline'");
+      expect(csp[0], route).not.toMatch(NONCE_SOURCE);
+    }
+  });
+
+  test("every other spelling of the contact path gets the static policy", async ({ request }) => {
+    for (const path of OTHER_CONTACT_SPELLINGS) {
+      const csp = cspHeaders(await request.get(path, { maxRedirects: 0 }));
+      expect(csp, `a policy on ${path}`).toHaveLength(1);
+      expect(directives(csp[0] ?? "")["script-src"], path).toBe("script-src 'self' 'unsafe-inline'");
+    }
   });
 });
 
 test.describe("security — links and embeds", () => {
   for (const route of ["/", "/en/villas/villa-thoi", "/en/contact", "/en/weddings"]) {
-    test(`${route}: every new-tab link is noopener noreferrer; any frame is privacy-enhanced`, async ({ page }) => {
+    test(`${route}: every new-tab link is noopener noreferrer; there is no frame`, async ({ page }) => {
       await page.goto(route, { waitUntil: "domcontentloaded" });
       const links = await page.$$eval("a[target=_blank]", (as) => as.map((a) => ({ href: a.getAttribute("href"), rel: a.getAttribute("rel") ?? "" })));
       for (const l of links) {
         expect(l.rel, l.href ?? "").toContain("noopener");
         expect(l.rel, l.href ?? "").toContain("noreferrer");
       }
-      /* There are no embeds today. If a video frame is ever added, it must be
-         YouTube's privacy-enhanced host — the ordinary one sets cookies on load. */
+      /*
+       * There are no embeds, and the policy says so: frame-src 'none'. A video
+       * frame, if one is ever added, needs BOTH halves at once — YouTube's
+       * privacy-enhanced host, www.youtube-nocookie.com (the ordinary one sets
+       * cookies on load), and frame-src opened to exactly that host in
+       * next.config.ts and src/proxy.ts. This guard then becomes a check that
+       * every frame is on that host. Markup changed alone gets a frame the
+       * browser refuses; the policy loosened alone lets nothing in yet.
+       */
       const frames = await page.$$eval("iframe", (fs) => fs.map((f) => f.getAttribute("src") ?? ""));
-      for (const src of frames) expect(new URL(src, "https://x.invalid").hostname).toBe("www.youtube-nocookie.com");
+      expect(frames).toEqual([]);
     });
   }
 });
