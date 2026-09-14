@@ -3,6 +3,390 @@
 **Read this first. It is written at HEAD and updated as each task lands, so it
 is the truthful position — not a plan, not a memory.**
 
+# TRANCHE TWELVE — the backlog queue: owner material, performance, security, skills, references, and a 3D map on a branch
+
+**Holding. The owner says yes or no to the 3D estate map on its preview:
+https://thalasses-villas-redesign-git-feat-estate-3d-domisi.vercel.app (branch `feat/estate-3d`, not on main).** Seven asks, taken in
+the owner's value order and pushed per task. An independent audit then found
+that parts of that work were overstated or incomplete, and they were fixed,
+re-verified and pushed again. Nothing below is claimed beyond what was run.
+
+| # | Ask | First pass | After the audit |
+|---|---|---|---|
+| 1 | Owner material pipeline | `7ff32a9` | `7c253fe` — D-015 corrects D-011 |
+| 2 | Performance pass | `ecdfb81`, `25e5b9f` (guard) | `5b3d106` — D-016 |
+| 3 | Security audit | `9b8afca` | `3d26f78`, `ce62175` (production check) — D-017 |
+| 4 | Skills | `af64e9f` | `8df0cd4` — D-018 |
+| 5 | Benchmark & references | `56cb859` | `1ddcae0` — D-019 |
+| 6 | 3D estate map | `7fa6fb7` on `feat/estate-3d` | `1179011` on `feat/estate-3d` — D-014, D-020 |
+| 7 | This report | — | this commit |
+| — | Provenance gate (found failing since tranche ten) | — | `3087312` |
+
+## How this tranche was checked, and what the checking found
+
+The first pass ended with every ask pushed and a report drafted. Before the
+report was written, each ask was audited: one auditor per ask, requirement by
+requirement, and a second agent trying to refute each gap the first one
+claimed. It confirmed 52 gaps. Each area was then fixed in its own set of
+files, reviewed adversarially, fixed again and re-reviewed. All builds, specs,
+measurements and commits were run one at a time afterwards, against served
+builds.
+
+Four things the checking found are worth knowing on their own, because each
+changed a number or a claim this tranche had already made:
+
+- **The first performance result was wrong.** It said phone TBT on `/` fell
+  from 295 to 104 ms. The gate summed the page's own long-task observer, which
+  does not report the parser's rendering before first paint, and removing the
+  root Suspense boundary moved the whole-page layout into exactly that blind
+  spot. The gate now takes TBT from a Chrome trace, in Lighthouse's window after
+  first contentful paint, and prints load-blocking and the old figure beside it.
+  The superseded evidence is kept (`qa/perf/AB-tranche12.md`).
+- **The corrected before/after was contaminated too.** Every baseline was served
+  from a git worktree, and a worktree holds only tracked files. `public/images/_chh/*`
+  and eight `_pool` files are gitignored, so the baselines were missing 159
+  photographs (requests for them came back 400) while main had them. This was
+  found when the 3D branch's full QA failed on exactly those images. It passed
+  535 / 0 once they were copied in. Both earlier evidence files are marked
+  superseded (`AB-tranche12-trace.md`, `AB-tranche12-estate3d.md`). Every
+  figure below was measured after copying the files into every worktree and
+  rebuilding.
+- **The provenance gate had been failing since tranche ten.** Nine licensed
+  stock frames placed in `c6c58ae` were never declared, so `npm run verify`
+  exited 1. The same failure reproduces on an untouched checkout of `56cb859`.
+  They are now declared by hand, with their licence records (`3087312`).
+  `--adopt` was not used because it would have stamped them as the owner's own
+  photographs.
+- **A credential sits in an ignored file.** `.env.local` holds a
+  `VERCEL_OIDC_TOKEN`, created on 2026-08-17, before this tranche. It is
+  gitignored, has never been tracked, is absent from every client chunk, and is
+  very likely expired. It is still a credential in the tree, which the policy
+  rules out, so it is an owner question below. This session did not touch it.
+
+## 1. Owner material — how to send it
+
+**For the owner:** make a folder in Google Drive, set it to *Anyone with the
+link*, and paste the link into the chat.
+
+**For whoever maintains the site:** `node scripts/ingest-drive.mjs "<the link>"`
+(add `--dry-run` to look first). The steps after it are in `CONTENT-GUIDE.md`.
+
+What it does now:
+
+- Photographs are stripped of metadata (GPS included) and staged in gitignored
+  `content/owner-staging/`, then queued for the standard grading pass as Tier A
+  `owner/drive/<date>`. `npm run grading:sheet -- <new folder> --queue` builds a
+  sheet the grade-photo-library workflow can read. `npm run grading:merge`
+  publishes only an A or B with no flag to `public/images/_owner/`, with its
+  provenance entry. Nothing ungraded is ever deployable.
+- A file counts as video only if it carries a video track, so audio in a video
+  container is refused. Type is always decided by content, never by name.
+- Duplicates are refused by sha256. Unfinished items are retried on the next
+  run, not marked duplicate.
+- Video waits for ffmpeg. The exact commands are recorded, and
+  `--transcode-pending` runs them once ffmpeg exists: a poster first, then two
+  loops, each under 2.5 MB.
+- A link is taken only from its argument, never from a page or a file. No Drive
+  ID or resource key is ever written to the repository.
+
+**Not proven yet, and D-015 says so:**
+- It has never run on a real owner link, because none exists. It was tested
+  against a mock Drive built on a live capture of Drive's folder listing.
+- The download confirmation page is still modelled.
+- No real ffmpeg has cut a variant (none is installed here), and HEIC cannot be
+  decoded on this machine.
+- The grading workflow has not yet been run over a queue sheet.
+
+## 2. Performance
+
+**The target is met, and it already was before the pass.** Phone TBT (from a
+Chrome trace, after first contentful paint) is under 200 ms on all eleven route
+templates, before the pass and after it. The pass did not measurably move that
+figure. What it moved is **load-blocking**: all the long-task time, before
+first paint included.
+
+Before (`7ff32a9`) against the final build. Medians of three interleaved runs,
+phone profile (4× CPU, Slow 4G, 390×844):
+
+| route | TBT after first paint | load-blocking | first paint | LCP | CLS |
+|---|---|---|---|---|---|
+| `/` | 72 → 76 ms | 201 → 193 ms | 1096 → 1160 ms | 1136 → 1176 ms | 0 |
+| villa (`villa-thoi`) | 61 → 59 ms | **185 → 138 ms** | 1124 → 1108 ms | 1136 → 1108 ms | 0 |
+| `/en/the-estate` | 73 → 73 ms | **214 → 174 ms** | 1140 → 1152 ms | 1156 → 1156 ms | 0 |
+| `/en/experiences` | 55 → 60 ms | 113 → 95 ms | 988 → 1040 ms | 988 → 1040 ms | 0 |
+| experience detail (`boat-trip`) | 64 → 62 ms | 67 → 62 ms | 976 → 1044 ms | 976 → 1044 ms | 0 |
+| `/en/weddings` | 64 → 55 ms | **155 → 108 ms** | 1080 → 1124 ms | 1080 → 1124 ms | 0 |
+| `/en/gallery` | 59 → 62 ms | 111 → 93 ms | 992 → 1036 ms | 992 → 1036 ms | **0.20 → 0.22** |
+| `/en/location` | 54 → 53 ms | 69 → 78 ms | 964 → 1028 ms | 1792 → 1888 ms | 0 |
+| `/en/contact` | 57 → 62 ms | 85 → 79 ms | 960 → 1012 ms | 960 → 1012 ms | 0 |
+| `/en/careers` | 60 → 56 ms | 73 → 69 ms | 948 → 1000 ms | **2912 → 2984 ms** | 0 |
+| `/en/terms` | 58 → 61 ms | 187 → 159 ms | 1072 → 1104 ms | 1072 → 1104 ms | 0 |
+
+Desktop TBT medians are 0 ms on every template, before and after.
+
+- **TBT:** changes run from −9 to +5 ms, inside the spread between runs.
+- **Load-blocking** fell on ten of eleven templates, most on the Direction D
+  pages (−40 to −47 ms). The changes behind it are in D-012, and their trace
+  attribution is in `qa/perf/attribution-*.md`:
+  - the root loading boundary and its hidden swap removed;
+  - the 404 tree's client code loaded only on a 404;
+  - Lenis imported only where it runs;
+  - the homepage's motion setup split across frames.
+- **First paint** is 12–68 ms later on ten of eleven templates. Three runs
+  cannot separate that from noise, but the direction is consistent. It is
+  recorded, not explained.
+- **The follow-up batch on its own** (the lazy cursor and the contact-page
+  nonce) changed phone TBT by −5 to +8 ms on four routes, which is noise. The
+  cursor's code is now a 1,328-byte chunk. A request log shows it fetched
+  only on a desktop with motion allowed, never on a phone or on `/`.
+- **No gate was weakened; the gate got stricter.** TBT now comes from a trace
+  instead of the page's own observer, which had been fooled. Phone TBT over
+  200 ms now fails the gate, where before it was only printed.
+  `qa/looks/HOTEL-CWV.md`, regenerated on `/`, meets every budget.
+
+**Found by this run, present before the pass, and not fixed.** The eleven
+templates had never all been measured before. Two fail a budget on both builds,
+and both are caused by the shared scroll-reveal animations
+(`qa/perf/CHECKS-tranche12.md`):
+
+- **`/en/gallery`, phone CLS 0.20** (budget 0.1). The gallery images start
+  clipped shut in the server HTML, and the wipe that opens them after hydration
+  registers as layout shift. Under reduced motion, CLS is 0.
+- **`/en/careers`, phone LCP 2.9–3.0 s** (budget 2.5 s). The body text is
+  served invisible and fades in after hydration, at 3.1 s. Under reduced
+  motion it is 2.3 s.
+
+The ask ruled out touching the motion budget, so both wait for a decision
+(owner questions).
+
+**Not done, with reasons in D-016:**
+- The number of client islands is unchanged.
+- framer-motion still loads on the Direction D pages, because moving those
+  animations to CSS is motion work.
+- The font recommendations wait for their own A/B. The log confirmed that `/`
+  downloads an 89,668-byte Literata file for nothing, and preloads Marcellus
+  without using it.
+- Two images are served oversized at 390 px.
+- Partial prerendering is deferred: only `/en/contact` is dynamic, and a
+  build-time shell cannot carry its per-request nonce.
+
+## 3. Security
+
+**Verified on production.** The Vercel deployment of `3087312` was checked
+with `scripts/check-headers.mjs`, which counts raw CSP header lines per
+response (`qa/security/production-headers-2026-09-14.txt`). Every response
+carries exactly one policy:
+- the nonce policy on `/en/contact`, with a fresh nonce on a second request,
+  and on its query-string, `.rsc` and data-URL forms;
+- the static policy on every other route and on every other spelling of the
+  contact path, the segment-prefetch `.rsc` form included.
+
+Production and local differ in two status codes, never in policy:
+- `/en/contact.rsc` is 200 on Vercel and 404 locally.
+- The percent-encoded spelling `/en/%63ontact` returns **500** on Vercel and
+  404 locally. It still carries exactly one static policy, but a server error
+  on an odd spelling of a real path is recorded as an open item. It was not
+  investigated.
+
+| Area | Before | Now |
+|---|---|---|
+| Response headers | none of the project's own | CSP, HSTS (2 years, subdomains, no preload), X-Frame-Options DENY, nosniff, Referrer-Policy, Permissions-Policy, COOP — on every response |
+| Script policy | — | `'unsafe-inline'` on the prerendered routes (deferred, cost unmeasured); a per-request nonce with `'strict-dynamic'` on `/en/contact`, which is rendered per request anyway |
+| `npm audit` | 1 critical, 2 high | **0** (`qa/security/npm-audit-tranche12.*`); next 16.3.1 → 16.3.5, sharp 0.35.3 → 0.35.4, js-yaml 4.3.1 → 4.3.2, patch releases only |
+| `?enquiry=` spoofing | any sentence printed on the contact page | allowlist of the site's own subjects |
+| Enquiry data in URLs | GET on a pre-hydration or no-JS submit | POST, asserted with scripting off |
+| Field limits / rate limit | none | caps from one shared source; a tested stub — the durable limit waits for a mail-provider route |
+| Embeds, outbound links, PII in logs | — | no embeds (`frame-src 'none'`), every new-tab link `noopener noreferrer`, no personal data logged |
+| Secrets | — | scan clean before every push (477 text files on main, 469 on the branch); one ignored `.env.local` credential, recorded above |
+
+`tests/security.spec.ts` passes **20 / 20** on the served build. The "23/23"
+reported earlier was this spec and the perf-structure spec counted together.
+
+A CSP belongs to a document. A guest who reaches the contact page through one
+of the site's own `next/link` buttons therefore keeps the static policy of the
+page they came from. That is recorded in D-017 and not fixed.
+
+## 4. Skills
+
+Installed from `github.com/anthropics/skills` only, with each SKILL.md read in
+full before enabling. No community packs. The screening record covers all 19
+upstream skills (`qa/skills/SCREENING-tranche12.md`, D-018).
+
+**Installed: `frontend-design`**, byte-identical to upstream. What it changes
+about how I work here:
+- A design plan (palette, type, layout, principles) is checked against the
+  brief before any code, and revised wherever it reads as a default.
+- A named list of generated-page tells is avoided wherever the brief leaves an
+  axis free.
+- **The brief wins where it pins a direction down.** Direction F (D-001) is
+  exactly that, so the skill does not reopen F. Measured against its list,
+  F's palette sits near the first look it names, and F uses an all-caps
+  eyebrow. Both are recorded for the owner in `DESIGN-REFERENCES.md`, not
+  changed.
+- Built work is critiqued by looking at it.
+
+**Read in full and declined:**
+- `webapp-testing` — it has you write stand-alone Python Playwright scripts,
+  duplicating this project's TypeScript harness. The reason first given, that
+  its helper kills servers, misdescribed the skill and is withdrawn.
+- `web-artifacts-builder` — claude.ai artifacts, not this site.
+- `theme-factory` — D-001 decides the palette.
+- `canvas-design` — generated art, beside a real-photography rule.
+- `brand-guidelines` — Anthropic's own brand.
+
+The other thirteen were screened by description and a recorded keyword grep,
+none read in full; none applies here.
+
+## 5. References
+
+`DESIGN-REFERENCES.md` compares the ten named sites with our sections. Every
+per-site point and ranked row was then checked against the served build: the
+mapped routes, all five villa pages and the five factsheet PDFs
+(`qa/references/VERIFY-tranche12.md`, D-019). The first version had compared
+with the homepage alone, and five of its "gaps" were already on inner pages.
+Of 44 points: 3 present, 24 partly present, 14 missing, 2 not scored (looks,
+which D-001 decides), 1 not applicable.
+
+The top of the ranked list needs nobody:
+- Enquire, phone and email beside booking on the homepage;
+- "what every stay includes";
+- a getting-here block (minus drive times from the airports, which no source
+  states);
+- design provenance (the captions name EMU and Greek marble; the rest of the
+  maker list is printed nowhere);
+- an Experiences jump bar.
+
+Found in passing and not fixed:
+- `/en/location` prints beat 01, then 07.
+- `/en/experiences` says "Service" where the homepage says "Arrival".
+
+Dribbble is cited as links only.
+
+## 6. 3D estate map — preview only
+
+**Look at it here:** https://thalasses-villas-redesign-git-feat-estate-3d-domisi.vercel.app/en/the-estate, in a browser with WebGL,
+reduced motion off. **Not on main.**
+
+It is a diagram, not a picture. three.js primitives on one canvas, in the
+site's own colours, show:
+- the sea, the beach line and the lane;
+- the helipad on its apron;
+- the four villas in two rows of two, one pool each.
+
+The villa labels link to the villa pages, and the helipad label links to its
+experience page. A reader without WebGL, or with reduced motion on, gets the 2D
+map exactly as on main and never downloads three.js. The diagram fills the 2D
+frame's exact box, so nothing on the page moves when it appears. Blender is not
+installed, so there is no modelled geometry.
+
+What it leaves out, said on the page and in D-020:
+- **Villa Pueblo** is not drawn: no aerial on record shows its plot.
+- **The long table and the vegetable garden** are not placed: no aerial shows
+  where they are. The list beneath carries all nine places.
+- **Which house in each row is which** follows the 2D map's order, and is
+  marked for the owner.
+- The hotspot cards' ledgers (beds, sleeps, distances) are not in the diagram.
+- There is no site plan on record: every coordinate comes from the aerials.
+
+Verified on the branch build: its full QA suite passed 535 / 0 with WebKit
+14 / 14, and its own spec 3 / 3. Screenshots at 1440, 1024, 768 and 390 px
+show no label overlaps.
+
+**The preview serves this build.** The link above is the branch's alias, and it
+follows the branch's latest deployment. On 2026-09-14 it served `1179011`,
+checked two ways:
+- The three.js chunk it serves contains the shortened note that only that
+  commit has.
+- In a browser with WebGL and motion allowed, the diagram mounted inside the
+  map's frame. It showed the villa, beach and pool-line labels, with the note
+  beneath.
+
+**Bundle cost.** three.js 0.186.0 loads as one lazy chunk:
+- 546,208 bytes raw (533 KiB), 132 KiB gzip.
+- It is fetched only when the map nears the screen, WebGL is available and
+  reduced motion is off.
+- The page's initial JavaScript grows by 289 bytes gzip, the gate code.
+  That was measured at `7fa6fb7`.
+- The chunk carries the whole library, not just the dozen classes the diagram
+  uses.
+
+**Cost on the page.** Interleaved against main's final build on
+`/en/the-estate`, three runs each (`qa/perf/ESTATE3D-cost.md` on the branch):
+
+| | main | branch |
+|---|---|---|
+| phone TBT after first paint | 85 ms (85/97/78) | **139 ms** (139/137/149) |
+| phone load-blocking | 204 ms | 273 ms |
+| desktop TBT | 0 ms | 27 ms |
+| CLS | 0 | 0 |
+| phone first paint / LCP | 1160 / 1164 ms | 1204 / 1204 ms |
+
+- **Under the 200 ms phone target on every run.** The first measurement said
+  286 ms, over the target. It came from a worktree missing 159 photographs and
+  is superseded.
+- **Where the added time goes.** Two tasks run while the reader scrolls towards
+  the map:
+  - 65 ms evaluating the three.js chunk;
+  - 141 ms inside it, building the renderer, compiling shaders and drawing the
+    first frame (a minified profile cannot separate the three).
+
+  A tap during that moment would wait. INP on this page was not measured.
+- **First step if the answer is yes:** import only the dozen three.js classes
+  the diagram uses, then measure again the same way.
+
+## Owner questions
+
+1. **3D estate map: yes or no**, on the preview. If yes:
+   - which house in each row is which;
+   - where Villa Pueblo's plot is;
+   - positions for the long table and the vegetable garden;
+   - a site plan, if one exists.
+2. **HSTS `preload`** on launch day (D-013).
+3. **`.env.local` with a `VERCEL_OIDC_TOKEN`**: delete it, or say it is wanted.
+4. **ffmpeg on the maintainer's machine**, so owner video gets its variants
+   rather than recorded commands (D-011, D-015).
+5. **`theme-factory` or `webapp-testing`**: install anyway? Declined by default (D-018).
+6. **Two budget failures caused by the scroll-reveal animations:** the gallery's
+   phone CLS, and the careers page's phone LCP. Fixing them means changing how
+   reveals start on every page that uses them, which ask 2 ruled out. Change
+   the motion, or accept them? (D-016)
+7. Carried from earlier tranches and still open: Villa Pueblo's capacity details
+   (T-212), the eight beach distances, the Greek corpus, the three quarantined
+   frames, the hero MP4.
+
+## Defects of mine this tranche, found and fixed
+
+- A performance result read from a gate that could be fooled (above).
+- Every before/after baseline missing 159 photographs (above). When I marked
+  those files superseded, I also guessed which way the fault had pushed the
+  numbers. On the 3D run the guess was wrong: the fault had inflated the cost
+  (286 ms), not hidden it (139 ms re-measured). Both notes now say only that
+  the direction was not established.
+- The security spec's count reported as 23 when it was two specs.
+- The first fix passes overclaimed in several places, caught by the reviews:
+  - a grading queue the real pass could not read;
+  - a lazy cursor import that could have crashed every page if its chunk failed;
+  - design provenance marked missing on a case-sensitive count;
+  - a skill decline reason that misread the skill.
+- `25e5b9f` has an invisible byte-order mark at the start of its subject
+  (PowerShell piping). It is cosmetic and already pushed. Removing it would
+  mean rewriting published history, which needs the owner's consent.
+- A Suspense change meant to slice hydration re-created the hidden-segment
+  pattern. The structure check caught it before it was measured, and it was
+  reverted.
+
+## Evidence
+
+- Performance: `qa/perf/AB-tranche12-final.md` (eleven templates), `AB-tranche12-followup.md`, `CHECKS-tranche12.md`, `ISLANDS-`, `FONTS-`, `IMAGES-` and `ROUTES-tranche12.md`, `qa/perf/attribution-*.md`, `qa/looks/HOTEL-CWV.md`; superseded and kept: `AB-tranche12.md`, `AB-tranche12-trace.md`
+- Security: `SECURITY-NOTES.md` §4, `qa/security/`
+- Owner pipeline: `tests/ingest-drive.spec.ts`, `tests/fixtures/drive/`
+- Skills: `qa/skills/SCREENING-tranche12.md`
+- References: `qa/references/VERIFY-tranche12.md`
+- 3D map (branch): `qa/perf/ESTATE3D-cost.md`, `tests/estate-3d.spec.ts`,
+  `qa/perf/AB-tranche12-estate3d-final.md` (superseded and kept: `AB-tranche12-estate3d.md`)
+- Decisions: `DECISIONS.md` D-015 to D-019 on main, and D-014 and D-020 on
+  `feat/estate-3d`
+
 # TRANCHE ELEVEN — the delegated defaults, F+ Phase 3, and the launch dress rehearsal
 
 **Holding. The owner reviews on the live URL.** Four commits, each pushed:
