@@ -79,20 +79,34 @@ test.describe("the six patterns", () => {
     }
   });
 
-  test("3 — the estate map renders every marker and a full list fallback", async ({ page }) => {
-    await page.setViewportSize({ width: 1440, height: 900 });
-    /* Retargeted: the map is on the estate page, which is still Direction D. */
-    await page.goto(ESTATE, { waitUntil: "load" });
-    const markers = await page.locator(".estate-map-marker").count();
-    expect(markers).toBeGreaterThanOrEqual(6);
-    expect(markers).toBeLessThanOrEqual(9);
-    // The same places are always readable, never locked behind a pointer.
-    expect(await page.locator(".estate-map-list-item").count()).toBe(markers);
+  /*
+   * PATTERN 3 RUNS UNDER REDUCED MOTION, because of `feat/estate-3d`. The click
+   * below scrolls the first marker into view. On the branch, with WebGL present
+   * and motion allowed, that scroll brings the section within the gate's 600 px
+   * and the 3D diagram replaces the 2D frame with every marker in it, so the
+   * click and its aria-expanded check would race the swap. This test is about
+   * the 2D pattern, and reduced motion is the condition under which the gate
+   * guarantees the 2D map (`estate-map-3d-gate.ts`). Every assertion is as it
+   * was. The diagram is asserted in `tests/estate-3d.spec.ts`.
+   */
+  test.describe("with the 2D map guaranteed (reduced motion)", () => {
+    test.use({ contextOptions: { reducedMotion: "reduce" } });
 
-    const first = page.locator(".estate-map-marker").first();
-    await expect(first).toHaveAttribute("aria-expanded", "false");
-    await first.click();
-    await expect(first).toHaveAttribute("aria-expanded", "true");
+    test("3 — the estate map renders every marker and a full list fallback", async ({ page }) => {
+      await page.setViewportSize({ width: 1440, height: 900 });
+      /* Retargeted: the map is on the estate page, which is still Direction D. */
+      await page.goto(ESTATE, { waitUntil: "load" });
+      const markers = await page.locator(".estate-map-marker").count();
+      expect(markers).toBeGreaterThanOrEqual(6);
+      expect(markers).toBeLessThanOrEqual(9);
+      // The same places are always readable, never locked behind a pointer.
+      expect(await page.locator(".estate-map-list-item").count()).toBe(markers);
+
+      const first = page.locator(".estate-map-marker").first();
+      await expect(first).toHaveAttribute("aria-expanded", "false");
+      await first.click();
+      await expect(first).toHaveAttribute("aria-expanded", "true");
+    });
   });
 
   test("4 — spec ledgers use tabular figures, never a table", async ({ page }) => {

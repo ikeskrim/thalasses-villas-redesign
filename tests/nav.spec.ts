@@ -207,9 +207,6 @@ test.describe("the estate page carries the map at full depth", () => {
     await page.goto("/en/the-estate", { waitUntil: "load" });
 
     await expect(page.locator(".estate-map")).toHaveCount(1);
-    const markers = await page.locator(".estate-map-marker").count();
-    expect(markers).toBeGreaterThanOrEqual(6);
-    expect(await page.locator(".estate-map-list-item").count()).toBe(markers);
 
     const values = (await page.locator(".ledger-spec-value").allTextContents()).map((s) => s.trim());
     for (const v of ["9", "6", "18", "4", "240"]) expect(values).toContain(v);
@@ -217,6 +214,32 @@ test.describe("the estate page carries the map at full depth", () => {
     const body = (await page.locator("body").innerText()).toLowerCase();
     expect(body).toContain("enquire — we design your stay");
     expect(body).not.toContain("cannot be booked");
+  });
+
+  /*
+   * THE MARKER COUNT MOVED HERE, UNCHANGED, AND RUNS UNDER REDUCED MOTION,
+   * because of `feat/estate-3d`. The 2D markers exist only while the 2D frame
+   * is the page. With WebGL present and motion allowed, the branch replaces
+   * that frame with the 3D diagram once the section is within 600 px of the
+   * viewport, and the markers go with it. At 1440×900 the count still passes
+   * at load, but only because the section happens to start ~2,700 px down,
+   * which is an accident of the layout above it and not a guarantee.
+   *
+   * Reduced motion is the condition under which the gate guarantees the 2D map
+   * (`estate-map-3d-gate.ts`). Only the two marker assertions moved. The map,
+   * ledger and CTA checks above still run with motion allowed, so they cover
+   * the branch's default path. The 3D path is asserted in `tests/estate-3d.spec.ts`.
+   */
+  test.describe("with the 2D map guaranteed (reduced motion)", () => {
+    test.use({ contextOptions: { reducedMotion: "reduce" } });
+
+    test("the map's markers and the list carry the same places", async ({ page }) => {
+      await page.setViewportSize({ width: 1440, height: 900 });
+      await page.goto("/en/the-estate", { waitUntil: "load" });
+      const markers = await page.locator(".estate-map-marker").count();
+      expect(markers).toBeGreaterThanOrEqual(6);
+      expect(await page.locator(".estate-map-list-item").count()).toBe(markers);
+    });
   });
 });
 

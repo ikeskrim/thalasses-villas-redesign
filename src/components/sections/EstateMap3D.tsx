@@ -222,7 +222,12 @@ export function EstateMap3D({ onFail }: { onFail: () => void }) {
         const p = placed[s.id];
         if (!p) return null;
         return (
-          <span key={s.id} className={`estate-map-3d-spot estate-map-3d-spot--${s.kind}`} style={{ left: p.left, top: p.top }}>
+          <span
+            key={s.id}
+            className={`estate-map-3d-spot estate-map-3d-spot--${s.kind}`}
+            /* patterns.css stands every label on its anchor; a "below" spot overrides only the vertical half of that. */
+            style={{ left: p.left, top: p.top, ...(s.hang === "below" ? { transform: "translate(-50%, 0)" } : null) }}
+          >
             {s.href ? (
               <Link href={s.href} className="micro estate-map-3d-label">
                 {s.label}
@@ -238,14 +243,35 @@ export function EstateMap3D({ onFail }: { onFail: () => void }) {
         is too small for the long one without covering the drawing, and the
         note cannot move below the frame without pushing the page (see
         patterns.css). The owner's open question is word for word in both.
+
+        Both lengths say that the list carries every place, because the
+        diagram does not carry every place, and it has to say so. The 2D map
+        has nine hotspots. This drawing labels six of them (four villas, the
+        beach and the pool line) and adds the helipad, which the 2D map never
+        had. The long table and the vegetable garden are not placed, because no
+        aerial on record establishes where they are, and a label here would be
+        a position invented for them. Villa Pueblo is not drawn either
+        (estate-plan.ts). All nine stay in the numbered list beneath the map,
+        which this component never touches. On a phone, where every label is
+        hidden, the list is the whole map.
+
+        The phone says it as "all listed", not with the long note's sentence,
+        to keep the band across the top of the frame at or near the height it
+        had before. Estimated with Inter's own advance widths (11px, 0.01em
+        tracking, kerning ignored), not rendered: this wording wraps to two
+        lines at 390–430 px, as the note did before; three at 375 px, where it
+        was two; three at 360 px, as before. The full sentence would have taken
+        three lines at every phone width up to 430 px.
       */}
       <p className="caption estate-map-3d-note">
         <span className="estate-map-3d-note-long">
           A diagram, not a survey — drawn from the estate&rsquo;s aerial photographs. Villa Pueblo is set
-          apart from the four and is not drawn. [TODO: owner to confirm which house in each row is which]
+          apart from the four and is not drawn. The list below carries every place. [TODO: owner to confirm
+          which house in each row is which]
         </span>
         <span className="estate-map-3d-note-short">
-          A diagram, not a survey. Villa Pueblo not drawn. [TODO: owner to confirm which house in each row is which]
+          A diagram, not a survey. Villa Pueblo not drawn; all listed. [TODO: owner to confirm which house in
+          each row is which]
         </span>
       </p>
     </div>

@@ -17,11 +17,20 @@
  *    beneath the map.
  * Both are owner questions before any of this reaches main.
  *
+ * NOT PLACED, ON PURPOSE. The 2D map has nine hotspots (`HOTSPOTS` in
+ * home-data.ts). Six are labelled here: the four villas, the beach and the pool
+ * line. The long table and the vegetable garden have no label because no aerial
+ * on record establishes where they are, and a label would invent a position.
+ * The diagram's note says the list below carries every place ("all listed" in
+ * its phone length), and the list does carry all nine.
+ * There is no site plan on record either: every coordinate here comes from the
+ * aerials.
+ *
  * Axes: x runs west → east, z runs north → south, y is up. The shoreline is
  * z = -30.
  */
 
-export type PlanSpotKind = "villa" | "beach" | "helipad";
+export type PlanSpotKind = "villa" | "beach" | "helipad" | "pools";
 
 export interface PlanSpot {
   id: string;
@@ -30,6 +39,11 @@ export interface PlanSpot {
   href?: string;
   /** Where the label is anchored, in plan units. */
   at: [number, number, number];
+  /**
+   * Labels sit above their anchor by default. "below" hangs one under it
+   * instead, for an anchor whose space above is already taken by another label.
+   */
+  hang?: "below";
 }
 
 export interface PlanBox {
@@ -68,9 +82,41 @@ export const PLAN_LANE = { x: -13, z: -3, w: 2.2, d: 54 };
 export const PLAN_APRON = { x: -23, z: -10, w: 14, d: 12 };
 export const PLAN_HELIPAD = { x: -23, z: -10, r: 4 };
 
+/*
+ * THE POOL LINE'S ANCHOR: the south end of the western column of drawn pools.
+ * It is derived from PLAN_POOLS rather than typed in, so it follows the pools
+ * if they move. It is picked geometrically, not by villa, because which house
+ * is which is still an owner question.
+ *
+ * Why there and hanging below. Each villa's label stands over its roof, and
+ * each pool is drawn just east of its villa, so the space above the pools is
+ * crowded with villa links. The label frames were projected with the real
+ * camera at page widths from 768 to 1920 px (the widths at which labels show),
+ * using the `.micro` label's size, tracking and padding, for three placements:
+ *  - standing above the centre of the four pools: overlapped Villa Melia's
+ *    label by about 22 px at every width;
+ *  - standing above the midpoint of each pool column: from 11 px of overlap to
+ *    5 px of clearance against a neighbouring label, depending on the width;
+ *  - this one, hanging below the south end of the western column: cleared
+ *    every other label at every width, by an estimated 15–29 px.
+ * Other anchors were not tried. The figures are estimates from glyph widths
+ * (0.66 em per glyph; the review re-projected at 0.60 and 0.72 em and got the
+ * same clearance), not a screenshot.
+ */
+const WEST_POOL_X = Math.min(...PLAN_POOLS.map((p) => p.x));
+const POOL_LINE_END = PLAN_POOLS.filter((p) => p.x === WEST_POOL_X).reduce((a, b) => (b.z > a.z ? b : a));
+
 export const PLAN_SPOTS: PlanSpot[] = [
   ...PLAN_VILLAS.map((v) => ({ id: v.id, label: v.label, kind: "villa" as const, href: v.href, at: [v.x, v.h + 0.6, v.z] as [number, number, number] })),
   { id: "beach", label: "The private beach", kind: "beach", at: [0, 0.4, SHORE_Z + 2] },
+  /* A label, not a link: the 2D hotspot it stands for has no href either. */
+  {
+    id: "pools",
+    label: "The pool line",
+    kind: "pools",
+    hang: "below",
+    at: [POOL_LINE_END.x, POOL_LINE_END.h, POOL_LINE_END.z + POOL_LINE_END.d / 2],
+  },
   /* Anchored north of the pad, not on it: the first render's label covered the H. */
   { id: "helipad", label: "Private helipad", kind: "helipad", href: "/en/experiences/private-helipad", at: [PLAN_HELIPAD.x, 0.5, PLAN_HELIPAD.z - PLAN_HELIPAD.r - 1.5] },
 ];

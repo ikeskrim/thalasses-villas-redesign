@@ -277,3 +277,26 @@ owner says yes to the preview, and then it is re-dated as an owner decision.
 - **No layout shift by construction.** The diagram fills the 2D frame's exact
   box. On a phone the note stays inside that box as a short band over the sea,
   rather than being added below it.
+
+### D-020 · Addendum to D-014: what the 3D estate map leaves out, and what it costs (branch `feat/estate-3d` only)
+
+**Not on main.** This travels with the branch beside D-014. It records defaults D-014 took without saying so. It reaches main only with an owner yes.
+
+- **The diagram does not carry every hotspot.** The 2D map has nine: five villas, the private beach, the pool line, the long table and the vegetable garden. The diagram labels six of them: four villas, the beach and, since this addendum, the pool line, as a label with no link, the same as its 2D hotspot. **The long table and the vegetable garden are not placed**, because no aerial on record establishes where they are, and a label would invent a position. Villa Pueblo stays undrawn (D-014). The diagram's note says so in both lengths: "The list below carries every place" on desktop, and "Villa Pueblo not drawn; all listed" in the shorter phone length. The numbered list beneath the map is unchanged and carries all nine. On the 3D path, `tests/estate-3d.spec.ts` checks that the two unplaced names are absent from the drawing and present in the list, and that the list has one item per 2D hotspot, in order and by name.
+- **No card detail survives in the diagram.** The 2D hotspot cards carry a line, a ledger (Beds/Sleeps per villa, 50 m to the beach, Pools 4, Seats 18) and, where the hotspot has one, a link. The 3D labels are bare names, and the villa and helipad labels are links. The list shows name and line but no ledger. A reader on the 3D path does not see those ledgers in the map section.
+- **A link the 2D map never had.** The helipad label links to `/en/experiences/private-helipad`. There was no helipad hotspot in 2D.
+- **Labels are hidden below 768 px** (`patterns.css`, `@media (max-width: 767px)`). On a phone the diagram has no labels, and the list is the whole map. The 2D markers are hidden at that width too, so no function is lost against main. It is still a default, and it is logged here.
+- **Render defaults:** an orthographic camera from the south-west with the sea at the top. Render on demand, with no animation loop (one frame after build, one per resize). Device pixel ratio capped at 1.5. `powerPreference: "low-power"`. Everything disposed and the context released on unmount.
+- **The pool line hangs below its anchor.** The anchor is the south end of the western column of drawn pools, derived from the plan rather than typed in, and chosen geometrically rather than by villa. Three placements were projected against the other labels at 768–1920 px: standing above the pools' centre, standing above each pool column's midpoint, and hanging below the western column's south end. Only the last cleared every other label at every width, by an estimated 15–29 px (from glyph widths). No other anchor was tried. Screenshots of the rebuilt branch at 1440, 1024, 768 and 390 px then showed no label overlapping another.
+- **What it costs, and it stays under the phone TBT target.**
+  - **Bundle.** three.js 0.186.0 loads as one lazy chunk, 546,208 B raw (533 KiB) and 132 KiB gzip on the final branch build. Initial JavaScript was 224 kB gzip on both builds when measured at `7fa6fb7`, and has not been measured again since.
+  - **Figures of record.** Interleaved against main's final candidate on `/en/the-estate`, three runs each, trace gate:
+    - **phone TBT after FCP 85 → 139 ms** (runs 85/97/78 → 139/137/149);
+    - load-blocking 204 → 273 ms;
+    - desktop TBT 0 → 27 ms;
+    - CLS 0/0.
+
+    All three branch phone runs are under ask 2's 200 ms target.
+  - **Superseded first measurement.** It gave 123 → 286 ms, with every branch run over the target. The branch's worktree was missing 159 gitignored photographs, and why that raised the figures was not established.
+  - **Where the time goes.** A phone trace of each build shows two long tasks that only the branch has, both while the reader scrolls towards the map: 65 ms evaluating the three.js chunk, then 141 ms inside it. That second task covers the renderer, the shaders and the first frame, which a minified profile cannot separate. **INP was not measured on this route.** The harness drove no interaction that Event Timing records there: the page has no `.ho-dots` or `.ho-card` to click or hover, and a wheel scroll is not an Event Timing type. The "0 ms worst interaction" is the observer's starting value, not a reading. Evidence: `qa/perf/ESTATE3D-cost.md` and `qa/perf/AB-tranche12-estate3d-final.md`.
+- **No site plan exists on record.** Every coordinate in `estate-plan.ts` is read off the aerial photographs (D-014), and nothing is surveyed. A site plan, if one exists, joins the owner questions beside which house is which and where Villa Pueblo's plot is.

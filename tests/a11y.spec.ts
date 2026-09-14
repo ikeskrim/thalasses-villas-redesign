@@ -249,17 +249,34 @@ test.describe("what axe cannot check", () => {
     }
   });
 
-  test("the estate hotspot map is operable without a pointer", async ({ page }) => {
-    await page.goto("/en/the-estate", { waitUntil: "load" });
-    const marker = page.locator(".estate-map-marker").first();
-    await marker.focus();
-    await expect(marker).toHaveAttribute("aria-expanded", "false");
-    await page.keyboard.press("Enter");
-    await expect(marker).toHaveAttribute("aria-expanded", "true");
-    // And the same information exists outside the interaction entirely.
-    const listed = await page.locator(".estate-map-list-item").count();
-    const markers = await page.locator(".estate-map-marker").count();
-    expect(listed, "the map's information is locked behind a pointer").toBe(markers);
+  /*
+   * UNDER REDUCED MOTION, because of `feat/estate-3d`. Focusing the first
+   * marker scrolls the map section into view, and on the branch that is the
+   * very thing that swaps the 2D frame for the 3D diagram when WebGL is present
+   * and motion is allowed. The swap removes every marker, so with motion on
+   * this test races it: the Enter, the aria-expanded check and the count can
+   * each land before or after the markers are gone.
+   *
+   * The subject is the 2D map's keyboard contract, and reduced motion is the
+   * one condition under which the gate guarantees the 2D map is the page
+   * (`estate-map-3d-gate.ts`). Nothing below is loosened. The diagram's own
+   * links and the unchanged list are asserted in `tests/estate-3d.spec.ts`.
+   */
+  test.describe("with the 2D map guaranteed (reduced motion)", () => {
+    test.use({ contextOptions: { reducedMotion: "reduce" } });
+
+    test("the estate hotspot map is operable without a pointer", async ({ page }) => {
+      await page.goto("/en/the-estate", { waitUntil: "load" });
+      const marker = page.locator(".estate-map-marker").first();
+      await marker.focus();
+      await expect(marker).toHaveAttribute("aria-expanded", "false");
+      await page.keyboard.press("Enter");
+      await expect(marker).toHaveAttribute("aria-expanded", "true");
+      // And the same information exists outside the interaction entirely.
+      const listed = await page.locator(".estate-map-list-item").count();
+      const markers = await page.locator(".estate-map-marker").count();
+      expect(listed, "the map's information is locked behind a pointer").toBe(markers);
+    });
   });
 
   test("focus is visible on both grounds", async ({ page }) => {
