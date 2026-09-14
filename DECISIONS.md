@@ -740,3 +740,53 @@ Carries out D-021's "investigate `/en/%63ontact` → 500 as a path-encoding clas
   - the exception behind the 500, which needs Vercel's runtime logs;
   - ~~whether Vercel runs the proxy before the step that fails~~. **Established after the deploy of 85899ba:** it does. check-headers against production passes all 31 entries, the seven class entries as 308 to the literal page, and the encoding table's contact rows that were 500 are 308 (`qa/security/encoding-table-production-2026-09-14-after-85899ba.md`).
 - **Not changed:** prerendered pages still answer at their percent-encoded spellings, a duplicate-URL exposure (record §2).
+
+### D-026 · Scroll reveals rebuilt: the server HTML is the finished page (carrying out D-021)
+
+Carries out D-021's "gallery CLS ≤ 0.1 via transform/clip-path with reserved dimensions; careers LCP text never starts at opacity 0". It is a build default, not a ruling. The record is `qa/perf/REVEAL-tranche13.md`.
+
+- **The cause.** Recorded in CHECKS-tranche12 §4–5, and re-established here. `Reveal` and `ImageReveal` were Framer `whileInView` components, and Framer serialises `initial` into the server HTML.
+  - Careers served its body text as `opacity:0;transform:translateY(24px)`: phone LCP 3,100 ms.
+  - The gallery served every frame as `clip-path:inset(0 0 100% 0)`, and an image's visual rect was empty until the wipe opened. On the phone profile that scored CLS 0.2014; on desktop 0.0827.
+- **Chosen: no Framer in either primitive.**
+  - Plain markup with a class. A shared IntersectionObserver (`src/lib/reveal-observer.ts`) sets `data-reveal="armed"` only on elements entirely below the viewport when they register.
+  - CSS keys every hidden or moved state to that attribute alone, and to `screen`. The served page, a reader without JavaScript, a crawler and print all get the finished page.
+  - What a reader can already see is never hidden, so it has no entrance.
+- **Images: a curtain, not a clip.**
+  - The host keeps its own reserved box. The photograph sits in an absolutely placed wrapper over that box, never clipped and never moved by layout.
+  - A bottom-anchored page-ground curtain goes from `scaleY(1)` to `scaleY(0)` over 1.1 s, while the photograph settles from 1.05 to 1 over 1.2 s. At every instant that uncovers the strip the old clip uncovered.
+  - Only transforms change, and a transform is not a layout shift.
+- **The built character is unchanged.**
+  - Text: a 24 px rise and fade over 0.8 s, with the 80 ms stagger capped at 400 ms.
+  - Entrance bands: −12% for text, −10% for images.
+  - An idle sweep, 200 ms after the last scroll, releases anything a jump passed. An edge observer schedules that sweep when layout, not scroll, brings an armed element into view.
+  - Under reduced motion: opacity only, over 0.25 s.
+- **Found and fixed before commit: reduced motion faded content OUT.**
+  - `globals.css` forces a 250 ms `transition-duration` on every element under reduced motion. The armed rules set no `transition-property`, so arming animated opacity from 1 to 0.
+  - The red run was recorded: an armed frame sampled at 1, 0.95 … 0, and both routes failed.
+  - `transition-property: none` now sits on the armed rules, and the run is green.
+- **Found: the old Reveal left text 24 px low for good under reduced motion.**
+  - On production and on an older main build (base7ff), after a full walk, careers keeps 2 wrappers, terms 13 and contact 2 at `style="opacity: 1; transform: translateY(24px)"`. The server rendered `y: 24`, and the reduced `whileInView` animated opacity only.
+  - Six visual baselines (careers, contact and terms at 1440 and 390) had recorded that offset. They were updated after every diff was looked at: the only change is that text sits 24 px higher, at its layout position.
+- **Falsified:**
+  - **The gallery attribution test**, run against the Framer build on production and on base7ff, failed at its attribution assertion with exactly the recorded 0.2014 and 0.0827.
+  - **The `REVEAL_FALSIFY=clip` switch** the test carried did NOT reproduce it, because it restored only the clip over the new DOM. The switch was removed.
+  - **Source mutations.** Each went red at its own named assertion, and each was proven present in the build it ran on:
+    - an inline transform on the wrapper;
+    - a transform on the careers in-view wrapper (the `moved` check, 501 samples);
+    - arming against the band instead of the real edge;
+    - the in-state transition deleted;
+    - the sweep made a no-op, while the continuous-scroll test stayed green;
+    - the band's release removed, while the jump test stayed green.
+  - **One form was rejected as a falsification.** A transform on every unarmed `.reveal` went red at a precondition, which proves nothing about the check it targeted.
+- **Tests added on top of the workflow's patch:**
+  - no inline transform on a reveal host in the served HTML;
+  - the careers in-view wrapper never translated from first paint to the first scroll;
+  - a continuous-scroll test proving the entrance band releases before any idle gap, which mirrors the jump test that proves the sweep.
+- **Measured: framer-motion left the initial scripts** of careers, terms, contact, boat-trip and the gallery. It is the 120,835 B chunk that was in all of them. The estate page keeps it, because `Clause`, `Inventory` and `Ledger` still use Framer there, and that result is the check's positive control.
+- **Measured: CLS and LCP under `hotel-cwv`.** Same machine, old build (base7ff) against new, alternating, four runs each. Lab figures, not field.
+  - **Gallery:** phone CLS 0.2205 → **0** in every run; desktop 0.0827 → **0**.
+  - **Careers:** phone LCP 2,108–2,972 ms → **1,044–1,056 ms**. The LCP element is still the body text.
+  - **Boat-trip:** LCP rose, from 980 to 1,068 ms on the phone and 332 to 572 ms on desktop. That is because its hero photograph, clipped to an empty rect before, now paints unclipped and becomes the LCP element in place of the nav wordmark.
+  - **Every route and view** on the new build is within budget. The builds differ in more than this change, so the table compares mechanisms; it does not attribute every millisecond.
+- **For the owner's eye:** `.plate-figure` now shows its sea-tinted shadow once revealed. The Framer build clipped it away.

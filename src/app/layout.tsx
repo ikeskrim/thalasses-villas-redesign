@@ -146,10 +146,15 @@ export default function RootLayout({
       <head>
         {/*
           Framer Motion serialises its `initial` state into the server HTML, so
-          every scroll-revealed section ships as opacity:0 / clip-path inset.
-          Without JS that content is permanently invisible — to a reader with
-          scripting off, to a crawler that does not execute JS, and in print.
-          This forces the final state whenever JS is unavailable.
+          a Framer-animated element ships as opacity:0 / clip-path inset / an
+          offset transform. Without JS that content is permanently invisible —
+          to a reader with scripting off, to a crawler that does not execute JS,
+          and in print. This forces the final state whenever JS is unavailable.
+
+          The scroll reveals no longer depend on it: `Reveal` and `ImageReveal`
+          serve their finished state and are hidden only by script (D-021,
+          `src/components/motion/Reveal.tsx`). It stays for the Framer users
+          that remain — `Clause`, `Inventory`, `Ledger` and the rest.
         */}
         <noscript
           dangerouslySetInnerHTML={{

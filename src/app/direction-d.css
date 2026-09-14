@@ -944,6 +944,124 @@ body:has(.d) .nav:not(.is-solid) .nav-index {
   }
 }
 
+/* ==========================================================================
+   SCROLL REVEALS — `Reveal` and `ImageReveal`
+   `src/components/motion/Reveal.tsx` (the why), `src/lib/reveal-observer.ts`
+   (the when), `DECISIONS.md` D-021 (the ruling), `tests/reveal.spec.ts`.
+
+   NOTHING HERE HIDES ANYTHING BY DEFAULT. Every rule that makes content
+   invisible or moves it is keyed to `data-reveal="armed"`, which only script
+   sets, and only on an element that was entirely below the viewport when it
+   registered. So the served page — and a reader with scripting off, a crawler,
+   print — is the finished page. That is `HotelMotion.tsx`'s third rule, now
+   applied to the inner pages that had been shipping `opacity:0` and
+   `clip-path: inset(0 0 100% 0)` in their HTML: a careers LCP at 3,100 ms and a
+   gallery CLS of 0.2014 on the phone profile (`qa/perf/CHECKS-tranche12.md`).
+
+   THE ARMED RULES ARE `screen` ONLY, so printing a page the reader never
+   scrolled through still prints all of it.
+
+   IMAGES: A CURTAIN, NOT A CLIP.
+     - `.image-reveal` is the host frame. Its own class (`.d-gallery-frame`,
+       `.d-exp-frame`, `.d-other-frame`, `.plates-opener`, `.plate-figure`)
+       reserves the box; this adds only the clip of the settle's overscale.
+     - The media wrapper is placed absolutely over that box rather than sized
+       `height: 100%` in flow. Its box is then the frame's box by construction,
+       with or without a transform on it, so the `fill` image's containing
+       block cannot change size when a frame is armed or released — and
+       next/image's `fill` gets the positioned parent it asks for.
+     - The curtain is the page's ground: limestone on `.d`, which is what the
+       old clip exposed. Not the frame's own ammos — the clip hid that too, so
+       an ammos curtain would change how an unrevealed frame looks. A host on
+       another ground sets `--reveal-ground`.
+     - Bottom-anchored, `scaleY(1)` → `scaleY(0)`: at every instant it covers
+       exactly the strip `inset(0 0 (1 - t)·100% 0)` hid, so the wipe still
+       uncovers top first. It never covers anything the first viewport showed.
+   ========================================================================== */
+
+.image-reveal {
+  position: relative;
+  overflow: hidden;
+}
+.image-reveal-media {
+  position: absolute;
+  inset: 0;
+}
+.reveal-curtain {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: var(--reveal-ground, var(--color-limestone));
+  transform: scaleY(0);
+  transform-origin: bottom;
+}
+
+/* The built character, unchanged (PHASE-3-DELIVERABLES §2): a 24px rise and a
+   fade over 0.8s with the ≤0.4s stagger; the wipe over 1.1s and the 1.05 → 1
+   settle over 1.2s. The transition lives on the `in` state only, so it runs
+   once, on the way in. The armed state switches transitions OFF, so nothing
+   ever animates on the way to hidden — not even a host's own transitions. */
+@media screen and (prefers-reduced-motion: no-preference) {
+  .reveal[data-reveal="armed"] {
+    opacity: 0;
+    transform: translateY(24px);
+    transition-property: none;
+  }
+  .reveal[data-reveal="in"] {
+    transition:
+      opacity 0.8s var(--ease-thalasses),
+      transform 0.8s var(--ease-thalasses);
+    transition-delay: var(--reveal-delay, 0s);
+  }
+  /* The old clip hid the frame's OWN painting too, and a curtain inside the
+     frame cannot cover what is drawn outside its box. `.plate-figure` carries a
+     90px sea-tinted shadow (`atmosphere.css`), and armed it would ring a blank
+     limestone rectangle where the clip showed only ground. So an armed frame
+     drops it, and it returns with `in`. Paint only: a shadow is not layout.
+
+     Note for the motion-on capture: the finished plate now SHOWS that shadow,
+     as `atmosphere.css` intends and the reduced-motion baselines already
+     record. The Framer build never did — it left `clip-path: inset(0 0 0% 0)`
+     inline after the wipe, which still clipped everything outside the box. */
+  .image-reveal[data-reveal="armed"] {
+    box-shadow: none;
+    transition-property: none;
+  }
+  .image-reveal[data-reveal="armed"] > .reveal-curtain {
+    transform: scaleY(1);
+  }
+  .image-reveal[data-reveal="armed"] > .image-reveal-media {
+    transform: scale(1.05);
+  }
+  .image-reveal[data-reveal="in"] > .reveal-curtain {
+    transition: transform 1.1s var(--ease-thalasses);
+  }
+  .image-reveal[data-reveal="in"] > .image-reveal-media {
+    transition: transform 1.2s var(--ease-thalasses);
+  }
+}
+
+/* The second designed state (DESIGN-PLAN §8.5): zero transforms, zero scale,
+   zero stagger — an armed block or frame is transparent and fades in over the
+   reduced duration. The curtain stays at rest and the photograph at scale 1. */
+@media screen and (prefers-reduced-motion: reduce) {
+  /* No transition on the way to armed. globals.css forces a transition-duration
+     on every element under reduced motion, and with the initial
+     `transition-property: all` arming faded a block OUT over 250ms before it
+     ever faded in — an armed frame sampled at opacity 1, 0.95 … 0 on the first
+     build of this (tests/reveal.spec.ts, reduced motion). The `in` rule's
+     shorthand names its own property, so the entrance still runs. */
+  .reveal[data-reveal="armed"],
+  .image-reveal[data-reveal="armed"] {
+    opacity: 0;
+    transition-property: none;
+  }
+  .reveal[data-reveal="in"],
+  .image-reveal[data-reveal="in"] {
+    transition: opacity var(--duration-reduced) ease-out;
+  }
+}
+
 /* `#main` takes focus after a route change and must not draw a ring for it —
    the ring belongs to keyboard intent, not to arriving somewhere. */
 main:focus {

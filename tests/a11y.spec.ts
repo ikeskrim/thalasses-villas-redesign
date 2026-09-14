@@ -42,9 +42,12 @@ const ROUTES = [
 /**
  * REVEAL THE PAGE BEFORE AUDITING IT.
  *
- * Framer Motion serialises its `initial` state into the server HTML, so every
- * scroll-revealed section on this site ships as `opacity: 0` and stays that way
- * until it enters the viewport. **axe skips elements it considers invisible.**
+ * Every scroll-revealed block below the fold sits at `opacity: 0` until it
+ * enters the viewport, and **axe skips elements it considers invisible.** It
+ * was found when Framer Motion serialised that state into the server HTML for
+ * every revealed section. Since D-021 the served page is visible and script
+ * hides only what is below the fold (`src/lib/reveal-observer.ts`) — which is
+ * exactly the part an as-loaded audit cannot see, so the walk still matters.
  *
  * So for the length of this project the accessibility audit was checking the
  * top of each page and calling it the page. Measured, not assumed: on the
@@ -191,6 +194,27 @@ test.describe("axe-core", () => {
         stillHidden,
         `${route}: ${stillHidden} elements are still at opacity 0 after the reveal — ` +
           `axe cannot see them and this audit is only checking part of the page`
+      ).toBe(0);
+
+      /*
+       * And the reveal's own state, which a text filter cannot see round. The
+       * observer releases everything a reader scrolls to or past, so after
+       * reaching the bottom nothing may still be ARMED. One that is would be a
+       * block, or a curtained photograph, that a reader who read the whole page
+       * never saw.
+       *
+       * This walk's 600px steps are shorter than either entrance band at 900px
+       * (684px text, 720px images), so every element crosses a band and the
+       * IntersectionObserver alone releases it. The idle sweep — the path an
+       * anchor jump or a fling depends on — is not exercised here; that is
+       * `tests/reveal.spec.ts`, "a jump past armed content".
+       */
+      const stillArmed = await page.evaluate(
+        () => document.querySelectorAll('[data-reveal="armed"]').length
+      );
+      expect(
+        stillArmed,
+        `${route}: ${stillArmed} reveal elements are still armed after walking the whole page`
       ).toBe(0);
 
       /*
