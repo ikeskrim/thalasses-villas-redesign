@@ -376,7 +376,7 @@ An addendum to D-012. The evidence is in `qa/perf/ISLANDS-tranche12.md`, `FONTS-
     - weddings 155 → 108 ms;
     - the-estate 214 → 174 ms;
     - terms 187 → 159 ms.
-  - **Phone FCP medians are 12–68 ms later after the pass on ten of eleven templates.** Three runs cannot separate that from noise, but the direction is consistent. It is recorded, not explained.
+  - **Phone FCP medians are 12–68 ms later after the pass on ten of eleven templates.** Three runs cannot separate that from noise, but the direction is consistent. It is recorded, not explained. **Explained in tranche thirteen (`qa/perf/FCP-tranche13.md`): on a fresh navigation, `Cross-Origin-Opener-Policy: same-origin` swaps the page into a new renderer process (80 of 80 runs), delaying phone first paint by 76–80 ms where the runs separate; without COOP the remainder does not separate, and after a same-origin navigation there is no swap. COOP stays (D-013).**
   - **Desktop TBT medians** are 0 ms on every template, before and after.
   - **The follow-up batch alone** (`AB-tranche12-followup.md`, against `56cb859`): phone TBT changes run from −5 to +8 ms on the four routes, inside the spread.
 - **Found by the eleven-template run, on both builds, and not fixed** (`qa/perf/CHECKS-tranche12.md`):
