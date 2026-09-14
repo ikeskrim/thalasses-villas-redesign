@@ -498,4 +498,48 @@ keeps the two tests in separate columns.
   - Drive times from the airports and ports for a getting-here block. No source states one; the only travel time in content is the South coast's "about 40 minutes by car". This waits on the owner.
   - The `01 → 07` beat skip on `/en/location` (`CoastLine.tsx:36`).
   - The Service/Arrival taxonomy split between `/en/experiences` and the homepage.
-  - Whether `feat/estate-3d` replaces the 2D estate map. That is the owner's yes or no.
+  - Whether `feat/estate-3d` replaces the 2D estate map. That is the owner's yes or no. **Answered by D-021.**
+
+---
+
+## D-021 · The 3D estate map is approved, behind a provenance gate — and the tranche-twelve owner questions answered
+
+**Decided:** 2026-09-14, by the owner, after the preview of `feat/estate-3d` at `1179011`.
+**Relayed to the repository:** this entry, before any of the work it authorises (`CONVENTIONS.md` §19).
+**Status:** in force. The work it authorises is tranche thirteen.
+
+### What it settles
+
+- **The 3D estate map is approved, and it is merged into main behind a provenance gate.**
+  - **One source of geometry.** `content/estate-plan.json` holds every element of the map, each with a position, an orientation, a footprint and a provenance field:
+    - the villas: Thoi, Persi, Melia, Eeanthe and Pueblo;
+    - the four pools;
+    - the beach line, the long table, the vegetable garden, the helipad and the Rituals venue.
+  - **Nothing in it is fact yet.** It is populated now from the aerial and drone frames, with provenance `inferred-from-aerials, unverified`, and nothing in it is labelled as fact.
+  - **The public sees 3D only when provenance is `owner-verified`.** Until then the 2D hotspot map stays live, and a test asserts that the 3D canvas never mounts.
+  - **The plan's arrival is a data edit.** In the owner's words, correcting positions "is a data edit, not a rebuild".
+- **Map quality while the plan is awaited.**
+  - **Register:** luxury. Soft daylight lighting, limestone and sea materials, and no gimmick.
+  - **Hotspots:** they link to the villa pages, and each has a keyboard equivalent.
+  - **Touch:** tap-to-focus, with no dependence on hover.
+  - **Reduced motion:** either a static rendered frame or the 2D map.
+  - **Loading:** a single lazy canvas, with a fallback where WebGL is unsupported.
+  - **Measurement:** INP is measured on the estate page with the map active, so that the decision carries its full cost.
+- **Plans come through the same door as the photographs.** The owner material pipeline (`scripts/ingest-drive.mjs`) accepts plan files (PDF, image, DWG) from the owner's Drive link into `content/plans/`, with provenance.
+- **The two motion-caused budget failures are fixed** (tranche twelve, owner question 6):
+  - `/en/gallery`: phone CLS at or under 0.1, via transform or clip-path with reserved dimensions;
+  - `/en/careers`: the LCP text never starts at opacity 0.
+- **Two open items are investigated, not left open.**
+  - `/en/%63ontact` returning 500 is treated as a path-encoding class, with an encoding table across four routes.
+  - The first-paint regression is attributed.
+- **The stale `VERCEL_OIDC_TOKEN` in `.env.local` is deleted** (question 3).
+- **HSTS preload is staged in `LAUNCH.md`** (question 2). Staged, not applied.
+- **ffmpeg is installed, and the video path is verified on a dummy clip** (question 4). This overrides D-011's "none is installed": that entry left the install to the owner or maintainer, and the owner has now made that call.
+- **Skills stay as ruled** (question 5). `theme-factory` and `webapp-testing` stay declined (D-018).
+
+### What it does not settle
+
+- **Which house is which, and where the unplaced elements stand.** This covers Villa Pueblo's plot and the positions of the long table, the vegetable garden and the Rituals venue, and it waits on the site plan. Until an element is marked `owner-verified`, its position in `content/estate-plan.json` is an inference, and no public page presents it as fact.
+- **Where `owner-verified` comes from.** The status means the owner's own confirmation, relayed and recorded in this file. No session sets it from its own reading of a plan or a photograph.
+- **The site plan and the owner's Google Drive link** are still to arrive. The link will carry the photographs, the helipad, the MP4 and the phone video. Everything that does not depend on them is built now.
+- **Carried, and still open:** Villa Pueblo's capacity details (T-212), the eight beach distances, the Greek corpus and the three quarantined frames.
