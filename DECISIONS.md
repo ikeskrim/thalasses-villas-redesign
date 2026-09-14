@@ -384,3 +384,40 @@ keeps the two tests in separate columns.
   `DESIGN-REFERENCES.md` and not changed.
 - **Open for the owner:** whether to install `theme-factory` or `webapp-testing`
   anyway. Either is a new entry here plus one copied folder from upstream.
+
+### D-019 · The design benchmark (`DESIGN-REFERENCES.md`)
+
+**Decided:** 2026-09-13, corrected 2026-09-14 (checked against the served build, then again after an independent review), by the building session carrying out the owner's queue. **These are not owner decisions.** They are defaults the ask left open, and a later entry reverses any of them.
+
+- **Which property stands for a brand, and how each was read.**
+  - Aman is **Amanzoe**, the Greek villa example.
+  - Six Senses is **Kaplankaya**, on the Aegean. It was read in a browser only, because the site refuses scripted requests.
+  - Casa di Legna is **the Porto-Vecchio villa at casadilegna.com**, the one with the Awwwards mention; the name matches more than one property.
+  - Locomotive's "showcase" is **editorialnew.com**, read beside Locomotive's own case study.
+  - Primland is **explore.ownprimland.com**. Only its loader and intro rendered, so the entry says its map and seasons details come from the agency case study.
+  - Method: for every site, the homepage, one room or villa page, and the booking entry. No booking was started, no form submitted, no consent accepted. The file discloses the exceptions: Passalacqua's engine was identified but not rendered, Cap Rocat's booking modal was inspected in markup only, and Editorial New has no rooms.
+  - The visit record is the research run's own transcript, cited by the tranche-twelve verification. It is not in git.
+- **"Mapped to our sections" means the homepage section together with the inner pages that carry its detail.**
+  - Villas: `/en/villas/*` and `/en/the-estate`
+  - Experiences: `/en/experiences`
+  - Weddings: `/en/weddings`
+  - Discover Crete: `/en/location`
+  - Footer: every page's footer and `/en/contact`
+
+  A point counts if the homepage or any of these pages serves it, whichever section that page maps to. `/en/gallery` is not a mapped page and counts for nothing. The first version mapped to the homepage only, which is how five features already on inner pages were recorded as gaps.
+- **"Present" means served, not written.** Every point is checked against the running build and marked missing, partly present (where), present (where), not scored or not applicable. The record is `qa/references/VERIFY-tranche12.md`.
+  - The fix-pass counts (F1–F12) are taken on all five villa pages and are case-insensitive. The first-check route table is case-sensitive and says so. That first check fetched only Villa Thoi and matched `Emu` case-sensitively, so it missed the served "EMU".
+  - *Not scored* is for looks, such as Casa di Legna's single colour or Editorial New's serif, because D-001 decides the look.
+  - An *Avoid* line is marked "same here" when this site shares the fault and "avoided" when it does not.
+- **Ranking.**
+  - Rows are ranked on the remaining work, not on the idea: first what it would do for direct bookings, then whether it can be built from what the project holds, then effort.
+  - Owner-dependent rows stay in the list rather than being dropped.
+  - Partly built rows rank on what is left. That moved Enquire and phone-at-booking to 2, the inclusions to 3, getting here to 4, design provenance to 5 and the jump bar to 6.
+  - All six top rows are partly built, so the order of rows 4–6 is a judgement on the first criterion.
+  - A first draft put provenance at 4 as the only unbuilt row of the six. That rested on the case-sensitive miss and was withdrawn.
+- **Dribbble is links only**, nine shots under booking bar, cards and footer. Nothing is fetched, copied or templated.
+- **Not settled here:**
+  - Drive times from the airports and ports for a getting-here block. No source states one; the only travel time in content is the South coast's "about 40 minutes by car". This waits on the owner.
+  - The `01 → 07` beat skip on `/en/location` (`CoastLine.tsx:36`).
+  - The Service/Arrival taxonomy split between `/en/experiences` and the homepage.
+  - Whether `feat/estate-3d` replaces the 2D estate map. That is the owner's yes or no.
