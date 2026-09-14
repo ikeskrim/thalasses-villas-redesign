@@ -4276,6 +4276,60 @@
       "tier": "allowed",
       "origin": "camera",
       "note": "Phase 0 inventory — the owner's own site, the manager's listing, or the property photographer."
+    },
+    "/images/_stock/boat-trip--unsplash-bkQw8TB4uwc.jpg": {
+      "sha256": "8b2ab32450230843",
+      "tier": "allowed",
+      "origin": "camera",
+      "note": "Tier B-Experiences licensed stock for the 'boat-trip' experience card — not this property. Unsplash bkQw8TB4uwc, photographer: Elena Dimaki (@elenadimaki); licence: Free to use under the Unsplash License; retrieved 2026-09-04. Placed in c6c58ae under DECISIONS.md D-002; stands under D-004 unless the owner vetoes it. Full record: content/experience-stock.json."
+    },
+    "/images/_stock/exclusive-tour--pexels-15248184.jpg": {
+      "sha256": "1def89219337852d",
+      "tier": "allowed",
+      "origin": "camera",
+      "note": "Tier B-Experiences licensed stock for the 'exclusive-tour' experience card — not this property. Pexels 15248184, photographer: Mike Kw (pexels.com/@mike-kw-318038097), published 2023-01-24 (JSON-LD datePublished 2023-01-24T01:00:32Z); licence: Free to use; retrieved 2026-09-04. Placed in c6c58ae under DECISIONS.md D-002; stands under D-004 unless the owner vetoes it. Full record: content/experience-stock.json."
+    },
+    "/images/_stock/hiking--pexels-13720991.jpg": {
+      "sha256": "986232927bd81812",
+      "tier": "allowed",
+      "origin": "camera",
+      "note": "Tier B-Experiences licensed stock for the 'hiking' experience card — not this property. Pexels 13720991, photographer: Jeremy de Blok (@jrdb99); licence: Free to use; retrieved 2026-09-04. Placed in c6c58ae under DECISIONS.md D-002; stands under D-004 unless the owner vetoes it. Full record: content/experience-stock.json."
+    },
+    "/images/_stock/jeep-safari--unsplash-GDooCGr61UY.jpg": {
+      "sha256": "c0a4804d5ff10d6c",
+      "tier": "allowed",
+      "origin": "camera",
+      "note": "Tier B-Experiences licensed stock for the 'jeep-safari' experience card — not this property. Unsplash GDooCGr61UY, photographer: Daan Sonneveld (@daan_snvld); licence: Free to use under the Unsplash License; retrieved 2026-09-04. Placed in c6c58ae under DECISIONS.md D-002; stands under D-004 unless the owner vetoes it. Full record: content/experience-stock.json."
+    },
+    "/images/_stock/jet-ski-safari--pexels-18582039.jpg": {
+      "sha256": "822386cc1021cdb5",
+      "tier": "allowed",
+      "origin": "camera",
+      "note": "Tier B-Experiences licensed stock for the 'jet-ski-safari' experience card — not this property. Pexels 18582039, photographer: Pit (pexels.com/@pit-716706405); licence: Free to use; retrieved 2026-09-04. Placed in c6c58ae under DECISIONS.md D-002; stands under D-004 unless the owner vetoes it. Full record: content/experience-stock.json."
+    },
+    "/images/_stock/massage--pexels-38407789.jpg": {
+      "sha256": "41c0082c3e580d35",
+      "tier": "allowed",
+      "origin": "camera",
+      "note": "Tier B-Experiences licensed stock for the 'massage' experience card — not this property. Pexels 38407789, photographer: Tommaso (page credit: tommy picone, @tommaso); licence: Free to use; retrieved 2026-09-04. Placed in c6c58ae under DECISIONS.md D-002; stands under D-004 unless the owner vetoes it. Full record: content/experience-stock.json."
+    },
+    "/images/_stock/scuba-diving--unsplash-qInbZtAP2OQ.jpg": {
+      "sha256": "c7fb404a8675e8a7",
+      "tier": "allowed",
+      "origin": "camera",
+      "note": "Tier B-Experiences licensed stock for the 'scuba-diving' experience card — not this property. Unsplash qInbZtAP2OQ, photographer: Artists Eyes (@artistseyes); licence: Free to use under the Unsplash License; retrieved 2026-09-04. Placed in c6c58ae under DECISIONS.md D-002; stands under D-004 unless the owner vetoes it. Full record: content/experience-stock.json."
+    },
+    "/images/_stock/therapist--pexels-18187122.jpg": {
+      "sha256": "92694ccf6b1067d9",
+      "tier": "allowed",
+      "origin": "camera",
+      "note": "Tier B-Experiences licensed stock for the 'therapist' experience card — not this property. Pexels 18187122, photographer: Wolfgang Weiser; licence: Free to use (Pexels License, page badge links to /license/); retrieved 2026-09-04. Placed in c6c58ae under DECISIONS.md D-002; stands under D-004 unless the owner vetoes it. Full record: content/experience-stock.json."
+    },
+    "/images/_stock/wine-production--unsplash-xJ9Waej_omI.jpg": {
+      "sha256": "459cc8ece78b0c12",
+      "tier": "allowed",
+      "origin": "camera",
+      "note": "Tier B-Experiences licensed stock for the 'wine-production' experience card — not this property. Unsplash xJ9Waej_omI, photographer: Carmen Laezza (@_elleci); licence: Free to use under the Unsplash License; retrieved 2026-09-04. Placed in c6c58ae under DECISIONS.md D-002; stands under D-004 unless the owner vetoes it. Full record: content/experience-stock.json."
     }
   }
 }
