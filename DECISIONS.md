@@ -308,6 +308,84 @@ the numbers are in `SESSION-REPORT.md` tranche twelve.
   - The download and its large-file confirmation page are still modelled.
   - The pipeline has not yet been run against a real owner link.
 
+### D-016 · The performance pass, second half: islands, the cursor, fonts, images, prerendering, and a TBT budget
+
+An addendum to D-012. The evidence is in `qa/perf/ISLANDS-tranche12.md`, `FONTS-tranche12.md`, `IMAGES-tranche12.md` and `ROUTES-tranche12.md`. All of it was checked on the rebuilt candidate: the full QA suite passed 553 / 0, and the before/after figures of record are in `qa/perf/AB-tranche12-final.md` (eleven templates, against `7ff32a9`) and `AB-tranche12-followup.md` (this batch alone, against `56cb859`).
+
+- **The island count was not reduced, and the inventory says why.**
+  - There are 34 `"use client"` modules at `56cb859`, 25 of them imported on some route and 9 imported nowhere. With the cursor wrapper there are 35, 26 of them imported on some route.
+  - Every route hydrates the root layout's four boundaries: `SmoothScroll`, `LazyCustomCursor`, `RouteTransition`, and `SiteNav` with `LanguageSwitcher` nested.
+  - Every route also ships, without rendering, the client references of the root 404 tree (`LazyClause`) and of `error.tsx`. They render only on a 404 or an error. For `error.tsx`, the build's client-reference manifest lists two chunks, the shell chunk `2rtltvcbcs1l6.js` and `2wk6p2tl_v13d.js`; a grep of the built chunks finds its code only in the second (1,034 B).
+  - What would cut islands on the Direction D pages is motion design: `Reveal`, `Clause`, `Inventory` and `Ledger` moved onto CSS plus one observer. On the F homepage it is a layout change: stop mounting the hidden `SiteNav`. Each needs the motion budget, a visual comparison and its own A/B, so none was attempted.
+- **The contextual cursor is imported only where it runs, in the source.**
+  - `LazyCustomCursor` runs the cursor's three checks: fine pointer, motion allowed, and not `[data-look="hotel"]`. Only then does it call `import()` inside its effect, and it renders the cursor once the module has arrived.
+  - A rejected import is caught and dropped. A failed chunk therefore leaves the page without a cursor, not on Next's default error screen: the root layout's children sit outside `app/error.tsx`, and there is no `global-error.tsx`. `React.lazy`, which rethrows a rejected import during render, was not used for that reason.
+  - The cursor's code used to sit in the shell chunk every route loads: `2rtltvcbcs1l6.js`, 15,542 B, shared with the nav and the route wipe.
+  - Checked on the rebuilt candidate. The build moves it into a chunk of its own, `2-2o1ua-qpmde.js` at 1,328 B. That chunk is the only built script holding its code, and neither prerendered D page (`villa-thoi`, `the-estate`) names it as an initial script. Desktop behaviour on the D pages is unchanged: `tests/villa.spec.ts:241` passed in the full QA run on that build (553 passed / 0 failed). The one known difference on the success path is a chunk request before the cursor mounts. After that build, only comments in the two cursor files changed.
+  - The old once-per-document decision is kept: land on `/`, click into a villa, and there is no cursor until a reload. That is recorded, not fixed.
+- **"Defer every non-critical script" is partly closed: only the cursor moved.** No per-route inventory of initial chunks, each marked critical or not, was produced; the inventory is of modules. Left eager, with the reasons:
+  - **framer-motion on the D pages** (`3p7yrr41uomgy.js`). It is an initial script on villa-thoi and the-estate through `Reveal`, `Clause`, `Inventory` and `Ledger`. It is also one on experiences, for a reason not established: that route's only import path to it is `LazyClause`'s `next/dynamic` import. Taking it off means rebuilding those four animations on CSS. That is a motion-design change needing the motion budget, a visual comparison, the phase specs and its own A/B, in files outside this pass.
+  - **`Magnetic`** on the villa, estate and weddings pages. Phones evaluate it to reach its early return, but it wraps server-rendered children, so it cannot simply mount later, and the delegated rewrite touches three pages.
+  - **`LiquidCards` on `/`**: the same early-return shape as the cursor, but outside this change's files, and `/` is the reference route of the A/B.
+  - **`SiteNav` on `/`**: needs the layout split.
+  - **`Lightbox`**: could mount at first open. The gallery had no baseline when this pass was planned; it has one now (`AB-tranche12-final.md`), and the change was not attempted.
+  - **Critical, and staying eager:** `RouteTransition` (it moves focus on every navigation), `ViewTransitionTarget` and `BookingLedger`.
+- **Fonts: no loading change.**
+  - Every route preloads Inter, Marcellus and Marcellus SC, 77,316 B in all. On `/`, Marcellus paints nothing (it sits only inside the hidden nav), and Marcellus SC paints only the off-screen skip link.
+  - Literata's latin and latin-ext files are emitted as two overlapping `@font-face` rules with no `unicode-range`. The latin-ext file holds 2 of the 95 basic Latin characters, and a phone-profile network log on the final build confirms that `/` requests both files (199,748 B). `/en/villas/villa-thoi` requests neither. On `/`, Marcellus is preloaded and fetched, but it never appears among the loaded faces in `document.fonts`.
+  - The audit's preload recommendations wait for a serial A/B. `font-display` stays a typography decision (D-012).
+- **Images: formats hold; no hero or run frame is oversized, but two bounded images are.**
+  - 15 of 15 sampled `/_next/image` responses were AVIF, each at exactly the width requested.
+  - **The-estate map frame.** At 390 px it is a 350×262.5 box whose 3:2 source needs 394 px, and it gets 640w: 1.62× over. `sizes="100vw"` resolves to 390, past the 360 and 384 candidates, and the next candidate is 640. At 1440 px it is 1.10× over (1440w for a 1310 px frame, from the 1280→1440 step).
+  - **Villa-thoi's other-villa cards.** At 390 px they are two-column 4:5 frames of about 166×208 that need 369 or 304 px, and they get 640w: 1.73× and 2.11× over. `sizes` says 100vw for a two-column grid, and past 384 the next candidate is 640. At 1440 px they are under. These picks are computed from the markup and CSS; only the map frame's 640w response was fetched.
+  - **Phones, the other way.** The tall cover-cropped heroes and run frames are drawn from images 1.54–2.16× too small at 1×.
+  - **Both Direction D LCP heroes are `loading="lazy"`.** They are preloaded only because the run's first frame is the same photograph.
+  - None of these was changed. Each changes bytes or the preload set, in files outside this pass.
+- **Prerendering: every page but `/en/contact` is already prerendered, and `cacheComponents` is deferred.**
+  - The build: nine static pages, 26 SSG pages from the villa and experience templates, and `/en/contact` dynamic because it reads `searchParams`.
+  - In 16.3.5, partial prerendering *is* `cacheComponents`; `experimental.ppr` is gone. It would split only `/en/contact`, where a build-time shell cannot carry the per-request nonce proposed for that page.
+  - It would also require dropping `dynamicParams = false`, moving `new Date()` out of the sitemap's prerender, and accepting Activity-based navigation. That keeps hidden pages in the DOM, under the route wipe's `#main` focus hand-off.
+  - The measured cost is client hydration, which the flag does not touch. Revisit if a page gains per-request data.
+- **TBT is a budget now.**
+  - `scripts/hotel-cwv.mjs` fails when phone TBT (the trace figure, after first contentful paint) is over 200 ms.
+  - This is stricter only: TBT, load-blocking and the harness exclusion are computed exactly as before.
+  - Load-blocking stays printed and unbudgeted, because budgeting it would set a new target instead of enforcing the one set.
+  - On the final build every template's phone median is under it, at 53–76 ms. The 3D branch was first measured at 221–301 ms, from a worktree missing the gitignored photographs. Re-measured with them, its runs are 137–149 ms, so they pass too (`qa/perf/ESTATE3D-cost.md` on `feat/estate-3d`). Before, nothing in the budget referred to TBT.
+- **What the before/after shows** (`qa/perf/AB-tranche12-final.md`, `7ff32a9` against the final candidate):
+  - **Phone TBT after first contentful paint did not measurably move.**
+    - It was under the 200 ms target on every template before the pass, with medians of 54–73 ms, and it still is, at 53–76 ms.
+    - The changes run from −9 to +5 ms, inside the spread between runs.
+  - **Load-blocking**, which counts the rendering before first paint as well, fell on ten of eleven phone templates. The largest falls were on the Direction D pages:
+    - villa-thoi 185 → 138 ms;
+    - weddings 155 → 108 ms;
+    - the-estate 214 → 174 ms;
+    - terms 187 → 159 ms.
+  - **Phone FCP medians are 12–68 ms later after the pass on ten of eleven templates.** Three runs cannot separate that from noise, but the direction is consistent. It is recorded, not explained.
+  - **Desktop TBT medians** are 0 ms on every template, before and after.
+  - **The follow-up batch alone** (`AB-tranche12-followup.md`, against `56cb859`): phone TBT changes run from −5 to +8 ms on the four routes, inside the spread.
+- **Found by the eleven-template run, on both builds, and not fixed** (`qa/perf/CHECKS-tranche12.md`):
+  - **`/en/gallery` fails CLS on the phone.**
+    - The worst session window is 0.2014, as web-vitals defines CLS. hotel-cwv's summed figure is 0.20–0.22.
+    - The shifting nodes are the gallery images inside `ImageReveal`'s clip-path wipe (`src/components/motion/Reveal.tsx`). The wipe starts closed in the server HTML and opens after hydration. The frames themselves reserve their 4:3 box.
+    - Under reduced motion, where `ImageReveal` fades instead, CLS is 0.
+    - Desktop is 0.0827, under the budget.
+  - **`/en/careers` fails LCP on the phone**, at 2.9–3.0 s in five of six runs.
+    - The LCP element is the body text, which `Reveal` serves at `opacity:0`. It paints only after hydration and its in-view trigger: 3,100 ms with motion, 2,312 ms under reduced motion.
+    - First paint is near 1,000 ms.
+  - **Why neither was fixed.** Both causes sit in the shared motion components, and ask 2 set its target "without touching the motion budget". They are recorded for a decision.
+- **Measurement defaults, logged as defaults.**
+  - **Routes.** The before/after covers eleven route templates:
+    - `/`;
+    - one villa (`villa-thoi`);
+    - `/en/the-estate`;
+    - `/en/experiences`;
+    - one experience detail (`boat-trip`);
+    - `/en/weddings`, `/en/gallery`, `/en/location`, `/en/contact`, `/en/careers` and `/en/terms`.
+
+    The follow-up batch alone was measured on the first four.
+  - **Runs.** Medians of three interleaved runs. The phone profile is 4× CPU and Slow 4G at 390×844, DPR 1.
+  - **That is a sample.** The other four villa pages, the other experience details and the 404 were not measured; they share their templates' code.
+
 ### D-017 · A nonce policy on the contact page; the static policy everywhere else
 
 - **When `/en/contact` is loaded as a document, `src/proxy.ts` sends it a per-request nonce CSP.** Its script-src is `'self' 'nonce-…' 'strict-dynamic'`, with no `'unsafe-inline'`.

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 
-import { CustomCursor } from "@/components/motion/CustomCursor";
+import { LazyCustomCursor } from "@/components/motion/LazyCustomCursor";
 import { RouteTransition } from "@/components/motion/RouteTransition";
 import { SmoothScroll } from "@/components/motion/SmoothScroll";
 import { NAV_ENTRIES, SiteNav } from "@/components/ui/SiteNav";
@@ -177,10 +177,13 @@ export default function RootLayout({
           opened a villa — including on the nav's own `data-cursor="Book"`, which
           sat there labelling nothing. A site-wide affordance belongs in the site
           shell; mounting it per page is how it becomes a homepage effect.
-          Both are self-disabling on touch and under reduced motion.
+          Both are self-disabling on touch and under reduced motion, and neither
+          is requested there: Lenis and the cursor are each loaded with
+          `import()` only after their own checks pass (`SmoothScroll.tsx`,
+          `LazyCustomCursor.tsx`).
         */}
         <SmoothScroll />
-        <CustomCursor />
+        <LazyCustomCursor />
         <RouteTransition />
         <SiteNav entries={NAV_ENTRIES} bookHref={BOOK_HREF} />
         {children}

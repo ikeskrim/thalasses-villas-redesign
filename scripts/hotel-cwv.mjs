@@ -43,6 +43,21 @@
  * Throttled to a mid-range phone (4× CPU, Slow 4G) because that is the device
  * the directive names for the Phase-2 gate and the one a guest actually holds.
  *
+ * TBT IS A BUDGET, NOT A FIGURE THAT IS ONLY PRINTED.
+ *
+ * Through tranche twelve the gate reported TBT and nothing in BUDGET referred
+ * to it, so no TBT, however high, could fail a run. The phone profile's TBT
+ * (the trace figure, after FCP) now fails over 200 ms, the target the
+ * performance pass was set. On the final tranche-twelve build the phone
+ * medians of all eleven route templates are 53 to 76 ms
+ * (`qa/perf/AB-tranche12-final.md`). Phone only, because that is the profile
+ * the target names: the desktop medians were 0 ms on all eleven (same file),
+ * and a vacuous line is not a budget. `load-blocking` stays printed and
+ * unbudgeted. It is the wider measure: its phone medians on those templates
+ * are 62 to 193 ms, and a single run on `/` reached 225 ms
+ * (`qa/looks/HOTEL-CWV.md`). Making it the gate would set a new target rather
+ * than enforce the one set.
+ *
  *   node scripts/hotel-cwv.mjs [route]
  */
 import { chromium } from "@playwright/test";
@@ -80,7 +95,8 @@ if (!(await reachable(BASE))) {
   process.exit(1);
 }
 
-const BUDGET = { lcp: 2500, cls: 0.1, inp: 200 };
+/* `phoneTbt` is the trace TBT after FCP on the phone profile — see the header. */
+const BUDGET = { lcp: 2500, cls: 0.1, inp: 200, phoneTbt: 200 };
 const TRACE_CATEGORIES = ["devtools.timeline", "disabled-by-default-devtools.timeline", "loading", "blink.user_timing"];
 
 async function readTrace(cdp) {
@@ -246,6 +262,9 @@ for (const r of rows) {
   if (r.cls > BUDGET.cls) fail.push(`${r.view}: CLS ${r.cls} over ${BUDGET.cls}`);
   if (r.inp > BUDGET.inp) fail.push(`${r.view}: worst interaction ${r.inp}ms over ${BUDGET.inp}ms`);
   if (Number.isNaN(r.tbt)) fail.push(`${r.view}: TBT could not be read from the trace`);
+  if (r.view === "phone" && r.tbt > BUDGET.phoneTbt) {
+    fail.push(`${r.view}: TBT ${r.tbt}ms (trace, after FCP) over ${BUDGET.phoneTbt}ms`);
+  }
 }
 
 let md = `# Direction F — the Phase 1 CWV gate
@@ -276,7 +295,7 @@ ${rows
   )
   .join("\n")}
 
-Budgets: LCP ≤ ${BUDGET.lcp}ms · CLS ≤ ${BUDGET.cls} · interaction ≤ ${BUDGET.inp}ms.
+Budgets: LCP ≤ ${BUDGET.lcp}ms · CLS ≤ ${BUDGET.cls} · interaction ≤ ${BUDGET.inp}ms · phone TBT (trace, after FCP) ≤ ${BUDGET.phoneTbt}ms. \`load-blocking\` and \`observer\` are printed, not budgeted.
 
 ${fail.length ? `## Over budget\n\n${fail.map((f) => `- ${f}`).join("\n")}\n` : "**All budgets met in the lab.**\n"}
 `;

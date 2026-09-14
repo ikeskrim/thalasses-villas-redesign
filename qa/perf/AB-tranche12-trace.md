@@ -1,4 +1,16 @@
-# Performance pass — interleaved A/B with the corrected gate (tranche twelve)
+# Performance pass — interleaved A/B with the corrected gate (tranche twelve) — SUPERSEDED, KEPT AS EVIDENCE
+
+> **Do not quote these figures either.** A was served from a git worktree, and
+> a worktree holds only tracked files. `public/images/_chh/*` and eight files in
+> `public/images/_pool/` are gitignored, so A's pages asked for 159 photographs
+> the server did not have (they came back 400). B, served from the main
+> checkout, had them, so the two sides did not serve the same pages. Which way
+> that moved any comparison was not established: on the 3D branch the same
+> fault raised the figures rather than lowering them. It was found on 2026-09-14, when the
+> 3D branch's worktree failed its image specs for the same reason. The stage-1
+> worktree left on disk still holds 16 of main's 167 `_chh` files. The figures
+> of record are in `AB-tranche12-final.md`, measured with the gitignored files
+> copied into every worktree and every build rebuilt.
 
 TBT here is **Lighthouse's definition, from a Chrome trace**: main-thread tasks over 50 ms, the part after first contentful paint. `load-blocking` counts every long task, before first paint included. `observer` is the page's own longtask observer — the figure `hotel-cwv` used to report, shown for comparison because it is blind to the parser's rendering before first paint (see `AB-tranche12.md`, superseded).
 

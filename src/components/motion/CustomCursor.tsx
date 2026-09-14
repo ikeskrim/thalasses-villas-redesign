@@ -22,6 +22,12 @@ import { useEffect, useRef, useState } from "react";
  * rules out cursor work that hides the real pointer. What remains is what was
  * here before: a contextual label on the Direction D inner pages, over a
  * pointer the reader still has.
+ *
+ * MOUNTED THROUGH `LazyCustomCursor`, which runs the same three checks before
+ * it calls `import()` for this module, so on a phone the import is never made.
+ * The build puts this module in a chunk of its own, out of the shell chunk that
+ * every route loads. The checks below stay: this component should not depend
+ * on how it was loaded.
  */
 
 /** Follow damping. Lower is heavier. */

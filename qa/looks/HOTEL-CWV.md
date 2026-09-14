@@ -12,12 +12,17 @@ scroll, a card hover), which is a floor rather than the real number.
 Throttled to a mid-range phone: 4× CPU and Slow 4G on the phone profile, 2× CPU
 on desktop.
 
-| view | LCP | CLS | worst interaction | TBT | LCP element |
-|---|---|---|---|---|---|
-| desktop | 700ms | 0 | 32ms | 62ms | `IMG.` |
-| phone | 1156ms | 0 | 32ms | 262ms | `IMG.` |
+**TBT is taken from a Chrome trace** (main-thread tasks over 50 ms, the part after
+first contentful paint — Lighthouse's window). `load-blocking` counts every long
+task including those before first paint; `observer` is the page's own longtask
+observer, kept for continuity and known to miss pre-paint rendering tasks.
 
-Budgets: LCP ≤ 2500ms · CLS ≤ 0.1 · interaction ≤ 200ms.
+| view | LCP | FCP | CLS | worst interaction | TBT (trace, after FCP) | load-blocking | observer | harness excluded | LCP element |
+|---|---|---|---|---|---|---|---|---|---|
+| desktop | 692ms | 428ms | 0 | 24ms | 0ms | 16ms | 0ms | 0ms | `IMG.` |
+| phone | 1188ms | 1172ms | 0 | 32ms | 86ms | 225ms | 81ms | 0ms | `IMG.` |
+
+Budgets: LCP ≤ 2500ms · CLS ≤ 0.1 · interaction ≤ 200ms · phone TBT (trace, after FCP) ≤ 200ms. `load-blocking` and `observer` are printed, not budgeted.
 
 **All budgets met in the lab.**
 
