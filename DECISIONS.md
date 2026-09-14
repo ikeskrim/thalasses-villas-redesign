@@ -251,3 +251,59 @@ the numbers are in `SESSION-REPORT.md` tranche twelve.
   'none'`). If a partner ever needs to embed a page, that is the line to change.
 - **Unknown `?enquiry=` subjects are dropped, never echoed.**
 - **Dependency fixes are patch or minor only.**
+
+### D-015 · D-011 corrected: what the owner material pipeline actually does
+
+**Decided:** 2026-09-14, by the building session, closing the audit of ask 1 and the review that followed. **Not an owner decision.** D-011 was logged as a build default and described behaviour the code did not have. This entry replaces it where the two disagree.
+
+**What D-011 got wrong**
+
+- *"On no page until the standard grading pass has run."* Photographs were written to `public/images/_owner/<date>/` at ingest, and their `content/image-provenance.json` entry was added at the same time. That path was not gitignored, so committing the repository would have deployed them ungraded. Nothing read `content/grading-queue.json`.
+- *"The exact commands."* The commands recorded for a `needs-transcode` clip used a fixed 2300k and dropped `-row-mt`/`-deadline` from the WebM encode. `heroVariants()` computes 2411k.
+- *"Each under 2.5 MB."* No variant has ever been produced, and the recorded fallback carried no size check.
+- **Not logged at all.**
+  - Items left `needs-conversion`, `needs-transcode` or `failed` were marked `duplicate` on every re-run, because their sha256 was in the intake ledger and a clip's own master sat in the scanned `content/media/`.
+  - The installed sharp cannot decode HEIC.
+  - An M4A, an audio-only 3GP, an `.mka` or an audio-only AVI was admitted as video.
+  - A listing that parsed to zero entries exited 0.
+  - Mobile folder links were refused, and `resourcekey` was dropped.
+- The spec claimed its mock Drive was *"taken from Google's live responses"*. Nothing had been captured.
+
+**What is now true**
+
+- **Ungraded photographs are never deployable.**
+  - They are stripped of metadata and staged in `content/owner-staging/<date>/`, which is gitignored.
+  - Each is queued with its staged path, publish path, staged and original hashes, `owner/drive/<date>` provenance and Tier A.
+  - Ingest writes nothing to `public/` and nothing to the provenance ledger.
+- **The queue produces a sheet the grading pass reads.**
+  - `npm run grading:sheet -- <new empty folder> --queue` builds the sheet from `pending-grade` entries. It uses the file names and ids the grade-photo-library workflow derives for itself: `g0001.jpg` to `g<total>.jpg`, with no gaps.
+  - It prints the workflow arguments (`sheet`, `total`, `batchSize`). Its `index.json` carries `mode: "queue"`, which is what routes the merge.
+  - The id format is checked in the spec against the workflow's id function, copied into the test. **The workflow itself has not yet been run over a queue sheet.** Its grader prompt still describes the frames as the raw library.
+  - A queue sheet is written once. The tool refuses a non-empty folder, and a library sheet refuses to overwrite a queue index. Rebuilding in place would give an id to a different photograph than the one graded under it.
+- **Grades land once.**
+  - `npm run grading:merge` writes each grade onto its entry, but only while the entry is still `pending-grade`. A published or held entry is reported and left alone.
+  - **A or B with no flag** is the test `scripts/experience-imagery.mjs` already applies. A frame that passes it is copied to `public/images/_owner/<date>/` and declared with the note "owner/drive/<date> — owner-supplied property material, Tier A by provenance; graded X in the standard pass". The copy happens only after two checks: the sheet's recorded hash matches the queue entry's, and the staged file's bytes match the hash recorded at ingest. These checks prove the bytes are unchanged and the entry was not staged again after the sheet was built. They do not prove a grader looked at the file.
+  - A C or a flagged frame is `held`.
+  - **Nothing takes a published photograph down automatically.** That is a hand edit.
+  - `content/photo-grades.json` is not touched, so owner frames are not yet visible to the automatic photo pickers.
+- **A video must carry a video track:**
+  - an ISO `hdlr` of type `vide` (a moov box with a 32-bit, 64-bit or to-end-of-file size) or a Matroska TrackType of 1, found in the first or last 8 MB of the file. A moov box that starts in neither window is still missed; or
+  - an AVI `strh` of type `vids`, found in the first 8 MB only (the tail is not scanned for AVI).
+  - Files whose major brand is an audio one (`M4A `, `M4B `, `M4P `, `F4A `, `F4B `) are refused outright.
+- **Unfinished items are retried.**
+  - From the intake ledger only `ingested` and `variants-ready` count as taken, and `content/media/originals/` no longer counts as library.
+  - For photographs the queue decides. An entry counts once it is graded, or while its staged file is on disk. A pending photograph whose staged file is gone (staging is gitignored) is staged again, and its entry is replaced.
+- **One plan, run and recorded.**
+  - `heroVariantPlan()` is what `heroVariants()` spawns and what a `needs-transcode` clip records.
+  - `node scripts/ingest-drive.mjs --transcode-pending` runs it once ffmpeg exists, whether on PATH or via `FFMPEG_PATH`. The 2.5 MB budget is enforced on each loop.
+  - **Still no variant has been cut by a real ffmpeg.**
+- **Empty or partial listings are loud.**
+  - A `/drive/folders/` listing that yields nothing exits 1 unless `--allow-empty` is passed.
+  - A listing where fewer entries parse than the page shows exits 1 in every case.
+  - An `/open?id=` or `/uc?id=` link whose listing is refused or shows no entry is tried as a single file.
+- **Mobile links and resource keys are accepted and forwarded to Drive, and recorded nowhere.** This is verified only against a mock Drive.
+- **HEIC stays `needs-conversion`,** with instructions: send JPEG (iPhone: Most Compatible) or convert, then re-run the same link.
+- **Evidence.**
+  - Drive's folder listing format was captured live on 2026-09-14 from gdown's public test folder, and the parser reads all 16 entries on that page. That capture has no resource key.
+  - The download and its large-file confirmation page are still modelled.
+  - The pipeline has not yet been run against a real owner link.

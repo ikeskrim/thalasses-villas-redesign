@@ -163,3 +163,8 @@ qa/looks/shots/
 # staging area and video originals can run to gigabytes; neither belongs in git.
 content/inbox/
 content/media/originals/
+# Owner photographs waiting for the grading pass: stripped of metadata but
+# UNGRADED. Ignored so that no commit can deploy a frame nobody has judged; a
+# photograph leaves here for public/images/_owner/ only when
+# scripts/merge-grades.mjs lands an A or B grade with no flag.
+content/owner-staging/

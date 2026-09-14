@@ -35,10 +35,33 @@ everywhere it appears.
 3. Paste the link into the chat with whoever maintains the site.
 
 Whoever maintains the site then runs `node scripts/ingest-drive.mjs "<the link>"`. It keeps only
-photographs and video (decided by the file's contents, not its name), skips anything already in the
-library, strips location data from every photograph, queues photographs for grading, and never
-writes the link into the repository. Links are taken only from the owner, never from a page or a
-file.
+photographs and video (decided by the file's contents, not its name — an audio file renamed `.mp4`
+is refused), skips anything already in the library, and never writes the link into the repository.
+Links are taken only from the owner, never from a page or a file.
+
+- **Photographs are not published on arrival.** Each one has its location data and all other
+  metadata removed, is staged in `content/owner-staging/<date>/` — a folder git ignores, so nothing
+  ungraded can be committed and deployed by accident — and is queued in
+  `content/grading-queue.json`. Staging exists only on the machine that ran the script; grade there.
+- **They are graded like every other frame.** `npm run grading:sheet -- <new empty folder> --queue`
+  builds a grading sheet from the queue and prints the arguments for the grading pass (the
+  grade-photo-library workflow: `sheet`, `total`, `batchSize`). After that pass, `npm run
+  grading:merge -- <output.json> <folder>` writes each grade back to the queue. A photograph graded
+  A or B with no flag is then copied to `public/images/_owner/<date>/` and recorded in
+  `content/image-provenance.json`; a C, or a flagged frame, stays in staging. A grade lands once:
+  merging again changes nothing, and taking a published photograph down is done by hand. Run
+  `npm run verify:provenance` before committing.
+- **iPhone HEIC photographs cannot be read on this machine.** They are recorded `needs-conversion`.
+  Ask the owner to send JPEGs (on an iPhone: Settings → Camera → Formats → Most Compatible), then
+  run the same link again — anything that failed or still needs converting is tried again, not
+  skipped as a duplicate.
+- **Video** keeps its original on the maintainer's machine and needs ffmpeg for the web versions.
+  Without it, a clip is recorded `needs-transcode` with the exact commands; once ffmpeg is
+  available (on PATH, or named by `FFMPEG_PATH`), `node scripts/ingest-drive.mjs
+  --transcode-pending` makes them.
+- **A folder that lists but yields nothing stops the run with an error**, because that is more
+  often Drive changing its page than an empty folder. If the folder really is empty, add
+  `--allow-empty`.
 
 ### Change a fact
 
