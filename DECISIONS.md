@@ -388,7 +388,7 @@ An addendum to D-012. The evidence is in `qa/perf/ISLANDS-tranche12.md`, `FONTS-
   - **`/en/careers` fails LCP on the phone**, at 2.9–3.0 s in five of six runs.
     - The LCP element is the body text, which `Reveal` serves at `opacity:0`. It paints only after hydration and its in-view trigger: 3,100 ms with motion, 2,312 ms under reduced motion.
     - First paint is near 1,000 ms.
-  - **Why neither was fixed.** Both causes sit in the shared motion components, and ask 2 set its target "without touching the motion budget". They are recorded for a decision.
+  - **Why neither was fixed.** Both causes sit in the shared motion components, and ask 2 set its target "without touching the motion budget". They are recorded for a decision. **Answered by D-021 (the owner's ruling) and D-026 (the fix).**
 - **Measurement defaults, logged as defaults.**
   - **Routes.** The before/after covers eleven route templates:
     - `/`;

@@ -144,6 +144,8 @@ build, and 2,984, 2,984 and 3,032 ms on the final build. The budget is
 
 ## Why neither is fixed
 
+> **Fixed in tranche thirteen** (DECISIONS.md D-021 and D-026, `qa/perf/REVEAL-tranche13.md`). Under the same `hotel-cwv` profile, old build against new, gallery phone CLS went from 0.2205 to 0, and careers phone LCP from 2,108–2,972 ms to 1,044–1,056 ms. This section is kept as it was written.
+
 Both causes are the shared motion components, `Reveal` and `ImageReveal`,
 which serve their hidden starting state in the server HTML. Changing either
 one changes the motion on every page that uses them, and ask 2 set its target
