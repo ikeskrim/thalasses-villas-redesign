@@ -20,6 +20,20 @@
  * latency observed, plus total blocking time. A page that fails this would
  * certainly fail INP; a page that passes it might still.
  *
+ * NO INTERACTION RECORDED IS NOT 0 MS, AND NOT A PASS.
+ *
+ * Through tranche twelve the worst-interaction figure started at 0 and was
+ * printed as it stood. On a route where the session drives nothing Event Timing
+ * records — `/en/the-estate` has no `.ho-dots` to click and no `.ho-card` to
+ * hover, and a wheel scroll is not an Event Timing type — every run printed
+ * "0 ms" and the budget line counted it as met (D-020: twelve A/B runs, all
+ * "0 ms", none a reading). It now starts empty: such a route prints "no
+ * interaction recorded", and the report names it under "not measured" instead
+ * of "all budgets met". The observer's floor is 16 ms, so an interaction that
+ * was driven but finished faster leaves no entry either; this script cannot
+ * tell the two apart, and says neither is a pass. `scripts/estate-inp.mjs`
+ * counts what it dispatches and can.
+ *
  * TOTAL BLOCKING TIME COMES FROM A TRACE, NOT FROM THE PAGE'S OWN OBSERVER.
  *
  * Until tranche twelve this summed a `longtask` PerformanceObserver installed
@@ -98,6 +112,7 @@ if (!(await reachable(BASE))) {
 /* `phoneTbt` is the trace TBT after FCP on the phone profile — see the header. */
 const BUDGET = { lcp: 2500, cls: 0.1, inp: 200, phoneTbt: 200 };
 const TRACE_CATEGORIES = ["devtools.timeline", "disabled-by-default-devtools.timeline", "loading", "blink.user_timing"];
+const NO_INTERACTION = "no interaction recorded";
 
 async function readTrace(cdp) {
   const complete = new Promise((r) => cdp.once("Tracing.tracingComplete", r));
@@ -182,7 +197,8 @@ for (const [label, width, height, mobile] of [
   });
 
   await page.addInitScript(() => {
-    window.__v = { cls: 0, lcp: 0, fcp: 0, longest: 0, tbt: 0, lcpEl: "" };
+    /* `longest` starts EMPTY, not at 0: see "No interaction recorded" in the header. */
+    window.__v = { cls: 0, lcp: 0, fcp: 0, longest: null, tbt: 0, lcpEl: "" };
     new PerformanceObserver((l) => {
       for (const e of l.getEntries()) if (!e.hadRecentInput) window.__v.cls += e.value;
     }).observe({ type: "layout-shift", buffered: true });
@@ -201,10 +217,20 @@ for (const [label, width, height, mobile] of [
         if (e.duration > 50) window.__v.tbt += e.duration - 50;
       }
     }).observe({ type: "longtask", buffered: true });
-    /* The lab stand-in for INP: the worst real interaction we drive. */
+    /*
+     * The lab stand-in for INP: the worst real interaction we drive. Only
+     * entries with an interactionId count. The "event" observer also delivers
+     * pointerover, pointerenter, mouseover and mouseout, with interactionId 0,
+     * and this session makes them itself: the synthetic mouse moves after each
+     * wheel step, and the card hover. None of those is an interaction, and on a
+     * page busy loading (the 3D estate map's chunk arrives during this scroll)
+     * one of them at 16 ms or more would turn "no interaction recorded" into a
+     * figure that passed the budget.
+     */
     new PerformanceObserver((l) => {
       for (const e of l.getEntries()) {
-        if (e.duration > window.__v.longest) window.__v.longest = e.duration;
+        if (!e.interactionId) continue;
+        if (window.__v.longest === null || e.duration > window.__v.longest) window.__v.longest = e.duration;
       }
     }).observe({ type: "event", durationThreshold: 16, buffered: true });
   });
@@ -243,7 +269,8 @@ for (const [label, width, height, mobile] of [
     lcp: Math.round(v.lcp),
     fcp: Math.round(v.fcp),
     cls: +v.cls.toFixed(4),
-    inp: Math.round(v.longest),
+    /* null, never 0, when nothing was recorded. */
+    inp: v.longest === null ? null : Math.round(v.longest),
     tbt: blocking ? Math.round(blocking.tbt) : NaN,
     loadBlocking: blocking ? Math.round(blocking.loadBlocking) : NaN,
     harness: blocking ? Math.round(blocking.harness) : NaN,
@@ -256,16 +283,25 @@ for (const [label, width, height, mobile] of [
 
 await browser.close();
 
+const inpText = (r) => (r.inp === null ? NO_INTERACTION : `${r.inp}ms`);
 const fail = [];
+const notMeasured = [];
 for (const r of rows) {
   if (r.lcp > BUDGET.lcp) fail.push(`${r.view}: LCP ${r.lcp}ms over ${BUDGET.lcp}ms`);
   if (r.cls > BUDGET.cls) fail.push(`${r.view}: CLS ${r.cls} over ${BUDGET.cls}`);
-  if (r.inp > BUDGET.inp) fail.push(`${r.view}: worst interaction ${r.inp}ms over ${BUDGET.inp}ms`);
+  if (r.inp === null) notMeasured.push(`${r.view}: worst interaction — ${NO_INTERACTION}, so the ${BUDGET.inp}ms interaction budget was not measured (not a pass)`);
+  else if (r.inp > BUDGET.inp) fail.push(`${r.view}: worst interaction ${r.inp}ms over ${BUDGET.inp}ms`);
   if (Number.isNaN(r.tbt)) fail.push(`${r.view}: TBT could not be read from the trace`);
   if (r.view === "phone" && r.tbt > BUDGET.phoneTbt) {
     fail.push(`${r.view}: TBT ${r.tbt}ms (trace, after FCP) over ${BUDGET.phoneTbt}ms`);
   }
 }
+
+let verdict = "";
+if (fail.length) verdict += `## Over budget\n\n${fail.map((f) => `- ${f}`).join("\n")}\n\n`;
+if (notMeasured.length) verdict += `## Not measured\n\n${notMeasured.map((f) => `- ${f}`).join("\n")}\n\n`;
+if (!fail.length && !notMeasured.length) verdict = "**All budgets met in the lab.**\n";
+else if (!fail.length) verdict += "**Every budget that was measured was met; the ones above were not measured.**\n";
 
 let md = `# Direction F — the Phase 1 CWV gate
 
@@ -276,7 +312,9 @@ via CrUX, and that cannot be produced from this repository — CrUX reports on r
 visitors' browsers and the site is not deployed to any. A pass here is necessary,
 not sufficient. INP is likewise a field metric; the figure below is the worst
 latency of the interactions this script actually drives (a slider dot, a full
-scroll, a card hover), which is a floor rather than the real number.
+scroll, a card hover), which is a floor rather than the real number. Where none
+of them left an Event Timing entry it reads "${NO_INTERACTION}", which is not 0
+and not a pass.
 
 Throttled to a mid-range phone: 4× CPU and Slow 4G on the phone profile, 2× CPU
 on desktop.
@@ -291,26 +329,29 @@ observer, kept for continuity and known to miss pre-paint rendering tasks.
 ${rows
   .map(
     (r) =>
-      `| ${r.view} | ${r.lcp}ms | ${r.fcp}ms | ${r.cls} | ${r.inp}ms | ${r.tbt}ms | ${r.loadBlocking}ms | ${r.observer}ms | ${r.harness}ms | \`${r.lcpEl}\` |`
+      `| ${r.view} | ${r.lcp}ms | ${r.fcp}ms | ${r.cls} | ${inpText(r)} | ${r.tbt}ms | ${r.loadBlocking}ms | ${r.observer}ms | ${r.harness}ms | \`${r.lcpEl}\` |`
   )
   .join("\n")}
 
 Budgets: LCP ≤ ${BUDGET.lcp}ms · CLS ≤ ${BUDGET.cls} · interaction ≤ ${BUDGET.inp}ms · phone TBT (trace, after FCP) ≤ ${BUDGET.phoneTbt}ms. \`load-blocking\` and \`observer\` are printed, not budgeted.
 
-${fail.length ? `## Over budget\n\n${fail.map((f) => `- ${f}`).join("\n")}\n` : "**All budgets met in the lab.**\n"}
-`;
+${verdict}`;
 
 fs.writeFileSync(path.join(OUT, "HOTEL-CWV.md"), md);
 
 for (const r of rows) {
   console.log(
     `${r.view.padEnd(8)} LCP ${String(r.lcp).padStart(5)}ms  CLS ${String(r.cls).padEnd(7)} ` +
-      `worst-interaction ${String(r.inp).padStart(4)}ms  TBT ${String(r.tbt).padStart(5)}ms  ` +
+      `worst-interaction ${inpText(r).padStart(6)}  TBT ${String(r.tbt).padStart(5)}ms  ` +
       `load-blocking ${String(r.loadBlocking).padStart(5)}ms  observer ${String(r.observer).padStart(5)}ms  ` +
       `FCP ${String(r.fcp).padStart(5)}ms  harness ${String(r.harness).padStart(4)}ms  [${r.lcpEl}]`
   );
 }
 console.log("-> qa/looks/HOTEL-CWV.md   (LAB ONLY — field CrUX is not obtainable here)");
+if (notMeasured.length) {
+  console.error("\nNOT MEASURED (not a pass):");
+  for (const f of notMeasured) console.error("  " + f);
+}
 if (fail.length) {
   console.error("\nOVER BUDGET:");
   for (const f of fail) console.error("  " + f);

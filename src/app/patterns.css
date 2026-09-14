@@ -497,10 +497,28 @@
   max-width: min(260px, calc(100vw - 2 * var(--page-margin)));
 }
 
-/* ---- The estate map as a 3D diagram (feat/estate-3d) --------------------
+/* ---- The estate map as a 3D diagram (D-014, D-021; step B) ---------------
    Same box as the 2D frame above (16/9; 4/3 below 768px), so swapping one for
    the other moves nothing on the page. A diagram in the site's own palette:
-   limestone ground, basalt type, pelagos links. */
+   limestone ground, basalt type, pelagos for what can be operated.
+
+   THE PLACES ARE THE 2D MAP'S OWN CONTRACT (B4). Each is a real button, at least
+   44 × 44 px, carrying its name, and it opens the same `.estate-map-card` the 2D
+   marker opens, right after it in the DOM. `EstateMap3D` measures the buttons
+   and positions them (`--x`, `--y`) so none overlaps another or leaves the frame,
+   with a hairline leader to its anchor when it has had to move; an open card
+   gets `--card-x`, `--card-y` beside its button. Until that first layout has run
+   the buttons and leaders are not shown, so nothing is ever seen stacked at 0,0.
+
+   The target and the thing seen are not the same box: the 44 px button is
+   transparent, and the chip inside it is the visible label. Both the focus ring
+   and the open state are drawn on the chip.
+
+   NO HOVER DEPENDENCE (B5). Nothing here is revealed by hover. The one hover
+   affordance, a pelagos edge on the chip, is inside `(hover: hover) and
+   (pointer: fine)`, so a touch screen never gets a hover state stuck on after a
+   tap. `tests/estate-3d-preview.spec.ts` reads the served rules and fails on any
+   estate-map-3d `:hover` outside that query. */
 .estate-map-frame--3d {
   overflow: hidden;
   background: var(--color-limestone);
@@ -512,51 +530,207 @@
   height: 100%;
   display: block;
 }
-.estate-map-3d-spot {
+.estate-map-3d-leaders {
   position: absolute;
-  transform: translate(-50%, -100%);
+  inset: 0;
+  width: 100%;
+  height: 100%;
   pointer-events: none;
 }
-.estate-map-3d-label {
-  pointer-events: auto;
-  display: inline-block;
-  padding: 0.35em 0.6em;
-  background: var(--color-limestone);
+.estate-map-3d-leaders line {
+  stroke: var(--color-phrygana);
+  stroke-width: 1;
+}
+.estate-map-3d-leaders circle {
+  fill: var(--color-basalt);
+}
+.estate-map-3d-leaders .is-open line {
+  stroke: var(--color-pelagos);
+  stroke-width: 1.5;
+}
+.estate-map-3d-leaders .is-open circle {
+  fill: var(--color-pelagos);
+}
+.estate-map-frame--3d:not([data-placed]) .estate-map-3d-button,
+.estate-map-frame--3d:not([data-placed]) .estate-map-3d-leaders {
+  visibility: hidden;
+}
+.estate-map-3d-button {
+  position: absolute;
+  left: var(--x, 0px);
+  top: var(--y, 0px);
+  z-index: 2;
+  min-width: 44px;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 2px;
+  border: 0;
+  background: transparent;
   color: var(--color-basalt);
-  border: 1px solid rgb(22 38 43 / 0.25);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+/* A focused button and the open one stand above any open card (z-index 3).
+   Focus moving out of a place closes its card, so a focused button is normally
+   clear of every card already; this is the guarantee for the cases that rule
+   cannot reach: a card that must cover some part of its frame, and on a phone a
+   band that cannot leave its own disc clear on either edge. The reader always
+   sees where focus is and which place is open, and can tap it again to close. */
+.estate-map-3d-button:focus-visible,
+.estate-map-3d-button.is-open {
+  z-index: 4;
+}
+.estate-map-3d-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.3rem 0.65rem;
+  background: color-mix(in srgb, var(--color-limestone) 94%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-basalt) 22%, transparent);
   white-space: nowrap;
+  transition:
+    background-color 0.35s var(--ease-thalasses),
+    border-color 0.35s var(--ease-thalasses),
+    color 0.35s var(--ease-thalasses);
 }
-a.estate-map-3d-label {
-  color: var(--color-pelagos);
-  text-decoration: underline;
-  text-underline-offset: 0.35em;
+.estate-map-3d-name {
+  color: inherit;
+  line-height: 1.35;
 }
-a.estate-map-3d-label:focus-visible {
+.estate-map-3d-index {
+  display: none;
+}
+.estate-map-3d-button.is-open .estate-map-3d-chip {
+  background: var(--color-pelagos);
+  border-color: var(--color-pelagos);
+  color: var(--color-limestone);
+}
+.estate-map-3d-button:focus-visible {
+  outline: none;
+}
+.estate-map-3d-button:focus-visible .estate-map-3d-chip {
   outline: 2px solid var(--color-pelagos);
   outline-offset: 2px;
 }
+@media (hover: hover) and (pointer: fine) {
+  .estate-map-3d-button:hover .estate-map-3d-chip {
+    border-color: var(--color-pelagos);
+  }
+}
+/* The 2D card, repositioned: beside its button rather than above a marker's
+   centre. It also gets a hairline edge the 2D card does not need. Over the
+   photograph a limestone card stands out on its own; over the diagram, which is
+   limestone too, step B's first screenshots showed it dissolving into the
+   ground, so the labels it covered read as cut off rather than covered. */
+.estate-map-3d-card {
+  left: var(--card-x, 0px);
+  top: var(--card-y, 0px);
+  bottom: auto;
+  transform: none;
+  border: 1px solid color-mix(in srgb, var(--color-basalt) 22%, transparent);
+}
+/* THE CARD AS A BAND (`data-band`, set by EstateMap3D). Always on a phone, and
+   from 768 px up when no position beside its button leaves the other places in
+   view: a band across the frame's own box, on the bottom edge or the top edge
+   just under the note, whichever leaves the open button in view (`bandEdge`).
+   Its body runs as rows, the ledger and the Visit link sharing one, and its
+   thumbnail is smaller: at the 2D card's own proportions the phone band
+   covered 55% of the frame, over the disc that had opened it. */
+.estate-map-3d-card[data-band] {
+  left: 0;
+  right: 0;
+  width: auto;
+  max-width: none;
+  padding: var(--spacing-step-3) var(--spacing-step-4);
+}
+.estate-map-3d-card[data-band="bottom"] {
+  top: auto;
+  bottom: 0;
+  border-width: 1px 0 0;
+}
+.estate-map-3d-card[data-band="top"] {
+  top: var(--band-top, 0px);
+  bottom: auto;
+  border-width: 0 0 1px;
+}
+.estate-map-3d-card[data-band] .estate-map-thumb {
+  width: 56px;
+  height: 56px;
+}
+.estate-map-3d-card[data-band] .estate-map-card-body {
+  flex-flow: row wrap;
+  align-items: baseline;
+  gap: var(--spacing-step-1) var(--spacing-step-4);
+}
+.estate-map-3d-card[data-band] .estate-map-card-name,
+.estate-map-3d-card[data-band] .estate-map-card-body > .caption {
+  flex-basis: 100%;
+}
+/* The note stands at the top of the frame at every width. The camera looks from
+   the sea side, so the sea runs past the frame's bottom corner, where basalt
+   type would sit on pelagos at 1.81:1; the top of the frame is inland ground.
+   It is also where a reader looks first, and on a review build the first words
+   there are "Preview — unverified". */
 .estate-map-3d-note {
   position: absolute;
   left: var(--spacing-step-4);
   right: var(--spacing-step-4);
-  bottom: var(--spacing-step-3);
+  top: var(--spacing-step-3);
   margin: 0;
   color: var(--color-basalt);
 }
 .estate-map-3d-note-short {
   display: none;
 }
-/* On a phone the labels would collide; the numbered list beneath carries them,
-   exactly as it does for the 2D markers at this width.
+/* ON A PHONE (B5). Named buttons for all seven list places cannot share a
+   355 px frame, so each list place becomes a disc carrying its number in the
+   list beneath (01 for Villa Thoi, as the list prints it). The name stays in the
+   button, visually hidden, and the number is part of the button's name too
+   (EstateMap3D says why); the target stays 44 px. Step A hid every label at this
+   width and left the phone with nothing in the diagram to operate.
 
-   The note cannot move below the frame: the diagram arrives after the section
-   is already near the reader, and a caption appearing under it then would push
-   the list down in front of them. So it stays inside the same box, shortened,
-   in a band across the top — over the sea, where nothing is drawn — with the
-   owner's open question kept word for word. */
+   The helipad and the Rituals venue are not in the list and have no number to
+   borrow, so their chips (`--named`) keep the plan's name visible. They used to
+   be discs holding a dot, two identical circles with no key anywhere on the
+   page; both stand in open ground at this width.
+
+   An open card cannot stand beside a disc without leaving a 355 px frame, and
+   it cannot open below the frame without pushing the list down in front of the
+   reader. So it is always the band above (`data-band`), inside the frame's own
+   box.
+
+   The note cannot move below the frame either: the diagram arrives after the
+   section is already near the reader, and a caption appearing under it then
+   would push the list down. So it stays inside the same box, shortened, in a
+   band across the top, and the camera's fit leaves that band's height free. */
 @media (max-width: 767px) {
-  .estate-map-3d-spot {
-    display: none;
+  .estate-map-3d-chip:not(.estate-map-3d-chip--named) {
+    width: 34px;
+    height: 34px;
+    padding: 0;
+    border-radius: 50%;
+  }
+  .estate-map-3d-chip--named {
+    padding: 0.25rem 0.5rem;
+  }
+  .estate-map-3d-index {
+    display: grid;
+    place-items: center;
+    font-size: var(--text-tail);
+    line-height: 1;
+  }
+  .estate-map-3d-chip:not(.estate-map-3d-chip--named) .estate-map-3d-name {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
   }
   .estate-map-3d-note {
     top: 0;
@@ -564,7 +738,7 @@ a.estate-map-3d-label:focus-visible {
     left: 0;
     right: 0;
     padding: var(--spacing-step-2) var(--spacing-step-3);
-    background: rgb(232 233 227 / 0.92);
+    background: color-mix(in srgb, var(--color-limestone) 92%, transparent);
     font-size: 0.6875rem;
     line-height: 1.35;
   }

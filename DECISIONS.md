@@ -790,3 +790,50 @@ Carries out D-021's "gallery CLS ≤ 0.1 via transform/clip-path with reserved d
   - **Boat-trip:** LCP rose, from 980 to 1,068 ms on the phone and 332 to 572 ms on desktop. That is because its hero photograph, clipped to an empty rect before, now paints unclipped and becomes the LCP element in place of the nav wordmark.
   - **Every route and view** on the new build is within budget. The builds differ in more than this change, so the table compares mechanisms; it does not attribute every millisecond.
 - **For the owner's eye:** `.plate-figure` now shows its sea-tinted shadow once revealed. The Framer build clipped it away.
+
+### D-027 · The 3D estate map's quality pass: the defaults the diagram now carries (carrying out D-021 B)
+
+This carries out D-021's step B: a luxury register, hotspots with keyboard equivalents, tap-to-focus, reduced motion, a single lazy canvas, a WebGL fallback, and INP measured with the map active. These are build defaults, not rulings, all behind the provenance gate. The public page still renders the 2D map, and none of this is public until the plan is owner-verified (D-021, D-022).
+
+Built in an isolated worktree, in two runs. The first implementer died on a network error, and its partial work was carried forward, audited and finished. Three adversarial reviews followed (interaction and a11y, visual register, tests and the INP harness). Every finding was applied and none was rejected. Verified again on main (below).
+
+- **The camera looks from the sea side. This reverses D-020's default "sea at the top of the frame".** From the land side the four villa pools lie behind their houses, so "The pool line" would point at nothing visible.
+- **The fit frames** the compound, the helipad, its apron and the Rituals venue terrace, plus the waterline across the terrace's width. The shore and sea run past the frame. Without the waterline the sea was a corner triangle.
+- **Light and materials.**
+  - A hemisphere light plus a sun from the land side, sized so an upward face receives exactly π. That renders at its token colour, and the ground reads as limestone within ±3 per channel, which a test asserts.
+  - No shadow maps and no tone mapping; soft contact shades under each villa.
+  - Tokens only: limestone, phrygana, ammos, basalt, pelagos. No gold, ochre or brass.
+- **Places use the 2D map's contract.** A real button with `aria-expanded`/`aria-controls`, at least 44 px, opens a card: HOTSPOTS copy for list places, and only the plan's name and a Visit link for the helipad and Rituals.
+  - Only one card is open at a time. Escape returns focus.
+  - Focus leaving a place closes its card. An open card never covers another place from 768 px up.
+  - Where no position avoids covering a place, the card becomes a band on the frame's edge.
+- **Touch and the phone.**
+  - A first tap opens; only the card's link navigates. A click outside closes, but a swipe does not.
+  - Below 768 px, list places show numbered discs whose accessible name includes the number (WCAG 2.5.3). The two extras keep their plan name visible in a chip. The card is a band that leaves the open disc visible.
+  - The note sits at the top of the frame at every width.
+- **The 2D map is served when:**
+  - reduced motion is on at load, or turned on before the map is in range, in which case the observer disconnects and three.js is never fetched;
+  - reduced motion is turned on after mount;
+  - there is no WebGL2;
+  - Data Saver is on;
+  - the context is lost.
+
+  On the swap, focus moves to the same place's 2D marker, or to its list link.
+- **The GL context is kept on scroll-away,** and disposed on unmount.
+- **`scripts/estate3d-preview.mjs`** saves `next-env.d.ts` before a review build and restores it on every exit and signal. It also repairs a baseline that a killed build left dirty.
+- **`scripts/hotel-cwv.mjs`** prints "no interaction recorded" instead of 0 ms, lists that under NOT MEASURED rather than as a pass, and ignores event entries with no interactionId.
+- **Cost, measured on the fixer's build:**
+  - the lazy three.js chunk is 559,796 B raw / 139,874 B gzip, up from 548,419 / 135,460 at step A;
+  - the estate page's initial JavaScript grew by 1,137 B raw / 364 B gzip, for the gate hook, the shared card and `data-hotspot`;
+  - no initial script contains three.js.
+- **INP with the map active:** measured separately with the harness's own minimums (10 valid runs per scenario and 20 valid trials per load-window offset, public build against review build, on a quiet machine). The record is `qa/perf/INP-estate3d.md`, in its own commit.
+- **Not established:**
+  - real touch devices, Safari and Firefox, and a WebGL1-only device;
+  - the context-loss path under test;
+  - a synthetic swipe followed by a tap;
+  - layout cost on a throttled phone CPU;
+  - the camera azimuth, which was not swept visually.
+- **Visual, recorded, not blocking:**
+  - at 1440–1920 the compound sits upper-left, with an empty field of ground lower-left;
+  - at 768 px the leaders run long;
+  - at 390 px the discs are busy, and an open band covers the lower discs.

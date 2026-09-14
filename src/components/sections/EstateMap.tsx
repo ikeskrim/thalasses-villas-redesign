@@ -5,10 +5,11 @@ import Link from "next/link";
 import { useRef, useState } from "react";
 
 import { Clause } from "@/components/ui/Clause";
-import { Ledger, LedgerInline, type LedgerEntry } from "@/components/ui/Ledger";
+import { Ledger, type LedgerEntry } from "@/components/ui/Ledger";
 import { Magnetic } from "@/components/motion/Magnetic";
 import type { RenderPlan } from "@/lib/estate-plan-gate";
 import { useEstateMap3D } from "./estate-map-3d-gate";
+import { EstateMapCardContent } from "./EstateMapCard";
 
 export interface Hotspot {
   id: string;
@@ -103,7 +104,7 @@ export function EstateMap({
       <Ledger entries={ledger} className="estate-map-ledger" />
 
       {Map3D && plan3d ? (
-        <Map3D plan={plan3d} onFail={onFail} />
+        <Map3D plan={plan3d} hotspots={hotspots} onFail={onFail} />
       ) : (
       <div className="estate-map-frame">
         <Image
@@ -140,21 +141,7 @@ export function EstateMap({
                 className="estate-map-card"
                 hidden={!isOpen}
               >
-                {h.thumb ? (
-                  <span className="estate-map-thumb">
-                    <Image src={h.thumb} alt="" fill sizes="120px" quality={75} style={{ objectFit: "cover" }} />
-                  </span>
-                ) : null}
-                <span className="estate-map-card-body">
-                  <span className="estate-map-card-name">{h.label}</span>
-                  <span className="caption">{h.line}</span>
-                  {h.ledger ? <LedgerInline entries={h.ledger} /> : null}
-                  {h.href ? (
-                    <Link href={h.href} className="micro estate-map-card-link">
-                      Visit
-                    </Link>
-                  ) : null}
-                </span>
+                <EstateMapCardContent name={h.label} line={h.line} ledger={h.ledger} href={h.href} thumb={h.thumb} />
               </div>
             </div>
           );
@@ -165,7 +152,8 @@ export function EstateMap({
       {/* The same information, always present, never behind an interaction. */}
       <ul className="estate-map-list">
         {hotspots.map((h, i) => (
-          <li key={h.id} className="estate-map-list-item">
+          /* `data-hotspot` lets the 3D gate put focus back on this place if the diagram gives way while focused. */
+          <li key={h.id} className="estate-map-list-item" data-hotspot={h.id}>
             <span className="tabular estate-map-list-index">{String(i + 1).padStart(2, "0")}</span>
             <span>
               <span className="estate-map-list-name">

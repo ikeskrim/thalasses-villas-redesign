@@ -95,6 +95,27 @@ test.describe("3D estate map — the public build", () => {
     expect(errors).toEqual([]);
   });
 
+  test("/en/the-estate stays a static prerender", async ({ request }) => {
+    /*
+     * D-022: "a data edit, not a rebuild" was kept by prerendering this route,
+     * and rendering it per request was rejected (it would join the class of
+     * pages Vercel answers with 500 on percent-encoded spellings, and give up
+     * the prerendered HTML D-012 and D-016 protect). Until now only the build
+     * log's "○ /en/the-estate" said so, and a gate that read a header or a
+     * cookie would have made the route dynamic with every test still passing.
+     * This reads the build this suite is served from.
+     */
+    const dist = path.join(process.cwd(), ".next");
+    const manifest = JSON.parse(fs.readFileSync(path.join(dist, "prerender-manifest.json"), "utf-8")) as { routes: Record<string, unknown> };
+    expect(Object.keys(manifest.routes), `${ROUTE} is not in the build's prerender manifest`).toContain(ROUTE);
+    expect(fs.existsSync(path.join(dist, "server", "app", "en", "the-estate.html")), "no prerendered HTML for the route").toBe(true);
+    const res = await request.get(ROUTE);
+    expect(res.status()).toBe(200);
+    /* `next start` repeats the header ("1, 1"); every copy must say 1. */
+    const prerender = (res.headers()["x-nextjs-prerender"] ?? "").split(",").map((v) => v.trim());
+    expect(prerender.length > 0 && prerender.every((v) => v === "1"), `the server did not answer from the prerender (x-nextjs-prerender: ${prerender.join(", ")})`).toBe(true);
+  });
+
   test.describe("under reduced motion", () => {
     test.use({ contextOptions: { reducedMotion: "reduce" } });
     test("the 2D map stays, and three.js is never fetched", async ({ page }) => {
