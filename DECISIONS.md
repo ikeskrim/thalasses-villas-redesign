@@ -688,3 +688,33 @@ All are fixed. The ingest spec passes 8 of 8, typecheck and lint are clean, and 
 - **Dedupe.** A plan counts as taken when its ledger entry is stored and the file is still on disk. If the file is gone, as after a `git clean -X` or on another machine, it is stored again. The same bytes sent earlier as a photograph are not refused; the plan records `alsoPhotograph`.
 - **Owner-facing privacy note.** The Drive filename is committed in the ledger. A personal name in a filename would therefore be published, and only a maintainer reviewing the manifest before commit can prevent that.
 - **Not proven.** No real owner link has been run, and no real DWG, DXF or binary-DXF file was available: the fixtures are built to spec. CONTENT-GUIDE.md carries the owner's side.
+
+### D-024 · The stale token, ffmpeg, and HSTS preload (carrying out D-021)
+
+- **The stale `VERCEL_OIDC_TOKEN`.**
+  - **What was removed.** `.env.local` held one key, that token, plus a Vercel CLI comment. It was never tracked, it was gitignored, and nothing in the project reads it.
+  - **How.** The file was sent to the Windows Recycle Bin on 2026-09-14, not deleted permanently: permanent deletion is the owner's own action, and emptying the Recycle Bin is that action.
+  - **Could it come back?** Running `vercel env pull` again would recreate it.
+  - **Not established.** Whether the token is still valid, and whether it should also be revoked on Vercel's side.
+- **ffmpeg installed.** This overrides D-011's "none is installed".
+  - **The build.** gyan.dev full build 9.0.1, through winget's `Gyan.FFmpeg`, which is the Windows build ffmpeg.org links. It was installed per user. libx264 and libvpx-vp9 are present.
+  - **How the pipeline finds it.** Through `FFMPEG_PATH` as an absolute path. winget created no command alias shim here, and a shell started earlier does not see the new PATH.
+- **The video path, verified with real ffmpeg on synthetic clips only.** The report is `qa/media/FFMPEG-tranche13.md`, 19 of 19 checks.
+  - **4K test pattern with audio, 12 s.**
+    - Poster: 1920×1080.
+    - MP4: H.264 High, yuv420p, 1920×1080, 8.0 s, no audio, faststart, 2,533,297 B.
+    - WebM: VP9, 1920×1080, 8.0 s, no audio, 2,044,050 B.
+  - **Missing ffmpeg.** The run exits 1 and changes nothing.
+  - **The repository.** Untouched.
+  - **Not observed.** That ffmpeg received exactly the planned arguments; the outputs were verified instead.
+  - **Re-run after the plan-file change.** `--plans` (D-023) edits the same `main()` that `--transcode-pending` runs through, so the check was run again on it. With no other edits in the tree, it passed 19 of 19. An earlier re-run failed only its git-status check, because this session was editing `LAUNCH.md` and `DECISIONS.md` while it ran.
+- **Found: VP9 cannot hold the budget on pathological input.** On full-strength temporal noise:
+  - H.264 stayed under budget, at 2,379,225 B.
+  - VP9 came out at 17,225,636 B, and the pipeline correctly recorded `transcode-failed`.
+  - Constant bitrate with `-minrate` reached 11,985,922 B, and constrained quality with a bitrate cap stayed at 17 MB.
+
+  So no single-pass setting fixes it, and the encoder settings were not changed. Whether an over-budget WebM should fall back to a lower resolution, or to MP4 only, is an editorial and design call, raised in the report.
+- **HSTS preload is staged in `LAUNCH.md`, not applied.**
+  - **Where.** An owner-pending bullet, a subsection under "After launch" placed after the Loggia sunset, and a Rollback sentence saying DNS cannot undo it.
+  - **Nothing live changes.** The header stays `max-age=63072000; includeSubDomains`.
+  - **Before it can be applied.** The owner's inventory of every hostname in the `thalasses.com` DNS zone, each serving HTTPS.

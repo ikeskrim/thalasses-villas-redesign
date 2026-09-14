@@ -59,6 +59,12 @@ Nothing below blocks launch technically, but each is a claim on a live page:
 - The **terms**: they name another company, *Ink Hotel*, seven times. The site
   shows the correction visibly marked and states that legal review is pending.
   **Do not launch with that notice still on the page** without a decision.
+- **HSTS preload**: staged, not applied (`DECISIONS.md` D-021, D-013). The site
+  already sends `Strict-Transport-Security: max-age=63072000; includeSubDomains`
+  on every response. Adding `preload` and submitting the domain binds **every**
+  subdomain of `thalasses.com` to HTTPS for years. Before anyone does that, the
+  owner lists every hostname in the domain's DNS zone and confirms that each one
+  serves HTTPS. See **After launch → HSTS preload**.
 
 ---
 
@@ -189,6 +195,67 @@ the same day.
 photograph on this site is served locally from `public/images` and nothing is
 hotlinked, but confirm rather than assume.
 
+### HSTS preload
+
+**Hard to undo, and the owner's call. It is staged here; no session applies
+it** (`DECISIONS.md` D-021, D-013).
+
+Preloading puts `thalasses.com` on a list that ships inside every major browser.
+From then on every subdomain is HTTPS-only in those browsers, including
+subdomains created later. Removal is a request that reaches visitors only through
+browser releases, over months, and some browsers may never drop it.
+
+It comes after the Loggia sunset on purpose: the legacy host's DNS and HTTPS have
+to be settled first. The steps below restate hstspreload.org's published
+requirements. Re-read that page when you do this, because they are its
+requirements, not this file's.
+
+1. **Inventory.** List every record in the `thalasses.com` DNS zone: `www`,
+   mail, webmail, the legacy CMS host, anything else. Each hostname that
+   answers must have a valid certificate and serve HTTPS. Anything that cannot
+   is a blocker, not a detail.
+2. **Pre-checks on the live domain**, from an ordinary machine. The first must
+   redirect to `https://thalasses.com/` on the **same host**, before any hop to
+   `www`:
+
+   ```bash
+   curl -sI http://thalasses.com/
+   ```
+
+   The second must redirect to HTTPS:
+
+   ```bash
+   curl -sI http://www.thalasses.com/
+   ```
+
+   The third must carry `strict-transport-security`. If that response is itself
+   a redirect to `www`, the redirect must carry the header too:
+
+   ```bash
+   curl -sI https://thalasses.com/
+   ```
+
+3. **The change, in one commit:**
+   - `next.config.ts` → `max-age=63072000; includeSubDomains; preload`. Two
+     years is already over the one-year minimum.
+   - The header assertion in `tests/security.spec.ts`. It requires the value to
+     end at `includeSubDomains` today, so it changes in the same commit or every
+     header test fails.
+   - The comments in `next.config.ts` and `SECURITY-NOTES.md` §4 that say preload
+     is absent.
+   - A new `DECISIONS.md` entry that supersedes D-013's "no preload".
+   - `DEPLOY.md`.
+4. **After the push**, repeat step 2, then check the headers on the real domain:
+
+   ```bash
+   node scripts/check-headers.mjs https://thalasses.com
+   ```
+
+5. **Submit** at hstspreload.org. The owner does this, and the date goes into
+   `DEPLOY.md`.
+6. **To take it back:** remove `preload` from the header, then file the removal
+   request at hstspreload.org. Expect months.
+
 ### The Google Maps key
 
 `SECURITY-NOTES.md` §1. The legacy site's Maps key was found in the Phase 0
@@ -220,5 +287,9 @@ a design problem worth thinking about before it is a legal one.
 If something is wrong after the domain move: **point DNS back**. Vercel
 deployments are immutable and every push is a separate one, so the previous
 build is still there and can be promoted from the Vercel dashboard in seconds.
+
+Pointing DNS back does **not** undo HSTS. A browser that has seen the header
+keeps the domain HTTPS-only for the header's two years. Once the domain is on the
+preload list, that holds in every browser that ships the list.
 
 Do not attempt to fix a broken launch by pushing under traffic.
