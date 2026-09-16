@@ -12,7 +12,9 @@ The map's build defaults are recorded in D-027. The harness is `scripts/estate-i
   - **Phone:** 185 of 200 interactions landing in that window took over 200 ms. The medians were 484–680 ms, with a worst of 928 ms, and the window had not closed 400 ms after the chunk arrived.
   - **Desktop:** the window is about +50 to +150 ms after arrival, with medians of 248–304 ms and a worst of 368 ms.
 - **The 2D map** that is live today never went over 40 ms.
-- **Caveat.** These figures come from a software GPU, which overstates the cost of the first frame against a real phone. By how much is not measured.
+- **Caveats.**
+  - These figures come from a software GPU, which overstates the cost of the first frame against a real phone. By how much is not measured.
+  - The machine was shared with other sessions (§2), which may have raised the absolute figures (§5).
 
 ## 1. What was compared
 
@@ -55,9 +57,17 @@ The GPU was SwiftShader, which is software, on both.
 - Desktop: 500 trials, all ok.
 - Neither profile had a lost, invalid or errored trial.
 
-**Machine.** Nothing else ran during the measurement except the two servers and a few light reads of the harness's own log. No build, test, scan, commit or agent ran.
+**Machine: shared, not idle.** This session ran nothing else during the measurement except the two servers and a few light reads of the harness's own log. It ran no build, test, scan, commit or agent. Other local sessions, working in other repositories, were active during both profiles, and committed inside them:
+- **during the phone profile** (12:37–14:09):
+  - `ink-hotels`, three commits, at 12:43, 12:45 and 13:24;
+  - `domisignature` at 13:39, on its CSP harness;
+- **during the desktop profile** (14:09–15:21):
+  - `ink-hotels`, three commits at 14:13–14:14, among them a hydration change and "COOP re-measured";
+  - `domisignature` at 14:35, then at 15:18 and 15:19, closing a stage with "baselines, full QA, seal and CSP measured".
 
-**The first attempt** (2026-09-15) stopped ten minutes in when the session ended. It wrote no report, and none of its figures are used.
+An earlier version of this record said nothing else ran. That was true of this session only (corrected in tranche thirteen's report commit). What it changes is in §5.
+
+**The first attempt** (2026-09-15) stopped about ten minutes in, when the session ended. It left only a partial progress log in the session scratch: calibration and 63 trials. It wrote no report, and none of its figures are used.
 
 ## 3. Results
 
@@ -100,7 +110,7 @@ All figures are in ms. A median of 16 includes a few trials under 16 ms: phone A
    - On the phone, the 3D build's worst interaction was 72 ms. Nothing came near 200 ms.
 2. **The load window is the owner's decision's real cost, and on the phone it is large.**
    - An interaction that lands after the three.js chunk arrives waits behind chunk evaluation, the first 3D frame and other tasks, according to the trace classes. On the phone that wait is 484–680 ms at the median, and up to 928 ms.
-   - Because INP reports close to a visit's worst interaction, one such tap sets a visit's INP. **A phone visitor who taps in that window gets an INP well over the 200 ms "good" threshold.**
+   - Because INP reports close to a visit's worst interaction, one such tap sets a visit's INP. **A phone visitor who taps in that window will very likely get an INP well over the 200 ms "good" threshold:** 185 of 200 such taps did, in the lab. (Qualified in the tranche-thirteen report commit; it had read "gets".)
    - The same visitor on the 2D map gets 16–40 ms.
 3. **On the phone, the window lasts at least 400 ms after the chunk arrives.** At +400 ms all 20 trials were still over 200 ms, with a median of 312 ms. How long it lasts beyond that is not measured, because the harness's offsets stop at 400 ms.
 4. **On desktop, the window is short.** Interactions stay fast at +0 and +25 ms, while the chunk evaluates, and are slow from +50 to +150 ms, while the first frame renders. Only one trial at +200 ms went over 200 ms, and none after that.
@@ -111,9 +121,17 @@ All figures are in ms. A median of 16 includes a few trials under 16 ms: phone A
 - **Lab only.** Chromium through Playwright, with synthetic CDP input and throttled CPU and network. This is not field INP, and not Safari or Firefox.
 - **Software WebGL.** SwiftShader overstates the first frame's cost compared with a phone's GPU. That is the biggest single reservation about the phone figures, and the size of the overstatement is not measured.
 - **The phone window's end is not measured.** The offsets stop at 400 ms, as the harness specifies.
-- **The reports' own "Limits" section contradicts their header.** It ends with "The machine was not isolated. Figures of record need an otherwise idle machine." The harness printed that line on every run, including this record run, whose header certifies the minimums were met.
-  - This run was on an otherwise idle machine (§2).
+- **The machine was shared** (§2).
+  - Both arms ran under the same conditions on average, since builds alternate ABBA.
+  - Outside load may have raised individual figures on either arm.
+  - In the load-window trials the 2D arm stayed at medians of 16–24 ms. Its settled-page medians were at most 36 ms, the lowest under 16 ms, and its worst was 40 ms throughout. That bounds what outside load alone added to a light interaction. It does not bound what it added to the 3D arm's much heavier main-thread work in the load window.
+  - So the absolute 3D load-window figures may be higher than an idle machine of the same speed would give. By how much is not measured.
+- **The reports' own "Limits" section ends with a line the harness never checked:** "The machine was not isolated. Figures of record need an otherwise idle machine." The harness printed it on every run, whatever the conditions.
+  - The line happened to be true of this run (§2).
+  - An earlier version of this record made two claims about it, and both were wrong:
+    - that the line contradicted the reports' header, when the header certifies only the minimum counts;
+    - that this run was on an otherwise idle machine, when the machine was shared.
   - The line is kept verbatim in the committed reports.
-  - In the same commit, the harness is changed to print it only on SMOKE runs.
+  - In 2ff36f8 the harness was changed. It prints "not isolated" only on SMOKE runs. On a record run it says it cannot check idleness, and that the record citing the figures states the conditions, as §2 does here.
 - **Phone A has no place, keyboard or Visit control,** because the 2D markers are hidden below 768 px. Those phone rows are B only.
 - **One machine, and the minimum counts.** The medians and worsts come from 10 runs, or 20 trials, per cell.

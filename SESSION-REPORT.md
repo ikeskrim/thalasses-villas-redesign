@@ -3,6 +3,546 @@
 **Read this first. It is written at HEAD and updated as each task lands, so it
 is the truthful position — not a plan, not a memory.**
 
+# TRANCHE THIRTEEN — the 3D estate map approved behind a provenance gate, site plans through the same door, and the tranche-twelve failures
+
+**Holding. Ready to receive the owner's Google Drive link (photographs, the helipad, the MP4, the phone video) and the site plan.**
+
+The owner approved the 3D estate map (D-021) on one condition: it renders publicly only from owner-verified geometry. Everything that did not depend on the plan or the Drive link was built and pushed, step by step. Claims below rest on committed records, unless a claim says it comes from this session's log.
+
+**How to send the site plan** (CONTENT-GUIDE.md, "Sending a site plan"):
+1. Put the plans in a **separate** Drive folder that holds only plans: PDF, DWG, DXF, or a scan or photograph of a paper plan.
+2. Share it with "Anyone with the link".
+3. Say that it is the site plan. It is then run with `--plans`.
+
+This matters because the tool is told what a file is and never guesses. A plan image inside the photographs link would be taken as a photograph and sent to photo grading. A photograph graded A or B is published to `public/`, and this repository is public (D-023).
+
+| Step | Ask | Commits | Decision |
+|---|---|---|---|
+| — | The ruling, recorded | `7af50da` | D-021 |
+| A | 3D mechanism on main, behind the provenance gate | `844e862` | D-022 |
+| B | Map quality while the plan is awaited; INP with the map active | `1299cf0`; INP record `2ff36f8` | D-027 |
+| C | Plan files through the ingest pipeline | `5d76927` | D-023 |
+| D | Stale token, ffmpeg, HSTS staging | `586d16a` | D-024 |
+| D | `/en/%63ontact` → 500, as a class | `85899ba`; `4d59aec` (production) | D-025 |
+| D | Gallery CLS and careers LCP: the reveal mechanism | `f45e850`; `01f3eb6` (D-016 answered); `f43a05e` (production) | D-026 |
+| D | The first-paint regression, attributed | `3f2f82d` | D-016 explained |
+| D | Skills stay as ruled | none | D-018 |
+| E | This report, the corrected records, and the gate's falsification and production record | the commit that adds this section | — |
+
+## How this tranche was checked, and what the checking found
+
+- **Worktrees and review.**
+  - The site-plan ingest and the map-quality pass were built in isolated worktrees, reviewed adversarially and fixed there, then applied to main and verified again.
+  - The reveal patch went to main before its review findings were fixed. Its blocker, three added tests and the removal of its switch were all done on main, before the commit (`qa/perf/REVEAL-tranche13.md` §3).
+- **The checks each commit records:**
+  - **The map, encoding and reveal commits** (`844e862`, `1299cf0`, `85899ba`, `f45e850`), on builds: typecheck, lint, the targeted suites, full QA, the WebKit smoke and the secret scan. For `85899ba`, `f45e850` and `1299cf0`, lint means ESLint on the changed files only.
+  - **The site-plan ingest commit** (`5d76927`): typecheck, lint on the ingest script and its spec, the spec itself, the real-ffmpeg check and the secret scan. It had no build, full QA or WebKit smoke.
+  - **The INP harness fix** (`2ff36f8`): a syntax check, ESLint, a one-run smoke and the secret scan.
+  - **The record-only commits** (`586d16a`, `4d59aec`, `01f3eb6`, `f43a05e`, `3f2f82d`): the secret scan, and for `586d16a` the real-ffmpeg check.
+  - **The ruling's own record** (`7af50da`) records no check.
+- **Production checks followed each deploy that changed the site:** `844e862`, `85899ba`, `f45e850` and `1299cf0`.
+  - The deploys that changed only documents and scripts got no check of their own.
+  - The gate checks after `844e862` and `1299cf0` are in this session's log only. This commit adds a committed production run (`qa/security/ESTATE-GATE-tranche13.md`), made on 2026-09-16 with `2ff36f8` live, to check step B's code as deployed.
+- **Falsification, item by item.** A check counts as proven only if a run went red at the check's own assertion.
+  - **The reveal checks:** the eight recorded falsifications (checks 1–7 and 6b) each went red at their own named assertion (`qa/perf/REVEAL-tranche13.md` §5; D-026). Check 8 (scripting off) was not falsified, and neither were the careers opacity checks (D, below).
+  - **The encoding checks** were run against builds without the fix (D-025).
+    - Nine of the ten new spec tests went red against base7ff. The tenth, the non-class 404 test, passes on either build, so it was not falsified.
+    - check-headers' seven class entries also failed.
+  - **The ingest spec** caught 10 deliberate mutations. No assertion-level rule is recorded for them (D-023).
+  - **The test that the 3D canvas never mounts:** its frame and canvas checks are falsified in this commit (A). Its marker, three.js-fetch and render-plan assertions were not run red.
+  - **Nothing is recorded as falsified** for step B's map fixes, or for the INP harness fix.
+- **Measurement conditions.** The FCP and INP measurements of record were taken while this session ran nothing else.
+  - The machine itself was not idle. Other local sessions, working in other repositories, were building, running QA and capturing in both windows. During the FCP run, one of them was running Lighthouse performance measurements.
+  - The FCP record, the INP record and D-027 had called the machine quiet or "otherwise idle". That was wrong, and this commit corrects all three.
+  - In both measurements the arms alternated, so outside load fell on every arm alike on average. The records say what that leaves open (FCP §6, INP §5).
+- **This section was fact-checked three times before commit.**
+  - **The first check.** An earlier, 260-line draft was checked claim by claim against the repository and the commits, and some claims against the session log.
+    - Of its 323 claims, 279 held, 3 were wrong, 28 were overstated, and 13 could not be verified from committed records.
+    - All 44 are corrected or marked below, and the 16 gaps it found are filled.
+  - **The second check.** This rewrite and the corrected records were checked again, the same way: 622 claims, with 63 problems. All 63 are corrected, here or in the records.
+  - **The third check.** The corrections made after the second check were checked again, as changed lines only, along with the rewritten gate record: 248 claims, with 18 problems. All 18 are corrected.
+  - **Not checked again:** the corrections made after the third check.
+- **Faults that were also in committed records, corrected in this commit:**
+  - the quiet machine (the FCP and INP records, D-027);
+  - COOP credited to D-013, which never names it (the FCP record, D-016's note);
+  - in the FCP record and D-016's note: the whole 76–80 ms given to COOP, "the same" long tasks, and "no regression" after a same-origin navigation;
+  - D-022's long-table line, and its unqualified per-request 500;
+  - D-027's "all behind the provenance gate", which was untrue, since step B changed ungated code;
+  - D-027's "never covers another place", its swipe line and its focus rule, and D-024's "no single-pass setting", which all went beyond what was tested;
+  - D-026's and the reveal record's framer-motion claim, which missed the footer's low-priority preload;
+  - in the INP record: its call of the harness line a contradiction, and its unqualified "gets an INP well over 200 ms".
+- **Pushed commit messages keep their wording.**
+  - `3f2f82d`: "quiet machine", and "COOP stays (D-013)".
+  - `2ff36f8`: "otherwise idle machine", and a first attempt that "wrote nothing".
+  - `1299cf0`: "Everything here is behind the provenance gate", "an open card never covers another place from 768 px up", "a swipe does not close", "focus handed to the same place", and an INP of record "on a quiet machine".
+  - `844e862`: the long table's "the frames show four separate tables".
+
+The checking changed what this report would otherwise have said:
+
+- **The encoding fix was wrong on its first build, and only a local build showed it.**
+  - Returning a relative `Location` from the proxy turned every spelling it caught into a 500 under `next start`. Next's adapter parses a Location with `new NextURL()`, which rejects a relative one.
+  - Nothing from that build was committed.
+  - The shipped fix builds an absolute URL on the request's origin. With a forged Host header, under `next start`, the Location stays `/en/contact`.
+  - On production a forged Host never reaches Vercel, because the TLS handshake refuses it. So that guarantee is established locally only.
+- **The reveal patch reached main with a blocker,** found and fixed there before the commit: under reduced motion, arming faded content out. The red run was recorded first (an armed frame sampled at opacity 1, 0.95 … 0), then the fix went in and the run went green.
+- **The reveal attribution test's own falsification switch never went red.**
+  - `REVEAL_FALSIFY=clip` gave "2 passed" at 390 and 1440 px, and was removed.
+  - Test 3 counts because it went red at its attribution assertion against the Framer build itself, on production and on base7ff, with exactly the recorded 0.2014 and 0.0827.
+- **Six approved visual baselines had recorded a defect.** The old Framer reveal left text 24 px low for good under reduced motion.
+  - That was measured on production and on an older build: careers had 2 wrappers at `translateY(24px)`, terms 13, contact 2.
+  - After every diff had been looked at, `-u` was run for those six only. The six new images were then looked at before the commit.
+- **Step B's first implementer died on a network error.**
+  - Its unreviewed partial work (10 files, +2,296/−275 lines, per this session's log) was extracted and handed to a continuation run, which audited it item by item.
+  - Two items were wrong: reduced motion switched on before the map was in range still fetched three.js, and the INP harness's "first-render" label could never work.
+  - Three reviews followed and raised 7 major and 17 minor findings. All were applied.
+- **The first-paint regression, on a fresh navigation, is attributed to COOP.** The security audit added the header (`9b8afca`).
+  - **The regression itself** (B − A, median +76 to +80 ms) separates on the phone, on careers, location and `/`.
+  - **COOP alone** (B − Bnc) separates on the phone on careers and location (+58 to +60 ms), but not on `/` (+62 ms, where the ranges overlap). On desktop it separates on location and `/`.
+  - **Without COOP,** the remaining +16 to +20 ms on those three phone routes is not separated from noise. So the rest of the performance pass is not shown to cost nothing.
+- **The INP measurement of record was started twice.**
+  - The first attempt stopped about ten minutes in, when the session ended. It left only a partial progress log and no report, and none of its figures are used.
+  - The rerun ran as one invocation per profile. This session's run script gives the reason: an interruption would cost at most one profile. The rerun finished on 2026-09-16: phone in 92 minutes, desktop in 72. It met every minimum, and no trial was lost, invalid or errored.
+- **The ruling's own test had never been shown to fail.** Its frame and canvas checks now have been (A).
+
+## A. The 3D estate map on main, behind the gate
+
+- **Plan file.** `content/estate-plan.json` is the single source of geometry. It holds 18 elements, each with position, orientation, footprint and provenance fields. Orientation is not established (null) for the four villas, their four pools and the helipad apron, as well as for the three unplaced elements.
+  - **15 are placed, all `inferred-from-aerials, unverified`:**
+    - the compound wall;
+    - Thoi, Persi, Eeanthe and Melia, and their four pools;
+    - the Rituals pool and venue terrace;
+    - the shoreline, which is the ruling's beach line;
+    - the helipad, its apron and the lane.
+  - **3 are `not-established`, with position, orientation and footprint null:**
+    - Villa Pueblo: no aerial shows which plot is its own.
+    - The long table: no frame identifies it. One frame shows at least four separate tables under the shade sail, and a separate bench table stands beside them. Neither is identified as the table for 18.
+    - The vegetable garden: its only match fits an older state of the site.
+
+    So three of the places the ruling names are not on the map. Nothing about them was guessed.
+  - **Which villa is which is assumed, not observed.** Which house in each row is Thoi, Persi, Eeanthe or Melia was copied from the 2D map's order. No photograph or text shows it, and each pool's villa follows from that guess. Each element's `basis.identity` says so.
+- **Gate.** It is decided at build time, on the prerendered `/en/the-estate`.
+  - It opens only when every drawn element, the four villas included, is `owner-verified` and names its decision.
+  - While it is closed, the server passes no plan, so no geometry reaches the HTML or the flight data.
+  - A malformed plan fails the build.
+- **The test the ruling asks for** is `tests/estate-3d.spec.ts:60`, "the gate follows the plan's provenance, and while it is closed the 3D canvas never mounts".
+  - **Preconditions.** It first asserts the conditions under which the diagram would mount: WebGL2 present, and motion allowed. It then scrolls the map into range.
+  - **What it asserts:** no 3D frame, no canvas, nine 2D markers, three.js never fetched, and no render plan in the HTML or the flight data.
+  - **Falsified in this commit** (`qa/security/ESTATE-GATE-tranche13.md` §2):
+    - Against the local review build, which mounts the diagram while the plan is unverified, the test went red at its frame check: expected 0, received 1.
+    - A temporary copy with only that line removed went red at the canvas check: expected 0, received 1. The canvas was there from the first poll. The copy was deleted after the run.
+    - The marker, three.js-fetch and render-plan assertions were not run red.
+  - **Limit.** A diagram that mounted later than the test's 2.5 s wait would not be caught by those two lines.
+- **Verified at the merge:**
+  - QA 567 / 0;
+  - WebKit smoke 14 / 14;
+  - `qa:estate3d` 2 / 2;
+  - the estate page still prerendered;
+  - a clean secret scan;
+  - `check-estate-gate` passing against the local public build, after its own crash had been fixed (see the defects list).
+- **On production, 2026-09-16.** Main was at `2ff36f8`, whose site code is `1299cf0`'s (record §3):
+  - **`check-estate-gate` passed.** The HTML returns 200 with 9 markers and no render plan. The flight data returns 200 with no render plan.
+  - **Three of the four public-build tests passed against production.** That is Chromium only, with one visit per test. The static-prerender test reads the local build, so it was left out.
+    - three.js is not in the initial scripts;
+    - the canvas never mounts;
+    - under reduced motion, the 2D map stays and three.js is never fetched.
+  - **The three.js chunk is deployed.**
+    - The chunk is `40_g4nck4qwrd.js`: 559,796 B, containing `WebGLRenderer`.
+    - It is in no initial script, and its name appears once among the page's HTML and initial scripts: in the gate hook's loader entry.
+    - With the gate closed, the hook returns before that loader. A visit with the gate closed recorded no response carrying the chunk. The test listens for responses, not requests.
+  - **Earlier runs.** The session also ran `check-estate-gate` on production after the `844e862` and `1299cf0` deploys. Its log records a pass both times, but neither output was committed.
+- **Review build.** `ESTATE_3D_PREVIEW=1` is local only, and the build refuses to run on Vercel.
+- **"A data edit, not a rebuild": read as "no code change".**
+  - **Why a rebuild is needed.** The owner's words were "not a rebuild". But the estate page is prerendered, and it reads the plan from the deployment's own copy of `content/estate-plan.json`. So a corrected plan reaches the public page on the next deploy of main, and that deploy rebuilds the site.
+  - **Rendering per request would not remove it.** A per-request page would still need that deploy to see the file. My inference, not built: avoiding a rebuild altogether would need the plan kept outside the repository.
+  - **Rendering per request was not chosen anyway** (D-022).
+    - The one page rendered per request, `/en/contact`, returned 500 on percent-encoded spellings. The cause is not established, and the 308 fix covers that page only, so a per-request estate page would risk the same.
+    - It would also give up the prerendered HTML that D-012 and D-016 protect.
+  - **So correcting positions takes three things:** a data edit, the owner's verification, and a normal deploy. It takes no code change.
+  - **Whose reading this is.** It is a build default, not the owner's, and it is raised in the owner questions.
+
+## B. Map quality while the plan is awaited
+
+- **Scope.** All of step B's 3D behaviour sits behind the provenance gate. The public estate page still shows the 2D map and never fetches three.js.
+  - **Step B also changed ungated code:**
+    - **The live 2D map** now uses a shared card component (`EstateMapCardContent`) and carries `data-hotspot`.
+    - **The gate hook it always loads** (`estate-map-3d-gate.ts`) gained the reduced-motion listener, the Data Saver check and the focus restore.
+    - **Their cost.** Together, these added 1,137 B raw / 364 B gzip to the estate page's initial JavaScript.
+    - **The diagram's CSS** (201 added lines in `patterns.css`) sits in the site-wide stylesheet (`globals.css` imports it), so every page downloads it. Its size was not measured.
+    - **Three measurement and build scripts** were added or changed: `estate-inp.mjs` (new), `hotel-cwv.mjs` and `estate3d-preview.mjs`.
+  - D-027 records the build defaults.
+- **How it was built.**
+  - The first implementation run died on a network error. Its partial work was extracted, audited item by item and finished. Two items were wrong (see above).
+  - Three adversarial reviews followed: interaction and accessibility, the visual register, and tests and the harness. All their findings were applied, and none was rejected.
+- **The register.**
+  - **Light.** Soft daylight: a hemisphere light plus a sun from the land side, sized so the ground renders at the limestone token within ±3 per channel (tested).
+  - **Materials.** Tokens only: limestone, phrygana, ammos, basalt, pelagos. No tone mapping and no shadow maps; contact shades under each villa.
+  - **The camera** looks from the sea side, so the pool line is visible. This reverses D-020's default.
+  - **The sea** reads as a band along the foot of the frame.
+- **Places and the keyboard.**
+  - **The contract.** 3D places follow the 2D map's button-and-card contract: a real button with `aria-expanded`/`aria-controls`, at least 44 px, that opens a card. They share its card content component.
+  - **Card copy.** Places in the list carry HOTSPOTS copy. The helipad and Rituals show only the plan's name and a Visit link.
+  - **Links.** A place reaches its villa page only through the card's Visit link (tested).
+  - **Keyboard** (tested): Tab follows the list's order, then the extras. Enter opens a place, Escape from inside the card closes it and returns focus, and tabbing out closes it.
+  - **One card** is open at a time.
+  - **Villa Pueblo** is unplaced, so the diagram has no place for it. Its page is reached from the list beneath the map.
+  - **Card placement.** From 768 px up, an open card is placed to cover as little of the other places as possible. It becomes a band on the frame's edge when a band covers less.
+    - At the four widths tested (768, 1024, 1440 and 1920 px), with the current plan, no open card covered another place.
+    - At those widths, keyboard focus never landed under a card.
+- **Touch and the phone.** These were tested with emulated touch in Chromium only.
+  - **Below 768 px:** list places are numbered discs, with the number in each disc's accessible name. The card is a band that leaves the open disc visible.
+  - **Taps and swipes:** a tap opens a card, and only its Visit link navigates. A tap outside closes it. A swipe that begins outside the map keeps the card open; that is the only swipe tested.
+  - **No hover dependence:** every served `:hover` rule for the diagram sits inside `(hover: hover) and (pointer: fine)` (tested).
+- **A single lazy canvas.** Exactly one canvas mounts (tested). three.js is fetched only when the map comes within 600 px.
+- **Fallbacks.** The 2D map is served when:
+  - reduced motion is on at load, or switched on before the map is in range, and then three.js is never fetched (tested);
+  - reduced motion is switched on after mount (tested, with focus kept on the same place);
+  - there is no WebGL2, and then three.js is never fetched (tested);
+  - Data Saver is on (tested);
+  - the WebGL context is lost. The handler exists, but no test exercises it.
+
+  **Focus.** Suppose the diagram gives way after mounting while focus is on a place. Focus then moves to that place's 2D marker if the marker is shown, otherwise to its list link if that is shown, and otherwise to the map section.
+  - The helipad and Rituals always send focus to the section, because they have neither marker nor list link. So does the pool line on a phone.
+  - Only the first place's marker is tested, on desktop.
+  - The at-load fallbacks never render the diagram, so no focus moves.
+- **Cost.**
+  - The lazy three.js chunk is 559,796 B raw / 139,874 B gzip, up from 548,419 / 135,460.
+  - The estate page's initial JavaScript grew by 1,137 B raw / 364 B gzip: the ungated part above. The site-wide CSS grew too, by an unmeasured amount.
+- **Verified on main:**
+  - the public build keeps `/en/the-estate` static, and `next-env.d.ts` is unchanged;
+  - typecheck is clean, and ESLint shows zero warnings on the 10 changed code files;
+  - the targeted public tests pass 15 / 15, and the review suite 20 / 20;
+  - full QA: 599 passed and 0 failed. That is the 598 before plus the new static-prerender test; the usual 19 were skipped.
+  - the WebKit smoke passes 14 / 14.
+- **Production after the `1299cf0` deploy:** see A.
+- **Not established** (D-027):
+  - real touch devices, Safari and Firefox, and a WebGL1-only device;
+  - the context-loss path under test;
+  - a synthetic swipe followed by a tap;
+  - layout cost on a throttled phone CPU;
+  - the camera azimuth, which was not swept visually.
+- **Screenshots, looked at.**
+  - No label overlaps at 768–1920 px.
+  - At 1440–1920 the compound sits upper-left, over an empty lower-left.
+  - At 768 px the leaders run long.
+  - At 390 the discs are busy, and an open band covers the lower discs.
+
+  All recorded; none blocking.
+- **INP with the map active** (`qa/perf/INP-estate3d.md`, `2ff36f8`, conditions corrected in this commit). It is a measurement of record.
+  - **The setup.** The public build (2D) against the review build (3D), on phone and desktop, with software WebGL:
+    - 10 runs per scenario;
+    - 20 trials per load-window offset, at 0–400 ms after the three.js chunk finished loading.
+  - **Conditions.** This session ran nothing else, but the machine was shared with other sessions, which committed during both profiles (record §2).
+  - **On a settled page,** every measured interaction stays at or under 72 ms.
+    - **Desktop.** Both builds were compared on all five scenarios. At the median, opening a place takes 56 ms with the 3D map against 36 ms with the 2D map (worst 72 against 40), and a keypress 48 against 32. Nearly all of the difference is presentation.
+    - **Phone.** The 2D build has no place, keyboard or Visit control there, because its markers are hidden below 768 px; those are the 30 n/a trials. So three of the five phone scenarios are 3D only.
+  - **The cost is the load window,** after the three.js chunk arrives.
+    - **Phone:** 185 of 200 interactions went over 200 ms.
+      - From +0 to +300 ms the medians were 484–680 ms, with a worst of 928 ms.
+      - At +400 ms the median was still 312 ms, and all 20 trials were over 200 ms.
+      - The harness measures no further, so the window lasts at least 400 ms and its end is not measured.
+    - **Desktop:** the window runs from about +50 to +150 ms.
+      - 78 of 200 interactions went over 200 ms, with medians of 248–304 ms in the window and a worst of 368 ms.
+      - None went over from +250 ms.
+  - **The 2D map** never went over 40 ms.
+  - **What it means for a phone visitor.** In the lab, 185 of 200 phone taps in that window gave an INP over 200 ms. So a phone visitor who taps then will very likely get an INP well over 200 ms.
+    - The window opens only when the map comes within 600 px.
+    - It never opens under reduced motion, without WebGL2, or with Data Saver on.
+  - **Not established:**
+    - how much a real phone GPU shortens the window;
+    - how much the shared machine added to the absolute 3D figures.
+  - **A harness defect, fixed in `2ff36f8`.** Its Limits line asserted "the machine was not isolated" on every run, without checking.
+    - It now prints that line only on SMOKE runs. On record runs it defers to the record.
+    - The two committed reports keep the old line verbatim.
+    - As it turned out, that line was true of this run.
+
+## C. Site plans through the owner material pipeline
+
+- **Sending one.** A separate Drive folder, announced as the site plan (see "How to send the site plan" at the top of this report's tranche-thirteen section).
+- **The command.** `node scripts/ingest-drive.mjs "<link>" --plans` treats every admitted file as a plan.
+  - Intent is declared, never guessed.
+  - A normal run refuses PDF, DWG and DXF, and hints at `--plans`.
+- **Recognition.** Plans are recognised by content: PDF, DWG, DXF (binary and ASCII), and images. SVG, HTML, archives, text, audio and video are refused.
+- **Storage.** Plans are stored byte-exact in the gitignored `content/plans/<date>/`, and never published.
+- **The ledger.** `content/plans/manifest.json` is created on the first `--plans` run without `--dry-run`, and none exists yet. For each plan it will record:
+  - the sha256, size, type and version;
+  - the Drive filename and folder;
+  - the provenance, `owner/drive/<date>`;
+  - `unverified`.
+
+  The ingest never writes `owner-verified`.
+- **Privacy.** The Drive filename is committed in the ledger, in a public repository. A personal name in a filename would be published unless a maintainer catches it before the commit.
+- **Verification:**
+  - the ingest spec passes 8 / 8;
+  - 10 deliberate mutations were each caught, with no assertion-level rule recorded for them;
+  - two adversarial reviews found one major and one minor defect, both fixed;
+  - the real-ffmpeg check was re-run on the changed `main()`, 19 / 19.
+- **Not proven.** No real owner link, DWG or DXF file was available. The fixtures are built to spec.
+
+## D. The tranche-twelve items
+
+### The stale token (D-024)
+- `.env.local` held only `VERCEL_OIDC_TOKEN` and a Vercel CLI comment. It was sent to the Recycle Bin, not deleted permanently.
+- `vercel env pull` would recreate it.
+- Whether the token is still valid on Vercel's side is not established.
+
+### ffmpeg (D-024)
+- **The install.** gyan.dev 9.0.1 through winget, with libx264 and libvpx-vp9. The pipeline finds it through `FFMPEG_PATH`.
+- **A 4K test pattern with audio,** in run 3, the run of record after step C, produced:
+  - a 1920×1080 poster;
+  - an H.264 High faststart loop at 2,539,585 B;
+  - a VP9 loop at 2,044,050 B.
+
+  Both loops are 8 s and silent, and both fit the budget of 2,621,440 B (2.5 MiB). Across three runs the MP4 varied by a few kilobytes (2,533,297–2,539,585 B).
+- **With ffmpeg missing,** the run exits 1 and changes nothing.
+- **The 19 checks.** They span the three cases and the git-status check.
+  - Run 3 passed all 19, as did run 1.
+  - Run 2 passed 18: its git-status check failed, because tracked files were edited while it ran (see the defects list).
+- **Found.** None of the four single-pass VP9 settings tried held full-strength noise at 1080p within budget: 17.2 MB with the current setting, 12.0 MB with CBR. The pipeline records `transcode-failed`, as designed.
+- **Not exercised:** real footage, portrait clips, and the phone video the owner will send. The two clips that were transcoded were ffmpeg's own synthetic patterns (`testsrc2`), in landscape orientation: 3840×2160 with audio, and 1920×1080 with noise. The missing-ffmpeg case used a third, 640×360 test clip, which was never transcoded.
+
+### HSTS preload (D-024)
+- **Staged in `LAUNCH.md`, not applied,** in three places:
+  - the owner-pending bullet;
+  - the "After launch → HSTS preload" subsection, whose steps include how to take it back;
+  - a Rollback sentence saying that pointing DNS back does not undo HSTS.
+- **Whether to apply it is the owner's call** (LAUNCH.md: "Hard to undo, and the owner's call").
+- **The prerequisites** (LAUNCH.md):
+  - the launch, and the Loggia sunset, first;
+  - the owner's inventory of every hostname in the `thalasses.com` DNS zone, each confirmed to serve HTTPS;
+  - three `curl` pre-checks on the live domain.
+- **The live header is unchanged:** `max-age=63072000; includeSubDomains`, read on production on 2026-09-16.
+
+### Skills (D-021, D-018)
+Kept as ruled. No skill file changed in this tranche, and `theme-factory` and `webapp-testing` stay declined.
+
+### `/en/%63ontact` → 500, as a class (D-025)
+- **Before the fix, on production,** every percent-encoded spelling in the table that decodes directly to `/en/contact` returned 500:
+  - an escaped letter, in either hex case;
+  - an encoded locale;
+  - `%2F`;
+  - an encoded trailing slash;
+  - `.rsc`, and `RSC: 1`.
+
+  That is 8 of the contact route's 15 table rows, and the same 8 spellings of the prerendered estate page, a villa and an experience returned the page. Two dot-segment spellings, which reach `/en/contact` only after normalisation, were 404 on every route.
+- **The fix.** A 308 in `src/proxy.ts` to the literal `/en/contact`, keeping the query. With a forged Host header, under `next start`, the Location stays on the site; on production a forged Host is refused at TLS.
+- **After the deploy, on production:**
+  - `check-headers` passes 31 / 31;
+  - exactly those 8 rows changed from 500 to 308, and the other 52 rows across the four routes return the same status as before (the tables were compared on status).
+- **Checks.**
+  - The security suite has a new ten-test block.
+  - `check-headers` now fails any 5xx and judges a redirect's Location.
+- **Falsification.** Both checks were run against builds without the fix.
+  - **The spec block.** 9 of its 10 tests went red. The tenth, the non-class 404 test, passes on either build.
+  - **check-headers** failed every class entry, in two runs:
+    - on "Location (none)", against a local build without the fix. That run is confounded for the other contact entries, so only the class lines count;
+    - on the 5xx rule, against production before the deploy.
+- **Still not established: the exception behind the old 500.** Finding it would need one of two things:
+  - Vercel's runtime logs;
+  - a preview deployment with the proxy's matcher neutralised, which was not done without permission.
+
+### Gallery CLS and careers LCP: the reveal (D-026, `f45e850`)
+
+- **The cause.** Framer served the hidden starting state in the HTML: the careers text at `opacity:0; translateY(24px)`, and the gallery frames clipped to an empty rect.
+- **The fix.**
+  - A shared IntersectionObserver hides only what is entirely below the fold.
+  - Images reveal through a transform-only curtain over the host's own reserved box, which keeps the ruling's reserved dimensions.
+  - The built motion is kept.
+- **Measured:** same machine, old build against new, four runs each, lab only.
+
+  | route | before | after |
+  |---|---|---|
+  | gallery, phone CLS | 0.2205 ×3, 0.2014 ×1 | **0** ×4 |
+  | gallery, desktop CLS | 0.0827 | **0** |
+  | careers, phone LCP | 2,108–2,972 ms, 2 of 4 over 2,500 | **1,044–1,056 ms**, still the body text |
+  | boat-trip, phone LCP median | 980 ms (964–992), the nav wordmark | 1,068 ms (1,064–1,076), the hero photograph |
+  | boat-trip, desktop LCP median | 332 ms | 572 ms |
+
+  - **Why boat-trip rose.** The boat-trip hero used to be clipped to an empty rect at first paint, so it was not an LCP candidate then, and the nav wordmark was the LCP element in all four old runs. It now paints unclipped from the first load.
+  - **Not measured:** when the old hero actually became visible, after hydration.
+  - **Within budget.** On the new build, all three measured routes (gallery, careers and boat-trip) are within the LCP and CLS budgets on both views: lab figures, four runs each.
+- **framer-motion** (a 120,835 B chunk) left the initial `<script src>` set of careers, terms, contact, boat-trip and the gallery. It still downloads there, though.
+  - **Found by the second fact-check, and checked on production:** those five routes preload, at low priority, a 119,916 B chunk carrying framer-motion. It is the footer's lazy `Clause`.
+  - **Measured with it in place.** The measured new build already had that preload.
+  - **Not measured:** its own cost.
+  - **Corrected in this commit:** the reveal record's §7 and D-026 now say so.
+- **Found and fixed:**
+  - the reduced-motion fade-out;
+  - the unfaithful falsification switch;
+  - six baselines that had recorded the old 24 px offset.
+- **Falsified.** The eight recorded falsifications (checks 1–7 and 6b) each went red at their own named assertion.
+- **Not falsified:**
+  - check 8 (scripting off);
+  - the checks that test the ruling's careers condition most directly: the effective-opacity `zero` and `min` assertions, and the served-HTML `opacity: 0` check. Falsification 2 records that `zero` and `min` passed while its own target went red.
+- **Verified:** full QA 598 / 0; WebKit 14 / 14.
+- **Production, after the `f45e850` deploy** (`f43a05e`): careers, gallery, terms, contact and boat-trip each serve 200. Their HTML has:
+  - no inline `opacity:0`;
+  - no `translateY(24px)`;
+  - no empty clip-path;
+  - no server-set `data-reveal`.
+
+  None of them has framer-motion in its initial `<script src>` set, although the footer's `Clause` chunk is still preloaded, as above.
+- **Still open.** The estate page's server HTML still hides 18 clause characters and one inventory panel.
+  - That comes from the Framer `Clause` and `Inventory` components, not from the reveal.
+  - It predates this work, and lies outside D-021's two named failures.
+
+### The first-paint regression (`3f2f82d`; the record's conditions corrected in this commit)
+**Attributed: on a fresh navigation, the cause is the cross-origin opener policy.** The security audit added that header (`9b8afca`). The record is `qa/perf/FCP-tranche13.md`, and D-016's line is marked explained.
+
+- **How it was measured.** There were three arms:
+  - A, before the pass;
+  - B, the final candidate, with COOP `same-origin`;
+  - Bnc, the same build with only that header removed.
+
+  The arms ran on four routes, with and without a same-origin pre-navigation, on phone and desktop: 10 runs per cell, 480 runs in all, with the arm order reversed on every run.
+  - **Conditions.** This session ran nothing else, but other local sessions were busy on the same machine (record §2 and §6).
+    - `routes-crete` ran checks, and captured screenshots from a deployed site.
+    - `domisignature` ran local Lighthouse performance measurements, with files written at 00:09 and 00:13, in each half of this run.
+  - **The rule.** An effect is attributed only where the arms' ranges do not overlap.
+- **The phone result** (differences of medians).
+  - On careers, location and `/`, B's first paint is 76–80 ms later than A's, and the ranges separate.
+  - On careers and location, B is 58–60 ms later than Bnc, also separated. On `/` the difference is +62 ms, but the ranges overlap.
+  - Without COOP, the remainder on those routes (+16 to +20 ms) never separates. So the rest of the pass is not shown to cost nothing.
+- **The mechanism.** With no pre-navigation:
+  - B's page was painted by a new renderer process in 80 of 80 runs, on both profiles. A and Bnc swapped in none of their 160.
+  - At the median, B's parse starts about 60–70 ms later on the phone, and about 50–65 ms later on desktop.
+  - The response time is unchanged.
+- **After a same-origin navigation,** B does not swap (0 of 80 runs), and no comparison separates. So a visitor already on the site does not pay the swap.
+- **Desktop** shows the same swap. First paint separates only against Bnc: location +36 ms and `/` +40 ms, at the median.
+- **villa-thoi on the phone** separates in no comparison.
+- **D-012's "one task of 250–340 ms on every route"** is neither confirmed nor contradicted.
+  - On the phone, with pre-navigation off, the long tasks (over 16 ms) before first paint were nearly the same in A (with `loading.tsx`) and in Bnc (without): 3 tasks each on three routes, with totals within 9 ms. On `/` the arms differ by one task.
+  - The two arms also differ in the rest of the performance pass.
+  - D-012 is left as written.
+- **COOP stays.**
+  - D-013 records the audit that added it, but does not name it, so keeping it is this tranche's call.
+  - This is a lab cost. A visitor arriving from another site already crosses a process boundary, so the field cost may be nil; that is not measured.
+- **A limit.** With pre-navigation on, the trace matched the `robots.txt` page on most A and Bnc runs (32–38 of 40), so those trace figures are withheld. First paint itself comes from the paint entry and is valid.
+
+## Owner questions
+
+- **The Drive link:** the photographs, the helipad, the MP4 and the phone video.
+- **The site plan,** sent in its own folder as described at the top. To verify the 3D map, it needs to settle:
+  - which house in each row is Thoi, Persi, Eeanthe and Melia, which is assumed today from the 2D map's order;
+  - where Villa Pueblo's plot is;
+  - where the long table and the vegetable garden are. Both are unplaced.
+  - whether every element already placed from the aerials is where it is drawn: the compound wall, the four villas and their four pools, the Rituals pool, the Rituals venue terrace (which D-021 names), the shoreline, the helipad, its apron and the lane.
+
+  The 3D map stays gated until every element it draws is owner-verified.
+- **"A data edit, not a rebuild."** I read it as "no code change". A corrected plan still needs a normal deploy of main, which rebuilds the prerendered page. Is that acceptable?
+  - By my inference (not built), avoiding the rebuild would mean keeping the plan outside the repository, and having the page read it at run time, for example by rendering it per request.
+  - Per-request rendering gives up the prerender.
+  - Judging by the one per-request page measured, it would also likely expose the page to the encoded-URL 500, whose cause is not established.
+- **The 3D camera.** It now looks from the sea side, which reverses the "sea at the top of the frame" default recorded in D-020, because from the land side the villa pools are hidden behind the houses. Keep it?
+- **Seeing the diagram.** The review build is local only. The `feat/estate-3d` preview still serves the tranche-twelve branch (`1179011`), from before steps A and B.
+  - Do you want current screenshots, or a preview deployment?
+  - A preview deployment would first need Vercel deployment protection turned on, and D-022's no-Vercel rule changed, because previews here are public by link.
+- **The 3D map's cost on a phone.** In the lab, with software WebGL, on a shared machine:
+  - a phone tap in the first 300 ms after the 3D chunk arrives had a median INP of 0.48–0.68 s, with a worst of 0.93 s;
+  - at +400 ms the median was still 0.31 s;
+  - the window lasts at least 400 ms (`qa/perf/INP-estate3d.md`).
+
+  Accept that before the map goes public, or ask for it to be reduced first? It could be reduced, for example, by spreading the first render across frames, or by deferring it until the visitor pauses.
+- **HSTS preload** is staged in `LAUNCH.md`, not applied, and whether to apply it is your call. Before it can be applied, it needs your inventory of every hostname in the `thalasses.com` DNS zone, with each one confirmed to serve HTTPS.
+- **The Vercel OIDC token.** Should it be revoked on Vercel's side? Emptying the Recycle Bin is also your action to take.
+- **An over-budget WebM.** Fall back to a lower resolution, or to MP4 only?
+- **Duplicate URLs.** Prerendered pages still answer at their percent-encoded spellings, for example `/en%2Fthe-estate` (`qa/security/ENCODING-tranche13.md` §2). Redirect those too, or leave them?
+- **The remaining Framer content.** Should these components get the same treatment as the reveal?
+  - On the estate page, the clause headline and one inventory panel still arrive hidden until hydration.
+  - The footer's `Clause` is lazy, but its Framer chunk is preloaded at low priority. That was checked on the five reveal routes; `/` has no such preload.
+- **"Set apart from the other four"** is still on the Villa Pueblo page and in its meta description. "Apart from the four" is also Pueblo's card line on the estate page's map (`src/app/home-data.ts:208`). It is redesign copy with no source (D-014, D-022). Keep it, or remove it?
+- **Carried, and still open:**
+  - Villa Pueblo's capacity details (T-212);
+  - the eight beach distances;
+  - the Greek corpus;
+  - the three quarantined frames.
+
+## Defects of mine this tranche, found and fixed
+
+**Recorded in commits or records:**
+- **The records said the machine was quiet.**
+  - The FCP record, the INP record and D-027 said "quiet" or "otherwise idle", but other sessions were active in both windows.
+  - The INP record also called the harness's "not isolated" line a contradiction.
+  - The fact-check found this, and this commit corrects the three records.
+  - The pushed commit messages of `3f2f82d` ("quiet machine") and `2ff36f8` ("otherwise idle machine") still say it.
+- **My first correction of the INP record misplaced commits.**
+  - It counted five `ink-hotels` commits where there were six.
+  - It put the whole 12:43–14:14 run in the phone profile. But the three at 14:13–14:14, including the two it named, fell in the desktop profile.
+  - The second check caught it before commit.
+- **COOP was credited to D-013,** in the FCP record and D-016's note, although D-013 never names it. Both are corrected in this commit. `3f2f82d`'s commit message still says "COOP stays (D-013)".
+- **The reveal records said framer-motion had left five routes,** reading `<script src>` only. Those routes still preload the footer `Clause`'s Framer chunk at low priority. The second check found it, and the reveal record and D-026 are corrected.
+- **D-022, D-024 and D-027 said more than was true or tested.**
+  - **Untrue:** D-027's "all behind the provenance gate", since step B changed ungated code.
+  - **Beyond what was tested:**
+    - D-027's "never covers another place", its swipe line and its focus rule;
+    - D-024's "no single-pass setting";
+    - D-022's long table ("the frames show four separate tables"), and its unqualified per-request 500.
+
+  All are corrected in this commit. The same wording stays in the pushed messages of `1299cf0` and `844e862`.
+- **The relative-Location proxy build returned 500 on every class spelling.** It was caught on the local build, before any commit.
+- **The deployment gate check crashed.** Run against the local public build, it failed on a 307 for the RSC request, then crashed on libuv's exit assertion. Fixed by following the redirect and setting `exitCode`.
+- **The review build rewrote `next-env.d.ts`** at step A. The file was restored, and since step B `scripts/estate3d-preview.mjs` saves and restores it (D-027).
+- **The converter's pool line anchored on the rituals pool.** Caught in a dry run, and fixed with `VILLA_POOL_IDS`.
+- **ffmpeg re-run 2 failed its git-status check,** because I edited tracked files while it ran. Run 3 was made with no edits.
+- **My first mutation for the careers `moved` check was untargeted.**
+  - It went red at a precondition, which proves nothing, and my runner accepted that because it compared exit codes only.
+  - The runner now requires the named assertion's message.
+  - The targeted mutation went red at `moved`, in 501 samples.
+- **A CSS needle without the minifier's space made two checks wrong.**
+  - It made one "mutation proven" line vacuous, and made the final clean-build check report a clean build as dirty.
+  - Corrected, and the mutation was rerun behind a precondition that the needle is present.
+- **My production reveal check flagged its own positive control.** All 19 hidden elements on the estate page traced to `Clause` and `Inventory`, not to the reveal. Recorded as an open item.
+
+**From this session's log only** (plus memory notes; there is no committed record):
+- **A Vercel status waiter in PowerShell polled 19 times,** on a jq filter whose quotes had been stripped. Rerun in Bash; the trap is saved to memory.
+- **A production probe and table were lost** to `MSYS_NO_PATHCONV=1`, which turned file paths into `C:\c\…`. Rerun from PowerShell; the trap is saved to memory.
+- **My first CSS edit for the reveal blocker covered only the motion-allowed rule.** Caught on reading it back, before the build.
+- **I relied on the reveal patch's falsification switch at first,** before running it showed that it never reproduced the defect.
+- **The first falsification configs never ran a test.**
+  - Two were `.ts` files under `node_modules/.cache/`, where Node refuses to strip types.
+  - Earlier copies had sat in `test-results/`, which Playwright clears.
+  - No exit 1 from them was counted as a result, and the configs are now `.mjs`.
+- **A background chain was blocked by the harness,** because `Remove-Item Env:` sat next to a regex. Relaunched without it.
+- **My first extraction of step B's workflow result read the wrong JSON level,** and produced nothing. It was fixed before any decision was made on it.
+- **My first cleanup of the workflow worktrees half-worked.**
+  - `git worktree remove` failed with "Filename too long", and left about 28,000 files per worktree (memory note).
+  - `rmdir /s /q` was blocked by the harness.
+  - The worktrees inside the repository were removed by exact path, with `Remove-Item -LiteralPath '\\?\…'`. `.claude/worktrees` is now empty, and `git worktree list` shows only main.
+  - Later, the harness blocked the same `Remove-Item` for the scratch worktrees outside the repository, among them the first-paint arms. They are unregistered, but their files are still in the session's temp directory.
+- **A stray `}` broke my first progress check on the first-paint run.** The run itself was fine: every one of its 480 runs recorded a first paint (FCP §2).
+
+## Evidence
+
+- `qa/security/ESTATE-GATE-tranche13.md` (new in this commit): the gate test's falsification against the review build, and the production runs of `check-estate-gate`, of the public-build tests and of the chunk probes
+- `qa/security/ENCODING-tranche13.md`, with `encoding-table-production-2026-09-14.md` (before) and `…-after-85899ba.md` (after)
+- `qa/media/FFMPEG-tranche13.md`
+- `qa/perf/ESTATE3D-cost.md`, `qa/perf/AB-tranche12-estate3d-final.md`
+- `qa/perf/REVEAL-tranche13.md`: the cause, the corrections, the 24 px baseline finding, every falsification with its build, the chunk check, and the before/after CWV tables
+  - Corrected in this commit: the footer `Clause`'s low-priority Framer preload (§7, §8).
+- `qa/perf/FCP-tranche13.md`: the three arms, the 480 runs, the per-cell and separated-comparison tables, the renderer-swap counts, and the trace-matching limits
+  - Corrected in this commit:
+    - the machine's conditions, including the Lighthouse runs;
+    - COOP's origin;
+    - the answer's split of the 76–80 ms: B − A, of which COOP alone is 58–62 ms, while the +16 to +20 ms remainder is not shown to be nothing;
+    - "no comparison separates" after a same-origin navigation;
+    - "nearly the same", with desktop villa-thoi's extra task.
+  - Added: a shared-machine limit in §6.
+- `qa/perf/INP-estate3d.md`: the method, calibration, the fixed-scenario and per-offset load-window tables, what they establish, and the limits. The harness's two reports sit beside it, verbatim: `INP-estate3d-phone.md` and `INP-estate3d-desktop.md`.
+  - Corrected in this commit:
+    - the machine's conditions, with commits placed in each profile;
+    - what the record had said about the Limits line;
+    - "will very likely get" an INP over 200 ms.
+  - Added:
+    - the first attempt's partial log;
+    - a shared-machine limit in §5, bounded by the 2D arm.
+- `DECISIONS.md` D-021 to D-027
+  - Corrected or extended in this commit:
+    - D-016's note;
+    - D-022's per-request line, its long-table line, and a new falsification and production bullet;
+    - D-024's VP9 line;
+    - D-026's framer-motion line;
+    - D-027's scope, card placement, swipe line, focus rule and INP line.
+- `CONTENT-GUIDE.md`, "Sending a site plan"; `LAUNCH.md`, HSTS preload
+
 # TRANCHE TWELVE — the backlog queue: owner material, performance, security, skills, references, and a 3D map on a branch
 
 **Holding. The owner says yes or no to the 3D estate map on its preview:

@@ -177,6 +177,14 @@ The estate page keeps the chunk, because `Clause`, `Inventory` and `Ledger` stil
 
 On the other five routes, the initial scripts are about 130 KB lighter, uncompressed. The byte counts compare two builds that differ in more than this change: base7ff predates later tranche-twelve commits. So they show that the chunk left, not an exact attribution of every byte.
 
+**Corrected in the tranche-thirteen report commit: framer-motion still downloads on these five routes, at low priority.** The check above reads `<script src>` only.
+- **What production serves.** On production on 2026-09-16 (13:21Z, session scratch `prod-framer-preload.mjs`), each of the five routes also carries a `<link rel="preload" as="script" fetchPriority="low">` for a 119,916 B chunk.
+  - The chunk has all three signature literals and `clause-char`.
+  - It is the footer's lazy `Clause`: `SiteFooter` renders `LazyClause` (`src/components/ui/LazyClause.tsx`, added in ecdfb81) on every `PageShell` page.
+  - `/` carries no such preload.
+- **What that means.** framer-motion left the initial scripts, but the browser still fetches it on these routes, at low priority.
+- **What was measured with it in place.** The new build measured above contains that preload, because ecdfb81 precedes f45e850, while base7ff does not. What the preload costs on its own was not measured.
+
 ## 8. Production, after the deploy of f45e850
 
 Vercel reported `success` on the tenth check. At 18:48Z, `prod-reveal-check.mjs` (session scratch) ran read-only GETs against the production alias.
@@ -190,7 +198,7 @@ Vercel reported `success` on the tenth check. At 18:48Z, `prod-reveal-check.mjs`
 | `/en/experiences/boat-trip` | 200 | 6 | 0 | 0 | 0 | 0 | none |
 | `/en/the-estate` | 200 | 10 | **19** | 0 | 0 | 0 | present (expected) |
 
-**Production serves the finished page on every route where the reveal was Framer's only user.**
+**Production serves the finished page on every route where the reveal was Framer's only user.** The last column reads `<script src>` only: these five routes still preload the footer `Clause`'s framer chunk at low priority (§7, corrected).
 
 The estate page's 19 are not the reveal. None of them is a reveal host:
 - 18 are `span.clause-char`, the Framer `Clause` headline characters, each served at `opacity:0` with a staggered `translateX`;

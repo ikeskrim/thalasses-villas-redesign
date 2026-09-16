@@ -2,13 +2,15 @@
 
 DECISIONS.md D-021 asked for the first-paint regression to be attributed. D-016 had recorded it without explaining it: "Phone FCP medians are 12–68 ms later after the pass on ten of eleven templates. Three runs cannot separate that from noise, but the direction is consistent. It is recorded, not explained."
 
-**Answer.** On a fresh navigation, the regression is the cross-origin opener policy (`Cross-Origin-Opener-Policy: same-origin`, added by the security pass, D-013).
+**Answer.** On a fresh navigation, the regression is the cross-origin opener policy (`Cross-Origin-Opener-Policy: same-origin`). The header was added by the security audit in 9b8afca, which D-013 records, although D-013 does not name COOP.
 - It makes Chromium swap the page into a new renderer process on every such navigation.
-- That delays the HTML parse by about 65 ms on the phone profile, and first paint by 76–80 ms.
-- Once COOP is removed, what remains is not separated from noise.
-- After a same-origin navigation there is no process swap, and no regression.
+- That delays the HTML parse by about 65 ms on the phone profile.
+- **Against A,** first paint is 76–80 ms later at the median, on careers, location and `/`. That is B − A, and A and B differ in the whole pass.
+- **COOP alone** (B − Bnc) accounts for 58–62 ms of it at the median. It separates on careers and location, but not on `/`.
+- **What remains without COOP** (Bnc − A, +16 to +20 ms at the median on those three routes) is not separated from noise. That does not show the rest of the pass costs nothing: ten runs cannot resolve it.
+- After a same-origin navigation there is no process swap, and no comparison separates.
 
-COOP stays: it is a security decision (D-013), and this is a lab cost with an unmeasured field cost (§6).
+COOP stays. Keeping it is this tranche's call: the header is a security measure from the audit D-013 records, and this is a lab cost with an unmeasured field cost (§6).
 
 ## 1. The arms
 
@@ -24,7 +26,17 @@ B and Bnc differ in that one header and nothing else. A and B differ in the whol
 
 ## 2. Method
 
-`fcp-probe.mjs` (session scratch) ran on 2026-09-14/15, from 23:55 to 00:17 local time, on a quiet machine. Nothing else was building, testing or measuring. The matrix:
+`fcp-probe.mjs` (session scratch) ran on 2026-09-14/15, from 23:55 to 00:17 local time.
+
+**The machine was not idle.** This session ran nothing else in that window, but other local sessions were working in other repositories:
+- `routes-crete` committed at 00:04 and 00:08: a draft whose checks were run both ways, then screenshots captured from a deployed site.
+- `domisignature` ran local Lighthouse performance runs and committed at 00:17 ("baselines rebuilt", with the stage's Lighthouse tables).
+  - Its mobile Lighthouse files were written at 00:09, during this probe's phone half (which ended at 00:09:58).
+  - Its desktop files were written at 00:13, during the desktop half (which ended at 00:17:25).
+
+An earlier version of this record said the machine was quiet and that nothing else was building, testing or measuring. That was true of this session only (corrected in tranche thirteen's report commit). What it changes is in §6.
+
+The matrix:
 - **Routes:** `/en/careers`, `/en/location`, `/en/villas/villa-thoi` and `/`.
 - **Pre-navigation:** off (a fresh context goes straight to the page), and on (it first loads the same origin's `robots.txt`).
 - **Arms:** A, B, Bnc, with the order reversed on every run.
@@ -132,7 +144,7 @@ A "–" marks trace figures withheld because the trace did not match the page (�
 3. **The mechanism is a renderer process swap.**
    - With pre-navigation off, B's page was painted by a different renderer from the one the trace began with in **80 of 80 runs**, across both profiles and all four routes. A and Bnc did not swap in any of their 160 runs.
    - On the phone, B's first `ParseHTML` starts about 60–70 ms later than A's and Bnc's (270–274 against 204–214 ms), and its stylesheet finishes 58–92 ms later. `responseStart` is the same in all three. So the time goes between the response and the parse, where the swap happens, not on the network or the server.
-4. **After a same-origin navigation there is no swap and no regression.** With pre-navigation on, B did not swap in any of its 80 runs, and no comparison separates on either profile. A visitor already on the site does not pay this cost.
+4. **After a same-origin navigation there is no swap, and no comparison separates.** With pre-navigation on, B did not swap in any of its 80 runs, and no comparison separates on either profile. A visitor already on the site does not pay the swap. (Corrected in the tranche-thirteen report commit; it had read "no regression" and "this cost". Overlapping ranges show no separation, not a zero effect.)
 5. **Desktop shows the same mechanism, smaller.** B still swaps on every fresh navigation, and parse is 50–65 ms later. FCP separates only for B − Bnc on location (+36) and `/` (+40), because 2× CPU makes the swap cheaper and the other differences between A and B (security headers against `loading.tsx`) blur the B − A comparison.
 6. **villa-thoi on the phone does not separate in any comparison.** Its Bnc runs span 1,100–1,304 ms. The swap is still there (10/10 for B, with parse +61 ms), but ten runs cannot resolve its effect on that route's FCP.
 
@@ -140,7 +152,10 @@ A "–" marks trace figures withheld because the trace did not match the page (�
 
 - **D-016's "Phone FCP medians are 12–68 ms later … recorded, not explained" is now explained** for the fresh-navigation case: the COOP renderer swap, 76–80 ms on the phone where the runs separate.
 - **D-012's "one task of 250–340 ms, on every route" is neither confirmed nor contradicted.** That claim was about the removed `loading.tsx` Suspense boundary, not first paint.
-  - With pre-navigation off (where the trace is valid, §6), the long tasks before first paint are the same in A, which has `loading.tsx`, and Bnc, which does not.
+  - With pre-navigation off (where the trace is valid, §6), the long tasks before first paint are nearly the same in A, which has `loading.tsx`, and Bnc, which does not.
+    - That holds on the phone, and on three of the four desktop routes.
+    - On desktop villa-thoi, Bnc has one more task: 2 tasks and 111 ms, against A's 1 task and 74 ms (session scratch `tasks.md`).
+    - The two arms also differ in the rest of the performance pass.
   - On the phone, both have 3 tasks over 16 ms: careers A 176 ms against Bnc 167 ms, location 182 against 188, villa-thoi 295 against 289. `/` differs by one task: A has 2 at 277 ms, Bnc 3 at 294 ms.
   - So the task D-012 removed, if it is measured the way D-012 measured it, falls after first paint, outside this probe's window. D-012 is left as written.
 
@@ -148,6 +163,10 @@ A "–" marks trace figures withheld because the trace did not match the page (�
 
 - **Lab, not field.** A real visitor who arrives from another site already crosses a browsing-context-group boundary, so COOP may cost nothing extra in the field. That is not measured, and it is why COOP stays.
 - **One machine, 10 runs per cell,** software GPU. Ranges are min–max, not confidence intervals.
+- **The machine was shared** (§2). Other sessions were building, capturing, and running Lighthouse performance measurements during the run, in both halves.
+  - The arm order reversed on every run, so outside load fell on all three arms alike on average. It could still have raised any single run.
+  - It does not account for the separations. Those match a per-run mechanism: B's renderer swap, in 80 of 80 fresh-navigation runs (pre-navigation off) against 0 of 160 for A and Bnc.
+  - It may have widened the ranges, so a comparison reported here as not separated might separate on an idle machine.
 - **The trace did not match the page on most pre-navigation-on runs for A and Bnc.** The trace's first contentful paint belonged to the `robots.txt` page, so the decomposition window collapses.
 
   | profile | arm | pre-navigation on: trace FCP more than 50 ms off the paint entry |

@@ -376,7 +376,7 @@ An addendum to D-012. The evidence is in `qa/perf/ISLANDS-tranche12.md`, `FONTS-
     - weddings 155 → 108 ms;
     - the-estate 214 → 174 ms;
     - terms 187 → 159 ms.
-  - **Phone FCP medians are 12–68 ms later after the pass on ten of eleven templates.** Three runs cannot separate that from noise, but the direction is consistent. It is recorded, not explained. **Explained in tranche thirteen (`qa/perf/FCP-tranche13.md`): on a fresh navigation, `Cross-Origin-Opener-Policy: same-origin` swaps the page into a new renderer process (80 of 80 runs), delaying phone first paint by 76–80 ms where the runs separate; without COOP the remainder does not separate, and after a same-origin navigation there is no swap. COOP stays (D-013).**
+  - **Phone FCP medians are 12–68 ms later after the pass on ten of eleven templates.** Three runs cannot separate that from noise, but the direction is consistent. It is recorded, not explained. **Explained in tranche thirteen (`qa/perf/FCP-tranche13.md`): on a fresh navigation, `Cross-Origin-Opener-Policy: same-origin` swaps the page into a new renderer process (80 of 80 fresh-navigation runs). On the phone, the regression (B − A) is 76–80 ms at the median on careers, location and `/`, and those runs separate. COOP alone (B − Bnc) is 58–62 ms at the median, and separates on careers and location. Without COOP, the remainder (+16 to +20 ms) does not separate, and after a same-origin navigation there is no swap. COOP stays. It came with the security audit D-013 records (9b8afca), though D-013 does not name it, so keeping it is this tranche's call, for the reasons in the record's §6.**
   - **Desktop TBT medians** are 0 ms on every template, before and after.
   - **The follow-up batch alone** (`AB-tranche12-followup.md`, against `56cb859`): phone TBT changes run from −5 to +8 ms on the four routes, inside the spread.
 - **Found by the eleven-template run, on both builds, and not fixed** (`qa/perf/CHECKS-tranche12.md`):
@@ -601,7 +601,10 @@ keeps the two tests in separate columns.
   - An element with no position is not drawn and does not block the gate. The note names it, and the numbered list carries it.
 - **`owner-verified` names its entry.** An element marked `owner-verified` must carry `decision: "D-0NN"`, the entry that relayed the owner's confirmation. Otherwise the build fails, and `tests/estate-plan.spec.ts` checks that the entry exists.
 - **"A data edit, not a rebuild" means no code change.** `/en/the-estate` is prerendered, so a change to `content/estate-plan.json` reaches the public page on the next deploy of main.
-  - **Rendering per request was not chosen.** It would put the estate page in the class of per-request pages Vercel answers with 500 on percent-encoded spellings (SECURITY-NOTES.md §4.1). It would also give up the prerendered HTML that D-012 and D-016 protect.
+  - **Rendering per request was not chosen.**
+    - The one page rendered per request, `/en/contact`, returned 500 on percent-encoded spellings (SECURITY-NOTES.md §4.1). The cause is not established, and D-025's 308 covers that page only, so a per-request estate page would risk the same.
+    - It would also give up the prerendered HTML that D-012 and D-016 protect.
+    - Qualified in the tranche-thirteen report commit. The line had said the page "would" join that class.
 - **The plan's frame.**
   - schematic units, not metres;
   - origin at the centre of the four-villa compound;
@@ -619,7 +622,7 @@ keeps the two tests in separate columns.
     - the helipad, its apron and the lane.
   - **Not established (3), with position, orientation and footprint null:**
     - Villa Pueblo: leads only, no identity.
-    - The long table: the frames show four separate tables under the shade sail, not one table for 18.
+    - The long table: no frame identifies it. One frame shows at least four separate tables under the shade sail, and a separate bench table stands beside them. Neither is identified as the table for 18 (the element's notes). Corrected in the tranche-thirteen report commit; the line had read "the frames show four separate tables".
     - The vegetable garden: its only match fits an older state of the site.
   - **Assumed, not observed.** Which house in each row is which. The rows come from `content/villas/203.json:23`; the sides copy the 2D map's order. Which pool belongs to which villa follows from that assumption, and each element's `basis.identity` says so.
   - **Names come from the source, or say they have none.** "the complex"; "Private swimming pool"; "Shoreline (no site name on record)". "Private beach" is kept only as a stated caption, because those captions sit on a garden-path photograph and a sunbed sign.
@@ -639,6 +642,16 @@ keeps the two tests in separate columns.
   - no render plan in the HTML or the flight data.
 
   `scripts/check-estate-gate.mjs <origin>` checks the same on a deployment against the committed plan, so it needs no edit the day the plan is verified.
+- **Falsified, and checked on production, in the tranche-thirteen report commit** (`qa/security/ESTATE-GATE-tranche13.md`).
+  - **Against the review build**, which mounts the diagram while the plan is unverified, the test went red at its frame check.
+  - **A copy without that line** went red at its canvas check.
+  - **Not run red:** the marker, three.js-fetch and render-plan assertions.
+  - **On production**, `check-estate-gate` passed, and so did three of the four public-build tests. The static-prerender test reads the local build, so it was left out.
+  - **The three.js chunk is deployed.**
+    - It is in no initial script.
+    - Its name appears once among the page's HTML and initial scripts, in the gate hook's loader entry.
+    - The hook returns before that loader while the gate is closed.
+    - A visit with the gate closed recorded no response carrying the chunk.
 - **Changed on merge.**
   - The probe asks for WebGL2 only: three.js r163+ refuses WebGL1, which used to download the chunk and fall back anyway.
   - The helipad's H is basalt, not gold (DESIGN-PLAN.md bans gold, ochre and brass).
@@ -713,7 +726,7 @@ All are fixed. The ingest spec passes 8 of 8, typecheck and lint are clean, and 
   - VP9 came out at 17,225,636 B, and the pipeline correctly recorded `transcode-failed`.
   - Constant bitrate with `-minrate` reached 11,985,922 B, and constrained quality with a bitrate cap stayed at 17 MB.
 
-  So no single-pass setting fixes it, and the encoder settings were not changed. Whether an over-budget WebM should fall back to a lower resolution, or to MP4 only, is an editorial and design call, raised in the report.
+  So none of the four single-pass settings tried fixes it at 1080p (corrected in the tranche-thirteen report commit; it had read "no single-pass setting"), and the encoder settings were not changed. Whether an over-budget WebM should fall back to a lower resolution, or to MP4 only, is an editorial and design call, raised in the report.
 - **HSTS preload is staged in `LAUNCH.md`, not applied.**
   - **Where.** An owner-pending bullet, a subsection under "After launch" placed after the Loggia sunset, and a Rollback sentence saying DNS cannot undo it.
   - **Nothing live changes.** The header stays `max-age=63072000; includeSubDomains`.
@@ -783,7 +796,7 @@ Carries out D-021's "gallery CLS ≤ 0.1 via transform/clip-path with reserved d
   - no inline transform on a reveal host in the served HTML;
   - the careers in-view wrapper never translated from first paint to the first scroll;
   - a continuous-scroll test proving the entrance band releases before any idle gap, which mirrors the jump test that proves the sweep.
-- **Measured: framer-motion left the initial scripts** of careers, terms, contact, boat-trip and the gallery. It is the 120,835 B chunk that was in all of them. The estate page keeps it, because `Clause`, `Inventory` and `Ledger` still use Framer there, and that result is the check's positive control.
+- **Measured: framer-motion left the initial scripts** of careers, terms, contact, boat-trip and the gallery. It is the 120,835 B chunk that was in all of them. **Corrected in the tranche-thirteen report commit:** those five routes still preload, at low priority, a 119,916 B chunk carrying framer-motion. It is the footer's lazy `Clause`. So the browser still fetches Framer there, and that cost was not measured (the record's §7). The estate page keeps it, because `Clause`, `Inventory` and `Ledger` still use Framer there, and that result is the check's positive control.
 - **Measured: CLS and LCP under `hotel-cwv`.** Same machine, old build (base7ff) against new, alternating, four runs each. Lab figures, not field.
   - **Gallery:** phone CLS 0.2205 → **0** in every run; desktop 0.0827 → **0**.
   - **Careers:** phone LCP 2,108–2,972 ms → **1,044–1,056 ms**. The LCP element is still the body text.
@@ -793,7 +806,11 @@ Carries out D-021's "gallery CLS ≤ 0.1 via transform/clip-path with reserved d
 
 ### D-027 · The 3D estate map's quality pass: the defaults the diagram now carries (carrying out D-021 B)
 
-This carries out D-021's step B: a luxury register, hotspots with keyboard equivalents, tap-to-focus, reduced motion, a single lazy canvas, a WebGL fallback, and INP measured with the map active. These are build defaults, not rulings, all behind the provenance gate. The public page still renders the 2D map, and none of this is public until the plan is owner-verified (D-021, D-022).
+This carries out D-021's step B: a luxury register, hotspots with keyboard equivalents, tap-to-focus, reduced motion, a single lazy canvas, a WebGL fallback, and INP measured with the map active. These are build defaults, not rulings. All of the diagram's behaviour is behind the provenance gate: the public page still renders the 2D map, and the diagram is not public until the plan is owner-verified (D-021, D-022). **Corrected in the tranche-thirteen report commit** (this line had said "all behind the provenance gate"): step B also reaches the public page through four things:
+- the shared card;
+- `data-hotspot`;
+- the gate hook's new checks (Cost, below);
+- the diagram's CSS, 201 added lines in `patterns.css`, which every page loads, with a size that was not measured.
 
 Built in an isolated worktree, in two runs. The first implementer died on a network error, and its partial work was carried forward, audited and finished. Three adversarial reviews followed (interaction and a11y, visual register, tests and the INP harness). Every finding was applied and none was rejected. Verified again on main (below).
 
@@ -805,10 +822,11 @@ Built in an isolated worktree, in two runs. The first implementer died on a netw
   - Tokens only: limestone, phrygana, ammos, basalt, pelagos. No gold, ochre or brass.
 - **Places use the 2D map's contract.** A real button with `aria-expanded`/`aria-controls`, at least 44 px, opens a card: HOTSPOTS copy for list places, and only the plan's name and a Visit link for the helipad and Rituals.
   - Only one card is open at a time. Escape returns focus.
-  - Focus leaving a place closes its card. An open card never covers another place from 768 px up.
+  - Focus leaving a place closes its card.
+  - From 768 px up, an open card is placed to cover as little of the other places as possible. At the four widths tested (768, 1024, 1440 and 1920 px), with the current plan, it covered none. Corrected in the tranche-thirteen report commit; it had read "never covers another place".
   - Where no position avoids covering a place, the card becomes a band on the frame's edge.
 - **Touch and the phone.**
-  - A first tap opens; only the card's link navigates. A click outside closes, but a swipe does not.
+  - A first tap opens; only the card's link navigates. A click outside closes, but a swipe that begins outside the map does not. That is the only swipe tested; the wording was narrowed in the tranche-thirteen report commit.
   - Below 768 px, list places show numbered discs whose accessible name includes the number (WCAG 2.5.3). The two extras keep their plan name visible in a chip. The card is a band that leaves the open disc visible.
   - The note sits at the top of the frame at every width.
 - **The 2D map is served when:**
@@ -818,7 +836,11 @@ Built in an isolated worktree, in two runs. The first implementer died on a netw
   - Data Saver is on;
   - the context is lost.
 
-  On the swap, focus moves to the same place's 2D marker, or to its list link.
+  **Where focus goes on the swap.** If focus was on a place, it moves to that place's 2D marker if the marker is shown, otherwise to its list link if that is shown, and otherwise to the map section.
+  - The helipad and Rituals have neither marker nor list link, so their focus always goes to the section.
+  - So does the pool line's on a phone.
+  - Only the first place's marker is tested, on desktop.
+  - The at-load fallbacks never render the diagram, so no focus moves. (Detail added in the tranche-thirteen report commit.)
 - **The GL context is kept on scroll-away,** and disposed on unmount.
 - **`scripts/estate3d-preview.mjs`** saves `next-env.d.ts` before a review build and restores it on every exit and signal. It also repairs a baseline that a killed build left dirty.
 - **`scripts/hotel-cwv.mjs`** prints "no interaction recorded" instead of 0 ms, lists that under NOT MEASURED rather than as a pass, and ignores event entries with no interactionId.
@@ -826,7 +848,7 @@ Built in an isolated worktree, in two runs. The first implementer died on a netw
   - the lazy three.js chunk is 559,796 B raw / 139,874 B gzip, up from 548,419 / 135,460 at step A;
   - the estate page's initial JavaScript grew by 1,137 B raw / 364 B gzip, for the gate hook, the shared card and `data-hotspot`;
   - no initial script contains three.js.
-- **INP with the map active: measured** (`qa/perf/INP-estate3d.md`). The harness's own minimums were met: 10 valid runs per scenario and 20 valid trials per load-window offset, public build against review build, on an otherwise idle machine, with software WebGL.
+- **INP with the map active: measured** (`qa/perf/INP-estate3d.md`). The harness's own minimums were met: 10 valid runs per scenario and 20 valid trials per load-window offset, public build against review build, with software WebGL. ~~on an otherwise idle machine~~ **Corrected in the tranche-thirteen report commit:** this session ran nothing else, but other local sessions were active in both windows (the record's §2 and §5).
   - **On a settled page,** every interaction on both builds stays at or under 72 ms.
   - **The cost is the load window,** once the three.js chunk arrives.
     - **Phone:** 185 of 200 interactions went over 200 ms, with medians of 484–680 ms and a worst of 928 ms. The window was still open at +400 ms, which is as far as the harness measures.
