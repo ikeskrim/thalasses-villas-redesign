@@ -826,7 +826,13 @@ Built in an isolated worktree, in two runs. The first implementer died on a netw
   - the lazy three.js chunk is 559,796 B raw / 139,874 B gzip, up from 548,419 / 135,460 at step A;
   - the estate page's initial JavaScript grew by 1,137 B raw / 364 B gzip, for the gate hook, the shared card and `data-hotspot`;
   - no initial script contains three.js.
-- **INP with the map active:** measured separately with the harness's own minimums (10 valid runs per scenario and 20 valid trials per load-window offset, public build against review build, on a quiet machine). The record is `qa/perf/INP-estate3d.md`, in its own commit.
+- **INP with the map active: measured** (`qa/perf/INP-estate3d.md`). The harness's own minimums were met: 10 valid runs per scenario and 20 valid trials per load-window offset, public build against review build, on an otherwise idle machine, with software WebGL.
+  - **On a settled page,** every interaction on both builds stays at or under 72 ms.
+  - **The cost is the load window,** once the three.js chunk arrives.
+    - **Phone:** 185 of 200 interactions went over 200 ms, with medians of 484–680 ms and a worst of 928 ms. The window was still open at +400 ms, which is as far as the harness measures.
+    - **Desktop:** the window runs from about +50 to +150 ms, with medians of 248–304 ms and a worst of 368 ms.
+  - **The 2D map** never went over 40 ms.
+  - **Not established:** how much a real phone GPU shortens the window.
 - **Not established:**
   - real touch devices, Safari and Firefox, and a WebGL1-only device;
   - the context-loss path under test;
