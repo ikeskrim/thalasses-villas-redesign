@@ -85,6 +85,8 @@ merely resembles one still fails.
 - **Run `npm run scan:secrets` before every push and at every phase STOP.**
 - **If a secret is ever found:** rotate at the provider first, redact second,
   rewrite history third, and record it in section 1 above. In that order.
+  A Vercel OIDC token cannot be rotated on its own. Its expiry ends it, and
+  turning off OIDC token generation for the project stops new ones (D-030).
 
 ---
 
@@ -323,3 +325,9 @@ audit and is unrelated to the skipped script.
   the standing policy (§3) rules out even in an ignored file. **Owner or
   maintainer action:** delete the file, or say it is wanted. The CLI writes it
   again on the next `vercel env pull`. This session did not touch it.
+  - **Resolved (D-024, D-030).**
+    - **The file.** It went to the Recycle Bin on 2026-09-14. Its metadata (read without opening it) shows it was created and last written on 2026-08-17 at 13:12 local time.
+    - **The token is expired.** Vercel's documentation gives development OIDC tokens a 12-hour lifetime (vercel.com/docs/oidc/reference), so this one expired by 2026-08-18. That is an inference from the documentation and the metadata; the token's own `exp` was not read.
+    - **No per-token revocation exists.** Vercel documents none for OIDC tokens: they are checked offline against Vercel's signing keys until they expire. The one Vercel-side step that matches "revoke" is turning off OIDC token generation for this project, which is a dashboard setting and an owner action.
+    - **Nothing here uses OIDC:** no `@vercel/*` package, and no code reading the token.
+    - **How the file comes back.** CLI 59.16 writes the token into `.env.local` again on `vercel link` and `vercel pull`, as well as on `vercel env pull` (`DEPLOY.md`).

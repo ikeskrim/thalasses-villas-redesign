@@ -65,6 +65,11 @@ Nothing below blocks launch technically, but each is a claim on a live page:
   subdomain of `thalasses.com` to HTTPS for years. Before anyone does that, the
   owner lists every hostname in the domain's DNS zone and confirms that each one
   serves HTTPS. See **After launch → HSTS preload**.
+- **Vercel OIDC token generation**: the project does not use OIDC. D-028 asked
+  for the old token to be revoked. Vercel has no per-token revocation, and that
+  token expired by 2026-08-18. The matching Vercel-side step is the owner's:
+  Project → Settings → Security → "Secure backend access with OIDC federation",
+  turn token generation off (`DECISIONS.md` D-030).
 
 ---
 

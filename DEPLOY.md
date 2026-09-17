@@ -19,6 +19,7 @@ Last verified: 2026-08-18, by the owner.
 | Auto-deploy | **on**. Every push to `main` builds and deploys automatically |
 | Deployment protection | **disabled** — preview and production URLs open without a Vercel login |
 | Environment variables | **none required.** Booking is an outbound deep link; there is no server-side integration yet |
+| OIDC federation ("Secure backend access") | **not used by the project.** Its current setting is not verified here; Vercel's API default is on. Turning token generation off is an owner step (`DECISIONS.md` D-030) |
 | Search indexing | **`noindex` site-wide, deliberately.** See below |
 
 ### What this means for how we work
@@ -31,6 +32,9 @@ Last verified: 2026-08-18, by the owner.
   times and is what this file exists to prevent.
 - Each push produces a deployment. To see a change on a phone, push and wait for
   the build.
+- **Do not run `vercel link`, `vercel pull` or `vercel env pull` in this
+  repository.** Each one writes a `VERCEL_OIDC_TOKEN` into `.env.local`, a
+  credential in the tree that `SECURITY-NOTES.md` §3 rules out (D-024, D-030).
 
 ### Why the previous sessions got it wrong — worth knowing, so it is not repeated
 

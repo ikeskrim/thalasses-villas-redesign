@@ -945,3 +945,27 @@ Built in an isolated worktree, in two runs. The first implementer died on a netw
   - D-014 and D-022 in this file;
   - the tranche-thirteen report;
   - `qa/references/VERIFY-tranche12.md`.
+
+### D-030 · "Revoke the old Vercel token": what that can mean, and whose step it is (carrying out D-028)
+
+- **The token.** It was the `VERCEL_OIDC_TOKEN` that sat in the ignored `.env.local` (D-024).
+  - The file's metadata, read from the Recycle Bin without opening it, shows it was created and last written on 2026-08-17 at 13:12 local time.
+  - Vercel's documentation gives development OIDC tokens a 12-hour lifetime (vercel.com/docs/oidc/reference), so the token expired by 2026-08-18.
+  - That is an inference from the documentation and the metadata. The token's own `exp` was not read, and the file was not opened.
+- **A single OIDC token cannot be revoked.**
+  - Vercel documents no such control. Services check these tokens offline, against Vercel's signing keys, until they expire.
+  - Changing the issuer mode (Team/Global) revokes nothing already issued.
+  - The Vercel-side step that matches the ruling is turning off OIDC token generation for this project: Project → Settings → Security → "Secure backend access with OIDC federation" (the API field `oidcTokenConfig.enabled`, default on).
+- **That step is the owner's.** It is a security setting on the owner's account. No session makes it, and no session spends the machine's Vercel CLI login on it.
+  - It costs nothing functionally. The project uses no OIDC: no `@vercel/*` package and no code reading the token (`DEPLOY.md`: no environment variables required).
+  - Features the team might adopt later (Blob, AI Gateway, Sandbox) would need it back on.
+- **A gap in D-024, closed.** Vercel CLI 59.16 writes the token into `.env.local` on `vercel link` and `vercel pull`, not only on `vercel env pull`. `DEPLOY.md` now says not to run any of the three in this repository.
+- **Records:**
+  - `SECURITY-NOTES.md` (the `.env.local` item resolved, and a line in §3 on OIDC tokens);
+  - `DEPLOY.md` (a current-state row and the rule);
+  - `LAUNCH.md` (an owner-pending bullet until the setting is changed).
+- **Not established:**
+  - the project's current OIDC setting, which is visible only in the dashboard;
+  - whether turning generation off also invalidates tokens already issued (moot here, since the old token expired);
+  - whether the team has any service that trusts these tokens.
+- **Raised separately with the owner, not acted on:** the maintainer machine also holds a Vercel CLI login, an OAuth session with a refresh token. It is a stronger, account-level credential, and another process on the machine used it on 2026-09-17.
