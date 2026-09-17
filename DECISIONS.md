@@ -600,7 +600,7 @@ keeps the two tests in separate columns.
   - The context shapes the diagram draws count as elements: the lane, the compound outline, the helipad apron and the shore.
   - An element with no position is not drawn and does not block the gate. The note names it, and the numbered list carries it.
 - **`owner-verified` names its entry.** An element marked `owner-verified` must carry `decision: "D-0NN"`, the entry that relayed the owner's confirmation. Otherwise the build fails, and `tests/estate-plan.spec.ts` checks that the entry exists.
-- **"A data edit, not a rebuild" means no code change.** `/en/the-estate` is prerendered, so a change to `content/estate-plan.json` reaches the public page on the next deploy of main.
+- **"A data edit, not a rebuild" means no code change.** `/en/the-estate` is prerendered, so a change to `content/estate-plan.json` reaches the public page on the next deploy of main. **Confirmed by the owner in D-028.**
   - **Rendering per request was not chosen.**
     - The one page rendered per request, `/en/contact`, returned 500 on percent-encoded spellings (SECURITY-NOTES.md §4.1). The cause is not established, and D-025's 308 covers that page only, so a per-request estate page would risk the same.
     - It would also give up the prerendered HTML that D-012 and D-016 protect.
@@ -865,3 +865,49 @@ Built in an isolated worktree, in two runs. The first implementer died on a netw
   - at 1440–1920 the compound sits upper-left, with an empty field of ground lower-left;
   - at 768 px the leaders run long;
   - at 390 px the discs are busy, and an open band covers the lower discs.
+
+---
+
+## D-028 · The tranche-thirteen owner questions answered
+
+**Decided:** 2026-09-17, by the owner, answering the owner questions in the tranche-thirteen report (`SESSION-REPORT.md`, c68b776).
+**Relayed to the repository:** this entry, before any of the work it authorises (`CONVENTIONS.md` §19).
+**Status:** in force. The work it authorises is tranche fourteen. The owner has approved the 3D map; the site plan and the Drive link are still to come.
+
+### The ruling, as relayed
+
+> - "Data edit, not rebuild" meant no code change; a normal deploy on plan changes is fine.
+> - The phone tap cost after the 3D code arrives (0.48–0.68 s median) is NOT accepted for public: defer the three.js load until idle and after first interaction, split the first-frame work into yielding tasks, re-measure; the gate stays closed until the tap stays under 200 ms.
+> - Camera from the sea side: keep.
+> - Seeing the diagram: screenshots into qa/ are enough for now — no public preview of an unverified map; deployment protection stays off.
+> - Revoke the old Vercel token. Over-budget WebM: lower resolution within ≤2.5 MB, MP4 fallback. Percent-encoded duplicate URLs: 301 to the canonical spelling. Remaining Framer on the estate page and footer: measure the cost, then defer. Villa Pueblo: drop the unsourced "set apart from the other four"; keep only the sourced facts (adults-only, own beach access).
+> - HSTS preload waits for the launch hostname list. Push per step; HOLD for the Drive link and the site plan (plan in its own Drive folder, labelled).
+
+### What it settles
+
+- **"A data edit, not a rebuild" (D-021).** It means no code change. A normal deploy when the plan changes is fine, so D-022's reading stands.
+- **The 3D map's phone cost is not accepted for the public page.**
+  - **Load.** three.js is loaded only when the browser is idle, and only after the visitor's first interaction.
+  - **First frame.** Its work is split into tasks that yield.
+  - **Measure again.** INP is measured again with the map active.
+  - **A second gate condition.** The gate stays closed until a phone tap stays under 200 ms. That holds even once the plan is owner-verified.
+- **The camera looks from the sea side.** D-027's reversal of D-020 is kept.
+- **Seeing the diagram.**
+  - Screenshots committed under `qa/` are enough for now.
+  - There is no public preview of an unverified map, so D-022's no-Vercel rule for the review build stands.
+  - Deployment protection stays off.
+- **The old Vercel token is to be revoked** (D-024).
+- **An over-budget WebM** falls back to a lower resolution that fits the 2.5 MB budget. The MP4 is the fallback.
+- **Percent-encoded duplicate URLs** answer 301 to the canonical spelling. This is the tranche-thirteen report's duplicate-URL question, `qa/security/ENCODING-tranche13.md` §2.
+- **The remaining Framer content** on the estate page and in the footer: measure its cost first, then defer it.
+- **Villa Pueblo.**
+  - The unsourced "set apart from the other four" is dropped, which answers D-014's correction on merge and D-022's "found, not changed".
+  - Only the sourced facts stay: adults only, and its own beach access.
+- **HSTS preload** waits for the launch hostname list (D-024, `LAUNCH.md`).
+- **Working rhythm.** Each step is pushed on its own. Then the work holds for the Drive link and the site plan, which comes in its own Drive folder, labelled (`CONTENT-GUIDE.md`, "Sending a site plan").
+
+### What it does not settle
+
+- **The site plan and the Drive link** are still to arrive. Until they do, which house is which, Villa Pueblo's plot, and the positions of the long table and the vegetable garden stay open (D-021, D-022).
+- **Carried, and still open:** Villa Pueblo's capacity details (T-212), the eight beach distances, the Greek corpus and the three quarantined frames.
+- **HSTS preload itself** stays unapplied until the hostname list arrives.
