@@ -65,8 +65,8 @@ export const VILLA_META: Record<string, MetaCopy> = {
   },
   pueblo: {
     description:
-      "Adults only, set apart from the other four, with its own way down to the sand. Three bedrooms, three bathrooms, six in beds, ninety-five square metres.",
-    source: "specs.bedrooms 3, specs.bathrooms 3, specs.maxGuests 6, specs.sizeSqm 95; adults-only designation",
+      "Adults only, with direct beach access of its own. Three bedrooms, three bathrooms, six in beds, ninety-five square metres.",
+    source: "specs.bedrooms 3, specs.bathrooms 3, specs.maxGuests 6, specs.sizeSqm 95; adults-only designation; longDescription 'direct private beach access'",
   },
   "2142": {
     description:

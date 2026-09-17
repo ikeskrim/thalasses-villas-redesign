@@ -97,8 +97,8 @@ Eighteenth-century villa hotel on Lake Como, 24 rooms in three buildings.
   title.* **Here: partly present** — every villa page ends with "The other
   houses"; the view is a detail row; Villa Thoi and Villa Persi print their
   front-row position in their own detail beat ("The position"), and the estate
-  map gives every house's (front row, rear row, apart from the four); the names
-  carry neither.
+  map gives the four estate houses' (front row, rear row) and no position for
+  Villa Pueblo, which no source places (D-028); the names carry neither.
 - **Discover Crete** — a seasons block arguing every season is worth the visit.
   **Here: missing.**
 - **Footer** — the sister hotel gets a proper block above the footer, not a link.

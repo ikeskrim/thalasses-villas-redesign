@@ -911,3 +911,37 @@ Built in an isolated worktree, in two runs. The first implementer died on a netw
 - **The site plan and the Drive link** are still to arrive. Until they do, which house is which, Villa Pueblo's plot, and the positions of the long table and the vegetable garden stay open (D-021, D-022).
 - **Carried, and still open:** Villa Pueblo's capacity details (T-212), the eight beach distances, the Greek corpus and the three quarantined frames.
 - **HSTS preload itself** stays unapplied until the hostname list arrives.
+
+---
+
+## Build defaults, tranche fourteen (D-029 onward)
+
+**Decided:** 2026-09-17, by the building session, carrying out D-028. **These are not owner decisions.** They are the calls D-028 left open, logged so that nobody later mistakes a default for a ruling. Any of them is reversed by a new entry here.
+
+### D-029 · Villa Pueblo's copy keeps only the sourced facts (carrying out D-028)
+
+- **What the ruling named.** "Set apart from the other four", at the three sites D-014 listed: the villa lede (`src/lib/villa-page.ts`), the meta description (`src/lib/meta-copy.ts`) and the estate map's line (`src/app/home-data.ts`).
+- **Also changed, as the same claim or another unsourced one.** "Keep only the sourced facts" was read as covering the whole Pueblo copy.
+  - **Restatements of the dropped position:** "the beach is reached without crossing anyone else's terrace" (lede) and "You do not pass the other four to get to the water" (beat 2). Both removed.
+  - **Unsupported by the corpus:** "its own way down to the sand". Nothing in the source says "down". Removed.
+  - **Beat 1: "The quiet corner of a quiet place, kept that way on purpose" and "no one under eighteen".** The first hints at a position, and the second names an age the source never gives. Both removed. What "adults only" means in years stays unstated.
+- **What the copy says now.** Every sentence rests on source text in `content/villas/pueblo.json`: "(Adults Only)", "direct private beach access", "a large and private swimming pool", "Unwind in utter seclusion".
+  - **Lede:** "Adults only, with direct beach access of its own. It is the house for unwinding in utter seclusion."
+    - The lede's first sentence gives the designation, not a place, because no source places Pueblo.
+    - "Of its own" is the owner's reading of "private" (D-028: "own beach access"). The source sentence could also mean the estate's private beach.
+  - **Beat 1:** "A house for adults only, with three bedrooms and six in beds. Its swimming pool is large and private."
+  - **Beat 2:** "Direct, private access to the beach, and it belongs to this house."
+  - **Meta description:** "Adults only, with direct beach access of its own. Three bedrooms, three bathrooms, six in beds, ninety-five square metres." (121 characters)
+  - **Estate map line:** "Adults only, with its own beach access."
+- **The fact sheet** `public/factsheets/villa-pueblo.pdf` copies the meta description, so it was regenerated. The other four sheets came out with identical text and different bytes, so they were restored rather than churned.
+- **The Greek draft followed the English.** `content/el/villa-page-copy.json` is keyed by villa id and would otherwise ship the dropped claim if `/el` were published.
+  - `content/el/home.json`'s hotspot line was re-keyed.
+  - The orphaned `sections` key "Four houses behind one gate, and a fifth set apart." was removed; its English went in 4e00ddb.
+  - `content/el/RECONCILIATION.md` records the change in a dated addendum, and its notes #19–#22 are marked moot. The `notes[]` arrays are left as written.
+- **Records brought up to date:**
+  - the Pueblo note in `content/estate-plan.json` (no gate field touched);
+  - `DESIGN-REFERENCES.md` (the estate map gives no position for Pueblo).
+- **Left as written, because they are history:**
+  - D-014 and D-022 in this file;
+  - the tranche-thirteen report;
+  - `qa/references/VERIFY-tranche12.md`.

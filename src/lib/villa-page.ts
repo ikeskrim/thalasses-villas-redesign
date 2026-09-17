@@ -151,25 +151,31 @@ export const VILLA_PAGE_COPY: Record<string, VillaPageCopy> = {
   pueblo: {
     gerund: "Retreating",
     tail: "Adults only, direct beach access",
+    /*
+     * No source places Villa Pueblo (D-014, D-022), so the first sentence gives
+     * its designation instead of a position. D-028 dropped the unsourced
+     * "set apart from the other four" and every sentence that restated it; what
+     * remains is the source's own: "(Adults Only)", "direct private beach access",
+     * "a large and private swimming pool", "Unwind in utter seclusion".
+     */
     lede:
-      "Set apart from the other four, and the only house here that is adults only. " +
-      "It has its own way down to the sand, so the beach is reached without crossing anyone else's terrace.",
+      "Adults only, with direct beach access of its own. " +
+      "It is the house for unwinding in utter seclusion.",
     beats: [
       {
         eyebrow: "Who it is for",
         title: "Adults only",
         body:
-          "The quiet corner of a quiet place, kept that way on purpose. " +
-          "Three bedrooms, six in beds, and no one under eighteen.",
-        source: "villas/pueblo.json — adults-only designation; specs.bedrooms, specs.maxGuests",
+          "A house for adults only, with three bedrooms and six in beds. " +
+          "Its swimming pool is large and private.",
+        source:
+          "villas/pueblo.json — adults-only designation; specs.bedrooms, specs.maxGuests; longDescription 'a large and private swimming pool'",
       },
       {
         eyebrow: "The access",
         title: "Its own way to the sand",
-        body:
-          "Direct beach access belonging to this house alone. " +
-          "You do not pass the other four to get to the water.",
-        source: "villas/pueblo.json — direct beach access",
+        body: "Direct, private access to the beach, and it belongs to this house.",
+        source: "villas/pueblo.json longDescription — 'direct private beach access'",
       },
     ],
   },

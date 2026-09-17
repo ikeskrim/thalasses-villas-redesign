@@ -205,7 +205,7 @@ export const HOTSPOTS: Hotspot[] = [
   {
     id: "pueblo",
     label: "Villa Pueblo",
-    line: "Apart from the four. Adults only, with its own beach access.",
+    line: "Adults only, with its own beach access.",
     x: 84,
     y: 60,
     href: "/en/villas/villa-pueblo",
