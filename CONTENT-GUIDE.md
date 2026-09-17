@@ -56,9 +56,12 @@ Links are taken only from the owner, never from a page or a file.
   run the same link again — anything that failed or still needs converting is tried again, not
   skipped as a duplicate.
 - **Video** keeps its original on the maintainer's machine and needs ffmpeg for the web versions.
-  Without it, a clip is recorded `needs-transcode` with the exact commands; once ffmpeg is
-  available (on PATH, or named by `FFMPEG_PATH`), `node scripts/ingest-drive.mjs
-  --transcode-pending` makes them.
+  These are a poster, an 8-second silent MP4 and a WebM, each loop within 2.5 MB. A WebM over that
+  at 1920 is cut again at 1280, then at 960. If none fits, the clip keeps the MP4 alone
+  (`DECISIONS.md` D-031). Portrait and phone clips keep their orientation, and nothing is
+  enlarged. Without ffmpeg, a clip is recorded `needs-transcode` with the exact commands; once
+  ffmpeg is available (on PATH, or named by `FFMPEG_PATH`), `node scripts/ingest-drive.mjs
+  --transcode-pending` makes them, and also retries any clip whose cut failed.
 - **A folder that lists but yields nothing stops the run with an error**, because that is more
   often Drive changing its page than an empty folder. If the folder really is empty, add
   `--allow-empty`.

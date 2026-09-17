@@ -273,6 +273,32 @@ function run(script: string, args: string[], env: Record<string, string> = {}, c
 const ingest = (args: string[], env: Record<string, string> = {}) => run("ingest-drive.mjs", args, env);
 const NO_FFMPEG = { FFMPEG_PATH: "ffmpeg-deliberately-absent", INGEST_FFMPEG_SHIM: "" };
 
+/* The hero-loop cut, written out by hand rather than read from heroVariantPlan(),
+   so that a change to the plan cannot move both sides of an assertion at once. */
+const BUDGET = 2.5 * 1024 * 1024; /* 2,621,440 bytes */
+const LADDER = [
+  { name: "poster.jpg", kind: "poster", rung: 1920, budget: false },
+  { name: "loop-1920.mp4", kind: "mp4", rung: 1920, budget: true },
+  { name: "loop-1920.webm", kind: "webm", rung: 1920, budget: true },
+  { name: "loop-1280.webm", kind: "webm", rung: 1280, budget: true },
+  { name: "loop-960.webm", kind: "webm", rung: 960, budget: true },
+];
+/* Scaled by the long edge, never enlarged. */
+const longEdgeScale = (edge: number) => `scale=w='min(${edge},iw)':h='min(${edge},ih)':force_original_aspect_ratio=decrease:force_divisible_by=2`;
+/* Every hero loop under `dir` larger than the budget (the poster has none; originals are not loops). */
+const overBudgetFiles = (dir: string) =>
+  filesUnder(dir).filter((f) => /\.(mp4|webm)$/.test(f) && !f.includes(`${path.sep}originals${path.sep}`) && fs.statSync(f).size > BUDGET);
+/* The argv lists the fake ffmpeg logged, one per run, in order. */
+const ranLog = (log: string): string[][] =>
+  fs.existsSync(log)
+    ? fs
+        .readFileSync(log, "utf-8")
+        .trim()
+        .split("\n")
+        .filter(Boolean)
+        .map((l) => JSON.parse(l))
+    : [];
+
 test.describe("owner material pipeline", () => {
   test.setTimeout(300_000);
 
@@ -629,14 +655,20 @@ test.describe("owner material pipeline", () => {
         })
       );
 
-      /* The video: original kept local; the recorded commands are the plan heroVariants() runs. */
+      /* The video: original kept local; the recorded commands are the plan heroVariants() runs — all of it. */
       let clip = read("content/media/manifest.json").videos.at(-1);
       expect(clip.original).toMatch(new RegExp(`^content/media/originals/${DATE}/`));
       expect(clip.spec.maxBytes).toBeLessThanOrEqual(2.5 * 1024 * 1024);
       expect(clip.commands).toEqual(heroVariantPlan(clip.original, `content/media/${clip.slug}`).map((s) => commandLine(s.args)));
+      expect(clip.commands).toHaveLength(LADDER.length);
       expect(clip.commands[0]).toContain("poster.jpg");
+      expect(clip.commands[1]).toContain("loop-1920.mp4");
       expect(clip.commands[1]).toContain("-b:v 2411k -maxrate 2411k -bufsize 4822k");
-      expect(clip.commands[2]).toContain("-c:v libvpx-vp9 -row-mt 1 -deadline good");
+      for (const [i, name] of [[2, "loop-1920.webm"], [3, "loop-1280.webm"], [4, "loop-960.webm"]] as const) {
+        expect(clip.commands[i]).toContain("-c:v libvpx-vp9 -pix_fmt yuv420p -row-mt 1 -deadline good");
+        expect(clip.commands[i]).toContain("-b:v 2411k -maxrate 2411k -bufsize 4822k");
+        expect(clip.commands[i]).toContain(name);
+      }
 
       /* Refused files do not linger in the inbox. */
       const inbox = fs.readdirSync(path.join(out, "content", "inbox", DATE));
@@ -744,6 +776,8 @@ test.describe("owner material pipeline", () => {
       clip = read("content/media/manifest.json").videos.at(-1);
       expect(clip.status).toBe("transcode-failed");
       expect(clip.reason).toContain("over the");
+      expect(clip.reason, "the MP4 is the first loop over budget").toContain("loop-1920.mp4");
+      expect(overBudgetFiles(path.join(out, "content", "media")), "nothing over budget is left where git can see it").toEqual([]);
 
       /* ---- 5. Run again: what was taken is a duplicate; the unfinished is retried. */
       const again = await ingest([link], { ...env, ...NO_FFMPEG });
@@ -756,22 +790,29 @@ test.describe("owner material pipeline", () => {
       expect(second.byName["IMG_0001.HEIC"].status, "needs-conversion is retried").toBe("needs-conversion");
       expect(second.byName["drone pass.MP4"].status, "transcode-failed is retried").toBe("needs-transcode");
 
-      /* ---- 6. --transcode-pending runs exactly the commands the clip recorded. */
+      /* ---- 6. --transcode-pending runs the commands the clip recorded, exactly,
+         up to the first WebM rung that fits — here the first. */
       const log = path.join(out, "ffmpeg.jsonl");
+      clip = read("content/media/manifest.json").videos.at(-1);
+      expect(clip.status).toBe("needs-transcode");
+      const recorded: string[] = clip.commands;
+      expect(recorded).toHaveLength(LADDER.length);
       const cut = await ingest(["--transcode-pending"], { ...env, INGEST_FFMPEG_SHIM: FAKE_FFMPEG, FAKE_FFMPEG_LOG: log });
       printed.push(cut.stdout, cut.stderr);
       expect(cut.status, cut.stderr + cut.stdout).toBe(0);
       clip = read("content/media/manifest.json").videos.at(-1);
       expect(clip.status).toBe("variants-ready");
       expect(clip.commands).toBeUndefined();
-      expect(clip.variants.map((v: { file: string }) => path.posix.basename(v.file))).toEqual(["poster.jpg", "loop-1080.mp4", "loop-1080.webm"]);
+      expect(clip.variants.map((v: { file: string }) => path.posix.basename(v.file))).toEqual(["poster.jpg", "loop-1920.mp4", "loop-1920.webm"]);
+      expect(clip.webm).toEqual({ rung: 1920, tried: [] });
+      expect(clip.fallback).toBeNull();
       for (const v of clip.variants) expect(v.bytes).toBeLessThanOrEqual(clip.spec.maxBytes);
-      const ran = fs
-        .readFileSync(log, "utf-8")
-        .trim()
-        .split("\n")
-        .map((l) => JSON.parse(l));
-      expect(ran).toEqual(heroVariantPlan(clip.original, `content/media/${clip.slug}`).map((s) => s.args));
+      const plan = heroVariantPlan(clip.original, `content/media/${clip.slug}`);
+      const upTo = plan.findIndex((s) => s.name === path.posix.basename(clip.variants.at(-1).file));
+      expect(upTo, "the kept WebM is the plan's first rung").toBe(2);
+      const ran = ranLog(log);
+      expect(ran).toEqual(plan.slice(0, upTo + 1).map((s) => s.args));
+      expect(ran.map((a) => commandLine(a)), "what ran is the recorded lines, up to the rung that fit").toEqual(recorded.slice(0, upTo + 1));
 
       /* ---- 7. The owner adds the HEIC again as a JPEG: it goes through. ------ */
       files[IDS.converted] = { body: f.converted };
@@ -810,6 +851,201 @@ test.describe("owner material pipeline", () => {
     } finally {
       drive.server.close();
       fs.rmSync(out, { recursive: true, force: true });
+    }
+  });
+
+  test("the WebM ladder: a lower rung when a WebM is over budget, the MP4 alone when none fits, nothing over budget left", async () => {
+    const { heroVariantPlan, commandLine } = await import("../scripts/ingest-drive.mjs");
+    /* Distinct clips: the same real structure, different bytes, so each is its own clip. */
+    const V = {
+      recorded: "LADDERrecorded00060",
+      mid: "LADDERmid000000061",
+      none: "LADDERnone00000062",
+      mp4: "LADDERmp4000000063",
+      broken: "LADDERbroken000064",
+    };
+    const drive = await mockDrive(
+      {},
+      Object.fromEntries(Object.values(V).map((id, i) => [id, { body: isoFile("isom", ["isom", "iso2", "avc1", "mp41"], ["vide"], { mdat: 4096 + i }) }]))
+    );
+    const roots: string[] = [];
+    const printed: string[] = [];
+    const MiB = 1024 * 1024;
+    const names = (c: { variants: { file: string }[] }) => c.variants.map((v) => path.posix.basename(v.file));
+    type Sizes = Record<string, number | "fail">;
+    /* One output root per clip. Each run starts a fresh ffmpeg log, so `ran()` is that run's argv. */
+    const clipCase = (id: string) => {
+      const out = fs.mkdtempSync(path.join(os.tmpdir(), "ingest-ladder-"));
+      roots.push(out);
+      const log = path.join(out, "ffmpeg.jsonl");
+      const manifest = path.join(out, "content", "media", "manifest.json");
+      const link = `https://drive.google.com/file/d/${id}/view?usp=sharing`;
+      const base = { INGEST_DRIVE_BASE: drive.base, INGEST_DOWNLOAD_BASE: drive.base, INGEST_OUT_ROOT: out, INGEST_DATE: DATE };
+      const fake = (sizes: Sizes) => ({ ...base, INGEST_FFMPEG_SHIM: FAKE_FFMPEG, FAKE_FFMPEG_LOG: log, FAKE_FFMPEG_SIZES: JSON.stringify(sizes) });
+      const go = async (args: string[], env: Record<string, string>) => {
+        fs.rmSync(log, { force: true });
+        const r = await ingest(args, env);
+        printed.push(r.stdout, r.stderr);
+        return r;
+      };
+      const clip = () => JSON.parse(fs.readFileSync(manifest, "utf-8")).videos.at(-1);
+      return {
+        out,
+        manifest,
+        /* A normal ingest of the link, with ffmpeg present (the fake). */
+        cut: (sizes: Sizes) => go([link], fake(sizes)),
+        pending: (sizes: Sizes) => go(["--transcode-pending"], fake(sizes)),
+        /* A normal ingest with no ffmpeg: the clip records its commands. */
+        record: () => go([link], { ...base, ...NO_FFMPEG }),
+        clip,
+        ran: () => ranLog(log),
+        plan: (c: { original: string; slug: string }) => heroVariantPlan(c.original, `content/media/${c.slug}`),
+        onDisk: (c: { slug: string }) => fs.readdirSync(path.join(out, "content", "media", c.slug)).sort(),
+        overBudget: () => overBudgetFiles(path.join(out, "content", "media")),
+        intakeStatus: () => JSON.parse(fs.readFileSync(path.join(out, "content", "owner-intake.json"), "utf-8")).runs.at(-1).files[0].status,
+      };
+    };
+    try {
+      /* ---- 1. The recorded commands are the whole plan, every step held to its long edge. */
+      const rec = clipCase(V.recorded);
+      const r0 = await rec.record();
+      expect(r0.status, r0.stderr + r0.stdout).toBe(0);
+      let c = rec.clip();
+      expect(c.status).toBe("needs-transcode");
+      expect(c.spec).toMatchObject({ maxBytes: BUDGET, longEdge: 1920, webmLadder: [1920, 1280, 960] });
+      const recPlan = rec.plan(c);
+      expect(recPlan.map(({ name, kind, rung, budget }) => ({ name, kind, rung, budget }))).toEqual(LADDER);
+      expect(c.commands).toEqual(recPlan.map((s) => commandLine(s.args)));
+      for (const [i, step] of recPlan.entries()) {
+        const want = LADDER[i]!;
+        const vf = step.args.indexOf("-vf");
+        expect(vf, step.name).toBeGreaterThan(-1);
+        expect(step.args[vf + 1], `${step.name} scales by its long edge and never enlarges`).toBe(longEdgeScale(want.rung));
+        expect(step.args.filter((a) => a.includes("scale")), step.name).toHaveLength(1);
+        expect(step.args.at(-1)).toBe(`content/media/${c.slug}/${want.name}`);
+        expect(c.commands[i], `${step.name}: the recorded line quotes the filter for a shell`).toContain(` -vf "${longEdgeScale(want.rung)}" `);
+      }
+      expect(c.reason, "the reason says the later WebM lines are conditional").toContain("A WebM line runs only when the one before it came out over the 2621440-byte budget");
+      /* ffmpeg makes no folder: the tranche-14 real-ffmpeg check found the recorded lines fail by hand without it. */
+      expect(c.reason, "the reason says the clip folder must exist before the lines are run by hand").toContain(`content/media/${c.slug}/, to exist first`);
+      /* Cut from the record: the two larger WebMs are over, the 960 is kept — the whole plan ran, and it is the recorded lines. */
+      const r0b = await rec.pending({ "loop-1920.webm": 3 * MiB, "loop-1280.webm": BUDGET + 1 });
+      expect(r0b.status, r0b.stderr + r0b.stdout).toBe(0);
+      expect(rec.ran()).toEqual(recPlan.map((s) => s.args));
+      expect(rec.ran().map((a) => commandLine(a))).toEqual(c.commands);
+      c = rec.clip();
+      expect(c.status).toBe("variants-ready");
+      expect(c.commands).toBeUndefined();
+      expect(c.reason).toBeUndefined();
+      expect(names(c)).toEqual(["poster.jpg", "loop-1920.mp4", "loop-960.webm"]);
+      expect(c.webm).toEqual({ rung: 960, tried: [{ rung: 1920, bytes: 3 * MiB }, { rung: 1280, bytes: BUDGET + 1 }] });
+      expect(rec.onDisk(c)).toEqual(["loop-1920.mp4", "loop-960.webm", "poster.jpg"]);
+      expect(rec.overBudget()).toEqual([]);
+
+      /* ---- 2. The 1920 WebM is over budget, the 1280 fits: the 960 never runs. -- */
+      const mid = clipCase(V.mid);
+      const r1 = await mid.cut({ "loop-1920.webm": BUDGET + 1, "loop-1280.webm": BUDGET });
+      expect(r1.status, r1.stderr + r1.stdout).toBe(0);
+      c = mid.clip();
+      expect(c.status).toBe("variants-ready");
+      expect(mid.intakeStatus()).toBe("variants-ready");
+      expect(names(c)).toEqual(["poster.jpg", "loop-1920.mp4", "loop-1280.webm"]);
+      expect(c.variants.at(-1).bytes, "a loop of exactly the budget fits").toBe(BUDGET);
+      expect(c.webm).toEqual({ rung: 1280, tried: [{ rung: 1920, bytes: BUDGET + 1 }] });
+      expect(c.fallback).toBeNull();
+      expect(c.note).toContain("DRAFT CUT");
+      expect(c.note).toContain("the 1280 rung");
+      expect(r1.stdout, "the rung is printed loudly").toMatch(/WEBM AT 1280/);
+      expect(mid.onDisk(c), "the over-budget 1920 WebM is deleted, and no 960 was cut").toEqual(["loop-1280.webm", "loop-1920.mp4", "poster.jpg"]);
+      expect(mid.ran(), "the plan up to the first rung that fits, and no further").toEqual(mid.plan(c).slice(0, 4).map((s) => s.args));
+      expect(mid.overBudget()).toEqual([]);
+
+      /* ---- 3. No WebM rung fits: the clip is the poster and the MP4, and it is finished. */
+      const none = clipCase(V.none);
+      const r2 = await none.cut({ "loop-1920.webm": 3 * MiB, "loop-1280.webm": 3 * MiB - 1, "loop-960.webm": BUDGET + 1 });
+      expect(r2.status, r2.stderr + r2.stdout).toBe(0);
+      c = none.clip();
+      expect(c.status, "MP4 only is a finished clip, not a failure").toBe("variants-ready");
+      expect(none.intakeStatus()).toBe("variants-ready");
+      expect(names(c)).toEqual(["poster.jpg", "loop-1920.mp4"]);
+      expect(c.webm).toBeNull();
+      expect(c.fallback).toBe("mp4-only");
+      expect(c.reason).toBeUndefined();
+      expect(c.note).toContain("DRAFT CUT");
+      expect(c.note).toContain("MP4 FALLBACK ONLY");
+      for (const part of [`1920: ${3 * MiB} bytes`, `1280: ${3 * MiB - 1} bytes`, `960: ${BUDGET + 1} bytes`]) expect(c.note).toContain(part);
+      expect(r2.stdout).toMatch(/MP4 ONLY/);
+      expect(none.onDisk(c), "no WebM is left on disk").toEqual(["loop-1920.mp4", "poster.jpg"]);
+      expect(none.ran(), "every rung was tried").toEqual(none.plan(c).map((s) => s.args));
+      expect(none.overBudget()).toEqual([]);
+      /* Finished means taken: the same link again is a duplicate, and nothing is cut. */
+      const r2b = await none.cut({});
+      expect(r2b.status, r2b.stderr).toBe(0);
+      expect(none.intakeStatus()).toBe("duplicate");
+      expect(none.ran()).toEqual([]);
+
+      /* ---- 4. The MP4 is over budget: the clip fails, the run says so, and nothing over budget stays. */
+      const mp4 = clipCase(V.mp4);
+      const r3 = await mp4.cut({ "loop-1920.mp4": BUDGET + 1 });
+      expect(r3.status, `a normal ingest whose cut failed exits 1: ${r3.stdout}`).toBe(1);
+      expect(r3.stderr).toContain("could not be cut");
+      c = mp4.clip();
+      expect(c.status).toBe("transcode-failed");
+      expect(mp4.intakeStatus()).toBe("transcode-failed");
+      expect(c.reason).toContain(`loop-1920.mp4 came out at ${BUDGET + 1} bytes, over the ${BUDGET}-byte budget`);
+      for (const k of ["variants", "webm", "fallback", "note", "commands"]) expect(c[k], k).toBeUndefined();
+      expect(mp4.onDisk(c), "a failed cut leaves none of its files, the over-budget MP4 included").toEqual([]);
+      expect(mp4.ran(), "no WebM is cut once the MP4 has failed").toEqual(mp4.plan(c).slice(0, 2).map((s) => s.args));
+      expect(mp4.overBudget()).toEqual([]);
+      /* Files an interrupted cut could have left: the next cut clears its own plan's files first. */
+      const clipDir = path.join(mp4.out, "content", "media", c.slug);
+      fs.writeFileSync(path.join(clipDir, "loop-960.webm"), Buffer.alloc(3 * MiB));
+      fs.writeFileSync(path.join(clipDir, "loop-1280.webm"), Buffer.alloc(1024));
+      /* --transcode-pending retries a transcode-failed clip whose original is here. */
+      const r4 = await mp4.pending({});
+      expect(r4.status, r4.stderr + r4.stdout).toBe(0);
+      c = mp4.clip();
+      expect(c.status, "--transcode-pending picks up a transcode-failed clip").toBe("variants-ready");
+      expect(c.reason).toBeUndefined();
+      expect(c.webm).toEqual({ rung: 1920, tried: [] });
+      expect(c.fallback).toBeNull();
+      expect(names(c)).toEqual(["poster.jpg", "loop-1920.mp4", "loop-1920.webm"]);
+      expect(mp4.ran()).toEqual(mp4.plan(c).slice(0, 3).map((s) => s.args));
+      expect(mp4.onDisk(c), "no stale rung from an earlier cut is left").toEqual(["loop-1920.mp4", "loop-1920.webm", "poster.jpg"]);
+      expect(mp4.overBudget()).toEqual([]);
+
+      /* ---- 5. A WebM encoder error fails the clip, part-way down the ladder. ---- */
+      const broken = clipCase(V.broken);
+      const r5 = await broken.cut({ "loop-1920.webm": BUDGET + 1, "loop-1280.webm": "fail" });
+      expect(r5.status, r5.stdout).toBe(1);
+      c = broken.clip();
+      expect(c.status).toBe("transcode-failed");
+      expect(c.reason).toContain("loop-1280.webm: fake-ffmpeg: a deliberate encoder failure");
+      expect(c.reason, "the rung over budget before it is named").toContain(`1920: ${BUDGET + 1} bytes`);
+      expect(broken.onDisk(c), "a failed cut leaves none of its files: not the over-budget rung, the broken one, or the MP4 and poster").toEqual([]);
+      expect(broken.ran(), "the 960 rung never runs after an encoder error").toEqual(broken.plan(c).slice(0, 4).map((s) => s.args));
+      expect(broken.overBudget()).toEqual([]);
+      /* Its original gone (originals are gitignored): listed, left as it is, and not an error. */
+      fs.rmSync(path.join(broken.out, "content", "media", "originals"), { recursive: true, force: true });
+      const before = fs.readFileSync(broken.manifest, "utf-8");
+      const r6 = await broken.pending({});
+      expect(r6.status, r6.stderr + r6.stdout).toBe(0);
+      expect(r6.stdout).toContain("not retried");
+      expect(r6.stdout).toContain("nothing to cut");
+      expect(broken.ran()).toEqual([]);
+      expect(fs.readFileSync(broken.manifest, "utf-8")).toBe(before);
+
+      /* No Drive ID written or printed. */
+      for (const out of roots) {
+        for (const rel of ["content/owner-intake.json", "content/media/manifest.json"]) {
+          const text = fs.readFileSync(path.join(out, rel), "utf-8");
+          for (const id of Object.values(V)) expect(text, `${rel} leaks ${id}`).not.toContain(id);
+        }
+      }
+      for (const text of printed) for (const id of Object.values(V)) expect(text).not.toContain(id);
+    } finally {
+      drive.server.close();
+      for (const out of roots) fs.rmSync(out, { recursive: true, force: true });
     }
   });
 

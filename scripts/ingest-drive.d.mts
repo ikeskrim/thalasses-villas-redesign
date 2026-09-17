@@ -9,5 +9,9 @@ export function sniffPlan(
   buf: Uint8Array,
   tail?: Uint8Array
 ): { kind: "plan"; type: "pdf" | "dwg" | "dxf" | (string & {}); version?: string | null; encoding?: "ascii" | "binary" } | null;
-export function heroVariantPlan(inputRel: string, dirRel: string): { name: string; budget: boolean; args: string[] }[];
+/* `rung` is the long edge a step is held to (never enlarged past the source). */
+export function heroVariantPlan(
+  inputRel: string,
+  dirRel: string
+): { name: string; kind: "poster" | "mp4" | "webm"; rung: number; budget: boolean; args: string[] }[];
 export function commandLine(args: string[], exe?: string): string;

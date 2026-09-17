@@ -969,3 +969,40 @@ Built in an isolated worktree, in two runs. The first implementer died on a netw
   - whether turning generation off also invalidates tokens already issued (moot here, since the old token expired);
   - whether the team has any service that trusts these tokens.
 - **Raised separately with the owner, not acted on:** the maintainer machine also holds a Vercel CLI login, an OAuth session with a refresh token. It is a stronger, account-level credential, and another process on the machine used it on 2026-09-17.
+
+### D-031 · The WebM ladder: a lower resolution within 2.5 MB, the MP4 as the fallback (carrying out D-028)
+
+D-028: "Over-budget WebM: lower resolution within ≤2.5 MB, MP4 fallback." Those three words are the ruling. Everything else below is a build default, in `scripts/ingest-drive.mjs` only: no `src/` change, because the site serves no video yet (no `<video>` anywhere in `src/`, and `content/media/` is not served). The record is `qa/media/FFMPEG-tranche14.md`.
+
+- **The ladder.** WebM rungs of 1920, 1280 and 960 on the long edge, largest first.
+  - The first rung within 2,621,440 B (2.5 MiB, as the code has always had it) is kept, and nothing after it is encoded.
+  - An over-budget rung is recorded as `{rung, bytes}` and deleted the moment it is measured.
+  - 960 is the floor. If no rung fits, the clip is still `variants-ready`, with the poster and the MP4 only: `webm: null`, `fallback: "mp4-only"`. That is the concrete meaning of "MP4 fallback", because there is no site markup yet to express it.
+- **The MP4 is cut once, at 1920,** with the tranche-13 settings. An MP4 over budget still fails the clip (`transcode-failed`), because the ruling does not cover it. Its margin is thin (the record).
+- **Every step scales by its long edge and never enlarges:** `scale=w='min(L,iw)':h='min(L,ih)':force_original_aspect_ratio=decrease:force_divisible_by=2`.
+  - Landscape output is the same size as tranche 13's `scale=1920:-2`.
+  - A portrait or rotated phone clip stays 1080×1920 instead of being enlarged to 1920×3414.
+  - A smaller source keeps its size. A rung is a ceiling, not a size.
+- **Both loops are 8-bit.** The WebM steps now set `-pix_fmt yuv420p`, as the MP4 already did, so a 10-bit phone source no longer gives a VP9 Profile 2 WebM. HDR tone mapping is not done by either loop, and is open.
+- **Files are named by rung:** `loop-1920.mp4`, `loop-1920.webm`, `loop-1280.webm`, `loop-960.webm`, replacing `loop-1080.*`. No committed manifest needed migrating. `HERO_LOOP.width` is gone; an entry's `spec` is `{seconds, maxBytes, longEdge, webmLadder}`.
+- **The manifest records** `webm` (`{rung, tried}` or `null`) and `fallback`, and the DRAFT CUT note says which, with every rung's size. The run prints `WEBM AT <rung>` or `MP4 ONLY`.
+- **What a cut leaves on disk.**
+  - Once a cut finishes, nothing over budget is left in `content/media/<slug>/`, which git can see.
+  - A failed cut removes every file of its own plan, including the in-budget poster and MP4.
+  - Every cut first clears its own plan's files, so a file left by an interrupted cut never sits beside new ones.
+- **Retries and exit codes.**
+  - A WebM encoder error fails the clip. It does not step down.
+  - `--transcode-pending` also retries `transcode-failed` clips whose original is on this machine.
+  - A clip that keeps failing is retired by removing its original from `content/media/originals/`, or by ingesting a corrected clip.
+  - A normal ingest now exits 1 when any clip is `transcode-failed` (CONVENTIONS §18).
+- **The recorded commands.**
+  - They stay the whole plan.
+  - The needs-transcode reason says that a WebM line runs only when the one before it came out over budget.
+  - It says that the clip folder must exist before the lines are run by hand, because ffmpeg does not create it.
+  - It says that the lines are written for a POSIX shell.
+- **Questions for the owner, not decided here:**
+  - Is 960 an acceptable floor?
+  - When a `<video>` exists, should a lower-resolution WebM be listed ahead of the 1920 MP4?
+  - Is "2.5 MB" 2,621,440 B, as the code has it? At 2,500,000 B the measured MP4s would already be over.
+  - What should a portrait clip do in a landscape hero?
+  - Should HDR footage be tone-mapped?

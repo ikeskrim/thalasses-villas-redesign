@@ -19,7 +19,10 @@
  *                                                                       without --plans)
  *   node scripts/ingest-drive.mjs "<Drive share link>" --allow-empty   an empty folder is not an error
  *   node scripts/ingest-drive.mjs --transcode-pending                  cut the variants of every
- *                                                                       clip left needs-transcode
+ *                                                                       clip left needs-transcode,
+ *                                                                       and retry every clip left
+ *                                                                       transcode-failed whose
+ *                                                                       original is on this machine
  *
  * WHAT IT WILL NOT DO, each one a rule rather than a preference:
  *
@@ -86,6 +89,13 @@
  *   photograph still waiting for its grade whose staged file is no longer on
  *   this machine: it is staged again. And so is a plan whose stored file is no
  *   longer on this machine: it is stored again, and its ledger entry replaced.
+ *   A clip whose cut failed exits the run non-zero, and `--transcode-pending`
+ *   retries it while its original is here.
+ *
+ *   Once a cut finishes, no hero loop over the byte budget is left on disk.
+ *   `content/media/<slug>/` is not ignored by git, so a loop that comes out over
+ *   budget is deleted the moment it is measured, a failed cut removes all of its
+ *   files, and every cut first clears whatever an interrupted cut left.
  *
  * Environment, for tests only: INGEST_DRIVE_BASE, INGEST_DOWNLOAD_BASE (the two
  * Google hosts), INGEST_OUT_ROOT (where outputs go), INGEST_DATE, INGEST_MAX_BYTES,
@@ -110,7 +120,13 @@ const MAX_BYTES = Number(process.env.INGEST_MAX_BYTES ?? 2 * 1024 ** 3); /* 2 GB
 const MAX_DEPTH = 3;
 const MAX_ITEMS = 500;
 const WEB_EDGE = 3000; /* long edge of a staged photograph; the library's own masters run to 3300 */
-const HERO_LOOP = { seconds: 8, maxBytes: 2.5 * 1024 * 1024, width: 1920 };
+/* The hero loop. Every output is scaled by its LONG edge and never enlarged, so a
+   portrait phone clip stays portrait at the same size and a small source keeps
+   its own size. The MP4 is cut once, at `longEdge`. The WebM is cut down
+   `webmLadder`, largest first, until one fits `maxBytes` (D-028: "lower
+   resolution within ≤2.5 MB, MP4 fallback"); when none fits, the clip has the
+   poster and the MP4 only. The rungs and the 960 floor are build defaults. */
+const HERO_LOOP = { seconds: 8, maxBytes: 2.5 * 1024 * 1024, longEdge: 1920, webmLadder: [1920, 1280, 960] };
 /* How much of a download the type decision reads: this much from the start, and
    this much from the end when the file is longer. A track table is a few hundred
    KB even on a long 4K clip; the window is bounded so that naming the type of a
@@ -752,7 +768,7 @@ function ffmpegBinary() {
 }
 
 /**
- * THE HERO-LOOP CUT, AS DATA: poster first, then the MP4 and WebM loops.
+ * THE HERO-LOOP CUT, AS DATA: the poster, the MP4, then one WebM per rung of the ladder.
  *
  * One function, because there used to be two descriptions of this cut — the
  * arguments heroVariants() ran, and a hand-written copy recorded for a clip that
@@ -762,6 +778,20 @@ function ffmpegBinary() {
  * different file from the one the pipeline cuts. Now heroVariants() runs these
  * argument lists and a needs-transcode clip records them, verbatim.
  *
+ * The plan is the WHOLE ladder; a cut runs a prefix of it. heroVariants() stops
+ * at the first WebM rung that fits the budget, so the WebM lines after it run
+ * only when the one before came out over budget.
+ *
+ * Each step is tagged with its `kind` (poster, mp4, webm) and its `rung`: the
+ * long edge it is held to. Every step scales by that long edge and never
+ * enlarges: `min(L,iw)` × `min(L,ih)` is a box, `force_original_aspect_ratio=
+ * decrease` fits the frame inside it, and `force_divisible_by=2` keeps both
+ * sides even for yuv420p. A 3840×2160 source comes out 1920×1080, a 1080×1920
+ * phone clip stays 1080×1920 (720×1280 on the 1280 rung), and a 1280×720 source
+ * stays 1280×720 on the 1920 rung. The quotes guard the commas inside `min()`
+ * from ffmpeg's filtergraph parser. A file is named by its rung, not by the size
+ * it came out at.
+ *
  * Paths are relative to the output root and ffmpeg runs from there, which is what
  * lets the spawned argv and the recorded line be the same text.
  */
@@ -769,17 +799,30 @@ export function heroVariantPlan(inputRel, dirRel) {
   /* Target bitrate from the byte budget, with 8% headroom for the container. */
   const kbps = Math.floor((HERO_LOOP.maxBytes * 8 * 0.92) / HERO_LOOP.seconds / 1000);
   const quiet = ["-y", "-hide_banner", "-loglevel", "error"];
-  const scale = ["-vf", `scale=${HERO_LOOP.width}:-2`];
+  const scale = (edge) => ["-vf", `scale=w='min(${edge},iw)':h='min(${edge},ih)':force_original_aspect_ratio=decrease:force_divisible_by=2`];
   const rate = ["-b:v", `${kbps}k`, "-maxrate", `${kbps}k`, "-bufsize", `${kbps * 2}k`];
-  const loop = (name, codec) => ({
-    name,
-    budget: true,
-    args: [...quiet, "-i", inputRel, "-t", String(HERO_LOOP.seconds), "-an", ...scale, ...codec, ...rate, `${dirRel}/${name}`],
-  });
+  const loop = (kind, rung, codec) => {
+    const name = `loop-${rung}.${kind}`;
+    return {
+      name,
+      kind,
+      rung,
+      budget: true,
+      args: [...quiet, "-i", inputRel, "-t", String(HERO_LOOP.seconds), "-an", ...scale(rung), ...codec, ...rate, `${dirRel}/${name}`],
+    };
+  };
+  const edge = HERO_LOOP.longEdge;
   return [
-    { name: "poster.jpg", budget: false, args: [...quiet, "-ss", "0.5", "-i", inputRel, "-frames:v", "1", ...scale, "-q:v", "3", `${dirRel}/poster.jpg`] },
-    loop("loop-1080.mp4", ["-c:v", "libx264", "-profile:v", "high", "-pix_fmt", "yuv420p", "-movflags", "+faststart", "-preset", "slow"]),
-    loop("loop-1080.webm", ["-c:v", "libvpx-vp9", "-row-mt", "1", "-deadline", "good"]),
+    {
+      name: "poster.jpg",
+      kind: "poster",
+      rung: edge,
+      budget: false,
+      args: [...quiet, "-ss", "0.5", "-i", inputRel, "-frames:v", "1", ...scale(edge), "-q:v", "3", `${dirRel}/poster.jpg`],
+    },
+    loop("mp4", edge, ["-c:v", "libx264", "-profile:v", "high", "-pix_fmt", "yuv420p", "-movflags", "+faststart", "-preset", "slow"]),
+    /* yuv420p as on the MP4: a 10-bit phone source would otherwise give a 10-bit (Profile 2) WebM. */
+    ...HERO_LOOP.webmLadder.map((rung) => loop("webm", rung, ["-c:v", "libvpx-vp9", "-pix_fmt", "yuv420p", "-row-mt", "1", "-deadline", "good"])),
   ];
 }
 
@@ -788,44 +831,95 @@ export function commandLine(args, exe = "ffmpeg") {
   return [exe, ...args].map((a) => (/^[\w@%+=:,./-]+$/.test(a) ? a : `"${a.replace(/["\\$`]/g, "\\$&")}"`)).join(" ");
 }
 
-/** Poster first, then the loop variants, each held under the hero-loop budget. Runs heroVariantPlan() exactly. */
+const overBudget = (tried) => tried.map((t) => `${t.rung}: ${t.bytes} bytes`).join(", ");
+
+/**
+ * Cut a clip: heroVariantPlan(), run in order, up to the first WebM rung that fits.
+ *
+ *   poster   no budget.
+ *   MP4      an encoder error, or a file over budget, fails the clip.
+ *   WebM     an encoder error fails the clip. A rung over budget is recorded in
+ *            `tried` and its file deleted, and the next rung runs. The first rung
+ *            within budget is kept, and nothing after it runs. If none fits, the
+ *            clip is the poster and the MP4 alone: `webm` is null.
+ *
+ * Nothing over budget is left on disk. A cut that fails leaves none of its files
+ * at all, since no manifest entry points at them and content/media/<slug>/ is not
+ * gitignored. The cut starts by removing any file of its own plan left from an
+ * earlier or interrupted cut, so the folder holds this cut's files and no stale rung.
+ */
 function heroVariants(ffmpeg, inputRel, dirRel) {
+  const plan = heroVariantPlan(inputRel, dirRel);
+  const fileOf = (step) => path.join(OUT, dirRel, step.name);
+  const clear = () => {
+    for (const step of plan) fs.rmSync(fileOf(step), { force: true });
+  };
   fs.mkdirSync(path.join(OUT, dirRel), { recursive: true });
+  clear();
   const outputs = [];
-  for (const step of heroVariantPlan(inputRel, dirRel)) {
+  const tried = [];
+  let webm = null;
+  for (const step of plan) {
+    if (step.kind === "webm" && webm) break;
+    const file = fileOf(step);
     const r = spawnSync(ffmpeg[0], [...ffmpeg.slice(1), ...step.args], { cwd: OUT, encoding: "utf-8" });
-    const file = path.join(OUT, dirRel, step.name);
     if (r.status !== 0 || !fs.existsSync(file)) {
-      return { ok: false, error: `${step.name}: ${String(r.stderr || r.error || "no output").trim().slice(0, 300)}` };
+      clear();
+      const before = tried.length ? ` (the WebM rungs before it came out over the ${HERO_LOOP.maxBytes}-byte budget — ${overBudget(tried)} — and were deleted)` : "";
+      return { ok: false, error: `${step.name}: ${String(r.stderr || r.error || "no output").trim().slice(0, 300)}${before}` };
     }
     const bytes = fs.statSync(file).size;
     if (step.budget && bytes > HERO_LOOP.maxBytes) {
-      return { ok: false, error: `${step.name} came out at ${bytes} bytes, over the ${HERO_LOOP.maxBytes}-byte budget` };
+      /* content/media/<slug>/ is not gitignored: an over-budget loop never stays there. */
+      fs.rmSync(file, { force: true });
+      if (step.kind !== "webm") {
+        clear();
+        return { ok: false, error: `${step.name} came out at ${bytes} bytes, over the ${HERO_LOOP.maxBytes}-byte budget, and was deleted` };
+      }
+      tried.push({ rung: step.rung, bytes });
+      continue;
     }
     outputs.push({ file: `${dirRel}/${step.name}`, bytes });
+    if (step.kind === "webm") webm = { rung: step.rung, tried };
   }
-  return { ok: true, outputs };
+  return { ok: true, outputs, webm, tried };
 }
 
 /** Cut a clip's variants and record the outcome on its manifest entry. */
 function cutVariants(ffmpeg, v) {
   const r = heroVariants(ffmpeg, v.original, `content/media/${v.slug}`);
-  delete v.reason;
-  delete v.commands;
-  if (r.ok) {
-    v.status = "variants-ready";
-    v.note = "DRAFT CUT: the first 8 seconds. Choosing the in and out points is an editorial call — re-cut before it becomes the hero.";
-    v.variants = r.outputs;
-  } else {
+  for (const stale of ["reason", "commands", "note", "variants", "webm", "fallback"]) delete v[stale];
+  if (!r.ok) {
     v.status = "transcode-failed";
     v.reason = r.error;
+    return;
   }
+  const draft = `DRAFT CUT: the first ${HERO_LOOP.seconds} seconds. Choosing the in and out points is an editorial call — re-cut before it becomes the hero.`;
+  v.status = "variants-ready";
+  v.variants = r.outputs;
+  v.webm = r.webm;
+  v.fallback = r.webm ? null : "mp4-only";
+  let said;
+  if (!r.webm) {
+    said = `MP4 FALLBACK ONLY: no WebM rung fit the ${HERO_LOOP.maxBytes}-byte budget (${overBudget(r.tried)}), so this clip has no WebM; each over-budget WebM was deleted. The MP4 is its only loop.`;
+    console.log(`  ${"MP4 ONLY".padEnd(16)} ${v.slug}  — ${said}`);
+  } else if (r.webm.tried.length) {
+    said = `WebM: the ${r.webm.rung} rung, BELOW the MP4's ${HERO_LOOP.longEdge} rung — the larger rungs came out over the ${HERO_LOOP.maxBytes}-byte budget (${overBudget(r.webm.tried)}) and were deleted. A rung is a ceiling on the long edge: a source smaller than it keeps its own size.`;
+    console.log(`  ${`WEBM AT ${r.webm.rung}`.padEnd(16)} ${v.slug}  — ${said}`);
+  } else {
+    said = `WebM: the ${r.webm.rung} rung, the top of the ladder.`;
+    console.log(`  ${`WEBM AT ${r.webm.rung}`.padEnd(16)} ${v.slug}`);
+  }
+  v.note = `${draft} ${said}`;
 }
 
 /**
- * `--transcode-pending`: finish every clip that arrived while ffmpeg was missing.
- * The manifest is the list. The original must still be on this machine, because
- * originals are gitignored and never travel with the repository.
+ * `--transcode-pending`: finish every clip that arrived while ffmpeg was missing,
+ * and retry every clip whose cut failed. The manifest is the list. The original
+ * must still be on this machine, because originals are gitignored and never
+ * travel with the repository: a needs-transcode clip without it is an error; a
+ * transcode-failed clip without it is listed and left as it is (running its
+ * Drive link again fetches it).
  */
 function transcodePending() {
   const manifest = ledgerPath("content/media/manifest.json");
@@ -839,13 +933,19 @@ function transcodePending() {
     process.exit(1);
   }
   const media = readJson(manifest, { videos: [] });
-  const pending = media.videos.filter((v) => v.status === "needs-transcode");
+  const originalHere = (v) => typeof v.original === "string" && fs.existsSync(path.join(OUT, v.original));
+  for (const v of media.videos) {
+    if (v.status === "transcode-failed" && !originalHere(v)) {
+      console.log(`  ${"not retried".padEnd(16)} ${v.slug}  — transcode-failed, and its original, ${v.original}, is not on this machine; running its Drive link again fetches it`);
+    }
+  }
+  const pending = media.videos.filter((v) => v.status === "needs-transcode" || (v.status === "transcode-failed" && originalHere(v)));
   if (!pending.length) {
-    console.log("no clip in content/media/manifest.json is needs-transcode — nothing to cut");
+    console.log("no clip in content/media/manifest.json is needs-transcode, or transcode-failed with its original on this machine — nothing to cut");
     return;
   }
   for (const v of pending) {
-    if (!fs.existsSync(path.join(OUT, v.original))) {
+    if (!originalHere(v)) {
       console.log(`  ${"missing".padEnd(16)} ${v.slug}  — its original, ${v.original}, is not on this machine`);
       process.exitCode = 1;
       continue;
@@ -1145,7 +1245,13 @@ async function main() {
     const v = { slug: clipSlug, original: originalRel, originalSha256: got.sha256, provenance: PROVENANCE, type: kind.type, spec: HERO_LOOP, added: DATE };
     if (!ffmpeg) {
       v.status = "needs-transcode";
-      v.reason = "ffmpeg is not on this machine. Once it is (on PATH, or FFMPEG_PATH), `node scripts/ingest-drive.mjs --transcode-pending` runs exactly these commands.";
+      v.reason =
+        "ffmpeg is not on this machine. Once it is (on PATH, or FFMPEG_PATH), `node scripts/ingest-drive.mjs --transcode-pending` runs these commands, in order and exactly as written: " +
+        `the poster, the MP4, then the WebM at each rung of ${HERO_LOOP.webmLadder.join(", ")} on the long edge. ` +
+        `A WebM line runs only when the one before it came out over the ${HERO_LOOP.maxBytes}-byte budget (that file is deleted), and the first WebM within budget is kept. ` +
+        "If none fits, the clip keeps the poster and the MP4 only. An MP4 over budget fails the clip. " +
+        `Run by hand, they need the clip's folder, content/media/${clipSlug}/, to exist first: ffmpeg does not create it (the pipeline does). ` +
+        "The lines are written for a POSIX shell.";
       v.commands = heroVariantPlan(originalRel, `content/media/${clipSlug}`).map((s) => commandLine(s.args));
     } else {
       cutVariants(ffmpeg, v);
@@ -1185,6 +1291,15 @@ async function main() {
   }
   if (!dry && (counts["needs-transcode"] ?? 0) > 0) {
     console.log("next: once ffmpeg is available, `node scripts/ingest-drive.mjs --transcode-pending`");
+  }
+  if (!dry && (counts["transcode-failed"] ?? 0) > 0) {
+    /* CONVENTIONS §18: a clip that could not be cut is not a quiet success. */
+    console.error(
+      `${counts["transcode-failed"]} clip(s) could not be cut — the reason is on each entry in content/media/manifest.json. ` +
+        "A failed cut leaves none of its files in content/media/. `node scripts/ingest-drive.mjs --transcode-pending` retries them while their originals are on this machine; " +
+        "to stop retrying a clip that keeps failing, remove its original from content/media/originals/ or ingest a corrected clip."
+    );
+    process.exitCode = 1;
   }
 }
 
