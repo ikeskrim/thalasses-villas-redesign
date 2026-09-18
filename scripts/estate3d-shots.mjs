@@ -204,7 +204,15 @@ try {
 
 if (rows.length) {
   const commit = git("rev-parse", "HEAD") ?? "unknown";
-  const dirty = (git("status", "--porcelain") ?? "") !== "";
+  /*
+   * The shots this run just wrote are not "uncommitted changes" in any sense a
+   * reader cares about, and counting them made the line say so on every run,
+   * including from a clean tree. The output directory is excluded, so "the
+   * working tree had uncommitted changes" means what it says: the sources these
+   * shots came from were not the commit named above.
+   */
+  const outRel = path.relative(git("rev-parse", "--show-toplevel") ?? process.cwd(), OUT).split(path.sep).join("/");
+  const dirty = (git("status", "--porcelain", "--", ".", `:(exclude)${outRel}`) ?? "") !== "";
   const lines = [
     "# The 3D estate map, review build: screenshots",
     "",
