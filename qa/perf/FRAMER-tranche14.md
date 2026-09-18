@@ -38,7 +38,7 @@ Initial `<script src>` bytes of the served HTML, and whether any script or scrip
 | `/en/terms`, `/en/contact`, `/en/gallery`, `/en/experiences` | — | 599,878–618,494 | 599,878–618,491 | **preload** / none / none |
 | `/`, `/en/location`, an experience, the 404 | 632,633 (`/`) | 599,765–616,587 | 599,764–616,584 | none throughout |
 
-Production after f84048b carries the same shape (`scan-prod-f84048b`): no Framer in any script preload on any of the 17 routes, and none in any script on the ten non-animated ones.
+**Production carries the same figures.** After f84048b (`scan-prod-f84048b`): no Framer in any script preload on any of the 17 routes, and none in any script on the ten non-animated ones. After 48f2ba2 (`scan-prod-48f2ba2`, taken 2026-09-18T09:48Z): **no Framer in any script or preload on any of the 17 routes**, no inline `opacity:0` or `transform` on any clause character, `--n` on every animated tail and `--i` on each of its characters — and the same deltas as locally, to the byte: the estate 732,536 → 611,382 B (−121,154), each villa 727,375 → 606,739 B (−120,636).
 
 One orphan chunk in the C build still holds the Framer literals (70,637 B). No manifest references it: the six components that still import Framer — `KenBurns`, `Preloader`, `WordMask`, `ActShowcase`, `Litany`, `PinnedEstate` — are dead code no route reaches, so no reader downloads it.
 
