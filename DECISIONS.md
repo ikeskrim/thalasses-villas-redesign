@@ -1028,3 +1028,29 @@ D-028: "Percent-encoded duplicate URLs: 301 to the canonical spelling." The reco
   - **A known coupling:** the guard imports three `next/dist` modules, and the build runs the generator, so a Next upgrade that moves them fails the build. That is deliberate: it fails closed and loudly, rather than shipping unchecked rules.
 - **Not covered,** and recorded rather than guessed: `/`, the metadata routes, public assets, the literal segment-prefetch paths, and the `_next/data` forms of the prerendered pages. The `%2e` dot-segment spellings are unchanged (200 under `next start`, 404 on Vercel).
 - **Checks.** `check-headers` has 39 entries (the contact seven at 301, plus the pages, a query form, the flight forms, the case variant and the data form, whose target is now judged). `encoding-table.mjs` has a Location column and four more rows per route. Before the deploy, 15 of the 39 entries failed on production; that failure is in the record.
+
+### D-033 · The gate's second condition: a phone tap under 200 ms, decided from a committed record (carrying out D-028)
+
+D-028: "the gate stays closed until a phone tap stays under 200 ms. That holds even once the plan is owner-verified." This entry makes that mechanical, in the same place the provenance condition lives. It changes nothing public today: provenance already keeps the gate closed, and there is no record yet, so both conditions fail and the build log says so.
+
+- **Two conditions, one decision.** `decideEstate3D(plan, env, inp)` returns a verdict per condition, and the public gate opens only when both pass. Each failure has its own reason, so the build log and `check-estate-gate` show the INP verdict even while provenance keeps the gate closed.
+- **The record.** `scripts/estate-inp.mjs` writes `qa/perf/INP-estate3d-gate.json` (schema `estate3d-inp-gate/1`): per-profile calibration, the declared cells, and one row per trial. The gate recomputes the verdict from those rows and ignores any stored pass flag.
+- **What the INP condition requires,** considering review-build (B) trials only:
+  - the record exists, parses, carries that schema, and is not a smoke run;
+  - both the phone and the desktop profile are present, each with calibration passed — D-028 names the phone; requiring desktop too is this entry's default;
+  - the declared cells include the no-interaction control, the trigger, the five fixed scenarios, and at least two offsets for each of the eight window families (trigger, request, arrival, renderer, scene, compile, layout, swap);
+  - the counts of valid trials: 10 per control, trigger and fixed cell, 20 per window cell;
+  - every control trial reports no interaction;
+  - no trial anywhere errored or was lost;
+  - **every valid trial is strictly below 200 ms.** Not a median, not a percentile: the worst trial decides. Event Timing rounds to 8 ms, so a trial at exactly 200 fails. A trial with no Event Timing entry counts as under only when the harness confirms it was under the 16 ms floor;
+  - the fingerprint matches this tree.
+- **The fingerprint** (`src/lib/estate-3d-fingerprint.ts`, Node-importable, no `server-only`) is a sha256 over:
+  - the mount-path sources — every `src/components/sections/EstateMap*` and `estate-map*` file, plus `src/lib/schedule.ts` — with CRLF normalised to LF;
+  - the installed versions of three, react, react-dom and next;
+  - a digest of the plan's drawn geometry (id, kind, position, orientation, footprint, storeys, and whether the element links anywhere), never its provenance or prose.
+- **What that means for the owner's plan edit.** A verified plan is still a data edit and a normal deploy (D-022, D-028). But the gate also needs a measurement whose fingerprint matches, so a plan that changes what is drawn needs the harness run again and its record committed before the map goes public. The cost of the tap depends on what is drawn, which is why the geometry is in the fingerprint.
+- **The review build ignores the INP condition.** `ESTATE_3D_PREVIEW=1` still computes and prints it, but does not apply it: the review build is what gets measured, so gating it would be circular. It still refuses to run on Vercel.
+- **Fails closed.** A missing, unparsable, partial or hand-edited record, a malformed row, an unexpected profile, a negative number, a fingerprint that cannot be computed — each closes the gate with its own reason rather than throwing or passing.
+- **Known limits, recorded rather than papered over:**
+  - `Clause.tsx`, `Ledger.tsx` and `Magnetic.tsx` reach the map but are outside the fingerprint, as are `patterns.css` and the HOTSPOTS copy that arrives through page props. A spec pins that list, so a new mount-path import from outside it turns red.
+  - The fingerprint is computed at build time on Vercel too; a mismatch there would show in the build log's INP line.

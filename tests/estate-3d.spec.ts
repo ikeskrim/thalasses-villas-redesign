@@ -4,16 +4,20 @@ import path from "node:path";
 import { test, expect, type Page } from "@playwright/test";
 
 import { HOTSPOTS } from "../src/app/home-data";
+import { estate3dInpInput } from "../src/lib/estate-3d-fingerprint";
 import { decideEstate3D, type EstatePlan } from "../src/lib/estate-plan-gate";
 
 /**
- * THE 3D ESTATE MAP ON THE PUBLIC BUILD — the provenance gate (DECISIONS.md D-021).
+ * THE 3D ESTATE MAP ON THE PUBLIC BUILD — the gate (DECISIONS.md D-021, D-028).
  *
  * The owner approved the 3D map on one condition: it renders publicly ONLY when
  * `content/estate-plan.json` is owner-verified, and until then the 2D hotspot
- * map stays live and a test asserts the 3D canvas never mounts. This is that
- * test. It runs against the same build `npm run qa` tests, decided exactly as a
- * production build decides it (no preview flag, not on Vercel).
+ * map stays live and a test asserts the 3D canvas never mounts. D-028 added a
+ * second: the committed INP record must show every review-build tap under
+ * 200 ms for this tree. This is that test. It runs against the same build
+ * `npm run qa` tests, decided exactly as a production build decides it: no
+ * preview flag, not on Vercel, and the same INP inputs (the committed record,
+ * or none, and this tree's fingerprint) that `estate3dPlanForPage()` reads.
  *
  * A check that passes for the wrong reason proves nothing, so before asserting
  * that the canvas never mounts it asserts the conditions under which it WOULD
@@ -26,7 +30,7 @@ import { decideEstate3D, type EstatePlan } from "../src/lib/estate-plan-gate";
 
 const ROUTE = "/en/the-estate";
 const plan = JSON.parse(fs.readFileSync(path.join(process.cwd(), "content", "estate-plan.json"), "utf-8")) as EstatePlan;
-const publicDecision = decideEstate3D(plan, {});
+const publicDecision = decideEstate3D(plan, {}, estate3dInpInput(process.cwd(), plan));
 
 async function recordThree(page: Page) {
   const fetched: string[] = [];
@@ -57,7 +61,7 @@ test.describe("3D estate map — the public build", () => {
     }
   });
 
-  test("the gate follows the plan's provenance, and while it is closed the 3D canvas never mounts", async ({ page, request }) => {
+  test("the gate follows the plan's provenance and the INP record, and while it is closed the 3D canvas never mounts", async ({ page, request }) => {
     const errors: string[] = [];
     page.on("pageerror", (e) => errors.push(e.message));
     const threeFetched = await recordThree(page);
@@ -72,7 +76,7 @@ test.describe("3D estate map — the public build", () => {
     await scrollThroughMap(page);
 
     if (publicDecision.open) {
-      /* The owner has verified the plan: the public page shows the diagram. */
+      /* The owner has verified the plan and the record passes for this tree: the public page shows the diagram. */
       await expect(page.locator(".estate-map-frame--3d")).toBeVisible({ timeout: 15_000 });
       await expect(page.locator(".estate-map-frame--3d canvas.estate-map-3d-canvas")).toHaveCount(1);
       await expect(page.locator(".estate-map-frame--preview")).toHaveCount(0);

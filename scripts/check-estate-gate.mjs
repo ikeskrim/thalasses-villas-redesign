@@ -1,18 +1,24 @@
 #!/usr/bin/env node
 /**
- * THE ESTATE MAP'S PROVENANCE GATE, CHECKED ON A DEPLOYMENT.
+ * THE ESTATE MAP'S GATE, CHECKED ON A DEPLOYMENT.
  *
  *   node scripts/check-estate-gate.mjs https://<deployment or domain>
  *
- * DECISIONS.md D-021: the 3D estate map is public only when
- * content/estate-plan.json is owner-verified. `tests/estate-3d.spec.ts` proves
- * that on a local build. This checks what a real deployment serves, by reading
- * the COMMITTED plan and deciding the gate exactly as a production build does,
- * so the check needs no edit the day the owner verifies the plan: until then it
- * expects no render plan on the page, and after it expects one.
+ * The 3D estate map is public only when both conditions hold:
+ *  - provenance (D-021): content/estate-plan.json is owner-verified;
+ *  - INP (D-028): the committed harness record, qa/perf/INP-estate3d-gate.json,
+ *    shows every review-build tap under 200 ms, for this tree's fingerprint.
+ * `tests/estate-3d.spec.ts` proves that on a local build. This checks what a
+ * real deployment serves, by reading the COMMITTED plan and record and deciding
+ * the gate exactly as a production build does (same inputs, same function), so
+ * the check needs no edit the day both conditions pass: until then it expects
+ * no render plan on the page, and after it expects one. It prints each
+ * condition's verdict separately.
  *
- * Run it against the deployment of the commit whose plan is checked out here.
- * A deployment of an older commit may legitimately disagree.
+ * Run it against the deployment of the commit whose plan and record are checked
+ * out here, from the repository root, with node_modules installed (the
+ * fingerprint reads the installed three, react, react-dom and next). A
+ * deployment of an older commit may legitimately disagree.
  *
  * What it reads, and why both:
  *  - the HTML of /en/the-estate — the 2D map is always server-rendered, so its
@@ -33,9 +39,11 @@ if (!/^https?:\/\//.test(origin)) {
   process.exit(2);
 }
 
-const { decideEstate3D } = await import("../src/lib/estate-plan-gate.ts");
-const plan = JSON.parse(fs.readFileSync(path.join(process.cwd(), "content", "estate-plan.json"), "utf-8"));
-const decision = decideEstate3D(plan, {});
+const { decideEstate3D, describeGateDecision } = await import("../src/lib/estate-plan-gate.ts");
+const { estate3dInpInput } = await import("../src/lib/estate-3d-fingerprint.ts");
+const root = process.cwd();
+const plan = JSON.parse(fs.readFileSync(path.join(root, "content", "estate-plan.json"), "utf-8"));
+const decision = decideEstate3D(plan, {}, estate3dInpInput(root, plan));
 
 const route = `${origin}/en/the-estate`;
 const htmlRes = await fetch(route, { redirect: "manual" });
@@ -58,10 +66,11 @@ if (htmlRes.status !== 200) failures.push(`HTML: HTTP ${htmlRes.status}`);
 if (rscRes.status !== 200) failures.push(`flight data: HTTP ${rscRes.status}`);
 if (markers === 0) failures.push("no 2D map markers in the HTML: the server-rendered map is missing");
 if (!decision.open && (inHtml || inRsc)) failures.push(`the gate is closed (${decision.reason}), but a render plan was served`);
-if (decision.open && !inRsc) failures.push("the plan is owner-verified, but no render plan was served");
+if (decision.open && !inRsc) failures.push("both conditions pass (owner-verified plan, INP record under 200 ms), but no render plan was served");
 
 console.log(`check-estate-gate ${route} at ${new Date().toISOString()}`);
-console.log(`committed plan: gate ${decision.open ? "OPEN" : "CLOSED"} — ${decision.reason}`);
+console.log("committed plan and INP record, decided as a production build decides them:");
+for (const line of describeGateDecision(decision)) console.log(`  ${line}`);
 console.log(`HTML ${htmlRes.status}: ${markers} markers, render plan ${inHtml ? "present" : "absent"}`);
 console.log(`flight data ${rscRes.status}${rscRes.redirected ? ` (after a redirect, from ${new URL(rscRes.url).pathname}${new URL(rscRes.url).search})` : ""}: render plan ${inRsc ? "present" : "absent"}`);
 /* exitCode, not exit(): exiting while fetch handles are still closing trips a libuv assertion on Windows. */
@@ -69,5 +78,5 @@ if (failures.length) {
   console.log(`FAIL:\n  - ${failures.join("\n  - ")}`);
   process.exitCode = 1;
 } else {
-  console.log("PASS: the deployment serves what the committed plan's gate decides");
+  console.log("PASS: the deployment serves what the gate decides for the committed plan and INP record");
 }
