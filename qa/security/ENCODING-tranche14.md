@@ -7,6 +7,7 @@ DECISIONS.md D-028: "Percent-encoded duplicate URLs: 301 to the canonical spelli
 - **No function was added in front of any URL.** Config redirects run before the proxy and before the filesystem, so a literal request still reaches the CDN's prerendered copy untouched.
 - **The contact class moved from 308 to 301** (D-025's 308 is superseded). Only its `/_next/data` spelling is still the proxy's, because Next keeps config redirects off `/_next/**`.
 - **What production answered before the deploy:** 15 of the 39 `check-headers` entries failed, exactly as expected. That failure is recorded below and was not weakened.
+- **On production now** (§6): all 41 entries pass, every duplicate spelling in the table answers 301, the only rows left at 200 are the four canonical pages, and no row answers 5xx. The 500 the class began with is gone from its last shape, the segment-prefetch file of `/en/contact`.
 
 ## 1. What was wrong
 
@@ -82,10 +83,33 @@ The 23 entries that passed are the canonical pages, the contact page's own polic
 
 **`/EN/%74he-estate` measures a platform property, not the ruling.** Next compiles these sources case-insensitively (measured under `next start`, and on Vercel with a legacy rule). If the deployment answers 404 there, that is the stricter outcome: the entry is updated and this record says so, rather than the deploy being held.
 
-## 6. Not established
+## 6. Production, after the deploys
 
-- **On Vercel:** whether the query survives a config redirect; whether the lookahead behaves the same in its regex engine; which layer answers the contact class first (both would answer 301 with the same Location); and what CSP lines a config 301 carries.
-- **The segment-prefetch and `_next/data` forms of the prerendered pages.** They are 404 locally. The production table's two segment rows are the verdict; if either answers 200, the rule's tail needs extending or the duplicate is accepted and recorded.
+Two commits, each checked on the deployment it produced.
+
+**After c8e8858** (`encoding-table-production-2026-09-18-after-c8e8858.md`), `check-headers` passed all 39 entries, `/EN/%74he-estate` included: Vercel matches these generated sources case-insensitively, as `next start` does. Against the tranche-thirteen table, of the 60 comparable rows:
+
+| rows | before | after |
+|---|---|---|
+| 24 | 200, the page itself | 301 to the canonical path |
+| 8 | 308 (D-025's contact class) | 301 |
+| 28 | 404, or the canonical page's own 200 | unchanged |
+
+The 16 new rows showed two spellings the rules did not catch, which the second commit fixes:
+- **the segment-prefetch file of a page path** answered 200 on each of the three prerendered pages — the same duplicate in another shape;
+- **the same shape of `/en/contact`** answered **500** — the D-025 class in a shape the proxy never sees, because the adapter strips only `.rsc` before the branch compares the path.
+
+**After 01480d4** (`encoding-table-production-2026-09-18-after-01480d4.md`), with `.segments/….segment.rsc` added to each rule's tail:
+
+- `check-headers`: **41 of 41 entries pass**, including the two new segment-prefetch entries.
+- Exactly four rows changed from the previous table: the contact segment path 500 → 301, and the three pages' segment paths 200 → 301.
+- **The only rows still answering 200 are the four canonical pages themselves.** No row answers 5xx.
+
+## 7. Not established
+
+- **Settled by the production tables, and no longer open:** the query survives a config redirect (the query rows answer 301 with it intact); the lookahead behaves as it does locally; the segment-prefetch forms are covered, and the `_next/data` forms of the prerendered pages answer 404.
+- **Still not established on Vercel:** which layer answers the contact class first (the config rule and the proxy would both answer 301 with the same Location), and whether a config 301 there carries the site's policy headers — the entries do not judge a redirect's headers.
+- **`/EN/%74he-estate`** answered 301 on the deployment, so Vercel matches these sources case-insensitively, as `next start` does. That is a platform property this record measured, not something D-028 requires.
 - **`/`, the metadata routes (robots.txt, sitemap.xml, the opengraph images) and public assets.** No rule covers them, and their encoded spellings were not measured.
 - **The exception behind the original 500.** Still unreachable without Vercel's runtime logs (D-025).
 - **The coupling to Next's internals.** The generator's guard imports three `next/dist` modules, and `npm run build` runs the generator, so a Next upgrade that moves them fails the build rather than a QA script. That is deliberate: it fails closed and loudly.
