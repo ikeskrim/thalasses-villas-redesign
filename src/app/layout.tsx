@@ -153,8 +153,10 @@ export default function RootLayout({
 
           The scroll reveals no longer depend on it: `Reveal` and `ImageReveal`
           serve their finished state and are hidden only by script (D-021,
-          `src/components/motion/Reveal.tsx`). It stays for the Framer users
-          that remain — `Clause`, `Inventory`, `Ledger` and the rest.
+          `src/components/motion/Reveal.tsx`). Nor does a clause that does not
+          animate: `Clause` renders those as plain server markup (D-028). It
+          stays for the Framer users that remain — the animated hero clause
+          (`ClauseMotion`), `Inventory`, and the components no route renders.
         */}
         <noscript
           dangerouslySetInnerHTML={{

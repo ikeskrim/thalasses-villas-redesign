@@ -72,12 +72,19 @@ import { expect, test, type Page } from "@playwright/test";
  * and loosens none.
  */
 
+/*
+ * Test 1 reads the whole served page, not only its reveals: a hidden state
+ * from any component on these templates goes red here. The location page
+ * joined when its last Framer component went (D-028); it serves three reveal
+ * hosts.
+ */
 const STRUCTURAL_ROUTES = [
   "/en/careers",
   "/en/gallery",
   "/en/contact",
   "/en/terms",
   "/en/experiences/boat-trip",
+  "/en/location",
 ];
 
 /* hotel-cwv's two device profiles. Test 3 adds its throttling as well. */

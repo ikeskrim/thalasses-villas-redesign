@@ -1,8 +1,3 @@
-"use client";
-
-import { motion, useReducedMotion } from "framer-motion";
-import { useId } from "react";
-
 import type { ClauseScale } from "@/lib/clause";
 import { assertClause } from "@/lib/clause";
 
@@ -12,8 +7,6 @@ export interface ClauseProps {
   /** A fact you could check. Uppercased on render, max 6 words, never punctuated. */
   tail?: string;
   scale?: ClauseScale;
-  /** Animate the tail open on mount. Off for below-the-fold instances. */
-  animate?: boolean;
   as?: "h1" | "h2" | "h3" | "p" | "div";
   className?: string;
 }
@@ -30,18 +23,29 @@ export interface ClauseProps {
  *  2. The wrapper carries the full sentence as aria-label and every character
  *     span is aria-hidden, so a screen reader hears one sentence, not 22 letters.
  *  3. Overflow is clipped by the section (.clause-field), never the document.
+ *
+ * PLAIN MARKUP, NOT A CLIENT COMPONENT (D-028). A clause that does not animate
+ * needs no script, so it is rendered where it is used — on the server for a
+ * page, the footer and the 404, inside the bundle of a client component that
+ * renders one — with the same character spans and margins the Framer build
+ * produced at rest, and no opacity or transform written into the HTML.
+ *
+ * This is what retired `LazyClause`. The root 404 renders the footer, and the
+ * App Router serialises the root 404 element into every page's payload, so the
+ * footer's clause was a client reference on every route; behind `next/dynamic`
+ * its server render emitted a low-priority preload of the 120 kB Framer chunk
+ * on careers, terms, contact, the gallery, the experiences and the 404, for a
+ * clause that never moved. A server-rendered clause is no client reference at
+ * all.
+ *
+ * AN ANIMATED CLAUSE IS `ClauseMotion`, AND THIS FILE MUST NOT IMPORT IT. A
+ * page's client scripts follow what its server modules import, rendered or
+ * not. The first build of this step kept an `animate` branch here that
+ * returned `ClauseMotion`, and careers, terms, contact, the gallery, the
+ * experiences, location and the 404 then loaded Framer as an initial script —
+ * worse than the preload it replaced — because the footer imports this file.
  */
-export function Clause({
-  gerund,
-  tail,
-  scale = "c2",
-  animate = false,
-  as: Tag = "h2",
-  className = "",
-}: ClauseProps) {
-  const reduced = useReducedMotion();
-  const id = useId();
-
+export function Clause({ gerund, tail, scale = "c2", as: Tag = "h2", className = "" }: ClauseProps) {
   // Throws in development if a clause is punctuated or over length.
   assertClause(gerund, tail);
 
@@ -63,30 +67,11 @@ export function Clause({
       </span>
 
       {upperTail ? (
-        <span className="clause-tail" aria-hidden="true" id={id}>
+        <span className="clause-tail" aria-hidden="true">
           {chars.map((ch, i) => (
-            <motion.span
-              key={`${id}-${i}`}
-              className="clause-char"
-              style={{ marginRight: `${openEm}em` }}
-              initial={
-                animate && !reduced
-                  ? { x: -openEm * i * 16, opacity: 0 }
-                  : { x: 0, opacity: 1 }
-              }
-              animate={{ x: 0, opacity: 1 }}
-              transition={
-                reduced
-                  ? { duration: 0.25 }
-                  : {
-                      duration: 1.05,
-                      delay: i * 0.012,
-                      ease: [0.16, 1, 0.3, 1],
-                    }
-              }
-            >
+            <span key={i} className="clause-char" style={{ marginRight: `${openEm}em` }}>
               {ch === " " ? " " : ch}
-            </motion.span>
+            </span>
           ))}
         </span>
       ) : null}

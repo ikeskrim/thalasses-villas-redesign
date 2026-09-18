@@ -1,8 +1,10 @@
 import Link from "next/link";
 
-/* Lazy on purpose: the root 404 renders this footer, and the App Router ships
-   the root 404's client components on every route — see LazyClause. */
-import { LazyClause as Clause } from "@/components/ui/LazyClause";
+/* Every page with a footer, and the root 404 that every route's payload
+   carries, imports this file. Its clause never animates, so it is `Clause`,
+   plain server markup that ships no script (D-028). `ClauseMotion` here would
+   put Framer on every one of those pages. */
+import { Clause } from "@/components/ui/Clause";
 
 export interface SiteFooterProps {
   addressLines: string[];

@@ -1,4 +1,4 @@
-import { Clause } from "@/components/ui/Clause";
+import { ClauseMotion } from "@/components/ui/ClauseMotion";
 import { Field } from "@/components/ui/Field";
 
 export interface HeroProps {
@@ -26,7 +26,7 @@ export function Hero({ image, alt, horizonY, gerund, tail, eyebrow }: HeroProps)
             {eyebrow}
           </p>
         ) : null}
-        <Clause gerund={gerund} tail={tail} scale="c1" animate as="h1" />
+        <ClauseMotion gerund={gerund} tail={tail} scale="c1" animate as="h1" />
       </div>
     </Field>
   );

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import { Clause } from "@/components/ui/Clause";
+import { ClauseMotion } from "@/components/ui/ClauseMotion";
 import { FontAB } from "./FontAB";
 import { PALETTE, contrast, tokenHex, verdict } from "@/lib/contrast";
 
@@ -292,7 +293,7 @@ export default function StyleguidePage() {
         </p>
 
         <div className="clause-field" style={{ marginBottom: "var(--spacing-step-7)" }}>
-          <Clause gerund="Living" tail="Unlimited" scale="c1" animate as="p" />
+          <ClauseMotion gerund="Living" tail="Unlimited" scale="c1" animate as="p" />
         </div>
         <div className="clause-field" style={{ marginBottom: "var(--spacing-step-6)" }}>
           <Clause gerund="Standing" tail="Fifty metres from the water" scale="c2" as="p" />

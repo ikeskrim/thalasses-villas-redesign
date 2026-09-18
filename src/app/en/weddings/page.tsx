@@ -7,6 +7,7 @@ import { Inventory } from "@/components/sections/Inventory";
 import { PageShell } from "@/components/sections/PageShell";
 import { TheRun } from "@/components/sections/TheRun";
 import { Clause } from "@/components/ui/Clause";
+import { ClauseMotion } from "@/components/ui/ClauseMotion";
 import { Field } from "@/components/ui/Field";
 import { getExperience, getFacilitiesForVilla, getVilla } from "@/lib/content";
 import { buildInventory } from "@/lib/inventory";
@@ -70,7 +71,7 @@ export default function WeddingsPage() {
       >
         <div className="canon clause-field" style={{ padding: 0 }}>
           <p className="micro d-eyebrow">01 — Weddings &amp; Events</p>
-          <Clause gerund="Marrying" tail="On sand, beside the water" scale="c1" animate as="h1" />
+          <ClauseMotion gerund="Marrying" tail="On sand, beside the water" scale="c1" animate as="h1" />
         </div>
       </Field>
 
