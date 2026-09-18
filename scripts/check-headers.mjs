@@ -133,6 +133,14 @@ const ENTRIES = [
   { path: "/en/the-estate%2F?enquiry=estate", expect: "redirect", status: 301, location: "/en/the-estate?enquiry=estate" },
   { path: "/en/%74he-estate.rsc", expect: "redirect", status: 301, location: "/en/the-estate" },
   { path: "/en/%74he-estate", headers: { RSC: "1" }, expect: "redirect", status: 301, location: "/en/the-estate" },
+  /*
+   * The segment-prefetch file of a page path. Measured on production on
+   * 2026-09-18 (after c8e8858, before the tail was extended): 200 on the
+   * prerendered pages, the duplicate in another shape, and 500 on /en/contact,
+   * the D-025 class in a shape the proxy never sees. Both are now 301.
+   */
+  { path: "/en/%63ontact.segments/_tree.segment.rsc", expect: "redirect", status: 301, location: "/en/contact" },
+  { path: "/en/%74he-estate.segments/_tree.segment.rsc", expect: "redirect", status: 301, location: "/en/the-estate" },
   /* Next matches config sources case-insensitively: an upper-case spelling WITH an escape goes to the lower-case page too. */
   { path: "/EN/%74he-estate", expect: "redirect", status: 301, location: "/en/the-estate" },
   { path: "/en/villas/%76illa-thoi", expect: "redirect", status: 301, location: "/en/villas/villa-thoi" },

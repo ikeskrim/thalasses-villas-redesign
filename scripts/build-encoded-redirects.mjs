@@ -143,7 +143,18 @@ function ruleFor(page) {
     fail(`refusing ${JSON.stringify(page)}: empty segment or trailing slash`);
   /* The leading `/` stays literal: it anchors the rule so no `//host` or `/%2F%2F…` spelling can match. */
   const body = [...page.slice(1)].map(charPattern).join("");
-  return { source: `/((?=.*%)${body}(?:%2[Ff])?(?:\\.rsc)?)`, destination: page, statusCode: 301 };
+  /*
+   * The tail: an encoded trailing slash, or one of the flight-data suffixes Next
+   * appends to a page path — `.rsc`, and the segment-prefetch file. The
+   * segment-prefetch form was measured on production (2026-09-18, after
+   * c8e8858): it answered 200 on the prerendered pages, the same duplicate in
+   * another shape, and 500 on /en/contact, the D-025 class in a shape the proxy
+   * never sees. Both are redirected to the page; no link on the site produces
+   * these URLs. The suffixes never carry a `%`, so the canonical segment path
+   * cannot match this rule (the lookahead requires one).
+   */
+  const tail = "(?:%2[Ff])?(?:\\.rsc|\\.segments/.+\\.segment\\.rsc)?";
+  return { source: `/((?=.*%)${body}${tail})`, destination: page, statusCode: 301 };
 }
 
 /* ---------------------------------------------------- the loop guard -- */
@@ -180,7 +191,7 @@ function guard(rules, legacy) {
 
   const problems = [];
   for (const r of rules) {
-    for (const p of [r.destination, `${r.destination}.rsc`, `${r.destination}/`]) {
+    for (const p of [r.destination, `${r.destination}.rsc`, `${r.destination}/`, `${r.destination}.segments/_tree.segment.rsc`]) {
       const h = hits(p);
       if (h.length)
         problems.push(

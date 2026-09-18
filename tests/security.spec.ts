@@ -414,10 +414,20 @@ test.describe("security — percent-encoded spellings of a page: 301 to the lite
       "/en/%74he-estate%2F%2F",
       "/en/%74he-estate.rsc%2F",
       "/en/villas/%2576illa-thoi",
-      /* An escaped capital decodes to another path (routes are lower-case). */
+      /*
+       * An escaped capital decodes to another path (routes are lower-case). Only
+       * static routes are requested here. The dynamic `[slug]` equivalent,
+       * `/en/villas/%56illa-thoi`, is deliberately NOT requested: under
+       * `next start` on Windows it makes Next write the 404 render over the
+       * canonical page's prerendered files (`.next/server/app/en/villas/
+       * villa-thoi.html` fell from 180 KB to 16 KB), after which the canonical
+       * URL answers 404 until the next build. Measured 2026-09-18; on the Vercel
+       * deployment the canonical page stayed 200 before and after the same
+       * request. The loop-guard test below checks that spelling against the
+       * compiled rules instead, which needs no request.
+       */
       "/en/%43ontact",
       "/en/%54he-estate",
-      "/en/villas/%56illa-thoi",
     ]) {
       const res = await request.get(spelling, { maxRedirects: 0 });
       expect(res.status(), spelling).toBe(404);
@@ -492,7 +502,7 @@ test.describe("security — percent-encoded spellings of a page: 301 to the lite
     for (const r of ENCODED_RULES) {
       expect(r.statusCode, r.destination).toBe(301);
       expect(r.destination, "a canonical path is lower-case ASCII, so it holds no `%`").toMatch(/^\/[a-z0-9\-/]+$/);
-      for (const p of [r.destination, `${r.destination}.rsc`, `${r.destination}/`]) {
+      for (const p of [r.destination, `${r.destination}.rsc`, `${r.destination}/`, `${r.destination}.segments/_tree.segment.rsc`]) {
         expect(hits(p), `${p} matches a redirect rule: a request for it would loop`).toEqual([]);
       }
       const escaped = `/%${hex(r.destination[1]!).toUpperCase()}${r.destination.slice(2)}`;

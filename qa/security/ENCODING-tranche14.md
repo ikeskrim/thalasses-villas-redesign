@@ -47,7 +47,15 @@ Served by `next start` on :3005, from the build in this commit.
 - **Full QA:** 627 passed, 0 failed, 19 skipped, across the three shards. WebKit smoke 14 / 14.
 - **The build:** `.next/routes-manifest.json` holds 35 × 301 and 52 × 308 (51 legacy rules plus Next's internal trailing-slash rule). `.next/server/functions-config-manifest.json` is unchanged, so the proxy covers no new path.
 
-**One unexplained failure.** In the first suite run after the server started, "spellings that do not decode once to a page are not redirected" failed once. It has not reproduced: the same test passed in the two runs after it, and all 13 of its spellings answered 404 in three further rounds of direct requests (39 requests). The cause was not established. Two other worktrees were building and serving on this machine at the time.
+**One unexplained failure.** In the first suite run after the server started, "spellings that do not decode once to a page are not redirected" failed once. It did not reproduce: the same test passed in the two runs after it, and all 13 of its spellings answered 404 in three further rounds of direct requests (39 requests). The cause was not established. It may belong to the local defect below, which can make a neighbouring test fail in either direction; two other worktrees were also building and serving on this machine at the time.
+
+**A local defect this work found, in `next start` on Windows.** Requesting the escaped-capital spelling of a **dynamic** route's slug overwrites the canonical page's prerendered files with the 404 render.
+
+- **What happens.** `/en/villas/%56illa-thoi` decodes to the slug `Villa-thoi`, which `generateStaticParams` does not list, so the page 404s. Windows paths are case-insensitive, and Next then wrote that 404 render over `.next/server/app/en/villas/villa-thoi.html`, which fell from about 180 KB to 16 KB (the file's own timestamp moved to the moment of the request). Its `.rsc`, `.meta` and `.segments` files were rewritten with it.
+- **What follows.** The canonical URL answers 404 until the next build, and the 404 body carries the flight data of the case-variant request. Three unrelated tests then failed in one run: the sitemap's "nothing 404s", "every destination answers 200" and the redirect map's dead-target check. The other four villa prerenders were untouched.
+- **On the deployment it does not happen.** Before and after the same request, `/en/villas/villa-thoi` answered 200 on production, and the case-variant answered 404 (measured 2026-09-18).
+- **What was done.** The spelling was taken out of the served not-redirected list, and that list now requests only static routes. The dynamic-route spelling is still checked against the compiled rules in the loop-guard test, which makes no request. A rebuild restored the page.
+- **Not established:** whether a case-insensitive cache key or the case-insensitive filesystem is the cause, and whether any Linux deployment can be made to do the same.
 
 ## 4. Falsified
 
