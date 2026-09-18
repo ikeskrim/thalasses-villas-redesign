@@ -10,8 +10,9 @@ import type Lenis from "lenis";
  * library exists to remove.
  *
  * WHY A MODULE HANDLE RATHER THAN A CONTEXT. GSAP is a dependency of this
- * project but is used on **no page of the live site** — Framer Motion is the
- * motion library in play. Putting a provider (and therefore GSAP's
+ * project but is used on **no page of the live site** — and since D-034 neither
+ * is Framer Motion: the site's motion is CSS, one Web Animation and one
+ * `IntersectionObserver`. Putting a provider (and therefore GSAP's
  * ScrollTrigger) at the root would add roughly 33 kB gzip to every page of a
  * site whose homepage already carries a long-task problem, to serve one
  * component at the very bottom of one route.
