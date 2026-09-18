@@ -99,23 +99,48 @@ const ENTRIES = [
   { path: "/en/contacts", expect: "static" },
   { path: "/en/no-such-page", expect: "static" },
   /*
-   * THE CONTACT PATH, PERCENT-ENCODED (qa/security/ENCODING-tranche13.md). Every
-   * spelling that decodes to the page returned 500 on Vercel; src/proxy.ts now
-   * sends it to the literal page, flight-data forms included (the proxy answers
-   * before Next's 307 for a bare `RSC: 1`). A deployment without that change
-   * fails these entries: record the failure, never weaken the entry.
+   * PERCENT-ENCODED SPELLINGS OF A PAGE: 301 TO THE LITERAL PAGE (DECISIONS.md
+   * D-028). On Vercel every spelling that decoded to /en/contact returned 500
+   * (qa/security/ENCODING-tranche13.md), and D-025 sent them to the page with a
+   * 308 from src/proxy.ts; the same spellings of the prerendered pages returned
+   * the page itself, a duplicate URL. next.config.ts now redirects every
+   * spelling that decodes once to a page, flight-data forms included, with a
+   * 301 from a generated config rule (scripts/build-encoded-redirects.mjs),
+   * which runs before the proxy. Next keeps config rules off `/_next/**`, so the
+   * `_next/data` spelling of the contact page is still the proxy's, at 301 too:
+   * under `next start` it carries `x-nextjs-redirect` and no Location, while on
+   * Vercel (at 308, before D-028) it carried a Location inside `/_next/data/`.
+   * So its target is judged as a data path to the page, whichever header
+   * carries it. A deployment without the change fails these entries (the
+   * contact ones on 308, the others on 200 or 404): record the failure, never
+   * weaken the entry.
+   *
+   * `/EN/%74he-estate` measures a platform property rather than D-028's
+   * requirement: Next compiles these sources case-insensitively (measured under
+   * `next start`, and on Vercel with a legacy rule). If Vercel answers 404
+   * there, that is the stricter outcome: update this entry and say so in the
+   * record, rather than holding the deploy.
    */
-  { path: "/en/%63ontact", expect: "redirect", status: 308, location: "/en/contact" },
-  { path: "/en/c%6Fntact?enquiry=estate", expect: "redirect", status: 308, location: "/en/contact?enquiry=estate" },
-  { path: "/%65n/contact", expect: "redirect", status: 308, location: "/en/contact" },
-  { path: "/en%2Fcontact", expect: "redirect", status: 308, location: "/en/contact" },
-  { path: "/en/contact%2F", expect: "redirect", status: 308, location: "/en/contact" },
-  { path: "/en/%63ontact.rsc", expect: "redirect", status: 308, location: "/en/contact" },
-  { path: "/en/%63ontact", headers: { RSC: "1" }, expect: "redirect", status: 308, location: "/en/contact" },
+  { path: "/en/%63ontact", expect: "redirect", status: 301, location: "/en/contact" },
+  { path: "/en/c%6Fntact?enquiry=estate", expect: "redirect", status: 301, location: "/en/contact?enquiry=estate" },
+  { path: "/%65n/contact", expect: "redirect", status: 301, location: "/en/contact" },
+  { path: "/en%2Fcontact", expect: "redirect", status: 301, location: "/en/contact" },
+  { path: "/en/contact%2F", expect: "redirect", status: 301, location: "/en/contact" },
+  { path: "/en/%63ontact.rsc", expect: "redirect", status: 301, location: "/en/contact" },
+  { path: "/en/%63ontact", headers: { RSC: "1" }, expect: "redirect", status: 301, location: "/en/contact" },
+  { path: "/_next/data/check-headers/en/%63ontact.json", expect: "redirect", status: 301, dataTarget: { prefix: "/_next/data/", suffix: "/en/contact.json" } },
+  { path: "/en/%74he-estate", expect: "redirect", status: 301, location: "/en/the-estate" },
+  { path: "/en/the-estate%2F?enquiry=estate", expect: "redirect", status: 301, location: "/en/the-estate?enquiry=estate" },
+  { path: "/en/%74he-estate.rsc", expect: "redirect", status: 301, location: "/en/the-estate" },
+  { path: "/en/%74he-estate", headers: { RSC: "1" }, expect: "redirect", status: 301, location: "/en/the-estate" },
+  /* Next matches config sources case-insensitively: an upper-case spelling WITH an escape goes to the lower-case page too. */
+  { path: "/EN/%74he-estate", expect: "redirect", status: 301, location: "/en/the-estate" },
+  { path: "/en/villas/%76illa-thoi", expect: "redirect", status: 301, location: "/en/villas/villa-thoi" },
+  { path: "/en/experiences%2Fboat-trip", expect: "redirect", status: 301, location: "/en/experiences/boat-trip" },
   /* Not the class, so not redirected. The proxy is also matched against the decoded path, header sources against the raw one: both apply, both static. */
   { path: "/en/%63ontact.html", expect: "static", allowIdenticalDuplicate: true },
   { path: "/en/%2563ontact", expect: "static", status: 404 },
-  { path: "/en/%74he-estate", expect: "static" },
+  { path: "/en/%2574he-estate", expect: "static", status: 404 },
   { path: "/en/contact/", expect: "redirect" },
 ];
 
@@ -361,6 +386,8 @@ async function network(baseArg) {
      */
     if (e.expect === "redirect" || (res.status >= 300 && res.status <= 399)) {
       const sent = lines.location?.[0];
+      /* A `_next/data` redirect from the proxy carries its target here instead of in a Location (server/web/adapter.js). */
+      const dataTarget = lines["x-nextjs-redirect"]?.[0];
       if (e.expect === "redirect" && (res.status < 300 || res.status > 399)) problems.push(`expected a redirect, got ${res.status}`);
       if (e.expect !== "redirect") problems.push(`expected a ${e.expect} policy on a rendered response, got a ${res.status} redirect`);
       if (e.expect === "redirect" && e.status && res.status !== e.status) problems.push(`status ${res.status}, expected ${e.status}`);
@@ -374,7 +401,30 @@ async function network(baseArg) {
         if (!resolved) problems.push(`Location ${sent ?? "(none)"}, expected ${e.location}`);
         else if (resolved.origin !== base.origin || `${resolved.pathname}${resolved.search}` !== e.location) problems.push(`Location ${sent}, expected ${e.location} on ${base.origin}`);
       }
-      console.log(`${problems.length ? "FAIL" : e.status || e.location ? "PASS" : "info"} ${res.status} ${label.padEnd(48)} → ${sent ?? "-"}  CSP lines: ${csp.length} (a redirect is not rendered; headers not judged)${problems.length ? `\n     ${problems.join("\n     ")}` : ""}`);
+      /* Any redirect entry: a Location that is sent must stay on the checked origin. */
+      if (e.expect === "redirect" && sent !== undefined) {
+        let where = null;
+        try {
+          where = new URL(sent, base);
+        } catch {
+          /* reported below */
+        }
+        if (!where || where.origin !== base.origin) problems.push(`Location ${sent} leaves ${base.origin}`);
+      }
+      /* The `_next/data` redirect: its target (a Location on the platform, x-nextjs-redirect under next start) stays a data path to the page. */
+      if (e.expect === "redirect" && e.dataTarget) {
+        const target = sent ?? dataTarget;
+        let where = null;
+        try {
+          where = target === undefined ? null : new URL(target, base);
+        } catch {
+          /* reported below */
+        }
+        if (!where || where.origin !== base.origin || !where.pathname.startsWith(e.dataTarget.prefix) || !where.pathname.endsWith(e.dataTarget.suffix)) {
+          problems.push(`redirect target ${target ?? "(none)"}, expected ${e.dataTarget.prefix}…${e.dataTarget.suffix} on ${base.origin}`);
+        }
+      }
+      console.log(`${problems.length ? "FAIL" : e.status || e.location ? "PASS" : "info"} ${res.status} ${label.padEnd(48)} → ${sent ?? (dataTarget ? `(x-nextjs-redirect) ${dataTarget}` : "-")}  CSP lines: ${csp.length} (a redirect is not rendered; headers not judged)${problems.length ? `\n     ${problems.join("\n     ")}` : ""}`);
       failures += problems.length ? 1 : 0;
       continue;
     }

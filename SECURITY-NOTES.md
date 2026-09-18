@@ -185,10 +185,20 @@ the Vercel production deployment it returned 500**, still with exactly one
 static policy (`qa/security/production-headers-2026-09-14.txt`).
 
 That 500 turned out to be a class: every percent-encoded spelling that decodes
-to the contact page, and no other page. The proxy now answers the whole class
-with a 308 to the literal `/en/contact` (D-025,
+to the contact page, and no other page. The proxy answered the whole class with
+a 308 to the literal `/en/contact` (D-025,
 `qa/security/ENCODING-tranche13.md`). The exception behind the 500 is still not
 established.
+
+**Since D-032** (the owner's ruling D-028), every page answers **301** at its
+percent-encoded spellings, from one generated rule per page in `next.config.ts`
+(`qa/security/ENCODING-tranche14.md`). Two things follow for this section. The
+duplicate URLs the prerendered pages used to serve at those spellings are gone.
+And the contact class is answered by a config redirect before the proxy is
+reached, so the overlap above is now only about the spellings that are *not*
+redirected, such as `/en/%63ontact.html`: those still match both patterns and
+still get the static policy from each. `--compile` checks that partition
+unchanged.
 
 **What was checked, and what was not.**
 

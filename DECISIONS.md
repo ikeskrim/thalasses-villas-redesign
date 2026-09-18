@@ -752,7 +752,7 @@ Carries out D-021's "investigate `/en/%63ontact` → 500 as a path-encoding clas
 - **Not established:**
   - the exception behind the 500, which needs Vercel's runtime logs;
   - ~~whether Vercel runs the proxy before the step that fails~~. **Established after the deploy of 85899ba:** it does. check-headers against production passes all 31 entries, the seven class entries as 308 to the literal page, and the encoding table's contact rows that were 500 are 308 (`qa/security/encoding-table-production-2026-09-14-after-85899ba.md`).
-- **Not changed:** prerendered pages still answer at their percent-encoded spellings, a duplicate-URL exposure (record §2).
+- ~~**Not changed:** prerendered pages still answer at their percent-encoded spellings, a duplicate-URL exposure (record §2).~~ **Superseded by D-032** (the owner's ruling D-028): every page now answers 301 at those spellings, from generated `next.config.ts` rules, and this entry's 308 for the contact class is a 301. D-025's rejected option, "redirecting every decoded spelling site-wide", is what the owner asked for.
 
 ### D-026 · Scroll reveals rebuilt: the server HTML is the finished page (carrying out D-021)
 
@@ -1006,3 +1006,25 @@ D-028: "Over-budget WebM: lower resolution within ≤2.5 MB, MP4 fallback." Thos
   - Is "2.5 MB" 2,621,440 B, as the code has it? At 2,500,000 B the measured MP4s would already be over.
   - What should a portrait clip do in a landscape hero?
   - Should HDR footage be tone-mapped?
+
+### D-032 · The percent-encoded duplicates: one generated 301 per page (carrying out D-028)
+
+D-028: "Percent-encoded duplicate URLs: 301 to the canonical spelling." The record is `qa/security/ENCODING-tranche14.md`. This supersedes two things in D-025: its 308 for the contact class, and its rejection of "redirecting every decoded spelling site-wide" — which was rejected as broader than the fault then, and is what the owner has now asked for.
+
+- **The mechanism: generated `next.config.ts` redirects, one per canonical page.**
+  - `scripts/build-encoded-redirects.mjs` (run by `npm run redirects`, which `npm run build` runs first) writes `src/generated/encoded-redirects.json`: 35 rules, each a 301 to a literal page path.
+  - They live in their own generated file, appended after the legacy list, so `tests/redirects.spec.ts` and the parity counts still see only the legacy map.
+  - **The inventory** is the sitemap's pages: every non-dynamic `page.tsx` (including `/styleguide`), the five villa slugs and the 21 experience slugs. `/` has no rule. A spec fails if the two ever disagree.
+  - **Each source** accepts every character of the path or its `%XX` escape in either hex case, `/` or `%2F`, an optional trailing `%2F` and an optional `.rsc`, and requires at least one `%`.
+  - **Each destination is a fixed literal,** so no capture reaches a Location and there is no open redirect.
+- **Why not the proxy.** Vercel's Routing Middleware runs before the cache, so a matcher wide enough for these spellings would put a metered function in front of every page view, which is what D-012 and D-016 protect the prerendered pages from. Config redirects run before the proxy and the filesystem, on the raw path, and add no function to any URL.
+- **The proxy keeps its matcher and its CSP partition.** Its contact-class branch now answers 301, and only the `/_next/data` spelling still reaches it, because Next keeps config redirects off `/_next/**`.
+- **Deliberate consequences.**
+  - **Letter case.** Next compiles config sources case-insensitively, so `/EN/%74he-estate` is redirected too, always to the fixed lower-case page. An upper-case spelling without a `%` is still a 404. Whether Vercel agrees is a platform property, and the record says how a 404 there is handled.
+  - **Two hops** for a literal trailing slash: Next's own 308, then this 301.
+  - **The query is kept,** and the `_rsc` marker with it.
+  - **`next start` sends no config headers on a config redirect,** so a local 301 carries no CSP line. Vercel does send them.
+- **The guard.** The generator refuses a list where a path is not lower-case ASCII, where any destination (or its `.rsc` or trailing-slash form) matches any rule of either list, where a page's escaped or fully escaped spelling does not match exactly its own rule, or where an escape that decodes to another character matches any rule. `tests/security.spec.ts` repeats the check on the file that was written.
+  - **A known coupling:** the guard imports three `next/dist` modules, and the build runs the generator, so a Next upgrade that moves them fails the build. That is deliberate: it fails closed and loudly, rather than shipping unchecked rules.
+- **Not covered,** and recorded rather than guessed: `/`, the metadata routes, public assets, the literal segment-prefetch paths, and the `_next/data` forms of the prerendered pages. The `%2e` dot-segment spellings are unchanged (200 under `next start`, 404 on Vercel).
+- **Checks.** `check-headers` has 39 entries (the contact seven at 301, plus the pages, a query form, the flight forms, the case variant and the data form, whose target is now judged). `encoding-table.mjs` has a Location column and four more rows per route. Before the deploy, 15 of the 39 entries failed on production; that failure is in the record.

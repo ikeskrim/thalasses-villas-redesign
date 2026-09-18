@@ -15,9 +15,22 @@
  * a URL object or fetch() may normalise an escape before it leaves the machine,
  * which would test a different URL from the one in the table.
  *
- * Per row: status, the page the platform matched (x-matched-path, when sent),
- * content type, the number of raw Content-Security-Policy header LINES (not a
- * folded value), body bytes, and the region hops in x-vercel-id.
+ * Per row: status, the Location (or, for a `_next/data` redirect under
+ * `next start`, Next's `x-nextjs-redirect`), the page the platform matched
+ * (x-matched-path, when sent), content type, the number of raw
+ * Content-Security-Policy header LINES (not a folded value), body bytes, and the
+ * region hops in x-vercel-id.
+ *
+ * Since D-028 every spelling that decodes once to a page is meant to answer 301
+ * to the literal page, its query kept (next.config.ts, generated rules). The
+ * query row shows whether the query survives. The last three rows per route are
+ * the prefetch and data forms, so the table shows what is left:
+ *  - a segment prefetch as a literal `.segments/…segment.rsc` path, which the
+ *    rules do not match;
+ *  - the same prefetch as the headers Next's client sends on the page's own
+ *    URL, where the path is an ordinary spelling of the page;
+ *  - a `/_next/data/<id>/<page>.json` URL, which Next keeps out of config
+ *    redirects (for the contact page, src/proxy.ts still answers it).
  */
 import fs from "node:fs";
 import http from "node:http";
@@ -48,9 +61,10 @@ function spellings(route) {
   const esc = hex(last[at]);
   const lastEsc = (e) => last.slice(0, at) + e + last.slice(at + 1);
   const first = hex(last[0]);
+  const escapedFirst = withLast(first + last.slice(1));
   return [
     { name: "plain", path: route },
-    { name: "first letter, %XX", path: withLast(first + last.slice(1)) },
+    { name: "first letter, %XX", path: escapedFirst },
     { name: "hex letter, lower-case escape", path: withLast(lastEsc(esc.toLowerCase())) },
     { name: "hex letter, upper-case escape", path: withLast(lastEsc("%" + esc.slice(1).toUpperCase())) },
     { name: "locale segment encoded", path: route.replace(/^\/en\//, `/${hex("e")}n/`) },
@@ -62,8 +76,16 @@ function spellings(route) {
     { name: "trailing %20", path: `${route}%20` },
     { name: "appended %C3%A9", path: `${route}%C3%A9` },
     { name: "locale upper-case", path: route.replace(/^\/en\//, "/EN/") },
-    { name: "first letter encoded + .rsc", path: withLast(first + last.slice(1)) + ".rsc" },
-    { name: "first letter encoded, RSC header", path: withLast(first + last.slice(1)), headers: { RSC: "1" } },
+    { name: "first letter encoded + .rsc", path: escapedFirst + ".rsc" },
+    { name: "first letter encoded, RSC header", path: escapedFirst, headers: { RSC: "1" } },
+    { name: "first letter encoded + query", path: `${escapedFirst}?enquiry=estate&note=a%20b` },
+    { name: "first letter encoded, segment prefetch path", path: `${escapedFirst}.segments/_tree.segment.rsc` },
+    {
+      name: "first letter encoded, segment prefetch headers",
+      path: escapedFirst,
+      headers: { RSC: "1", "Next-Router-Prefetch": "1", "Next-Router-Segment-Prefetch": "/_tree" },
+    },
+    { name: "first letter encoded, _next/data", path: `/_next/data/encoding-table${escapedFirst}.json` },
   ];
 }
 
@@ -81,8 +103,10 @@ function get(path, headers = {}) {
           let csp = 0;
           for (let k = 0; k < raw.length; k += 2) if (raw[k].toLowerCase() === "content-security-policy") csp++;
           const id = String(res.headers["x-vercel-id"] ?? "");
+          const location = res.headers.location ?? (res.headers["x-nextjs-redirect"] ? `(x-nextjs-redirect) ${res.headers["x-nextjs-redirect"]}` : "–");
           resolve({
             status: res.statusCode,
+            location,
             matched: String(res.headers["x-matched-path"] ?? "–"),
             type: String(res.headers["content-type"] ?? "–").split(";")[0],
             csp,
@@ -92,7 +116,7 @@ function get(path, headers = {}) {
         });
       }
     );
-    req.on("error", (e) => resolve({ status: "ERR", matched: e.code ?? e.message, type: "–", csp: 0, bytes: 0, hops: "–" }));
+    req.on("error", (e) => resolve({ status: "ERR", location: "–", matched: e.code ?? e.message, type: "–", csp: 0, bytes: 0, hops: "–" }));
     req.end();
   });
 }
@@ -102,14 +126,15 @@ const lines = [
   "",
   `Run ${new Date().toISOString()} with \`node scripts/encoding-table.mjs\`. Paths are sent exactly as written.`,
   "",
-  "| route | spelling | path sent | status | matched page | type | CSP lines | bytes | region hops |",
-  "|---|---|---|---|---|---|---|---|---|",
+  "| route | spelling | path sent | status | Location | matched page | type | CSP lines | bytes | region hops |",
+  "|---|---|---|---|---|---|---|---|---|---|",
 ];
 for (const route of ROUTES) {
   for (const s of spellings(route)) {
     const r = await get(s.path, s.headers);
+    const sentHeaders = s.headers ? ` (${Object.entries(s.headers).map(([k, v]) => `${k}: ${v}`).join(", ")})` : "";
     lines.push(
-      `| \`${route}\` | ${s.name}${s.headers ? " (RSC: 1)" : ""} | \`${s.path}\` | ${r.status} | \`${r.matched}\` | ${r.type} | ${r.csp} | ${r.bytes} | ${r.hops} |`
+      `| \`${route}\` | ${s.name}${sentHeaders} | \`${s.path}\` | ${r.status} | \`${r.location}\` | \`${r.matched}\` | ${r.type} | ${r.csp} | ${r.bytes} | ${r.hops} |`
     );
   }
 }
