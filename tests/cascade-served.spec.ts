@@ -277,7 +277,18 @@ test.describe("cascade layers, as served", () => {
      * outranked `components` and `utilities` across the whole site. Nothing
      * collided, so nothing looked wrong. This pins it.
      */
-    await page.goto("/", { waitUntil: "load" });
+    /*
+     * `domcontentloaded`, not `load`: all this reads from the page is the
+     * parser-blocking stylesheet's href, which is in the head; the sheet itself
+     * is then fetched through the request context, so no photograph changes
+     * anything asserted below. Waiting for `load` waited for every rendition on
+     * the heaviest page on the site instead, and on 2026-09-18 that timed out
+     * at 30s under Next's on-demand image optimiser queue — one run failed
+     * here and the same test passed on the re-run, which is a failure that
+     * says nothing about the cascade. Same reasoning, and the same defect, as
+     * `reveal.spec.ts`'s structural guard.
+     */
+    await page.goto("/", { waitUntil: "domcontentloaded" });
     const href = await page.evaluate(
       () => document.querySelector<HTMLLinkElement>('link[rel="stylesheet"]')?.getAttribute("href") ?? ""
     );

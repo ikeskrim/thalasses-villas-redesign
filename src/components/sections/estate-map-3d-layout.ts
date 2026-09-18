@@ -406,12 +406,38 @@ function segmentsCross(a: [number, number, number, number], b: [number, number, 
   return side(x1, y1, x2, y2, x3, y3) * side(x1, y1, x2, y2, x4, y4) < 0 && side(x3, y3, x4, y4, x1, y1) * side(x3, y3, x4, y4, x2, y2) < 0;
 }
 
-export function layoutLabels(
+export type LayoutOptions = { inset?: number; pad?: number; massing?: Massing[] };
+
+/**
+ * The label layout, all at once. The same search as `layoutLabelsSteps`, run to
+ * the end in one call. Nothing in the page calls this: the diagram's build and
+ * every resize drive the generator a step per task (EstateMap3D's
+ * `layoutFrame`), because the whole search in one task is the longest task the
+ * diagram has. It stays for the tests, which check step for step that the two
+ * agree, and it is the definition of what they must agree on.
+ */
+export function layoutLabels(labels: LabelInput[], frame: { w: number; h: number }, avoid: Box[] = [], options: LayoutOptions = {}): Box[] {
+  const steps = layoutLabelsSteps(labels, frame, avoid, options);
+  for (;;) {
+    const r = steps.next();
+    if (r.done) return r.value;
+  }
+}
+
+/**
+ * THE LABEL LAYOUT, IN STEPS (D-028: "split the first-frame work into yielding
+ * tasks"). A generator that pauses after each unit of work, so a caller can
+ * give the main thread back between them: the fixed costs of one label's
+ * positions, then each of the three solve orders. The steps are the one search
+ * `layoutLabels` has always run, in the same order, so the result is the same
+ * whether it is run in one task or in many.
+ */
+export function* layoutLabelsSteps(
   labels: LabelInput[],
   frame: { w: number; h: number },
   avoid: Box[] = [],
-  { inset = 4, pad = 6, massing = [] }: { inset?: number; pad?: number; massing?: Massing[] } = {}
-): Box[] {
+  { inset = 4, pad = 6, massing = [] }: LayoutOptions = {}
+): Generator<void, Box[], void> {
   const inner: Box = { x: inset, y: inset, w: frame.w - 2 * inset, h: frame.h - 2 * inset };
 
   const options = labels.map((l) => {
@@ -430,9 +456,9 @@ export function layoutLabels(
    * What a position costs whatever the other buttons do: leaving the frame,
    * covering the note, covering massing, a leader through massing or longer than
    * it needs to be, covering the helipad's letter. Computed once per option; the
-   * search below then only adds what depends on the others, which keeps a
-   * layout, and the three orders it is solved in, well inside one frame's work
-   * on a throttled phone.
+   * search below then only adds what depends on the others. Its cost on a
+   * throttled phone is not established (D-027), so the work is split: one
+   * label's options per step, then one solve order per step.
    */
   const fixedCost = (i: number, box: Box, base: number) => {
     const l = labels[i]!;
@@ -464,7 +490,10 @@ export function layoutLabels(
     });
     return c;
   };
-  for (const [i, list] of options.entries()) for (const o of list) o.base = fixedCost(i, o.box, o.base);
+  for (const [i, list] of options.entries()) {
+    for (const o of list) o.base = fixedCost(i, o.box, o.base);
+    yield;
+  }
 
   const cost = (i: number, box: Box, fixed: number, placed: (Box | null)[]) => {
     const l = labels[i]!;
@@ -536,10 +565,12 @@ export function layoutLabels(
 
   const listOrder = labels.map((_, i) => i);
   let best = solve(listOrder);
+  yield;
   const worst = best.each.indexOf(Math.max(...best.each));
   for (const order of [[...listOrder].reverse(), [worst, ...listOrder.filter((i) => i !== worst)]]) {
     const next = solve(order);
     if (next.total < best.total) best = next;
+    yield;
   }
   return best.boxes;
 }

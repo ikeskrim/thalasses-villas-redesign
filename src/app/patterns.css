@@ -523,6 +523,34 @@
   overflow: hidden;
   background: var(--color-limestone);
 }
+/* THE STAGE (D-028). Rendered only when a render plan exists, so the public
+   build with a closed gate never has one. It takes the frame's place in the
+   section, margin included, and both frames stand in it with no margin of
+   their own, so the stage is exactly the 2D frame's box.
+   While the diagram is prepared (`data-state` is anything but `ready`) it
+   stands over the 2D frame at the stage's full size, hidden: not
+   display:none, because the build measures it. At `ready` the 2D frame leaves
+   the flow and the diagram takes its place at the same size, in one task, so
+   nothing on the page moves. */
+.estate-map-stage {
+  position: relative;
+  margin-top: var(--spacing-step-8);
+  max-width: 100%;
+}
+.estate-map-stage > .estate-map-frame {
+  margin-top: 0;
+}
+.estate-map-stage:not([data-state="ready"]) > .estate-map-frame--3d {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  visibility: hidden;
+}
+.estate-map-stage[data-state="ready"] > .estate-map-frame:not(.estate-map-frame--3d) {
+  display: none;
+}
 .estate-map-3d-canvas {
   position: absolute;
   inset: 0;

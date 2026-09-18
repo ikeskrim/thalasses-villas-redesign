@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 
-import { test, expect, type Locator, type Page } from "@playwright/test";
+import { test, expect, type CDPSession, type Locator, type Page } from "@playwright/test";
 
 import { HOTSPOTS } from "../src/app/home-data";
 import type { EstatePlan } from "../src/lib/estate-plan-gate";
@@ -27,6 +27,21 @@ import type { EstatePlan } from "../src/lib/estate-plan-gate";
  *    frame (B7); the ground renders the limestone token (B2);
  *  - the places the plan does not place are absent from the drawing, named in
  *    the note, and present in the numbered list, which is identical either way.
+ *
+ * And how it arrives (D-028: "defer the three.js load until idle and after first
+ * interaction, split the first-frame work into yielding tasks"):
+ *  - nothing is fetched until the reader has tapped, clicked or pressed a key,
+ *    AND the map is within range; scrolling, the wheel and a touch swipe are
+ *    not interactions;
+ *  - the fetch waits for a quiet period and an idle moment after both;
+ *  - the diagram is built hidden, and the 2D frame stays on screen until the
+ *    diagram is drawn and placed; the swap moves nothing and waits while the
+ *    reader is using the 2D map;
+ *  - a failure, reduced motion or leaving the page while it is being built
+ *    leaves the 2D map, with no errors.
+ * So every test that expects the diagram sends that first interaction, and
+ * every test that expects none sends it too: "never fetched" means nothing
+ * when nothing asked for it.
  */
 
 const ROUTE = "/en/the-estate";
@@ -34,6 +49,38 @@ const plan = JSON.parse(fs.readFileSync(path.join(process.cwd(), "content", "est
 const drawn = plan.elements.filter((e) => e.position !== null);
 const drawnIds = new Set(drawn.map((e) => e.id));
 const unplaced = plan.elements.filter((e) => e.position === null);
+
+/*
+ * The loader's waits, read from its source so the waits here follow them. A
+ * missing constant fails here rather than leaving a wait of zero.
+ */
+const GATE_SOURCE = fs.readFileSync(path.join(process.cwd(), "src", "components", "sections", "estate-map-3d-gate.ts"), "utf-8");
+const gateConstant = (name: string) => {
+  const m = new RegExp(`export const ${name} = (\\d+);`).exec(GATE_SOURCE);
+  if (!m) throw new Error(`estate-map-3d-gate.ts no longer declares ${name}; this spec's waits must be decided again`);
+  return Number(m[1]);
+};
+const QUIET_MS = gateConstant("QUIET_MS");
+/** After the last activity: the quiet period, the idle timeout, and 3 s for a request to be made. */
+const LOAD_ALLOWANCE_MS = QUIET_MS + gateConstant("IDLE_TIMEOUT_MS") + 3000;
+/** From a trigger to the swap: the same wait, plus the fetch and the build on a loaded machine. */
+const READY_TIMEOUT = 30_000;
+/*
+ * THE FLOOR ON HOW MANY TASKS A LAYOUT IS SPLIT INTO, counted at
+ * `scheduler.yield()`. Measured on this build: twelve tasks for the build's own
+ * label search and thirteen for a layout that answers a resize, against two
+ * when the search is put back into one task.
+ *
+ * WHY NOT WALL CLOCK. A chain of `scheduler.yield()` continuations outranks
+ * ordinary tasks, so a timer ping is starved for the whole chain and cannot
+ * measure the tasks inside it; and Chrome reports the whole chain as ONE
+ * `longtask` entry (measured on this build: a 191–200 ms "long task"
+ * spanning 13 separate yielded steps). Neither instrument can tell a split
+ * layout from a single task, and neither is what INP measures — input is
+ * dispatched ahead of the continuations, which is the whole point of yielding.
+ * What can be measured exactly is the split itself.
+ */
+const SPLIT_TASKS_MIN = 8;
 
 /*
  * THE PLACES THE DIAGRAM MUST OFFER, restated from the rules rather than
@@ -69,21 +116,109 @@ async function recordThree(page: Page) {
   return fetched;
 }
 
+/** Uncaught exceptions and console errors, both of which "no errors" rules out. */
+function watchErrors(page: Page) {
+  const errors: string[] = [];
+  page.on("pageerror", (e) => errors.push(`pageerror: ${e.message}`));
+  page.on("console", (m) => {
+    if (m.type() === "error") errors.push(`console.error: ${m.text()}`);
+  });
+  return errors;
+}
+
+/**
+ * The page hydrated and its effects run, so the loader is listening before a
+ * test interacts: React tags the nodes it hydrates, and an idle callback comes
+ * after the tasks that run the effects.
+ */
+async function hydrated(page: Page) {
+  await expect
+    .poll(() => page.evaluate(() => Object.keys(document.querySelector("section.estate-map") ?? {}).some((k) => k.startsWith("__reactFiber"))))
+    .toBe(true);
+  await page.evaluate(() => new Promise<void>((resolve) => requestIdleCallback(() => resolve(), { timeout: 2000 })));
+}
+
 async function scrollToMap(page: Page) {
+  await hydrated(page);
   await page.locator("section.estate-map").scrollIntoViewIfNeeded();
   await page.waitForTimeout(400);
 }
 
-/** The diagram, mounted and laid out (its buttons measured and placed). */
+const stage = (page: Page) => page.locator(".estate-map-stage");
+
+/** The page's `estate3d:*` marks, by phase, in ms since navigation. */
+const phaseMarks = (page: Page) =>
+  page.evaluate(() =>
+    Object.fromEntries(
+      performance
+        .getEntriesByType("mark")
+        .filter((m) => m.name.startsWith("estate3d:"))
+        .map((m) => [m.name.slice("estate3d:".length), m.startTime])
+    )
+  ) as Promise<Record<string, number>>;
+
+/**
+ * The reader's first interaction: a click, or a tap on a touch screen, on a
+ * list number, which does nothing else (it is not a link and not in the frame).
+ */
+async function sendTrigger(page: Page) {
+  const target = page.locator(".estate-map-list-index").first();
+  const url = page.url();
+  if (await page.evaluate(() => navigator.maxTouchPoints > 0)) await target.tap();
+  else await target.click();
+  expect(page.url(), "the trigger navigated").toBe(url);
+}
+
+/** The diagram, swapped in and laid out (its buttons measured and placed). */
 async function openDiagram(page: Page): Promise<Locator> {
   await page.goto(ROUTE);
   await scrollToMap(page);
+  await sendTrigger(page);
+  await expect(stage(page)).toHaveAttribute("data-state", "ready", { timeout: READY_TIMEOUT });
   const frame3d = page.locator(".estate-map-frame--3d[data-placed]");
-  await expect(frame3d).toBeVisible({ timeout: 15_000 });
+  await expect(frame3d).toBeVisible();
   await page.evaluate(() => document.fonts.ready);
   await page.waitForTimeout(200);
   return frame3d;
 }
+
+/**
+ * Slows every `scheduler.yield()` by `ms`, so the diagram's build (a chain of
+ * yields) lasts long enough for something to happen in the middle of it.
+ */
+async function slowYields(page: Page, ms = 150) {
+  await page.addInitScript((delay) => {
+    const s = (globalThis as { scheduler?: { yield?: () => Promise<void> } }).scheduler;
+    if (!s?.yield) return;
+    const original = s.yield.bind(s);
+    s.yield = () => new Promise<void>((resolve) => setTimeout(resolve, delay)).then(() => original());
+  }, ms);
+}
+
+type EventCounts = Record<"pointerdown" | "pointerup" | "pointercancel" | "keydown" | "scroll" | "wheel" | "touchmove" | "click", number>;
+
+/** Counts of the events the loader listens for, from the page's own listeners. */
+async function countEvents(page: Page) {
+  await page.addInitScript(() => {
+    const w = window as unknown as { __events: Record<string, number> };
+    w.__events = { pointerdown: 0, pointerup: 0, pointercancel: 0, keydown: 0, scroll: 0, wheel: 0, touchmove: 0, click: 0 };
+    for (const t of Object.keys(w.__events)) window.addEventListener(t, () => w.__events[t]!++, { capture: true, passive: true });
+  });
+  return () => page.evaluate(() => (window as unknown as { __events: EventCounts }).__events);
+}
+
+/** A touch swipe by CDP: a scroll, which ends in pointercancel and never in pointerup. */
+async function swipe(cdp: CDPSession, x: number, y: number, dy: number) {
+  await cdp.send("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: [{ x, y }] });
+  for (let k = 1; k <= 8; k++) await cdp.send("Input.dispatchTouchEvent", { type: "touchMove", touchPoints: [{ x, y: y + (dy * k) / 8 }] });
+  await cdp.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
+}
+
+const inRange = (page: Page) =>
+  page.evaluate(() => {
+    const r = document.querySelector("section.estate-map")!.getBoundingClientRect();
+    return r.top < window.innerHeight + 600 && r.bottom > -600;
+  });
 
 type Rect = { x: number; y: number; width: number; height: number };
 const intersects = (a: Rect, b: Rect) => a.x < b.x + b.width && b.x < a.x + a.width && a.y < b.y + b.height && b.y < a.y + a.height;
@@ -126,10 +261,17 @@ test.describe("3D estate map — review build", () => {
     const listBefore = await page.locator(".estate-map-list").innerText();
 
     await scrollToMap(page);
+    await expect(stage(page), "the diagram came before any interaction").toHaveAttribute("data-state", "2d");
+    await sendTrigger(page);
     const frame3d = page.locator(".estate-map-frame--3d");
-    await expect(frame3d).toBeVisible({ timeout: 15_000 });
+    await expect(frame3d).toBeVisible({ timeout: READY_TIMEOUT });
+    await expect(stage(page)).toHaveAttribute("data-state", "ready");
     await expect(frame3d.locator("canvas.estate-map-3d-canvas")).toHaveCount(1);
     await expect(page.locator(".estate-map-frame--preview")).toHaveCount(1);
+    /* The 2D frame has gone: the diagram is the only frame in the stage, and it is not hidden from anyone. */
+    await expect(page.locator(".estate-map-stage > .estate-map-frame")).toHaveCount(1);
+    await expect(frame3d).not.toHaveAttribute("inert", /.*/);
+    await expect(frame3d).not.toHaveAttribute("aria-hidden", /.*/);
 
     const box3d = await frame3d.boundingBox();
     expect(Math.abs((box3d?.width ?? 0) - (box2d?.width ?? 0))).toBeLessThanOrEqual(1);
@@ -602,22 +744,36 @@ test.describe("3D estate map — review build", () => {
      * well outside the gate's 600 px range, or the chunk is requested before the
      * preference changes. And the page must be hydrated, so the preference
      * changes after the gate's effect has run and is caught by its listener
-     * rather than read at mount (React tags the nodes it has hydrated).
+     * rather than read at mount (React tags the nodes it has hydrated). The
+     * reader has already interacted (a key press), so the range is all the
+     * loader still waits for.
      */
     const distance = await page.evaluate(() => document.querySelector("section.estate-map")!.getBoundingClientRect().top - window.innerHeight);
     expect(distance, "the map starts within the gate's range; this test would prove nothing").toBeGreaterThan(900);
     await expect
       .poll(() => page.evaluate(() => Object.keys(document.querySelector("section.estate-map")!).some((k) => k.startsWith("__reactFiber"))))
       .toBe(true);
+    /* Hydration tags the nodes before the loader's effect has run, so the key is pressed until the loader has heard it. */
+    await expect
+      .poll(
+        async () => {
+          await page.keyboard.press("Shift");
+          return Object.keys(await phaseMarks(page));
+        },
+        { message: "the key press did not reach the loader" }
+      )
+      .toEqual(["trigger"]);
     await page.waitForTimeout(500);
     expect(threeFetched).toEqual([]);
 
     await page.emulateMedia({ reducedMotion: "reduce" });
     await scrollToMap(page);
-    await page.waitForTimeout(1500);
+    await sendTrigger(page);
+    await page.waitForTimeout(LOAD_ALLOWANCE_MS);
     await expect(page.locator(".estate-map-frame--3d")).toHaveCount(0);
     await expect(page.locator(".estate-map-frame .estate-map-marker").first()).toBeAttached();
-    expect(threeFetched, "the observer outlived the preference and fetched three.js anyway").toEqual([]);
+    await expect(stage(page)).toHaveAttribute("data-state", "failed");
+    expect(threeFetched, "the loader outlived the preference and fetched three.js anyway").toEqual([]);
     expect(errors).toEqual([]);
   });
 
@@ -635,9 +791,13 @@ test.describe("3D estate map — review build", () => {
     const threeFetched = await recordThree(page);
     await page.goto(ROUTE);
     await scrollToMap(page);
-    await page.waitForTimeout(1500);
+    await sendTrigger(page);
+    await page.waitForTimeout(LOAD_ALLOWANCE_MS);
     await expect(page.locator(".estate-map-frame--3d")).toHaveCount(0);
     await expect(page.locator(".estate-map-frame .estate-map-marker").first()).toBeAttached();
+    /* The loader got as far as the probe, which is what kept three.js away. */
+    expect(Object.keys(await phaseMarks(page)), "the loader never reached the probe; this test proved nothing").toEqual(["trigger", "idle", "probe"]);
+    await expect(stage(page)).toHaveAttribute("data-state", "failed");
     expect(threeFetched).toEqual([]);
   });
 
@@ -648,9 +808,11 @@ test.describe("3D estate map — review build", () => {
     const threeFetched = await recordThree(page);
     await page.goto(ROUTE);
     await scrollToMap(page);
-    await page.waitForTimeout(1500);
+    await sendTrigger(page);
+    await page.waitForTimeout(LOAD_ALLOWANCE_MS);
     await expect(page.locator(".estate-map-frame--3d")).toHaveCount(0);
     await expect(page.locator(".estate-map-frame .estate-map-marker").first()).toBeAttached();
+    await expect(stage(page), "the stage (and so a plan) must be there, or this proves nothing").toHaveAttribute("data-state", "2d");
     expect(threeFetched).toEqual([]);
   });
 
@@ -660,10 +822,651 @@ test.describe("3D estate map — review build", () => {
       const threeFetched = await recordThree(page);
       await page.goto(ROUTE);
       await scrollToMap(page);
-      await page.waitForTimeout(1500);
+      await sendTrigger(page);
+      await page.keyboard.press("Shift");
+      await page.waitForTimeout(LOAD_ALLOWANCE_MS);
       await expect(page.locator(".estate-map-frame--3d")).toHaveCount(0);
       await expect(page.locator(".estate-map-frame .estate-map-marker").first()).toBeAttached();
+      await expect(stage(page), "the stage (and so a plan) must be there, or this proves nothing").toHaveAttribute("data-state", "2d");
       expect(threeFetched).toEqual([]);
+    });
+  });
+});
+
+test.describe("3D estate map — when it loads, and how it is swapped in (D-028)", () => {
+  test("scrolling and the wheel are not an interaction: nothing is fetched or mounted for 10 s; a click then loads the diagram", async ({ page }) => {
+    test.setTimeout(120_000);
+    const errors = watchErrors(page);
+    const events = await countEvents(page);
+    const threeFetched = await recordThree(page);
+    await page.goto(ROUTE);
+    await scrollToMap(page);
+    await expect(stage(page)).toHaveAttribute("data-state", "2d");
+
+    /* Ten seconds of reading by scrolling: the wheel, over and around the map, and the page scrolled to it by script. */
+    const started = Date.now();
+    for (let k = 0; Date.now() - started < 10_000; k++) {
+      await page.mouse.wheel(0, k % 2 ? -280 : 320);
+      await page.waitForTimeout(600);
+      if (k % 4 === 3) await scrollToMap(page);
+    }
+    await scrollToMap(page);
+    expect(await inRange(page), "the map was not in range: this proved nothing").toBe(true);
+    await page.waitForTimeout(LOAD_ALLOWANCE_MS);
+
+    const seen = await events();
+    expect(seen.wheel, "no wheel event reached the page").toBeGreaterThan(5);
+    expect(seen.scroll, "the page never scrolled").toBeGreaterThan(5);
+    expect(seen.pointerup + seen.keydown, "the page saw an interaction; the test is not what it says").toBe(0);
+    expect(threeFetched, "three.js was fetched with no interaction").toEqual([]);
+    expect(await phaseMarks(page), "the loader started with no interaction").toEqual({});
+    await expect(stage(page)).toHaveAttribute("data-state", "2d");
+    await expect(page.locator(".estate-map-frame--3d")).toHaveCount(0);
+
+    /* The positive control: the same page, one click, and the diagram arrives. */
+    await sendTrigger(page);
+    await expect(stage(page)).toHaveAttribute("data-state", "ready", { timeout: READY_TIMEOUT });
+    expect(threeFetched, "the click did not load three.js: the 10 s above proved nothing").toHaveLength(1);
+    expect(errors).toEqual([]);
+  });
+
+  test("an interaction before the map is in range fetches nothing until it is in range", async ({ page }) => {
+    test.setTimeout(90_000);
+    const errors = watchErrors(page);
+    const threeFetched = await recordThree(page);
+    await page.goto(ROUTE);
+    const distance = await page.evaluate(() => document.querySelector("section.estate-map")!.getBoundingClientRect().top - window.innerHeight);
+    expect(distance, "the map starts within range; this test would prove nothing").toBeGreaterThan(900);
+    await expect
+      .poll(() => page.evaluate(() => Object.keys(document.querySelector("section.estate-map")!).some((k) => k.startsWith("__reactFiber"))))
+      .toBe(true);
+
+    /* A click on the page's first heading and a key press, far above the map (pressed until the loader has heard it). */
+    await page.locator("h1").first().click();
+    await expect
+      .poll(async () => {
+        await page.keyboard.press("Shift");
+        return Object.keys(await phaseMarks(page));
+      })
+      .toContain("trigger");
+    await page.waitForTimeout(LOAD_ALLOWANCE_MS);
+    expect(await inRange(page), "the map came into range by itself").toBe(false);
+    expect(Object.keys(await phaseMarks(page)), "the interaction did not reach the loader, or the loader did not wait for range").toEqual(["trigger"]);
+    expect(threeFetched, "three.js was fetched before the map was in range").toEqual([]);
+    await expect(stage(page)).toHaveAttribute("data-state", "2d");
+
+    const reachedAt = await page.evaluate(() => performance.now());
+    await scrollToMap(page);
+    await expect(stage(page)).toHaveAttribute("data-state", "ready", { timeout: READY_TIMEOUT });
+    const m = await phaseMarks(page);
+    expect(m["import-start"]!, "the fetch did not follow the range").toBeGreaterThan(reachedAt);
+    expect(m.idle! - reachedAt, "the loader did not wait a quiet period after the map came into range").toBeGreaterThanOrEqual(QUIET_MS);
+    expect(threeFetched).toHaveLength(1);
+    expect(errors).toEqual([]);
+  });
+
+  test("the fetch waits for a quiet period after the reader's last activity, and the build's phases run in order", async ({ page }) => {
+    test.setTimeout(90_000);
+    const errors = watchErrors(page);
+    await page.addInitScript(() => {
+      const w = window as unknown as { __activity: number[] };
+      w.__activity = [];
+      for (const t of ["pointerdown", "keydown", "wheel", "touchmove", "scroll"]) {
+        window.addEventListener(t, () => w.__activity.push(performance.now()), { capture: true, passive: true });
+      }
+    });
+    await page.goto(ROUTE);
+    await scrollToMap(page);
+    await sendTrigger(page);
+    /* Busy for three seconds after the trigger: a small wheel movement every quarter second. */
+    for (let k = 0; k < 12; k++) {
+      await page.mouse.wheel(0, k % 2 ? -60 : 60);
+      await page.waitForTimeout(250);
+    }
+    const busyEnded = await page.evaluate(() => performance.now());
+    await expect(stage(page)).toHaveAttribute("data-state", "ready", { timeout: READY_TIMEOUT });
+
+    const m = await phaseMarks(page);
+    const activity = await page.evaluate(() => (window as unknown as { __activity: number[] }).__activity);
+    expect(activity.filter((t) => t > m.trigger!).length, "the busy period left no activity after the trigger").toBeGreaterThan(8);
+    const lastBefore = Math.max(...activity.filter((t) => t < m.idle!));
+    expect(m.idle! - lastBefore, "the loader went idle less than a quiet period after the last activity").toBeGreaterThanOrEqual(QUIET_MS);
+    expect(m.idle!, "the loader went idle while the reader was still busy").toBeGreaterThan(busyEnded);
+
+    const order = ["trigger", "idle", "probe", "import-start", "import-end", "renderer", "scene", "compile", "compiled", "layout", "swap", "shown"];
+    for (const name of order) expect(m[name], `no estate3d:${name} mark`).toBeDefined();
+    for (let i = 1; i < order.length; i++) {
+      expect(m[order[i]!]!, `estate3d:${order[i]} came before estate3d:${order[i - 1]}`).toBeGreaterThanOrEqual(m[order[i - 1]!]!);
+    }
+    expect(errors).toEqual([]);
+  });
+
+  test("the 2D frame stays on screen until the diagram is drawn and placed, and they change places in one frame", async ({ page }) => {
+    test.setTimeout(90_000);
+    const errors = watchErrors(page);
+    /*
+     * The yields are slowed so the ORDER is observable. This is a test of order,
+     * not of speed: on an unthrottled desktop the whole build takes about 50 ms
+     * (renderer to swap), and a headless browser produces frames on demand, so a
+     * rAF sampler is not guaranteed to tick inside a window that short — the
+     * sampler then never sees the diagram being prepared and the check passes
+     * for the wrong reason, or fails for one. Slowed, the preparation spans
+     * seconds and every frame in it must show the 2D map. The swap itself is one
+     * task and is not slowed, so "they change places in one frame" still means
+     * between two consecutive samples. `the swap shifts nothing` runs the same
+     * swap at full speed.
+     */
+    await slowYields(page);
+    await page.addInitScript(() => {
+      type Sample = { t: number; state: string | null; twoD: boolean; threeD: boolean; staged: boolean; placed: boolean; clears: number };
+      const w = window as unknown as { __clears: number; __samples: Sample[] };
+      w.__clears = 0;
+      w.__samples = [];
+      const clear = WebGL2RenderingContext.prototype.clear;
+      WebGL2RenderingContext.prototype.clear = function (this: WebGL2RenderingContext, mask: number) {
+        w.__clears++;
+        return clear.call(this, mask);
+      };
+      const shows = (el: Element | null) => {
+        if (!el) return false;
+        const s = getComputedStyle(el);
+        return s.display !== "none" && s.visibility === "visible";
+      };
+      const sample = () => {
+        const box = document.querySelector(".estate-map-stage");
+        if (box) {
+          const two = box.querySelector(":scope > .estate-map-frame:not(.estate-map-frame--3d)");
+          const three = box.querySelector(":scope > .estate-map-frame--3d");
+          w.__samples.push({
+            t: performance.now(),
+            state: box.getAttribute("data-state"),
+            twoD: shows(two),
+            threeD: shows(three),
+            staged: !!three && !shows(three),
+            placed: three?.getAttribute("data-placed") === "true",
+            clears: w.__clears,
+          });
+        }
+        requestAnimationFrame(sample);
+      };
+      requestAnimationFrame(sample);
+    });
+    await page.goto(ROUTE);
+    await scrollToMap(page);
+    await sendTrigger(page);
+    await expect(stage(page)).toHaveAttribute("data-state", "ready", { timeout: READY_TIMEOUT });
+    await page.waitForTimeout(500);
+    const samples = await page.evaluate(
+      () => (window as unknown as { __samples: { t: number; state: string | null; twoD: boolean; threeD: boolean; staged: boolean; placed: boolean; clears: number }[] }).__samples
+    );
+
+    expect(samples.length, "the sampler barely ran").toBeGreaterThan(30);
+    const prepared = samples.filter((s) => s.staged && s.twoD);
+    expect(prepared.length, "the sampler never saw the diagram being prepared behind the 2D frame").toBeGreaterThan(0);
+    const empty = samples.filter((s) => !s.twoD && !s.threeD);
+    expect(empty, "a frame showed neither map").toEqual([]);
+    const both = samples.filter((s) => s.twoD && s.threeD);
+    expect(both, "a frame showed both maps").toEqual([]);
+    const early = samples.filter((s) => s.threeD && (!s.placed || s.clears === 0));
+    expect(early, "the diagram was shown before it was drawn and placed").toEqual([]);
+    /*
+     * Last, because it is about the instrument and not about the page: the
+     * slowed yields must have been in force, or a fast build could have slipped
+     * between two frames and the checks above would have proved nothing.
+     */
+    expect(prepared.at(-1)!.t - prepared[0]!.t, "the preparation was too short to have been sampled reliably: is slowYields in force?").toBeGreaterThan(300);
+    const first = samples.findIndex((s) => s.threeD);
+    expect(first, "the sampler never saw the diagram").toBeGreaterThan(0);
+    expect(samples[first - 1]!.twoD, "the frame before the swap did not show the 2D map").toBe(true);
+    expect(samples.slice(first).every((s) => s.threeD), "the 2D map came back after the swap").toBe(true);
+    expect(errors).toEqual([]);
+  });
+
+  test("the swap shifts nothing: no layout-shift entries, the same box, and the list does not move", async ({ page }) => {
+    test.setTimeout(90_000);
+    const errors = watchErrors(page);
+    await page.addInitScript(() => {
+      const w = window as unknown as { __shifts: { t: number; value: number; recent: boolean }[] };
+      w.__shifts = [];
+      new PerformanceObserver((list) => {
+        for (const e of list.getEntries() as (PerformanceEntry & { value: number; hadRecentInput: boolean })[]) {
+          w.__shifts.push({ t: e.startTime, value: e.value, recent: e.hadRecentInput });
+        }
+      }).observe({ type: "layout-shift", buffered: true });
+    });
+    await page.goto(ROUTE);
+    await scrollToMap(page);
+    await page.waitForTimeout(1500);
+    const boxes = () =>
+      page.evaluate(() => {
+        const onPage = (el: Element | null) => {
+          const r = el!.getBoundingClientRect();
+          return { x: r.x + window.scrollX, y: r.y + window.scrollY, width: r.width, height: r.height };
+        };
+        return {
+          frame: onPage(document.querySelector(".estate-map-stage > .estate-map-frame")),
+          stage: onPage(document.querySelector(".estate-map-stage")),
+          list: onPage(document.querySelector(".estate-map-list")),
+          cta: onPage(document.querySelector(".estate-map-cta")),
+        };
+      });
+    const before = await boxes();
+    await sendTrigger(page);
+    await expect(stage(page)).toHaveAttribute("data-state", "ready", { timeout: READY_TIMEOUT });
+    await page.waitForTimeout(1000);
+    const after = await boxes();
+    const m = await phaseMarks(page);
+    const shifts = await page.evaluate(() => (window as unknown as { __shifts: { t: number; value: number; recent: boolean }[] }).__shifts);
+
+    expect(shifts.filter((s) => s.t >= m.trigger! && s.value > 0), "layout shifts after the trigger").toEqual([]);
+    for (const k of ["stage", "list", "cta"] as const) {
+      for (const p of ["x", "y", "width", "height"] as const) expect(Math.abs(after[k][p] - before[k][p]), `${k}.${p} moved across the swap`).toBeLessThanOrEqual(0.5);
+    }
+    const frame3d = await page.evaluate(() => {
+      const r = document.querySelector(".estate-map-frame--3d")!.getBoundingClientRect();
+      return { x: r.x + window.scrollX, y: r.y + window.scrollY, width: r.width, height: r.height };
+    });
+    for (const p of ["x", "y", "width", "height"] as const) expect(Math.abs(frame3d[p] - before.frame[p]), `the diagram's ${p} is not the 2D frame's`).toBeLessThanOrEqual(0.5);
+    expect(errors).toEqual([]);
+  });
+
+  test("the swap waits while a 2D card is open, while focus stays on its marker, and while the card is open with focus elsewhere", async ({ page }) => {
+    test.setTimeout(180_000);
+    const errors = watchErrors(page);
+    await page.goto(ROUTE);
+    await scrollToMap(page);
+    const marker = page.locator(".estate-map-frame .estate-map-marker").first();
+    /* The trigger is this click: it opens a card. */
+    await marker.click();
+    await expect(marker).toHaveAttribute("aria-expanded", "true");
+    const card = page.locator(`#${await marker.getAttribute("aria-controls")}`);
+    await expect(card).toBeVisible();
+
+    await expect(page.locator(".estate-map-frame--3d[data-placed]"), "the diagram was never built").toHaveCount(1, { timeout: READY_TIMEOUT });
+    await page.waitForTimeout(3000);
+    await expect(stage(page), "the swap went ahead over an open card").toHaveAttribute("data-state", "preparing");
+    await expect(card, "the open card was lost").toBeVisible();
+    let m = await phaseMarks(page);
+    expect(m.swap, "the diagram did not signal ready").toBeDefined();
+    expect(m.shown, "the diagram was shown over an open card").toBeUndefined();
+
+    /*
+     * THE STAGED DIAGRAM WHILE IT WAITS: inert and out of the accessibility
+     * tree, as well as invisible. `visibility: hidden` in patterns.css takes it
+     * out of both on its own, so without these assertions neither attribute is
+     * pinned by anything and one CSS line changed to `opacity: 0` would expose
+     * a hidden frame carrying the preview note and eleven place buttons.
+     */
+    const staged3d = page.locator(".estate-map-frame--3d");
+    expect(await staged3d.getAttribute("inert"), "the staged diagram is not inert").not.toBeNull();
+    await expect(staged3d, "the staged diagram is not hidden from the accessibility tree").toHaveAttribute("aria-hidden", "true");
+    expect(await page.locator("section.estate-map").ariaSnapshot(), "the staged diagram's note is in the section's accessible content").not.toContain("Preview");
+
+    /*
+     * THE OPEN CARD ON ITS OWN. Tab out of the 2D frame, past the card's own
+     * Visit link: nothing in the 2D map closes a card but its own marker, so
+     * the card is still open with focus outside the frame, and the hold now
+     * rests on the card alone. Each Tab is also a `keyup`, which is what ends a
+     * hold — the swap is retried and must find the card. Without this the two
+     * halves of the hold are never separated: the click that opened the card
+     * also focused its marker.
+     */
+    let left = false;
+    for (let k = 0; k < 16 && !left; k++) {
+      await page.keyboard.press("Tab");
+      left = await page.evaluate(() => {
+        const f = document.querySelector(".estate-map-stage > .estate-map-frame:not(.estate-map-frame--3d)");
+        return !!f && !f.contains(document.activeElement);
+      });
+    }
+    expect(left, "focus never left the 2D frame: the open card was not isolated").toBe(true);
+    await expect(card, "the card closed when focus left it: the open-card hold was not isolated").toBeVisible();
+    await page.waitForTimeout(3000);
+    await expect(stage(page), "the swap went ahead over an open card with focus elsewhere").toHaveAttribute("data-state", "preparing");
+    expect((await phaseMarks(page)).shown, "the diagram was shown over an open card with focus elsewhere").toBeUndefined();
+
+    /* Closed with the marker, which keeps focus: held on focus alone. */
+    await marker.click();
+    await expect(card).toBeHidden();
+    await expect(marker).toBeFocused();
+    await page.waitForTimeout(3000);
+    await expect(stage(page), "the swap took the focused marker away").toHaveAttribute("data-state", "preparing");
+
+    /* Focus leaves the 2D map (a click on a list number sends it to the page): the swap follows. */
+    await page.locator(".estate-map-list-index").first().click();
+    await expect(stage(page)).toHaveAttribute("data-state", "ready", { timeout: 10_000 });
+    m = await phaseMarks(page);
+    expect(m.shown).toBeDefined();
+    await expect(page.locator(".estate-map-frame--3d")).toBeVisible();
+    /* And now the diagram IS part of the section's accessible content: the check made while it waited was a live one. */
+    expect(await page.locator("section.estate-map").ariaSnapshot(), "the diagram's note never reached the accessible content").toContain("Preview");
+    expect(errors).toEqual([]);
+  });
+
+  test("keyboard: the swap waits while a marker has focus, and after a Tab out focus stays where the reader put it", async ({ page }) => {
+    test.setTimeout(120_000);
+    const errors = watchErrors(page);
+    await page.goto(ROUTE);
+    await scrollToMap(page);
+    const last = page.locator(".estate-map-frame .estate-map-marker").last();
+    await last.focus();
+    /* The trigger is a key press, with focus on the marker. */
+    await page.keyboard.press("Shift");
+    await expect(page.locator(".estate-map-frame--3d[data-placed]"), "the diagram was never built").toHaveCount(1, { timeout: READY_TIMEOUT });
+    await page.waitForTimeout(3000);
+    await expect(stage(page), "the swap took the focused marker away").toHaveAttribute("data-state", "preparing");
+    await expect(last).toBeFocused();
+
+    /* Out of the 2D frame: past the hidden diagram (inert) to the list's first link. */
+    await page.keyboard.press("Tab");
+    const firstLink = page.locator(".estate-map-list a").first();
+    await expect(firstLink, "Tab from the last marker went somewhere other than the list").toBeFocused();
+    await expect(stage(page)).toHaveAttribute("data-state", "ready", { timeout: 10_000 });
+    await expect(firstLink, "the swap moved focus").toBeFocused();
+    expect(errors).toEqual([]);
+  });
+
+  test("reduced motion turned on while the diagram is being prepared: the 2D map, nothing shown, focus not moved, no errors", async ({ page }) => {
+    test.setTimeout(90_000);
+    const errors = watchErrors(page);
+    await slowYields(page);
+    await page.goto(ROUTE);
+    await scrollToMap(page);
+    await sendTrigger(page);
+    await expect.poll(async () => Object.keys(await phaseMarks(page)), { timeout: READY_TIMEOUT }).toContain("scene");
+    await expect(page.locator(".estate-map-frame--3d canvas.estate-map-3d-canvas"), "the renderer was not being built").toHaveCount(1);
+    const focused = await page.evaluate(() => document.activeElement?.outerHTML.slice(0, 80) ?? null);
+
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    await expect(stage(page)).toHaveAttribute("data-state", "failed");
+    await expect(page.locator(".estate-map-frame--3d")).toHaveCount(0);
+    await expect(page.locator("section.estate-map canvas")).toHaveCount(0);
+    await expect(page.locator(".estate-map-frame .estate-map-marker").first()).toBeAttached();
+    await page.emulateMedia({ reducedMotion: "no-preference" });
+    await page.waitForTimeout(3000);
+    await expect(page.locator(".estate-map-frame--3d"), "the diagram came back").toHaveCount(0);
+    expect(Object.keys(await phaseMarks(page)), "the build went on after reduced motion").not.toContain("swap");
+    expect(await page.evaluate(() => document.activeElement?.outerHTML.slice(0, 80) ?? null), "focus was moved").toBe(focused);
+    expect(errors).toEqual([]);
+  });
+
+  test("a context lost while the diagram is being prepared: the 2D map, nothing shown, no errors", async ({ page }) => {
+    test.setTimeout(90_000);
+    const errors = watchErrors(page);
+    await slowYields(page);
+    await page.addInitScript(() => {
+      const w = window as unknown as { __lost: boolean };
+      w.__lost = false;
+      new PerformanceObserver((list) => {
+        if (!list.getEntries().some((e) => e.name === "estate3d:compile")) return;
+        const canvas = document.querySelector<HTMLCanvasElement>("canvas.estate-map-3d-canvas");
+        const gl = canvas?.getContext("webgl2");
+        const ext = gl?.getExtension("WEBGL_lose_context");
+        if (!ext) return;
+        ext.loseContext();
+        w.__lost = true;
+      }).observe({ type: "mark" });
+    });
+    await page.goto(ROUTE);
+    await scrollToMap(page);
+    await sendTrigger(page);
+    await expect(stage(page)).toHaveAttribute("data-state", "failed", { timeout: READY_TIMEOUT });
+    expect(await page.evaluate(() => (window as unknown as { __lost: boolean }).__lost), "the context was never lost: this proved nothing").toBe(true);
+    await expect(page.locator(".estate-map-frame--3d")).toHaveCount(0);
+    await expect(page.locator("section.estate-map canvas")).toHaveCount(0);
+    await expect(page.locator(".estate-map-frame .estate-map-marker").first()).toBeAttached();
+    await page.waitForTimeout(2000);
+    expect(Object.keys(await phaseMarks(page)), "the build went on after the context was lost").not.toContain("swap");
+    expect(errors).toEqual([]);
+  });
+
+  test("leaving the page while the diagram is being prepared: no errors, and the build stops", async ({ page }) => {
+    test.setTimeout(120_000);
+    const errors = watchErrors(page);
+    await slowYields(page);
+    /* At the start of the compile phase, a client-side navigation by the list's first link. */
+    await page.addInitScript(() => {
+      new PerformanceObserver((list) => {
+        if (!list.getEntries().some((e) => e.name === "estate3d:compile")) return;
+        /* Kept from before the navigation, because the cleanup detaches it: the context outlives the element. */
+        (window as unknown as { __canvas: HTMLCanvasElement | null }).__canvas = document.querySelector("canvas.estate-map-3d-canvas");
+        document.querySelector<HTMLAnchorElement>(".estate-map-list a")?.click();
+      }).observe({ type: "mark" });
+    });
+    const href = HOTSPOTS.find((h) => h.href)!.href!;
+    await page.goto(ROUTE);
+    await scrollToMap(page);
+    await sendTrigger(page);
+    await page.waitForURL(`**${href}`, { timeout: READY_TIMEOUT });
+    await expect(page.locator("section.estate-map")).toHaveCount(0);
+    /*
+     * Long enough for a build that ignored the reader to have finished: with the
+     * yields slowed, a build that runs on reaches its swap about four seconds
+     * after the navigation (measured on a mutant that has every stop removed),
+     * and writes into a detached frame as it goes. Three seconds let that mutant
+     * through.
+     */
+    await page.waitForTimeout(10_000);
+    const names = Object.keys(await phaseMarks(page));
+    expect(names, "the navigation did not come during the build").toContain("compile");
+    expect(names, "the build went on after the page was left").not.toContain("swap");
+    expect(await page.locator("canvas.estate-map-3d-canvas").count()).toBe(0);
+    /*
+     * THE CONTEXT WAS RELEASED, not merely detached. A canvas gone from the DOM
+     * says only that React removed the element; a cleanup that dropped
+     * `renderer.forceContextLoss()` would leave a live context behind on every
+     * visit, and a browser keeps only a handful before it reclaims the oldest.
+     */
+    expect(
+      await page.evaluate(() => {
+        const c = (window as unknown as { __canvas?: HTMLCanvasElement | null }).__canvas;
+        return c ? (c.getContext("webgl2")?.isContextLost() ?? null) : null;
+      }),
+      "the GL context of the abandoned build was not released"
+    ).toBe(true);
+    expect(errors).toEqual([]);
+  });
+
+  test("leaving a page whose diagram was finished: the context is released and its geometries and materials are disposed", async ({ page }) => {
+    test.setTimeout(120_000);
+    const errors = watchErrors(page);
+    /*
+     * The GL deletes three.js makes when a geometry or a material is disposed:
+     * a disposed geometry's attribute buffers and a disposed material's last
+     * program. Counted from the driver's own calls, because the component keeps
+     * no handle anyone can ask. Nothing else in the cleanup makes them:
+     * `renderer.dispose()` does not, and `forceContextLoss()` takes the context
+     * away without deleting anything through it.
+     */
+    await page.addInitScript(() => {
+      const w = window as unknown as { __gl: { buffers: number; programs: number } };
+      w.__gl = { buffers: 0, programs: 0 };
+      const proto = WebGL2RenderingContext.prototype;
+      const deleteBuffer = proto.deleteBuffer;
+      proto.deleteBuffer = function (this: WebGL2RenderingContext, b: WebGLBuffer | null) {
+        w.__gl.buffers++;
+        return deleteBuffer.call(this, b);
+      };
+      const deleteProgram = proto.deleteProgram;
+      proto.deleteProgram = function (this: WebGL2RenderingContext, p: WebGLProgram | null) {
+        w.__gl.programs++;
+        return deleteProgram.call(this, p);
+      };
+    });
+    await openDiagram(page);
+    const counts = () => page.evaluate(() => ({ ...(window as unknown as { __gl: { buffers: number; programs: number } }).__gl }));
+    const before = await counts();
+    await page.evaluate(() => {
+      (window as unknown as { __canvas: HTMLCanvasElement | null }).__canvas = document.querySelector("canvas.estate-map-3d-canvas");
+    });
+    expect(await page.evaluate(() => !!(window as unknown as { __canvas?: HTMLCanvasElement | null }).__canvas), "there was no canvas to keep").toBe(true);
+
+    /* A client-side navigation out of the page, which unmounts the diagram. */
+    const href = HOTSPOTS.find((h) => h.href)!.href!;
+    await page.locator(".estate-map-list a").first().click();
+    await page.waitForURL(`**${href}`);
+    await expect(page.locator("section.estate-map")).toHaveCount(0);
+    await expect(page.locator("canvas.estate-map-3d-canvas")).toHaveCount(0);
+    await page.waitForTimeout(500);
+
+    const after = await counts();
+    expect(after.buffers - before.buffers, "no geometry was disposed: its attribute buffers are still the driver's").toBeGreaterThan(10);
+    expect(after.programs - before.programs, "no material was disposed: its programs are still the driver's").toBeGreaterThan(0);
+    expect(
+      await page.evaluate(() => {
+        const c = (window as unknown as { __canvas?: HTMLCanvasElement | null }).__canvas;
+        return c ? (c.getContext("webgl2")?.isContextLost() ?? null) : null;
+      }),
+      "the finished diagram's GL context was not released"
+    ).toBe(true);
+    expect(errors).toEqual([]);
+  });
+
+  test("a resize while the diagram is being laid out: laid out again a task at a time, and fitted to the box it lands in", async ({ page }) => {
+    test.setTimeout(180_000);
+    const errors = watchErrors(page);
+    /*
+     * THE CASE. A frame that changes size while the diagram is being built is
+     * ordinary, not exotic: Chrome Android collapses its URL bar as the reader
+     * scrolls, which resizes the layout viewport, and the reader has the whole
+     * build to do it in. It used to be handled by nothing at all until the
+     * build's last task absorbed it whole - measure, fit, project every anchor
+     * and every hull, the entire label search, render, write and place the card,
+     * about 150 ms of it on a phone against the 200 ms the INP gate allows, and
+     * that last task is the one the gate's record claims to have measured.
+     *
+     * THE INSTRUMENTS. The yields are counted (see SPLIT_TASKS_MIN) and slowed,
+     * so the resize can be timed into the middle of the label search: the
+     * resize is taken in a rendering frame once the `layout` mark is on the
+     * timeline, because a `PerformanceObserver` callback is outranked by the
+     * build's own yielded continuations and does not run until the chain ends
+     * (measured: it fired 180-240 ms after the swap). The resize itself is the
+     * stage's box, narrowed by 120 px.
+     */
+    await slowYields(page, 80);
+    await page.addInitScript(() => {
+      const w = window as unknown as { __yields: number[]; __resize: { at: number; from: number; to: number } | null };
+      w.__yields = [];
+      const sched = (globalThis as { scheduler?: { yield?: () => Promise<void> } }).scheduler;
+      if (sched?.yield) {
+        const original = sched.yield.bind(sched);
+        sched.yield = () => {
+          w.__yields.push(performance.now());
+          return original();
+        };
+      }
+      w.__resize = null;
+      const look = () => {
+        const stage = document.querySelector<HTMLElement>(".estate-map-stage");
+        if (!w.__resize && stage && performance.getEntriesByName("estate3d:layout").length) {
+          const from = stage.getBoundingClientRect().width;
+          stage.style.maxWidth = `${Math.round(from - 120)}px`;
+          w.__resize = { at: performance.now(), from, to: stage.getBoundingClientRect().width };
+        }
+        requestAnimationFrame(look);
+      };
+      requestAnimationFrame(look);
+    });
+    await page.goto(ROUTE);
+    await scrollToMap(page);
+    await sendTrigger(page);
+    await expect(stage(page)).toHaveAttribute("data-state", "ready", { timeout: READY_TIMEOUT });
+    const frame3d = page.locator(".estate-map-frame--3d[data-placed]");
+    await expect(frame3d).toBeVisible();
+    await page.evaluate(() => document.fonts.ready);
+
+    const m = await phaseMarks(page);
+    const read = () =>
+      page.evaluate(() => ({
+        yields: (window as unknown as { __yields: number[] }).__yields,
+        resize: (window as unknown as { __resize: { at: number; from: number; to: number } | null }).__resize,
+        width: document.querySelector(".estate-map-frame--3d")!.getBoundingClientRect().width,
+        /*
+         * The drawing buffer, not the CSS box: the box changes the moment the
+         * stage is narrowed, while this is written by `renderer.setSize` in the
+         * final task of the layout that answers it. It is the one signal that
+         * says the answer has landed. (The renderer's pixel ratio is 1 here.)
+         */
+        canvas: document.querySelector<HTMLCanvasElement>("canvas.estate-map-3d-canvas")?.width ?? null,
+      }));
+    /* The layout that answers the resize runs after the reveal, a task at a time: wait for the drawing to be the new box. */
+    await expect
+      .poll(async () => (await read()).canvas, { timeout: 60_000, message: "the diagram was never redrawn at the resized box" })
+      .toBe(Math.round((await read()).resize!.to));
+    const { yields, resize, width } = await read();
+
+    /* The instrument: the frame really was resized, and in the middle of the label search. */
+    expect(resize, "the resize never happened: this proved nothing").not.toBeNull();
+    expect(resize!.from - resize!.to, "the stage's box did not change: this proved nothing").toBeGreaterThan(100);
+    expect(resize!.at, "the resize did not come after the layout began").toBeGreaterThan(m.layout!);
+    expect(resize!.at, "the resize came after the search had finished: it was not laid out under the search").toBeLessThan(m.swap!);
+
+    /* The build's own label search was split into tasks, so its final task cannot have contained it. */
+    const between = (a: number, b: number) => yields.filter((t) => t > a && t <= b).length;
+    expect(between(m.layout!, m.swap!), "the build's label search ran in too few tasks to have been split").toBeGreaterThanOrEqual(SPLIT_TASKS_MIN);
+    /* And so was the layout that answered the resize, which is the path that used to run in one task. */
+    expect(between(m.swap!, yields.at(-1)! + 1), "the resize was laid out in too few tasks: it was absorbed by one of them").toBeGreaterThanOrEqual(
+      SPLIT_TASKS_MIN
+    );
+
+    /* The diagram is fitted to the box it ended up in, not to the one it started in. */
+    expect(Math.abs(width - resize!.to), "the diagram did not end up in the resized box").toBeLessThanOrEqual(1);
+    const places = await measurePlaces(frame3d);
+    expect(places.outside, "places outside the frame after the resize").toEqual([]);
+    expect(places.overlaps, "places overlapping after the resize").toEqual([]);
+    expect(places.overNote, "places over the note after the resize").toEqual([]);
+    expect(errors).toEqual([]);
+  });
+
+  test.describe("on a phone", () => {
+    test.use({ viewport: { width: 390, height: 844 }, hasTouch: true, isMobile: true, deviceScaleFactor: 2 });
+
+    test("a touch swipe is a scroll, not an interaction: nothing is fetched or mounted for 10 s", async ({ page }) => {
+      test.setTimeout(120_000);
+      const errors = watchErrors(page);
+      const events = await countEvents(page);
+      const threeFetched = await recordThree(page);
+      await page.goto(ROUTE);
+      await scrollToMap(page);
+      const cdp = await page.context().newCDPSession(page);
+      const viewport = page.viewportSize()!;
+      const scrollBefore = await page.evaluate(() => window.scrollY);
+      const started = Date.now();
+      for (let k = 0; Date.now() - started < 10_000; k++) {
+        await swipe(cdp, viewport.width / 2, viewport.height / 2, k % 2 ? 160 : -160);
+        await page.waitForTimeout(400);
+        if (k === 0) expect(await page.evaluate(() => window.scrollY), "the swipe did not scroll the page: it proved nothing").not.toBe(scrollBefore);
+      }
+      await scrollToMap(page);
+      expect(await inRange(page), "the map was not in range: this proved nothing").toBe(true);
+      await page.waitForTimeout(LOAD_ALLOWANCE_MS);
+
+      const seen = await events();
+      expect(seen.pointerdown, "the swipes produced no pointerdown").toBeGreaterThan(5);
+      expect(seen.touchmove, "the swipes produced no touchmove").toBeGreaterThan(5);
+      expect(seen.pointerup + seen.keydown + seen.click, "a swipe counted as a tap").toBe(0);
+      expect(threeFetched, "three.js was fetched after swipes alone").toEqual([]);
+      expect(await phaseMarks(page), "the loader started after swipes alone").toEqual({});
+      await expect(stage(page)).toHaveAttribute("data-state", "2d");
+      await expect(page.locator(".estate-map-frame--3d")).toHaveCount(0);
+      expect(errors).toEqual([]);
+    });
+
+    test("a tap on the photograph loads the diagram, which then replaces it in the same box", async ({ page }) => {
+      test.setTimeout(90_000);
+      const errors = watchErrors(page);
+      const threeFetched = await recordThree(page);
+      await page.goto(ROUTE);
+      await scrollToMap(page);
+      const frame2d = page.locator(".estate-map-stage > .estate-map-frame").first();
+      const box2d = (await frame2d.boundingBox())!;
+      await frame2d.tap({ position: { x: box2d.width / 2, y: box2d.height / 2 } });
+      await expect(stage(page)).toHaveAttribute("data-state", "ready", { timeout: READY_TIMEOUT });
+      const box3d = (await page.locator(".estate-map-frame--3d").boundingBox())!;
+      expect(Math.abs(box3d.width - box2d.width)).toBeLessThanOrEqual(1);
+      expect(Math.abs(box3d.height - box2d.height)).toBeLessThanOrEqual(1);
+      expect(threeFetched).toHaveLength(1);
+      expect(errors).toEqual([]);
     });
   });
 });

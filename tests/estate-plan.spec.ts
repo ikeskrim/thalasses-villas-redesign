@@ -36,6 +36,7 @@ import {
   estate3dInpInput,
   mountPathFiles,
 } from "../src/lib/estate-3d-fingerprint";
+import { convexHull, layoutLabels, layoutLabelsSteps, type Box, type LabelInput, type Massing } from "../src/components/sections/estate-map-3d-layout";
 
 /**
  * content/estate-plan.json — THE DATA, AND THE GATE THAT READS IT.
@@ -1002,5 +1003,66 @@ test.describe("the INP record's fingerprint", () => {
       [...outside].sort(),
       "a mount-path import from outside the fingerprint: name the module EstateMap* or estate-map-* so the fingerprint covers it, or decide the fingerprint's scope again and list it here"
     ).toEqual(["src/components/motion/Magnetic.tsx", "src/components/ui/Clause.tsx", "src/components/ui/Ledger.tsx"]);
+  });
+});
+
+
+/*
+ * THE LABEL SEARCH, SPLIT AND WHOLE. The diagram's build and every resize drive
+ * `layoutLabelsSteps` a step per task (EstateMap3D's `layoutFrame`), because the
+ * whole search in one task is the longest task the diagram has. `layoutLabels`
+ * runs the same search to the end in one call and is what the search MEANS: it
+ * is no longer called by the page, and without this nothing would notice the two
+ * drifting apart. Pure arithmetic, so no server and no browser.
+ */
+test.describe("the 3D map's label layout", () => {
+  test("the stepwise search and the whole search agree, and the generator yields once per unit of work", () => {
+    /* A seeded generator, so a failure is reproducible and a passing run is not luck. */
+    let seed = 20260918;
+    const rnd = () => ((seed = (seed * 1103515245 + 12345) % 2147483648) / 2147483648);
+    const r = (a: number, b: number) => a + rnd() * (b - a);
+    let differ = 0;
+    let cases = 0;
+    let totalSteps = 0;
+    for (let n = 0; n < 600; n++) {
+      const frame = { w: Math.round(r(320, 1920)), h: Math.round(r(240, 1080)) };
+      const count = 1 + Math.floor(r(0, 10));
+      const labels: LabelInput[] = Array.from({ length: count }, () => ({
+        ax: r(-20, frame.w + 20),
+        ay: r(-20, frame.h + 20),
+        w: Math.round(r(44, 180)),
+        h: Math.round(r(44, 60)),
+        clear: rnd() < 0.15 ? r(5, 40) : 0,
+      }));
+      /* The note's band, as the frame's own layout passes it. */
+      const avoid: Box[] = rnd() < 0.7 ? [{ x: r(0, 40), y: r(0, 20), w: r(100, frame.w), h: r(16, 60) }] : [];
+      const massing: Massing[] = Array.from({ length: Math.floor(r(0, 10)) }, () => {
+        const cx = r(0, frame.w);
+        const cy = r(0, frame.h);
+        return {
+          hull: convexHull(Array.from({ length: 8 }, () => [cx + r(-60, 60), cy + r(-60, 60)] as [number, number])),
+          owner: Math.floor(r(-1, count)),
+        };
+      });
+      const options = rnd() < 0.5 ? { massing } : { massing, inset: Math.round(r(0, 10)), pad: Math.round(r(0, 10)) };
+
+      const whole = layoutLabels(labels, frame, avoid, options);
+      const steps = layoutLabelsSteps(labels, frame, avoid, options);
+      let k = 0;
+      let result;
+      for (;;) {
+        result = steps.next();
+        if (result.done) break;
+        k++;
+      }
+      /* One step for each label's fixed costs, then one for each of the three solve orders. */
+      expect(k, `case ${n}: ${k} steps for ${count} labels`).toBe(count + 3);
+      totalSteps += k;
+      cases++;
+      if (JSON.stringify(whole) !== JSON.stringify(result.value)) differ++;
+    }
+    expect(cases, "the case generator produced nothing").toBe(600);
+    expect(differ, "the stepwise search and the whole search disagree").toBe(0);
+    expect(totalSteps / cases, "the search is not being stepped at all").toBeGreaterThan(4);
   });
 });

@@ -29,6 +29,7 @@
     "build:estate3d": "node scripts/estate3d-preview.mjs build",
     "start:estate3d": "node scripts/estate3d-preview.mjs start",
     "qa:estate3d": "playwright test -c playwright.estate3d.config.ts",
+    "shots:estate3d": "node scripts/estate3d-shots.mjs",
     "coverage": "node scripts/registry-coverage.mjs",
     "chh": "node scripts/extract-chh.mjs",
     "parity": "node scripts/parity-certificate.mjs",

@@ -20,9 +20,11 @@ import { decideEstate3D, type EstatePlan } from "../src/lib/estate-plan-gate";
  * or none, and this tree's fingerprint) that `estate3dPlanForPage()` reads.
  *
  * A check that passes for the wrong reason proves nothing, so before asserting
- * that the canvas never mounts it asserts the conditions under which it WOULD
+ * that the canvas never mounts it creates the conditions under which it WOULD
  * mount if the gate were open: WebGL2 present, motion allowed, the section
- * scrolled into range.
+ * scrolled into range, and, since the diagram loads only after a reader's
+ * first interaction and an idle moment (D-028), a neutral click and a key
+ * press, then long enough for the quiet period, the idle wait and the fetch.
  *
  * The diagram itself is tested against the local review build:
  * tests/estate-3d-preview.spec.ts, `npm run qa:estate3d`.
@@ -31,6 +33,20 @@ import { decideEstate3D, type EstatePlan } from "../src/lib/estate-plan-gate";
 const ROUTE = "/en/the-estate";
 const plan = JSON.parse(fs.readFileSync(path.join(process.cwd(), "content", "estate-plan.json"), "utf-8")) as EstatePlan;
 const publicDecision = decideEstate3D(plan, {}, estate3dInpInput(process.cwd(), plan));
+
+/*
+ * The hook's waits, read from its source so this wait follows them: the quiet
+ * period after the last activity, then requestIdleCallback's timeout. A missing
+ * constant fails here rather than leaving a wait of zero.
+ */
+const GATE_SOURCE = fs.readFileSync(path.join(process.cwd(), "src", "components", "sections", "estate-map-3d-gate.ts"), "utf-8");
+const gateConstant = (name: string) => {
+  const m = new RegExp(`export const ${name} = (\\d+);`).exec(GATE_SOURCE);
+  if (!m) throw new Error(`estate-map-3d-gate.ts no longer declares ${name}; this spec's wait must be decided again`);
+  return Number(m[1]);
+};
+/** After the last activity: the quiet period, the idle timeout, and 3 s for a request to be made. */
+const LOAD_ALLOWANCE_MS = gateConstant("QUIET_MS") + gateConstant("IDLE_TIMEOUT_MS") + 3000;
 
 async function recordThree(page: Page) {
   const fetched: string[] = [];
@@ -48,6 +64,21 @@ async function scrollThroughMap(page: Page) {
   await page.waitForTimeout(1500);
   await page.mouse.wheel(0, 600);
   await page.waitForTimeout(1000);
+}
+
+/**
+ * Everything the diagram's loader waits for, done: the section in range, a
+ * click on something that does nothing (a list number), a key press, and then
+ * the loader's full wait. Returns once a gate that is open would have fetched.
+ */
+async function interactInRange(page: Page) {
+  await scrollThroughMap(page);
+  await page.locator("section.estate-map").scrollIntoViewIfNeeded();
+  const url = page.url();
+  await page.locator(".estate-map-list-index").first().click();
+  await page.keyboard.press("Shift");
+  expect(page.url(), "the neutral click navigated").toBe(url);
+  await page.waitForTimeout(LOAD_ALLOWANCE_MS);
 }
 
 test.describe("3D estate map — the public build", () => {
@@ -73,10 +104,11 @@ test.describe("3D estate map — the public build", () => {
     const reduced = await page.evaluate(() => window.matchMedia("(prefers-reduced-motion: reduce)").matches);
     expect(reduced, "motion must be allowed, or 'never mounts' would pass for the wrong reason").toBe(false);
 
-    await scrollThroughMap(page);
+    await interactInRange(page);
 
     if (publicDecision.open) {
       /* The owner has verified the plan and the record passes for this tree: the public page shows the diagram. */
+      await expect(page.locator(".estate-map-stage[data-state='ready']")).toHaveCount(1, { timeout: 15_000 });
       await expect(page.locator(".estate-map-frame--3d")).toBeVisible({ timeout: 15_000 });
       await expect(page.locator(".estate-map-frame--3d canvas.estate-map-3d-canvas")).toHaveCount(1);
       await expect(page.locator(".estate-map-frame--preview")).toHaveCount(0);
@@ -86,6 +118,10 @@ test.describe("3D estate map — the public build", () => {
       await expect(page.locator("section.estate-map canvas")).toHaveCount(0);
       await expect(page.locator(".estate-map-frame .estate-map-marker")).toHaveCount(HOTSPOTS.length);
       expect(threeFetched, "three.js was fetched while the gate is closed").toEqual([]);
+      /* With no plan the loader registers nothing: no stage, and none of its marks, not even the trigger's. */
+      await expect(page.locator(".estate-map-stage"), "the closed gate rendered the 3D stage's markup").toHaveCount(0);
+      const marks = await page.evaluate(() => performance.getEntriesByType("mark").map((m) => m.name).filter((n) => n.startsWith("estate3d:")));
+      expect(marks, "the closed gate's page ran the 3D loader").toEqual([]);
 
       /* No plan reaches the page at all: neither the HTML nor the flight data. */
       const html = await (await request.get(ROUTE)).text();
@@ -125,7 +161,7 @@ test.describe("3D estate map — the public build", () => {
     test("the 2D map stays, and three.js is never fetched", async ({ page }) => {
       const threeFetched = await recordThree(page);
       await page.goto(ROUTE);
-      await scrollThroughMap(page);
+      await interactInRange(page);
       await expect(page.locator(".estate-map-frame--3d")).toHaveCount(0);
       await expect(page.locator(".estate-map-frame .estate-map-marker").first()).toBeAttached();
       expect(threeFetched).toEqual([]);
