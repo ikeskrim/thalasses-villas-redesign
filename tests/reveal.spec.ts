@@ -74,9 +74,11 @@ import { expect, test, type Page } from "@playwright/test";
 
 /*
  * Test 1 reads the whole served page, not only its reveals: a hidden state
- * from any component on these templates goes red here. The location page
- * joined when its last Framer component went (D-028); it serves three reveal
- * hosts.
+ * from any component on these templates goes red here. The location page, the
+ * estate, the five villas and weddings joined when their last Framer
+ * components went (D-028): Framer had served their hero tails and first
+ * inventory panels at opacity 0. The experiences index serves no reveal host,
+ * so it is checked in `served-motion.spec.ts` instead.
  */
 const STRUCTURAL_ROUTES = [
   "/en/careers",
@@ -85,6 +87,13 @@ const STRUCTURAL_ROUTES = [
   "/en/terms",
   "/en/experiences/boat-trip",
   "/en/location",
+  "/en/the-estate",
+  "/en/villas/villa-thoi",
+  "/en/villas/villa-persi",
+  "/en/villas/villa-eeanthe",
+  "/en/villas/villa-melia",
+  "/en/villas/villa-pueblo",
+  "/en/weddings",
 ];
 
 /* hotel-cwv's two device profiles. Test 3 adds its throttling as well. */
@@ -941,7 +950,20 @@ test.describe("reveals — scripting off", () => {
 
   for (const route of STRUCTURAL_ROUTES) {
     test(`${route}: every reveal is visible and at rest`, async ({ page }) => {
-      await page.goto(route, { waitUntil: "load" });
+      /*
+       * `domcontentloaded`, not `load`: with scripting off there is nothing to
+       * hydrate, and everything below is markup and computed style, which the
+       * parser-blocking stylesheet has already settled — no photograph changes
+       * any of it. Waiting for `load` waited for every rendition on the page
+       * instead, and Next's on-demand image optimiser, still working through
+       * the gallery's 62 and the estate's 47 sources from earlier in the same
+       * run, pushed the first villa page past the 30s timeout on a cold image
+       * cache. Measured twice (2026-09-17 and 2026-09-18, D-028): the routes
+       * ahead of it passed in 0.2 to 1.8s, the villa page that followed timed
+       * out, and the villa pages after that — once the queue had drained —
+       * passed in 1.3 to 1.5s. On its own, a cold villa page's `load` is 1.8s.
+       */
+      await page.goto(route, { waitUntil: "domcontentloaded" });
 
       const r = await page.evaluate((rest) => {
         const effective = (el: Element) => {

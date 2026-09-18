@@ -1,9 +1,11 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
-import { useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 
 import type { Inventory as InventoryData, InventoryItem } from "@/lib/inventory";
+
+/** The site's easing (DESIGN-PLAN §8.1), as the Framer build passed it. */
+const EASE = "cubic-bezier(0.16, 1, 0.3, 1)";
 
 /**
  * THE INVENTORY (DESIGN-PLAN §6.4).
@@ -21,6 +23,16 @@ import type { Inventory as InventoryData, InventoryItem } from "@/lib/inventory"
  * All 139 FontAwesome classes are discarded. `fa-solid fa-knife-kitchen`
  * communicates nothing to a screen reader that the word "Kitchen" does not, and
  * nothing kills the stock-travel-theme look faster than deleting the icon grid.
+ *
+ * THE SWITCH ANIMATES ON A CLICK, AND ONLY THEN (PHASE-3-DELIVERABLES §2, row
+ * 4; D-028). The panel a click brings in fades up from 10px over 0.5s — under
+ * reduced motion it only fades, over 0.25s — as a Web Animation started in the
+ * commit that inserted it, so it never paints once at rest first. The first
+ * panel, a hydration and any other render do not animate: the served panel is
+ * the finished panel. The Framer build served it at opacity 0, 10px low, and
+ * hid it until hydration. A Web Animation is also outside `globals.css`'s
+ * reduced-motion clamp on CSS animations, so the 0.25s fade survives it; and a
+ * browser without `animate()` simply switches.
  */
 export function Inventory({
   data,
@@ -33,8 +45,31 @@ export function Inventory({
   beat?: string;
 }) {
   const [active, setActive] = useState(data.groups[0]?.clause ?? "");
-  const reduced = useReducedMotion();
   const group = data.groups.find((g) => g.clause === active) ?? data.groups[0];
+  const flowRef = useRef<HTMLDivElement>(null);
+  /*
+   * Written by a click on a group, read once by the effect below: whether the
+   * panel now being committed was asked for, and the reader's motion
+   * preference at that moment. `null` for every other render.
+   */
+  const switched = useRef<{ reduced: boolean } | null>(null);
+
+  useLayoutEffect(() => {
+    const request = switched.current;
+    switched.current = null;
+    const el = flowRef.current;
+    if (!request || !el || typeof el.animate !== "function") return;
+    const animation = el.animate(
+      request.reduced
+        ? [{ opacity: 0 }, { opacity: 1 }]
+        : [
+            { opacity: 0, transform: "translateY(10px)" },
+            { opacity: 1, transform: "none" },
+          ],
+      { duration: request.reduced ? 250 : 500, easing: EASE }
+    );
+    return () => animation.cancel();
+  }, [active]);
 
   return (
     <section className="canon inventory">
@@ -62,7 +97,13 @@ export function Inventory({
                     type="button"
                     className={`inventory-group${isActive ? " is-active" : ""}`}
                     aria-current={isActive ? "true" : undefined}
-                    onClick={() => setActive(g.clause)}
+                    onClick={() => {
+                      if (g.clause === active) return;
+                      switched.current = {
+                        reduced: window.matchMedia("(prefers-reduced-motion: reduce)").matches,
+                      };
+                      setActive(g.clause);
+                    }}
                   >
                     <span className="display c4 inventory-group-name">{g.clause}</span>
                     <span className="tabular inventory-count">{g.count}</span>
@@ -74,13 +115,7 @@ export function Inventory({
         </nav>
 
         {group ? (
-          <motion.div
-            key={group.clause}
-            className="inventory-flow"
-            initial={reduced ? { opacity: 0 } : { opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: reduced ? 0.25 : 0.5, ease: [0.16, 1, 0.3, 1] }}
-          >
+          <div key={group.clause} ref={flowRef} className="inventory-flow">
             {group.subgroups.map((sg) => (
               <div key={sg.name} className="inventory-subgroup">
                 <p className="micro inventory-subgroup-name">{sg.name}</p>
@@ -91,7 +126,7 @@ export function Inventory({
                 </ul>
               </div>
             ))}
-          </motion.div>
+          </div>
         ) : null}
       </div>
     </section>

@@ -192,6 +192,8 @@ The tail enters closed (`0.02em`) and tracks open to `0.28em` over **1.05s**, `c
 
 The animation is **the explanation, not the device.** Under `prefers-reduced-motion`, in OG images, in email and in print, the clause renders at final tracking and fades in over 0.25s — and loses nothing, because the device is the grammar.
 
+**As built, 2026-09-18 (D-034):** the tail tracks open in CSS, transform only, **with no fade at all** — in either state. Under reduced motion (and in print, and with CSS animations clamped) it simply renders at final tracking; nothing fades in. The Framer build did not honour the 0.25s fade either: it served the tail at `opacity: 0` and snapped it to 1 at hydration. The stagger stays 12ms per character but runs from the **last** character, so a tail with nothing hiding it never overprints itself; the direction was never fixed here, and it is a build default the owner can overturn.
+
 ### 2.5 The silent substrate — The Waterline *(grafted from SEA LEVEL, scoped)*
 
 Beneath the type, a second rule runs everywhere and is never spoken about:
@@ -760,7 +762,7 @@ Custom cursor (any device) · scroll-jacking · section snapping · horizontal p
 
 - Lenis is **destroyed** and native scroll restored.
 - The GSAP pin is **unmounted**, not frozen; the Estate renders as three stacked full-bleed sections in sequence.
-- Every `trackOpen` renders at final tracking with a 0.25s opacity fade.
+- Every `trackOpen` renders at final tracking with a 0.25s opacity fade. **As built, 2026-09-18 (D-034): with no fade** — the clause's animation is a CSS `animation` inside `@media (prefers-reduced-motion: no-preference)`, so under reduced motion no animation is attached at all, and `.clause-char { transform: none !important }` holds it at rest if one ever were.
 - Every `clip-path` reveal resolves to its end state at `t=0` with a 0.25s fade.
 - Zero transforms, zero scale, zero stagger.
 - The datum rule is static.

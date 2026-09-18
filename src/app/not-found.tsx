@@ -2,8 +2,8 @@ import Link from "next/link";
 
 import { PageShell } from "@/components/sections/PageShell";
 import { Field } from "@/components/ui/Field";
-/* Rendered into every route's payload, so this clause stays `Clause`, plain
-   server markup that ships no script (D-028) — never `ClauseMotion`. */
+/* Rendered into every route's payload, so this file imports nothing that ships
+   a script: the clause is plain server markup (D-028; see `Clause`). */
 import { Clause } from "@/components/ui/Clause";
 import { byN } from "@/lib/selects";
 

@@ -10,7 +10,7 @@ import { Inventory } from "@/components/sections/Inventory";
 import { SiteFooter } from "@/components/sections/SiteFooter";
 import { TheRun } from "@/components/sections/TheRun";
 import { BookingLedger } from "@/components/ui/BookingLedger";
-import { ClauseMotion } from "@/components/ui/ClauseMotion";
+import { Clause } from "@/components/ui/Clause";
 import { Field } from "@/components/ui/Field";
 import { villaCta } from "@/lib/booking";
 import {
@@ -216,7 +216,7 @@ export default async function VillaPage({ params }: { params: Promise<{ slug: st
         >
           <div className="canon clause-field" style={{ padding: 0 }}>
             <p className="micro d-eyebrow">{beat("hero")} — {villa.name}</p>
-            <ClauseMotion gerund={copy.gerund} tail={copy.tail} scale="c1" animate as="h1" />
+            <Clause gerund={copy.gerund} tail={copy.tail} scale="c1" animate as="h1" />
           </div>
         </Field>
 

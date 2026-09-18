@@ -153,10 +153,15 @@ export default function RootLayout({
 
           The scroll reveals no longer depend on it: `Reveal` and `ImageReveal`
           serve their finished state and are hidden only by script (D-021,
-          `src/components/motion/Reveal.tsx`). Nor does a clause that does not
-          animate: `Clause` renders those as plain server markup (D-028). It
-          stays for the Framer users that remain — the animated hero clause
-          (`ClauseMotion`), `Inventory`, and the components no route renders.
+          `src/components/motion/Reveal.tsx`). Nor do the clause, the
+          inventory and the ledger: the clause is plain server markup whose
+          tail tracks open in CSS, the inventory switch is a Web Animation
+          started by a click, and the ledger prints its true values (D-028).
+          No route loads Framer any more (`tests/perf-structure.spec.ts`).
+          This stays as the fail-soft guard for any inline hidden state a
+          component serves in future, and for the Framer components still in
+          the tree that no route imports (`KenBurns`, `WordMask`, `Preloader`,
+          `Litany`, `PinnedEstate`, `ActShowcase`).
         */}
         <noscript
           dangerouslySetInnerHTML={{

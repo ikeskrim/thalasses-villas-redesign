@@ -8,7 +8,6 @@ import { Inventory } from "@/components/sections/Inventory";
 import { SiteFooter } from "@/components/sections/SiteFooter";
 import { TheRun } from "@/components/sections/TheRun";
 import { Clause } from "@/components/ui/Clause";
-import { ClauseMotion } from "@/components/ui/ClauseMotion";
 import { Field } from "@/components/ui/Field";
 import { Ledger } from "@/components/ui/Ledger";
 import { HOTSPOTS } from "@/app/home-data";
@@ -205,7 +204,7 @@ export default function EstatePage() {
         >
           <div className="canon clause-field" style={{ padding: 0 }}>
             <p className="micro d-eyebrow">{beat("hero")} — The Entire Estate</p>
-            <ClauseMotion gerund="Gathering" tail="All four, one gate" scale="c1" animate as="h1" />
+            <Clause gerund="Gathering" tail="All four, one gate" scale="c1" animate as="h1" />
           </div>
         </Field>
 

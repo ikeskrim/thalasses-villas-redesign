@@ -65,7 +65,7 @@ programmatically rather than by inspection.
 
 | # | What animates | Where | Trigger | Duration / easing | Reduced motion |
 |---|---|---|---|---|---|
-| 1 | **Clause tail tracking** — per-character `translateX`, never `letter-spacing` | Hero clauses on `/`, villa pages, estate | Mount, `animate` prop only | 1.05s, `cubic-bezier(0.16,1,0.3,1)`, 12ms stagger | No transform at all; renders at final tracking, fades 0.25s |
+| 1 | **Clause tail tracking** — per-character `translateX`, never `letter-spacing` | Hero clauses on `/`, villa pages, estate | ~~Mount~~ **first paint (CSS), 2026-09-18**, `animate` prop only | 1.05s, `cubic-bezier(0.16,1,0.3,1)`, 12ms stagger **from the last character** | No transform at all; renders at final tracking, ~~fades 0.25s~~ **no fade (D-034)** |
 | 2 | **Section reveal** — opacity + 24px rise | Every `Reveal` block: statement, collection cells, estate figures, register, coast line | `whileInView`, `once: true`, −12% margin | 0.8s, same easing, ≤0.4s stagger | Opacity only, no rise, 0.25s |
 | 3 | **Image reveal** — `clip-path` wipe + 1.05→1 scale | Collection figures, plates | `whileInView`, `once: true`, −10% margin | 1.1s clip / 1.2s scale | Replaced entirely by a 0.25s fade; no clip, no scale |
 | 4 | **Inventory group switch** — opacity + 10px rise | Villa page inventory | Click on a group in the rail | 0.5s | Opacity only, 0.25s |
@@ -121,7 +121,7 @@ Verified by `tests/qa.spec.ts` (`reduced motion renders the clause at final trac
 |---|---|---|---|---|---|
 | 1 | **Preloader** — wordmark assembles letter by letter | First view of a session | Mount, once per session (`sessionStorage`) | 0.7s per letter, 45ms stagger; hard cap 1.8s, early dismiss at 1.15s | **Not rendered at all** |
 | 2 | **Hero Ken Burns** — scale 1.0 → 1.06 | Homepage hero | Mount | 20s linear | No scale; the still is static |
-| 3 | **Clause tail** — per-character `translateX`, never `letter-spacing` | Hero, section clauses | Mount, `animate` prop only | 1.05s, `cubic-bezier(0.16,1,0.3,1)`, 12ms stagger | No transform; final tracking, 0.25s fade |
+| 3 | **Clause tail** — per-character `translateX`, never `letter-spacing` | Hero, section clauses | ~~Mount~~ **first paint (CSS), 2026-09-18**, `animate` prop only | 1.05s, `cubic-bezier(0.16,1,0.3,1)`, 12ms stagger **from the last character** | No transform; final tracking, ~~0.25s fade~~ **no fade (D-034)** |
 | 4 | **Section reveal** — opacity + 24px rise | Every `Reveal` block | `whileInView`, once, −12% margin | 0.8s, ≤0.4s stagger | Opacity only, 0.25s |
 | 5 | **Image reveal** — clip-path wipe + 1.05 → 1 | Collection figures, plates | `whileInView`, once | 1.1s / 1.2s | Replaced by a 0.25s fade |
 | 6 | **Pinned Estate** — sticky viewport, scroll-linked veil 0.15 → 0.72 and media scale 1.04 → 1 | Homepage beat 05 | Scroll progress through a 260svh section | Scroll-linked | **Pin remains** (it is layout); veil fixed at 0.62, no scale |

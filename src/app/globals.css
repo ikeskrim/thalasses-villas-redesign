@@ -294,6 +294,48 @@ body {
   will-change: transform;
 }
 
+/* THE TAIL TRACKS OPEN (DESIGN-PLAN §2.4; D-028). An `animate` clause's
+   characters start pulled left by their index times the open tracking — 0.3em
+   at C1/C2 and 0.22em at C3/C4, at 16px per em, the offsets the Framer build
+   started from — and settle at rest over 1.05s with a 12ms stagger. The
+   served HTML carries only `--i` and the tail's `--n`; nothing is hidden or
+   moved until this sheet applies, and then only on `screen` with motion
+   allowed. Transform only, no fade: the tail is legible from first paint.
+   `backwards` holds each character at its start through its stagger and lets
+   go at the end, so a finished tail carries no animation at all. Reduced
+   motion never gets the animation, and `transform: none !important` below
+   still holds every character at rest if it ever did.
+
+   THE STAGGER RUNS FROM THE LAST CHARACTER: character i waits (n − 1 − i) ×
+   12ms. Staggered from the first, as the Framer build was, a waiting
+   character stands at its full starting offset while the one before it has
+   already moved right, and the tail overprints itself ("BESIDETHEWATER") for
+   a few hundred milliseconds. Framer hid that behind opacity 0; here nothing
+   hides it. From the last character, every character has always travelled
+   at least as far, in proportion, as the one before it, so no two neighbours
+   are ever closer than in the closed tail that first paint shows. */
+.clause--animate {
+  --clause-step: -4.8px;
+}
+.clause--animate.clause--c3,
+.clause--animate.clause--c4 {
+  --clause-step: -3.52px;
+}
+@keyframes clause-track {
+  from {
+    transform: translateX(calc(var(--i, 0) * var(--clause-step)));
+  }
+  to {
+    transform: none;
+  }
+}
+@media screen and (prefers-reduced-motion: no-preference) {
+  .clause--animate .clause-char {
+    animation: clause-track var(--duration-clause) var(--ease-thalasses)
+      calc((var(--n, 1) - 1 - var(--i, 0)) * 12ms) backwards;
+  }
+}
+
 /* At 360 the tail drops below the gerund, aligned to its stem. */
 @media (max-width: 479px) {
   .clause {

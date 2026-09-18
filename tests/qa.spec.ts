@@ -76,10 +76,51 @@ test("no broken images on the homepage", async ({ page }) => {
 test("reduced motion renders the clause at final tracking", async ({ browser }) => {
   const ctx = await browser.newContext({ reducedMotion: "reduce" });
   const page = await ctx.newPage();
+  /*
+   * EFFECTIVE OPACITY, from the first frame. "Final tracking" was only ever
+   * checked as a transform, and a transform check cannot see a tail that is
+   * not there: the Framer build served the hero tail at opacity 0 whatever the
+   * reader's preference, and it stayed invisible until hydration (D-028). So
+   * every frame from first paint to the checks below records the lowest
+   * opacity any first-viewport character reached — its own times every
+   * ancestor's. Below the fold, an armed reveal hides whole blocks on purpose
+   * and fades them in (D-026), so only characters in the first viewport count.
+   * Red on the build of 0344ad3 ("faded to 0"), and on a build that served an
+   * inline `opacity: 0` on every clause character (2026-09-17).
+   */
+  await page.addInitScript(() => {
+    const s = { frames: 0, chars: 0, min: 1 };
+    (window as unknown as { __clauseOpacity: typeof s }).__clauseOpacity = s;
+    const effective = (el: Element) => {
+      let o = 1;
+      for (let n: Element | null = el; n; n = n.parentElement) o *= parseFloat(getComputedStyle(n).opacity);
+      return o;
+    };
+    const frame = () => {
+      const chars = [...document.querySelectorAll(".clause-char")].filter(
+        (el) => el.getBoundingClientRect().top < window.innerHeight
+      );
+      if (chars.length) {
+        s.frames++;
+        s.chars = Math.max(s.chars, chars.length);
+        for (const el of chars) s.min = Math.min(s.min, effective(el));
+      }
+      requestAnimationFrame(frame);
+    };
+    requestAnimationFrame(frame);
+  });
   /* The clause is Direction D's signature element. The homepage is Direction F
      now (DECISIONS.md D-001) and carries no clause; the estate page does, along
      with every other inner page, so the guard follows its subject. */
   await page.goto("/en/the-estate", { waitUntil: "load" });
+  await page.waitForTimeout(1000);
+
+  const seen = await page.evaluate(
+    () => (window as unknown as { __clauseOpacity: { frames: number; chars: number; min: number } }).__clauseOpacity
+  );
+  expect(seen.frames, "no frame showed a clause character in the first viewport — nothing was checked").toBeGreaterThan(10);
+  expect(seen.chars, "no clause character sits in the first viewport").toBeGreaterThan(0);
+  expect(seen.min, `a first-viewport clause character was faded to ${seen.min} under reduced motion`).toBe(1);
 
   // Under reduced motion no character span may carry a translate.
   const moved = await page.evaluate(() =>

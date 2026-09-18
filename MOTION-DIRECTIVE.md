@@ -112,6 +112,13 @@ gestures. A minimal WebGL layer for the villa-card shader. **Total added motion
 JS ~55–70 kB gzip**, with WebGL and video deferred so first paint ships only
 Lenis and GSAP core.
 
+**As built, 2026-09-18 (D-034).** GSAP and SplitText are on no page of the live
+site, and **Framer Motion is now on none either**: the reveal, the clause tail,
+the inventory switch and the ledger are CSS, one Web Animation and one
+`IntersectionObserver`. `framer-motion` stays in `package.json` and six
+components still import it, but no route reaches them. Lenis is the only motion
+library a reader downloads.
+
 ## G. Phased build, with gates
 
 - **Phase 1 — cinematic hero + text life.** Ken Burns crossfade hero,

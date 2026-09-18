@@ -1,9 +1,9 @@
 import Link from "next/link";
 
 /* Every page with a footer, and the root 404 that every route's payload
-   carries, imports this file. Its clause never animates, so it is `Clause`,
-   plain server markup that ships no script (D-028). `ClauseMotion` here would
-   put Framer on every one of those pages. */
+   carries, imports this file, so it imports nothing that ships a script: the
+   clause is plain server markup (D-028; see `Clause`). It does not animate —
+   the footer stays at Level 1 (MOTION-DIRECTIVE §B). */
 import { Clause } from "@/components/ui/Clause";
 
 export interface SiteFooterProps {

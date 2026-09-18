@@ -1,6 +1,5 @@
 "use client";
 
-import { useInView, useReducedMotion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 
 /**
@@ -49,11 +48,14 @@ export function Ledger({
  *
  * Figures are tabular, so the column does not shift a single pixel while it
  * counts. Under reduced motion the final value is simply printed.
+ *
+ * Its own observer, not Framer's (D-028): the same entry band (`-15% 0px`), the
+ * same once, the reduced-motion preference read where it is needed — the
+ * `Distances` pattern (`src/components/hotel/Distance.tsx`). Framer's two
+ * hooks were all this used of it, and they kept the 120 kB chunk on the estate.
  */
 function CountUp({ value }: { value: string | number }) {
   const ref = useRef<HTMLSpanElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-15% 0px" });
-  const reduced = useReducedMotion();
   const target = typeof value === "number" ? value : Number(value);
   const animatable = Number.isFinite(target) && String(value).trim() === String(target);
   // null means "show the real value". The truth is the DEFAULT state, not the
@@ -64,22 +66,36 @@ function CountUp({ value }: { value: string | number }) {
   const [n, setN] = useState<number | null>(null);
 
   useEffect(() => {
-    if (!animatable || reduced || !inView) return;
-    const from = performance.now();
-    const dur = 600;
-    let raf = 0;
-    const tick = (t: number) => {
-      const p = Math.min(1, (t - from) / dur);
-      // Same weighted curve as everything else on the site.
-      const eased = 1 - Math.pow(1 - p, 3);
-      setN(Math.round(target * eased));
-      if (p < 1) raf = requestAnimationFrame(tick);
-    };
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
-  }, [animatable, inView, reduced, target]);
+    const el = ref.current;
+    if (!animatable || !el || typeof IntersectionObserver === "undefined") return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-  if (!animatable || reduced || n === null) return <span ref={ref}>{value}</span>;
+    let raf = 0;
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (!entries.some((e) => e.isIntersecting)) return;
+        io.disconnect();
+        const from = performance.now();
+        const dur = 600;
+        const tick = (t: number) => {
+          const p = Math.min(1, Math.max(0, (t - from) / dur));
+          // Same weighted curve as everything else on the site.
+          const eased = 1 - Math.pow(1 - p, 3);
+          setN(Math.round(target * eased));
+          if (p < 1) raf = requestAnimationFrame(tick);
+        };
+        raf = requestAnimationFrame(tick);
+      },
+      { rootMargin: "-15% 0px" }
+    );
+    io.observe(el);
+    return () => {
+      io.disconnect();
+      cancelAnimationFrame(raf);
+    };
+  }, [animatable, target]);
+
+  if (!animatable || n === null) return <span ref={ref}>{value}</span>;
   return <span ref={ref}>{n}</span>;
 }
 

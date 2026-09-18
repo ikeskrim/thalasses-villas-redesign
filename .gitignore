@@ -32,6 +32,9 @@ node_modules/
 .next/
 # The 3D estate map's local review build (scripts/estate3d-preview.mjs).
 .next-estate3d/
+# One dist dir per arm of an interleaved A/B, so two or three builds can be
+# served side by side from one checkout (D-034's Framer measurement).
+.next-arm*/
 out/
 build/
 dist/

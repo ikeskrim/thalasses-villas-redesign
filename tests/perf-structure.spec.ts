@@ -75,15 +75,26 @@ const isFramer = (body: string) =>
 const framerAcross = (bodies: string[]) => FRAMER_LITERALS.every((literal) => bodies.some((b) => b.includes(literal)));
 
 /*
- * NO FRAMER WHERE NOTHING ANIMATES WITH IT — not as a script, and not as a
- * script preload (D-028). The preload is how it survived D-026: `SiteFooter`'s
- * clause sat behind `next/dynamic`, whose server render calls
- * `ReactDOM.preload()` for the chunk, so careers, terms, contact, the gallery,
- * the experiences and the 404 all fetched 120 kB of Framer at low priority for
- * a clause that never animated. A clause that does not animate is plain server
- * markup now, which also takes Framer off the location page. The estate, the
- * villas, weddings and the styleguide still animate with it, and are not listed
- * yet. `/` has its own test below, with Lenis.
+ * EVERY PUBLIC TEMPLATE LOADS NO FRAMER — not as a script, and not as a script
+ * preload (D-028). The preload is how it survived D-026: `SiteFooter`'s clause
+ * sat behind `next/dynamic`, whose server render calls `ReactDOM.preload()` for
+ * the chunk, so careers, terms, contact, the gallery, the experiences and the
+ * 404 all fetched 120 kB of Framer at low priority for a clause that never
+ * animated. The clause is plain server markup now, the hero tail is CSS, the
+ * inventory switch is a Web Animation and the ledger has its own observer.
+ * `/` has its own test below, with Lenis.
+ *
+ * Falsified on 2026-09-18, each mutation proven present in the build it ran on:
+ * `motion` imported into `Inventory` → red at "loads framer-motion" on the
+ * estate, the five villas and weddings, green on the other nine routes and on
+ * `/`. Then the hook-only import the earlier runs found a limit with: with
+ * `useReducedMotion` alone in `Inventory`, that build held the three literals
+ * nowhere (transformPerspective 1, originX 0, pathLength 0) and the bare
+ * quoted `(prefers-reduced-motion)` query in three chunks — red on the same
+ * seven templates through that literal alone, careers still green at 599,878 B
+ * of initial scripts. On 2026-09-17, the footer's old `next/dynamic` import of
+ * a Framer component restored → red on every route with the footer and on the
+ * 404, through the preload alone, with `/` and the styleguide green.
  */
 const NO_FRAMER = [
   "/en/careers",
@@ -93,6 +104,14 @@ const NO_FRAMER = [
   "/en/experiences",
   "/en/experiences/boat-trip",
   "/en/location",
+  "/en/the-estate",
+  "/en/villas/villa-thoi",
+  "/en/villas/villa-persi",
+  "/en/villas/villa-eeanthe",
+  "/en/villas/villa-melia",
+  "/en/villas/villa-pueblo",
+  "/en/weddings",
+  "/styleguide",
   "/en/no-such-page-perf-structure",
 ];
 
