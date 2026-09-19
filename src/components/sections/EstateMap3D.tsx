@@ -91,8 +91,11 @@ import {
  * first-frame work into yielding tasks"). The diagram mounts `staged`: hidden
  * behind the 2D frame, inert, out of the accessibility tree, but laid out, so
  * it can be measured. Its build is a pipeline of short tasks, each ended with a
- * yield (`scheduler.yield()` where it exists, else a posted message), so a tap
- * during the build waits for one step, not for the whole of it:
+ * yield — a posted message, never `scheduler.yield()`, because a continuation
+ * resumed by the latter keeps the caller's priority and outranks a pending
+ * input, which held a tap for 241 ms against 20 ms here (`src/lib/schedule.ts`
+ * has the measurement) — so a tap during the build waits for one step, not for
+ * the whole of it:
  *  1. `estate3d:renderer`: the WebGL renderer and its canvas;
  *  2. `estate3d:scene`: the tokens read from the page (a style recalculation),
  *     then the scene, element by element, in slices of at most `SLICE_MS`;

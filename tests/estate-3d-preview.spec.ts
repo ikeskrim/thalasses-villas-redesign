@@ -67,19 +67,24 @@ const LOAD_ALLOWANCE_MS = QUIET_MS + gateConstant("IDLE_TIMEOUT_MS") + 3000;
 /** From a trigger to the swap: the same wait, plus the fetch and the build on a loaded machine. */
 const READY_TIMEOUT = 30_000;
 /*
- * THE FLOOR ON HOW MANY TASKS A LAYOUT IS SPLIT INTO, counted at
- * `scheduler.yield()`. Measured on this build: twelve tasks for the build's own
- * label search and thirteen for a layout that answers a resize, against two
- * when the search is put back into one task.
+ * THE FLOOR ON HOW MANY TASKS A LAYOUT IS SPLIT INTO, counted at the page's own
+ * yield (a posted message — see `slowYields`). Measured on this build: twelve
+ * tasks for the build's own label search and thirteen for a layout that answers
+ * a resize, against two when the search is put back into one task.
  *
- * WHY NOT WALL CLOCK. A chain of `scheduler.yield()` continuations outranks
- * ordinary tasks, so a timer ping is starved for the whole chain and cannot
- * measure the tasks inside it; and Chrome reports the whole chain as ONE
- * `longtask` entry (measured on this build: a 191–200 ms "long task"
- * spanning 13 separate yielded steps). Neither instrument can tell a split
- * layout from a single task, and neither is what INP measures — input is
- * dispatched ahead of the continuations, which is the whole point of yielding.
- * What can be measured exactly is the split itself.
+ * WHY NOT WALL CLOCK. A chain of yields is reported by Chrome as ONE `longtask`
+ * entry (measured on this build: a 191–200 ms "long task" spanning 13 separate
+ * yielded steps), so that instrument cannot tell a split layout from a single
+ * task. What can be measured exactly is the split itself.
+ *
+ * AND WHY THE SPLIT IS NOT THE WHOLE STORY. Splitting only helps if the browser
+ * lets input in BETWEEN the steps, and that depends on how the page yields, not
+ * on how finely it splits: with `scheduler.yield()` a tap at the start of this
+ * same, equally split phase waited 241 ms, because its continuations keep the
+ * caller's priority and outrank a pending input. `src/lib/schedule.ts` carries
+ * the measurement and yields through a posted message instead, which brought
+ * the same tap to 20 ms. So this count is necessary and not sufficient, and the
+ * INP record (D-033) is what says the tap is actually served.
  */
 const SPLIT_TASKS_MIN = 8;
 
@@ -165,6 +170,14 @@ const phaseMarks = (page: Page) =>
 async function sendTrigger(page: Page) {
   const target = page.locator(".estate-map-list-index").first();
   const url = page.url();
+  /*
+   * Everything the build yields through is made after this point, so a
+   * `slowYields` installed for this page slows the build's own channel and not
+   * React's (see `slowYields`). Harmless when it was not installed.
+   */
+  await page.evaluate(() => {
+    (window as unknown as { __yieldSlow?: boolean }).__yieldSlow = true;
+  });
   if (await page.evaluate(() => navigator.maxTouchPoints > 0)) await target.tap();
   else await target.click();
   expect(page.url(), "the trigger navigated").toBe(url);
@@ -184,16 +197,57 @@ async function openDiagram(page: Page): Promise<Locator> {
 }
 
 /**
- * Slows every `scheduler.yield()` by `ms`, so the diagram's build (a chain of
- * yields) lasts long enough for something to happen in the middle of it.
+ * Counts the page's yields, and slows them by `ms` so the diagram's build (a
+ * chain of yields) lasts long enough for something to happen in the middle of
+ * it.
+ *
+ * IT INSTRUMENTS `MessageChannel`, NOT `scheduler.yield()`. `yieldToMain`
+ * posts a message and never calls `scheduler.yield()` — deliberately, because a
+ * continuation resumed by that keeps the caller's priority and outranks a
+ * pending input (`src/lib/schedule.ts` carries the measurement: 241 ms of input
+ * delay against 20 ms). Instrumenting the function the page stopped calling
+ * would have left every test below counting zero yields and asserting nothing.
+ *
+ * REACT'S SCHEDULER ALSO USES A MessageChannel, so posts are recorded per
+ * channel and the caller takes the busiest one: `src/lib/schedule.ts` makes its
+ * channel lazily, at the first yield of the build, which is after the trigger,
+ * and `sendTrigger` raises `__yieldSlow` just before it — so only the build's
+ * channel is slowed, and React's hydration is left at full speed.
  */
 async function slowYields(page: Page, ms = 150) {
   await page.addInitScript((delay) => {
-    const s = (globalThis as { scheduler?: { yield?: () => Promise<void> } }).scheduler;
-    if (!s?.yield) return;
-    const original = s.yield.bind(s);
-    s.yield = () => new Promise<void>((resolve) => setTimeout(resolve, delay)).then(() => original());
+    const w = window as unknown as { __yields: { id: number; t: number }[]; __yieldSlow: boolean };
+    w.__yields = [];
+    w.__yieldSlow = false;
+    const Real = window.MessageChannel;
+    let next = 0;
+    class Counted extends Real {
+      constructor() {
+        super();
+        const id = next++;
+        /* Read at construction: channels made before the trigger are React's, and are not slowed. */
+        const slow = w.__yieldSlow;
+        const port = this.port2;
+        const real = port.postMessage.bind(port);
+        port.postMessage = ((...args: [unknown]) => {
+          w.__yields.push({ id, t: performance.now() });
+          if (slow && delay > 0) {
+            window.setTimeout(() => real(...args), delay);
+            return;
+          }
+          real(...args);
+        }) as typeof port.postMessage;
+      }
+    }
+    window.MessageChannel = Counted;
   }, ms);
+}
+
+/** Posts in `[after, until]` on the single busiest channel — the build's, not React's. */
+function yieldsBetween(yields: { id: number; t: number }[], after: number, until: number): number {
+  const counts = new Map<number, number>();
+  for (const y of yields) if (y.t > after && y.t <= until) counts.set(y.id, (counts.get(y.id) ?? 0) + 1);
+  return counts.size ? Math.max(...counts.values()) : 0;
 }
 
 type EventCounts = Record<"pointerdown" | "pointerup" | "pointercancel" | "keydown" | "scroll" | "wheel" | "touchmove" | "click", number>;
@@ -1358,16 +1412,8 @@ test.describe("3D estate map — when it loads, and how it is swapped in (D-028)
      */
     await slowYields(page, 80);
     await page.addInitScript(() => {
-      const w = window as unknown as { __yields: number[]; __resize: { at: number; from: number; to: number } | null };
-      w.__yields = [];
-      const sched = (globalThis as { scheduler?: { yield?: () => Promise<void> } }).scheduler;
-      if (sched?.yield) {
-        const original = sched.yield.bind(sched);
-        sched.yield = () => {
-          w.__yields.push(performance.now());
-          return original();
-        };
-      }
+      /* `slowYields` above already counts every yield, per channel. */
+      const w = window as unknown as { __resize: { at: number; from: number; to: number } | null };
       w.__resize = null;
       const look = () => {
         const stage = document.querySelector<HTMLElement>(".estate-map-stage");
@@ -1391,7 +1437,7 @@ test.describe("3D estate map — when it loads, and how it is swapped in (D-028)
     const m = await phaseMarks(page);
     const read = () =>
       page.evaluate(() => ({
-        yields: (window as unknown as { __yields: number[] }).__yields,
+        yields: (window as unknown as { __yields: { id: number; t: number }[] }).__yields,
         resize: (window as unknown as { __resize: { at: number; from: number; to: number } | null }).__resize,
         width: document.querySelector(".estate-map-frame--3d")!.getBoundingClientRect().width,
         /*
@@ -1415,12 +1461,14 @@ test.describe("3D estate map — when it loads, and how it is swapped in (D-028)
     expect(resize!.at, "the resize came after the search had finished: it was not laid out under the search").toBeLessThan(m.swap!);
 
     /* The build's own label search was split into tasks, so its final task cannot have contained it. */
-    const between = (a: number, b: number) => yields.filter((t) => t > a && t <= b).length;
-    expect(between(m.layout!, m.swap!), "the build's label search ran in too few tasks to have been split").toBeGreaterThanOrEqual(SPLIT_TASKS_MIN);
-    /* And so was the layout that answered the resize, which is the path that used to run in one task. */
-    expect(between(m.swap!, yields.at(-1)! + 1), "the resize was laid out in too few tasks: it was absorbed by one of them").toBeGreaterThanOrEqual(
+    expect(yieldsBetween(yields, m.layout!, m.swap!), "the build's label search ran in too few tasks to have been split").toBeGreaterThanOrEqual(
       SPLIT_TASKS_MIN
     );
+    /* And so was the layout that answered the resize, which is the path that used to run in one task. */
+    expect(
+      yieldsBetween(yields, m.swap!, yields.at(-1)!.t + 1),
+      "the resize was laid out in too few tasks: it was absorbed by one of them"
+    ).toBeGreaterThanOrEqual(SPLIT_TASKS_MIN);
 
     /* The diagram is fitted to the box it ended up in, not to the one it started in. */
     expect(Math.abs(width - resize!.to), "the diagram did not end up in the resized box").toBeLessThanOrEqual(1);
