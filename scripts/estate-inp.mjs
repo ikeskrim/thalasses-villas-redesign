@@ -9,7 +9,7 @@
  *        [--cells all | control,trigger,place-open,keyboard,visit,list-link,canvas-tap,window]
  *        [--families all | trigger,request,arrival,renderer,scene,compile,layout,swap]
  *        [--offsets arrival=0,50 --offsets layout=0,60 ...]
- *        [--runs 10] [--trials 20] [--control-wait 12000]
+ *        [--runs 10] [--trials 20] [--trace-trials 2] [--control-wait 12000]
  *        [--out qa/perf/INP-estate3d.md] [--json <file>]
  *        [--gate-json qa/perf/INP-estate3d-gate.json] [--no-gate-json]
  *
@@ -137,8 +137,31 @@
  *
  *  6. BUILDS AND ORDER: A and B alternate, AB then BA (ABBA), a fresh browser
  *     context (cold cache) per trial. Tracing uses hotel-cwv's categories and no
- *     CPU sampler, which inflates task durations; traces are taken for the
- *     window trials only, where the classification needs them.
+ *     CPU sampler, which INFLATES TASK DURATIONS — measured on this machine at
+ *     +18.7 % on a comparable workload — and Event Timing's `duration` runs to
+ *     the next paint, so a traced trial reports a larger INP than the same tap
+ *     untraced. The figure of record is therefore measured UNTRACED; a few
+ *     trials per window cell (`--trace-trials`, default 2) are traced for the
+ *     classification alone and are written to the record as `na`, never as a
+ *     figure.
+ *
+ *  6b. WHERE A WINDOW TRIAL'S OFFSET IS MEASURED FROM, AND CHECKED AGAINST.
+ *     The anchor is when the phase HAPPENED, not when this process heard of it:
+ *     a mark's console message arrives 1–15 ms late and a CDP network event
+ *     later still, and sleeping the offset from the arrival fired every trial
+ *     late on every family and never early — which flatters the figure, because
+ *     later means waiting for less of the phase. The mark carries its own
+ *     `startTime` and `Network.requestWillBeSent` carries `wallTime`, so both
+ *     are corrected, and every row records the latency it subtracted. A trial
+ *     that still lands further than the tolerance from its declared offset, or
+ *     outside the phase its family names, is recorded INVALID: a cell called
+ *     `window:renderer:0` is a claim about where the tap was.
+ *
+ *  6c. THE OFFSETS ARE THIS PROFILE'S. They are derived from the profile's own
+ *     pin run (0, and about half the phase it measured), not from one table
+ *     written from phone figures — on the unthrottled desktop the same phases
+ *     are five to ten times shorter, so a phone offset lands in a later phase
+ *     or on an idle page while the cell id still names the phase it missed.
  *
  *  7. THE REPORT: every trial in the order measured, medians and worst per
  *     scenario, the input delay / processing / presentation split, pass or fail
@@ -155,38 +178,57 @@
  * opens the card, and counting it would confirm a Visit tap that registered
  * nothing).
  *
- * A MEASUREMENT OF RECORD needs at least 10 VALID trials per control, trigger
- * and fixed cell per profile and build, and at least 20 per window cell, on a
- * machine doing nothing else. Fewer valid ones than that, whatever was
- * requested, and the report's first line says SMOKE, the record carries
- * `smoke: true`, and the exit code is non-zero. It is lab data from Chromium
- * with synthetic CDP input: necessary, not sufficient, and no substitute for
- * field INP.
+ * A MEASUREMENT OF RECORD needs at least 10 VALID REVIEW-BUILD (B) trials per
+ * control, trigger and fixed cell per profile, and at least 20 per window cell,
+ * on a machine doing nothing else. Fewer than that and the report's first line
+ * says SMOKE, the record carries `smoke: true`, and the exit code is non-zero.
+ * SMOKE IS ARM B's ALONE, because the gate reads only arm B: `smoke: true`
+ * makes the gate reject the record outright, and one transient invalid among a
+ * full run's ~780 arm-A trials should not hand back a dead record. Arm A's own
+ * shortfalls are reported beside it. It is lab data from Chromium with
+ * synthetic CDP input: necessary, not sufficient, and no substitute for field
+ * INP.
  *
  * EXIT CODES. 0: the gate record was written and the gate's own reader accepts
- * it. 1: the record was written and the reader would reject it on the
- * MEASUREMENT — too few valid trials, or a trial at or over 200 ms — with every
- * reason printed. 2: the record was REFUSED because the reader could not read
- * it as the schema at all (a cell never measured, a calibration that failed, a
- * malformed row): the markdown report and the raw JSON are still written, so
- * nothing measured is lost, but a file the gate cannot parse is never put in
- * `qa/perf/`.
+ * it AS WRITTEN — `smoke` and all, not a copy with the flag cleared. 1: the
+ * record was written and the reader would reject it on the MEASUREMENT — too
+ * few valid trials, a trial at or over 200 ms, or (the harness's own rule) a
+ * window cell that did not catch the phase its id names — with every reason
+ * printed. 2: nothing was written, either because a PRE-FLIGHT or a PIN RUN
+ * refused (no server, an origin not serving this tree's build, a source newer
+ * than the build, a mark the page does not emit, a chunk that could not be
+ * pinned) or because the reader could not read the record as the schema at all
+ * (a cell never measured, a calibration that failed, a malformed row). A
+ * refusal stops the run WHERE IT IS RAISED rather than after the trials: with
+ * no pinned chunk every control trial is invalid by construction and every
+ * `request`/`arrival` trial waits out a 90 s timeout, about four hours across
+ * the grid for rows that were doomed before they started. The markdown report
+ * and the raw JSON are still written, so nothing measured is lost, but a file
+ * the gate cannot parse is never put in `qa/perf/`.
  */
 import { chromium } from "@playwright/test";
 import { execFileSync } from "node:child_process";
 import fs from "node:fs";
+import http from "node:http";
+import https from "node:https";
 import path from "node:path";
 
 import { ESTATE3D_MARK, ESTATE3D_MARK_PREFIX, WINDOW_ANCHOR } from "../src/components/sections/estate-map-3d-marks.ts";
-import { estate3dFingerprint } from "../src/lib/estate-3d-fingerprint.ts";
+import { estate3dFingerprint, mountPathFiles } from "../src/lib/estate-3d-fingerprint.ts";
 import {
   DEFAULT_OFFSETS,
   FIXED_SCENARIOS,
   INP_MIN_OK_TRIALS,
+  INP_TRIGGER_TARGET,
   INP_WINDOW_FAMILIES,
+  OFFSET_TOLERANCE_MS,
   buildGateRecord,
   cellIdFor,
   checkGateRecord,
+  derivedOffsets,
+  hitAControl,
+  isTriggerTarget,
+  phaseEndMarkOf,
   plannedCells,
 } from "./estate-inp-record.mjs";
 
@@ -200,8 +242,27 @@ const PROFILES = {
   desktop: { width: 1440, height: 900, mobile: false, cpu: 2, latency: 40, down: 10, up: 5 },
 };
 const FIXED = FIXED_SCENARIOS;
-/** The trigger: a list number, which is not a link and not inside the frame, so the tap does nothing but start the load. */
-const TRIGGER_TARGET = ".estate-map-list-index";
+/** The trigger: a list number, which is not a link and not inside the frame, so the tap does nothing but start the load. Spelled in estate-inp-record.mjs, where the spec can reach it. */
+const TRIGGER_TARGET = INP_TRIGGER_TARGET;
+/**
+ * HOW MANY OF A WINDOW CELL'S TRIALS ARE TRACED, AND WHY NOT ALL OF THEM.
+ *
+ * Tracing is only needed for `class`, and it is not free: measured on this
+ * machine (5 interleaved pairs, phone profile, 4× CPU, a DOM+JS workload of 40
+ * yielded steps, these same categories and `recordAsMuchAsPossible`) a traced
+ * run was slower in all five pairs, median 4811 ms against 4055 ms — +18.7 %.
+ * Event Timing's `duration` runs to the next paint, so a slower main thread
+ * makes a LARGER INP: on the phone's own phases that is about +20 ms on a
+ * 105–135 ms label search and +16 to +32 ms on an 83–168 ms chunk evaluation.
+ * The eight window families are the cells that decide the gate, and until now
+ * they alone carried an instrumentation cost that field INP does not.
+ *
+ * So the figure of record is measured UNTRACED, and each cell additionally runs
+ * this many traced trials for the classification. A traced row is written to
+ * the record as `na` with the reason, never as a figure: it is evidence about
+ * the phase, not a measurement of the tap.
+ */
+const TRACE_TRIALS = 2;
 /** A control trial waits this long after the scroll before it is believed (D-033: "wait at least 10 s"). */
 const CONTROL_WAIT_MS = 12_000;
 const GATE_RECORD_DEFAULT = path.join("qa", "perf", "INP-estate3d-gate.json");
@@ -215,7 +276,7 @@ const opt = (name, fallback = null) => {
 const A = opt("a");
 const B = opt("b");
 if (!A && !B) {
-  console.error("usage: node scripts/estate-inp.mjs --a <public build origin> --b <review build origin> [--profiles phone,desktop] [--cells all] [--families all] [--offsets family=a,b] [--runs 10] [--trials 20] [--control-wait 12000] [--out file.md] [--json file.json] [--gate-json file.json | --no-gate-json]");
+  console.error("usage: node scripts/estate-inp.mjs --a <public build origin> --b <review build origin> [--profiles phone,desktop] [--cells all] [--families all] [--offsets family=a,b] [--runs 10] [--trials 20] [--trace-trials 2] [--control-wait 12000] [--out file.md] [--json file.json] [--gate-json file.json | --no-gate-json]");
   process.exit(2);
 }
 const profiles = (opt("profiles", "phone,desktop") ?? "").split(",").filter((p) => PROFILES[p]);
@@ -253,6 +314,8 @@ for (const f of families) if (!INP_WINDOW_FAMILIES.includes(f)) die(`--families:
 
 /* `--offsets family=0,50`, repeatable; the defaults and their reasons are in scripts/estate-inp-record.mjs. */
 const OFFSETS = Object.fromEntries(Object.entries(DEFAULT_OFFSETS).map(([k, v]) => [k, [...v]]));
+/** Families the command line pinned: their offsets are used as given on every profile, instead of the pin run's. */
+const OFFSET_OVERRIDES = new Set();
 for (let i = 0; i < argv.length; i++) {
   if (argv[i] !== "--offsets") continue;
   const spec = argv[i + 1] ?? "";
@@ -269,6 +332,7 @@ for (let i = 0; i < argv.length; i++) {
   if (!values.length || !values.every((v) => /^(0|[1-9]\d*)$/.test(v))) die(`--offsets ${family}: every offset must be a whole number of milliseconds, 0 or more`);
   const offsets = [...new Set(values.map(Number))].sort((a, b) => a - b);
   OFFSETS[family] = offsets;
+  OFFSET_OVERRIDES.add(family);
 }
 /* A whole number of 1 or more, or the script stops: `Number("ten")` is NaN, which ran nothing and was not labelled SMOKE. */
 const intOpt = (name, fallback) => {
@@ -279,8 +343,15 @@ const intOpt = (name, fallback) => {
   }
   return Number(raw);
 };
+/* Like intOpt, but 0 is allowed: `--trace-trials 0` runs no traced trials at all. */
+const countOpt = (name, fallback) => {
+  const raw = opt(name, String(fallback));
+  if (!/^(0|[1-9]\d*)$/.test(raw)) die(`--${name} must be a whole number of 0 or more, not ${JSON.stringify(raw)}`);
+  return Number(raw);
+};
 const RUNS = intOpt("runs", MIN_RUNS);
 const TRIALS = intOpt("trials", MIN_TRIALS);
+const TRACED = countOpt("trace-trials", TRACE_TRIALS);
 const CONTROL_WAIT = intOpt("control-wait", CONTROL_WAIT_MS);
 if (CONTROL_WAIT < 10_000) die(`--control-wait must be at least 10000 ms (D-033: a control trial waits at least ten seconds), not ${CONTROL_WAIT}`);
 const OUT = opt("out", path.join("qa", "perf", "INP-estate3d.md"));
@@ -315,13 +386,140 @@ const COMMIT = (() => {
 })();
 console.log(`tree ${FINGERPRINT} at ${COMMIT.slice(0, 7) || "(no commit)"}; gate record ${GATE_JSON ?? "(not written: --no-gate-json)"}`);
 
-for (const b of builds) {
+/*
+ * THE BUILD ID EACH ARM SERVED. The App Router's HTML does not carry it (its
+ * script URLs are content-hashed chunk names, not `/_next/static/<id>/...`), so
+ * it is read from the distDir this harness's own two builds write: `.next` for
+ * the public arm, `.next-estate3d` for the review arm, which is what
+ * `scripts/estate3d-preview.mjs` builds.
+ *
+ * READING IT IS NOT KNOWING IT. This is a local file; the arm is an origin. The
+ * pre-flight below asks the ORIGIN for the one file that only that dist dir
+ * can serve, and refuses unless it answers — so the id in the record names a
+ * build the arm demonstrably serves, rather than whatever this working tree
+ * happens to have lying in `.next-estate3d`.
+ */
+function buildIdOf(build) {
+  const file = path.join(ROOT, build.expect3d ? ".next-estate3d" : ".next", "BUILD_ID");
   try {
-    const r = await fetch(b.base + ROUTE, { method: "HEAD" });
-    if (r.status >= 500) throw new Error(`HTTP ${r.status}`);
+    return fs.readFileSync(file, "utf8").trim() || "unknown";
+  } catch {
+    return "unknown";
+  }
+}
+const distOf = (build) => path.join(ROOT, build.expect3d ? ".next-estate3d" : ".next");
+
+/*
+ * IS THE BUILD OLDER THAN THE SOURCES IT WAS MADE FROM?
+ *
+ * The record's fingerprint is taken from the WORKING TREE, and then checked
+ * against itself, so D-033's requirement 7 ("the fingerprint matches the tree")
+ * was satisfied tautologically: edit a mount-path source, `content/estate-plan.json`
+ * or one of the four fingerprinted packages after the review build is made and
+ * before the hours-long run starts, and the committed record claims a
+ * fingerprint for a tree that was never built and never measured. That is the
+ * fingerprint the gate then opens on.
+ *
+ * An mtime is a floor and not a proof — a restored file keeps its old mtime,
+ * which this repository has been bitten by before — but it catches the
+ * realistic case for the cost of a few stats, and the alternative is nothing.
+ */
+function stalerThanBuild(build) {
+  const buildIdFile = path.join(distOf(build), "BUILD_ID");
+  let builtAt;
+  try {
+    builtAt = fs.statSync(buildIdFile).mtimeMs;
+  } catch {
+    return [`${path.relative(ROOT, buildIdFile)} is not there, so this arm was not built from this working tree`];
+  }
+  const sources = [
+    ...mountPathFiles(ROOT),
+    path.join("content", "estate-plan.json"),
+    ...["three", "react", "react-dom", "next"].map((pkg) => path.join("node_modules", pkg, "package.json")),
+  ];
+  const newer = [];
+  for (const rel of sources) {
+    try {
+      if (fs.statSync(path.join(ROOT, rel)).mtimeMs > builtAt) newer.push(rel);
+    } catch {
+      newer.push(`${rel} (cannot be read)`);
+    }
+  }
+  return newer;
+}
+
+/*
+ * A PRE-FLIGHT REQUEST, THROUGH `node:http` AND NOT `fetch`.
+ *
+ * `process.exit()` after a successful `fetch` ABORTS this process on this
+ * machine instead of exiting: node 24 on Windows dies with
+ * "Assertion failed: !(handle->flags & UV_HANDLE_CLOSING), src\\win\\async.c"
+ * and an exit code of 0xC0000409, because the keep-alive socket undici left in
+ * its pool is torn down while it is still closing. Every refusal below is a
+ * `die()` immediately after a request that succeeded, so every one of them
+ * would have handed back a crash code instead of 2 — and the landed
+ * "No server" branch, which exits after a 5xx, had the same fault. Reproduced
+ * and isolated: two `fetch` calls then `process.exit(2)` aborts; the same two
+ * through `node:http` exits 2.
+ */
+/* An AggregateError from happy-eyeballs has an empty `message` and its reasons in `errors`; "No server at … ()" says nothing. */
+const why = (err) => [err?.message, ...(Array.isArray(err?.errors) ? err.errors.map((e) => e?.message || e?.code) : []), err?.code].filter(Boolean).join("; ") || String(err);
+const probe = (url, method) =>
+  new Promise((resolve, reject) => {
+    const request = (url.startsWith("https:") ? https : http).request(url, { method }, (r) => {
+      r.resume();
+      r.on("end", () => resolve(r.statusCode ?? 0));
+    });
+    request.on("error", reject);
+    request.end();
+  });
+
+for (const b of builds) {
+  /*
+   * NO SERVER IS A REFUSAL (2), NOT A MEASUREMENT (1). Nothing was measured and
+   * nothing was written, so exiting 1 — which this file's own header defines as
+   * "the record was written and the reader would reject it on the MEASUREMENT"
+   * — told a wrapper the opposite of what happened. Every other pre-flight
+   * refusal uses `die`. And only 5xx used to count as "no server", so an arm
+   * answering 404 for the route passed the check and then failed trial by
+   * trial for an hour.
+   */
+  let status;
+  try {
+    status = await probe(b.base + ROUTE, "HEAD");
   } catch (err) {
-    console.error(`No server at ${b.base} (${err.message}). Start it first.`);
-    process.exit(1);
+    die(`No server at ${b.base} (${why(err)}). Start it first.`);
+  }
+  if (!(status >= 200 && status < 300)) die(`No usable server at ${b.base}: ${ROUTE} answered HTTP ${status}, not 2xx.`);
+
+  /*
+   * THE ORIGIN MUST SERVE THE DIST DIR THE RECORD NAMES. `_buildManifest.js`
+   * lives at `/_next/static/<BUILD_ID>/` in both dist dirs, so a 200 here is
+   * the arm's own word that it is serving the build this tree just made — and
+   * a `next start` another worktree left on this port answers 404. This
+   * repository's memory is explicit that a port holder is never proof of
+   * ownership; before this check the instrument had only a procedure.
+   */
+  const id = buildIdOf(b);
+  if (id === "unknown") die(`arm ${b.label}: ${path.relative(ROOT, path.join(distOf(b), "BUILD_ID"))} could not be read, so nothing can say which build ${b.base} serves. Build it in this working tree first.`);
+  const manifest = `${b.base}/_next/static/${id}/_buildManifest.js`;
+  let served;
+  try {
+    served = await probe(manifest, "GET");
+  } catch (err) {
+    die(`arm ${b.label}: ${manifest} could not be fetched (${why(err)}), so ${b.base} cannot be shown to serve build ${id}.`);
+  }
+  if (!(served >= 200 && served < 300)) {
+    die(
+      `arm ${b.label}: ${b.base} answered HTTP ${served} for ${manifest}. It is not serving build ${id} from this working tree — check what is holding that port before measuring against it.`
+    );
+  }
+
+  const stale = stalerThanBuild(b);
+  if (stale.length) {
+    die(
+      `arm ${b.label}: ${stale.length} source(s) are newer than ${b.expect3d ? ".next-estate3d" : ".next"}/BUILD_ID, so the record's fingerprint would describe a tree this arm was not built from: ${stale.slice(0, 8).join(", ")}${stale.length > 8 ? `, and ${stale.length - 8} more` : ""}. Rebuild before measuring.`
+    );
   }
 }
 
@@ -331,7 +529,16 @@ function recorder() {
     if (!n || !n.tagName) return null;
     let s = n.tagName.toLowerCase();
     if (n.id) s += `#${n.id}`;
-    if (typeof n.className === "string" && n.className.trim()) s += `.${n.className.trim().split(/\s+/).slice(0, 2).join(".")}`;
+    /*
+     * EVERY CLASS, NOT THE FIRST TWO. A window trial tells its trigger from its
+     * measured input by this string: while it kept two classes,
+     * `<span className="tabular estate-map-list-index">` was recognised only
+     * because it happens to carry exactly two, and one more class on that span
+     * would have made the trigger look like the measured interaction — in a
+     * trial whose measured tap left no entry, the TRIGGER's latency would then
+     * have been written as the window cell's figure, with status ok.
+     */
+    if (typeof n.className === "string" && n.className.trim()) s += `.${n.className.trim().split(/\s+/).join(".")}`;
     return s;
   };
   window.__inp = { doc: crypto.randomUUID ? crypto.randomUUID() : String(Math.random()), entries: [], first: null };
@@ -628,10 +835,19 @@ const centre = async (locator) => {
  * Returns the harness-clock moment the input was sent, or an `invalid` reason
  * when the target was not there to be tapped.
  */
-async function sendTrigger(page, cdp, input) {
+async function sendTrigger(page, cdp, input, precomputed = null) {
   const target = page.locator(TRIGGER_TARGET).first();
   if (!(await target.isVisible().catch(() => false))) return { invalid: `no ${TRIGGER_TARGET} to trigger the load with` };
-  const at = await centre(target);
+  /*
+   * `precomputed` is the trigger's box read during a settle step that already
+   * scrolled it into view. A window trial passes it because `centre()`'s
+   * `scrollIntoViewIfNeeded` can SCROLL, and the trial's measured tap point was
+   * read before this call: a scroll here would fire the measured input at
+   * coordinates computed against a layout that is no longer current, possibly
+   * over a list link, whose soft navigation the document-changed check does not
+   * catch. Nothing between the point and the tap may move the page.
+   */
+  const at = precomputed ?? (await centre(target));
   if (!at) return { invalid: `${TRIGGER_TARGET} has no box to tap` };
   const url = page.url();
   const m = await mark(page);
@@ -831,7 +1047,15 @@ async function fixedTrial(browser, profileName, build, scenario, chunkFile) {
     Object.assign(rec, {
       dispatched: r.dispatched,
       recorded: list.length,
-      under16: Math.max(0, r.dispatched - list.length),
+      /*
+       * NOT `under16`. The record's `under16` is a BOOLEAN the gate
+       * type-checks; this is a COUNT, on the raw row only, and nothing reads it
+       * (the report recomputes its own "<16 ms" column). Under the old name it
+       * shipped in qa/perf/INP-estate3d.json beside the record's `under16:
+       * true`, and it was one `extras` line away from putting a number where
+       * `trialProblem` requires a boolean.
+       */
+      trialsWithNoEntry: Math.max(0, r.dispatched - list.length),
       interactionCountDelta: countDelta,
       inp: worst ? round(worst.latency) : null,
       pageWorst: pageWorst ? round(pageWorst.latency) : null,
@@ -1245,51 +1469,83 @@ function classify(model, interaction, chunkFile) {
  * every window cell would make all eight families a measurement of the trigger.
  * `pageWorstMs` and `triggerInpMs` carry it for the record's reader anyway.
  */
-async function windowTrial(browser, profileName, build, family, offset, pin) {
+async function windowTrial(browser, profileName, build, family, offset, pin, { traced = false } = {}) {
   const { context, page, cdp, input } = await openContext(browser, profileName);
   const chunkFile = pin?.file ?? null;
   const chunk = watchChunk(cdp, chunkFile);
-  const rec = { kind: "window", profile: profileName, build: build.label, family, offset, status: "ok" };
+  const rec = { kind: "window", profile: profileName, build: build.label, family, offset, status: "ok", traced };
   let tracing = false;
   try {
+    if (build.expect3d && !chunkFile && (family === "request" || family === "arrival")) {
+      /* Without a pinned chunk these two families can only wait out their timeout and be recorded invalid: 90 s per trial for a row that was doomed before it started. */
+      rec.status = "invalid";
+      rec.reason = `the three.js chunk was not pinned, so the ${family} anchor cannot be recognised`;
+      return rec;
+    }
     await context.addInitScript(anchorSignal, ESTATE3D_MARK_PREFIX);
-    await context.addInitScript(canvasMark);
+    if (traced) await context.addInitScript(canvasMark);
     const anchors = markWatcher(page);
-    /* The two network anchors, watched in the browser process so a blocked renderer cannot delay them. */
+    /*
+     * THE TWO NETWORK ANCHORS, IN THE BROWSER'S OWN CLOCK, NOT THE HARNESS'S.
+     *
+     * `Date.now()` in the handler is when NODE heard about the event, which is
+     * late by the protocol's delivery latency and never early. CDP gives the
+     * real instants: `Network.requestWillBeSent` carries both `wallTime`
+     * (epoch seconds, the same system clock as `Date.now()`) and `timestamp`
+     * (a monotonic clock), and `Network.loadingFinished` carries `timestamp`.
+     * One pairing of the two on the request fixes the offset between them, so
+     * the arrival is placed on the system clock with no delivery latency at all.
+     */
     const requestIds = new Set();
-    let requestSentAt = null;
+    let monotonicToWall = null;
     let arrivedAt = null;
     const requestSeen = new Promise((resolve) => {
       cdp.on("Network.requestWillBeSent", (e) => {
         if (!chunkFile || !e.request.url.includes(chunkFile) || requestIds.size) return;
         requestIds.add(e.requestId);
-        requestSentAt = Date.now();
-        resolve({ at: requestSentAt });
+        const heardAt = Date.now();
+        const wall = typeof e.wallTime === "number" ? e.wallTime * 1000 : null;
+        if (wall !== null && typeof e.timestamp === "number") monotonicToWall = wall - e.timestamp * 1000;
+        resolve({ at: wall ?? heardAt, heardAt, exact: wall !== null });
       });
     });
     const arrivalSeen = new Promise((resolve) => {
       cdp.on("Network.loadingFinished", (e) => {
         if (!requestIds.has(e.requestId) || arrivedAt !== null) return;
-        arrivedAt = Date.now();
-        resolve({ at: arrivedAt });
+        const heardAt = Date.now();
+        arrivedAt = monotonicToWall !== null && typeof e.timestamp === "number" ? e.timestamp * 1000 + monotonicToWall : heardAt;
+        resolve({ at: arrivedAt, heardAt, exact: monotonicToWall !== null });
       });
     });
 
-    await cdp.send("Tracing.start", { transferMode: "ReturnAsStream", traceConfig: { recordMode: "recordAsMuchAsPossible", includedCategories: TRACE_CATEGORIES } });
-    tracing = true;
+    if (traced) {
+      await cdp.send("Tracing.start", { transferMode: "ReturnAsStream", traceConfig: { recordMode: "recordAsMuchAsPossible", includedCategories: TRACE_CATEGORIES } });
+      tracing = true;
+    }
     await page.goto(build.base + ROUTE, { waitUntil: "load", timeout: 120_000 });
     await page.waitForTimeout(2500);
     const before = await readRecorder(page);
 
-    /* The tap point, and the page clock against the harness clock: both read while the page is idle. */
+    /*
+     * THE LAYOUT IS SETTLED BEFORE THE TAP POINT IS READ, not after.
+     *
+     * The frame is centred and the trigger scrolled into view FIRST, and the
+     * trigger's box is then handed to `sendTrigger` so that nothing between
+     * this point and the measured tap can scroll the page. Before this, the
+     * point was read after centring the frame and `centre(trigger)` could
+     * scroll afterwards (13 px at desktop 1440×900 in a synthetic page with
+     * this section's box model), so the stored coordinates and the `inControl`
+     * check both described a layout that was no longer current.
+     */
+    await page.evaluate(() => document.querySelector(".estate-map-frame")?.scrollIntoView({ block: "center" }));
+    const triggerBox = await centre(page.locator(TRIGGER_TARGET).first()).catch(() => null);
     const point = await page.evaluate(() => {
       const f = document.querySelector(".estate-map-frame");
-      f.scrollIntoView({ block: "center" });
       const r = f.getBoundingClientRect();
       const x = r.left + r.width * 0.5;
       const y = r.top + r.height * 0.92;
       const hit = document.elementFromPoint(x, y);
-      return { x, y, at: hit ? hit.tagName.toLowerCase() : null, inControl: !!(hit && hit.closest("a, button")) };
+      return { x, y, at: hit ? hit.tagName.toLowerCase() : null, inControl: !!(hit && hit.closest("a, button")), scrollY: window.scrollY };
     });
     rec.target = point.at;
     if (point.inControl) {
@@ -1298,18 +1554,35 @@ async function windowTrial(browser, profileName, build, family, offset, pin) {
       return rec;
     }
     /*
-     * The page's clock against the harness's, read while the page is idle. It
-     * is used for ONE thing: arm A's anchor has no page time of its own (A
-     * emits no marks), so its `anchorPageMs` is this estimate. It is NOT used
-     * to decide which interaction was measured - see the note further down for
-     * what that cost on the phone profile.
+     * THE PAGE'S CLOCK AGAINST THE HARNESS'S, best of a few reads.
+     *
+     * A `page.evaluate` on a throttled renderer is answered LATE inside its
+     * round trip, so the midpoint of "sent" and "returned" is later than the
+     * instant the page actually read its clock, and every page time derived
+     * from one sample is overestimated by as much as the renderer was behind.
+     * The sample with the SHORTEST round trip is the one least able to be
+     * wrong, and its error is bounded by half of that round trip — which the
+     * row records, so a reader can see how much the mapping is worth.
+     *
+     * It is used for two things and no others: arm A's `anchorPageMs` (A emits
+     * no marks, so it has no page time of its own), and the delivery latency of
+     * a mark's console message, below. It is NEVER used to decide which
+     * interaction was measured — that cost every phone window trial its figure
+     * once already.
      */
-    const clockSentAt = Date.now();
-    const pageClock = await page.evaluate(() => performance.now());
-    const clockAt = (clockSentAt + Date.now()) / 2;
+    let best = null;
+    for (let i = 0; i < 5; i++) {
+      const sentAt = Date.now();
+      const pageNow = await page.evaluate(() => performance.now());
+      const rtt = Date.now() - sentAt;
+      if (!best || rtt < best.rtt) best = { rtt, pageClock: pageNow, clockAt: sentAt + rtt / 2 };
+    }
+    const { pageClock, clockAt } = best;
+    rec.clockRoundTripMs = round(best.rtt);
     const toPage = (wall) => pageClock + (wall - clockAt);
+    const toWall = (pageMs) => clockAt + (pageMs - pageClock);
 
-    const t = await sendTrigger(page, cdp, input);
+    const t = await sendTrigger(page, cdp, input, triggerBox);
     if (t.invalid) {
       rec.status = "invalid";
       rec.reason = t.invalid;
@@ -1319,9 +1592,23 @@ async function windowTrial(browser, profileName, build, family, offset, pin) {
     rec.triggerSentAt = t.sentAt;
 
     /* ---- the anchor ------------------------------------------------------ */
+    /*
+     * THE ANCHOR IS WHEN THE PHASE HAPPENED, NOT WHEN THE HARNESS HEARD OF IT.
+     *
+     * A mark reaches the harness as a console message, 1–15 ms after it was
+     * written by this script's own measurement. Sleeping `offset` from the
+     * moment the MESSAGE arrived fired every trial that much late, on every
+     * family, never early — and later means waiting for less of the phase, so
+     * the bias flattered exactly the cells that decide the gate. The mark
+     * carries its own `startTime`, so the latency is the difference between
+     * that (mapped to the harness's clock) and the arrival, and it is
+     * subtracted. `anchorSignalLatencyMs` travels with the row so the
+     * correction can be argued with.
+     */
     let anchorAt = null;
     let anchorPageMs = null;
     let anchorEstimated = false;
+    let signalLatency = null;
     if (build.expect3d) {
       if (family === "request" || family === "arrival") {
         const got = await Promise.race([family === "request" ? requestSeen : arrivalSeen, sleep(90_000).then(() => null)]);
@@ -1331,6 +1618,8 @@ async function windowTrial(browser, profileName, build, family, offset, pin) {
           return rec;
         }
         anchorAt = got.at;
+        signalLatency = round(got.heardAt - got.at);
+        rec.anchorFromBrowserClock = got.exact;
         rec.anchor = `three.js ${family === "request" ? "Network.requestWillBeSent" : "Network.loadingFinished"}`;
       } else {
         const name = WINDOW_ANCHOR[family];
@@ -1340,8 +1629,11 @@ async function windowTrial(browser, profileName, build, family, offset, pin) {
           rec.reason = `the page never emitted ${name}`;
           return rec;
         }
-        anchorAt = got.at;
         anchorPageMs = got.pageMs;
+        const markWall = Number.isFinite(got.pageMs) ? toWall(got.pageMs) : null;
+        /* Clamped to [0, 60]: a negative latency can only be the clock mapping's own error, and a huge one would move the input out of the phase entirely. */
+        signalLatency = markWall === null ? 0 : Math.min(60, Math.max(0, round(got.at - markWall)));
+        anchorAt = got.at - signalLatency;
         rec.anchor = `the page's ${name} mark`;
       }
     } else {
@@ -1356,6 +1648,7 @@ async function windowTrial(browser, profileName, build, family, offset, pin) {
       anchorEstimated = true;
       rec.anchor = `the trigger + ${delay} ms (B's pin run measured that delay to ${WINDOW_ANCHOR[family] ?? `the chunk's ${family}`}; A has neither the chunk nor the marks)`;
     }
+    rec.anchorSignalLatency = signalLatency;
 
     /* ---- the measured input --------------------------------------------- */
     await sleep(anchorAt + offset - Date.now());
@@ -1367,7 +1660,7 @@ async function windowTrial(browser, profileName, build, family, offset, pin) {
     await pending.catch(() => {});
 
     const after = await readRecorder(page).catch(() => null);
-    const events = await readTrace(cdp);
+    const events = tracing ? await readTrace(cdp) : null;
     tracing = false;
     if (!after || after.doc !== before.doc) {
       rec.status = "lost";
@@ -1412,7 +1705,8 @@ async function windowTrial(browser, profileName, build, family, offset, pin) {
      * ordered in time and the first is the trigger.
      */
     const all = interactionsOf(after.entries);
-    const isTrigger = (i) => typeof i.target === "string" && i.target.includes(TRIGGER_TARGET.slice(1));
+    /* `isTriggerTarget` matches the class as a WHOLE class, out of the full list the recorder now spells; the spec pins it, because this is the one fact that decides which of a window trial's two inputs becomes the cell's figure. */
+    const isTrigger = (i) => isTriggerTarget(i.target);
     let measured = all.filter((i) => !isTrigger(i));
     let triggerOne = all.find(isTrigger) ?? null;
     if (!triggerOne && all.length > 1) {
@@ -1430,7 +1724,36 @@ async function windowTrial(browser, profileName, build, family, offset, pin) {
      * are the harness's clock, so the difference cancels every clock question
      * except the anchor signal's own delivery latency (1 to 15 ms, measured).
      */
-    const sentOffset = anchorPageMs === null ? null : round(firedAt - anchorAt);
+    const sentOffset = round(firedAt - anchorAt);
+
+    /*
+     * WHAT THE CELL CLAIMS TO HAVE SAMPLED, checked against what it did.
+     *
+     * The phase a family is named for ends at the mark that follows its anchor
+     * (`phaseEndMarkOf`, derived from ESTATE3D_MARK_ORDER so it cannot drift
+     * from the mark names); `request` ends when the chunk's last byte arrives
+     * and `arrival` at `estate3d:import-end`. Both times are read from the page
+     * AFTERWARDS, in the page's own clock, so nothing here costs the trial a
+     * main-thread round trip while it is being measured.
+     */
+    const phaseEndMark = family === "request" ? null : phaseEndMarkOf(family);
+    let phaseEndPageMs = null;
+    if (family === "request") phaseEndPageMs = rec.resource?.responseEndMs ?? null;
+    else if (phaseEndMark && typeof marks[phaseEndMark] === "number") phaseEndPageMs = marks[phaseEndMark];
+    const phaseMs = phaseEndPageMs !== null && anchorPageMs !== null ? round(phaseEndPageMs - anchorPageMs) : null;
+    const achieved = worst && anchorPageMs !== null ? round(worst.startTime - anchorPageMs) : null;
+    /* A trial with no Event Timing entry has no page time for its input, so where it was SENT is the only evidence left — and now that the anchor is corrected, that is evidence and not an artefact of the signal's latency. */
+    const landedAt = achieved !== null ? achieved : sentOffset;
+    const inPhase = phaseMs === null || landedAt === null ? null : landedAt >= -OFFSET_TOLERANCE_MS && landedAt < phaseMs;
+
+    Object.assign(rec, {
+      phaseEndMark: phaseEndMark ?? (family === "request" ? "the chunk's last byte (Resource Timing)" : null),
+      phaseEndPageMs: phaseEndPageMs === null ? null : round(phaseEndPageMs),
+      phaseMs,
+      inPhase,
+      inPhaseFrom: inPhase === null ? null : achieved !== null ? "entry" : "sent",
+      measuredTarget: worst?.target ?? null,
+    });
     Object.assign(rec, {
       /* The trigger and the measured input: both were dispatched in this page view, and the under-16 rule asks the browser to have counted both. */
       dispatched: 2,
@@ -1442,26 +1765,77 @@ async function windowTrial(browser, profileName, build, family, offset, pin) {
       triggerInp: triggerOne ? round(triggerOne.latency) : null,
       anchorPageMs: anchorPageMs === null ? null : round(anchorPageMs),
       anchorEstimated,
-      offsetAchieved: worst && anchorPageMs !== null ? round(worst.startTime - anchorPageMs) : null,
-      /* Where the input was SENT relative to the anchor: recorded on every row, so a trial with no entry still says where it landed. */
+      offsetAchieved: achieved,
+      /* Where the input was SENT relative to the CORRECTED anchor: recorded on every row, so a trial with no entry still says where it landed. */
       offsetSent: sentOffset,
       worst: worst ? { types: worst.types, target: worst.target, split: mapSplit(worst.split) } : null,
-      class: worst ? classify(traceModel(events, build.base, after.origin), worst, build.expect3d ? chunkFile : null) : "under 16 ms (no entry; the input was counted)",
+      class: !worst
+        ? "under 16 ms (no entry; the input was counted)"
+        : events
+          ? classify(traceModel(events, build.base, after.origin), worst, build.expect3d ? chunkFile : null)
+          : "not traced (the figure of record is measured without a trace)",
       classWindow: worst ? worst.window : null,
-      marks: Object.keys(marks).length,
+      /* The marks themselves, not a count of them: the count discarded the following mark's time, and with it any way to check afterwards whether a trial fell inside its phase. */
+      marks,
       mounted3d: await page
         .locator(".estate-map-frame--3d")
         .count()
         .then((n) => n > 0)
         .catch(() => null),
     });
+    const problems = [];
     if (!worst && !(countDelta >= 2)) {
-      rec.status = "invalid";
-      rec.reason =
+      problems.push(
         countDelta === null
           ? "no Event Timing entry, and this browser has no interaction count to confirm the input landed"
-          : `no Event Timing entry, and the browser counted ${countDelta} of the 2 inputs dispatched (the trigger and the measured one)`;
+          : `no Event Timing entry, and the browser counted ${countDelta} of the 2 inputs dispatched (the trigger and the measured one)`
+      );
       delete rec.class;
+    }
+    /*
+     * A TRIAL MUST HAVE LANDED WHERE ITS CELL ID SAYS. `window:renderer:0` is a
+     * claim about where the tap was, and a cell whose twenty taps all landed
+     * 20 ms into a 37 ms phase is not that cell — it is a different, easier
+     * measurement wearing the same name. Arm A's anchor is an estimate by
+     * construction (the pin run's delay, not A's own event), so the check is on
+     * B, which is the arm the gate reads.
+     */
+    const signed = (n) => `${n >= 0 ? "+" : ""}${n}`;
+    if (!anchorEstimated && landedAt !== null && Math.abs(landedAt - offset) > OFFSET_TOLERANCE_MS) {
+      problems.push(`the input landed ${signed(landedAt)} ms from the anchor, not +${offset} ms (tolerance ${OFFSET_TOLERANCE_MS} ms)`);
+    }
+    if (!anchorEstimated && landedAt === null) {
+      problems.push("nothing places this trial's input relative to its anchor, so the cell cannot say it sampled its phase");
+    }
+    if (!anchorEstimated && inPhase === false) {
+      problems.push(`the input landed outside the ${family} phase (${signed(landedAt)} ms into a phase of ${phaseMs} ms)`);
+    }
+    /*
+     * WHAT THE TAP ACTUALLY HIT. The point is checked against
+     * `elementFromPoint` before the trigger, while the page still shows the 2D
+     * photograph. In the `swap` family, and at late `layout` offsets, the input
+     * lands at or after the task that places the labels, when the same
+     * coordinates may sit over a `.estate-map-3d-button` — and the cell would
+     * then be measuring a tap that opens a card. Event Timing already carries
+     * the target the figure came from; this reads it.
+     */
+    if (hitAControl(rec.measuredTarget)) {
+      problems.push(`the measured input landed on a control (${rec.measuredTarget}), not on an empty part of the frame`);
+    }
+    if (problems.length) {
+      rec.status = "invalid";
+      rec.reason = problems.join("; ");
+    }
+    /*
+     * A TRACED TRIAL IS EVIDENCE ABOUT THE PHASE, NEVER A FIGURE OF RECORD.
+     * Tracing inflates task durations and Event Timing's `duration` runs to the
+     * next paint, so a traced trial reports a LARGER INP than the same tap
+     * untraced (+18.7 % on this machine's workload). Its `class` is what it is
+     * for; its number is recorded and marked `na`, which the gate skips.
+     */
+    if (traced && rec.status === "ok") {
+      rec.status = "n/a";
+      rec.reason = "traced for the classification only; tracing inflates the figure, so this trial is not one of record";
     }
   } catch (err) {
     rec.status = "error";
@@ -1479,6 +1853,29 @@ const calibration = [];
 const chunks = {};
 const rows = [];
 const refusals = [];
+/**
+ * A REFUSAL STOPS THE RUN WHERE IT IS RAISED.
+ *
+ * They used to be collected before any trial of a profile and printed after
+ * every trial of every profile. With no pinned chunk, every control trial is
+ * invalid by construction and every `request`/`arrival` window trial waits out
+ * a 90 s timeout before being recorded invalid — about two hours per profile of
+ * pure timeout, four across the grid, for rows that were doomed before they
+ * started. The header already promised the other behaviour ("the run stops with
+ * the mark's name instead of measuring nothing"); now the code does it.
+ *
+ * What is already measured is not thrown away: the loop breaks, the markdown
+ * report and the raw JSON are written from the rows in hand, and the gate
+ * record is refused with exit 2.
+ */
+let fatal = false;
+const refuse = (reason) => {
+  refusals.push(reason);
+  console.error(`REFUSED: ${reason}`);
+  fatal = true;
+};
+/** Which offsets each profile measured: derived from that profile's own pin run, except where --offsets said otherwise. */
+const offsetsByProfile = {};
 const cellName = (r) => (r.kind === "window" ? `window:${r.family}+${r.offset}ms` : r.kind === "fixed" ? r.scenario : r.kind);
 const log = (r) => {
   const figure = r.status !== "ok" ? `${r.status.toUpperCase()}${r.reason ? ` (${r.reason})` : ""}` : r.inp === null ? "<16 ms" : `${r.inp} ms`;
@@ -1512,10 +1909,31 @@ for (const profileName of profiles) {
      * silently short record is not a measurement, it is an hour lost and a
      * mystery. The name it looked for is in the message.
      */
-    refusals.push(`${profileName}: the page emits no mark for ${pin.missingAnchors.join(", ")} — the names come from src/components/sections/estate-map-3d-marks.ts and the page must emit every one of them`);
+    refuse(`${profileName}: the page emits no mark for ${pin.missingAnchors.join(", ")} — the names come from src/components/sections/estate-map-3d-marks.ts and the page must emit every one of them`);
+    break;
   }
   const chunkFile = pin?.file ?? null;
-  if (bBuild && !chunkFile) refusals.push(`${profileName}: the three.js chunk was not pinned (${pin?.error ?? "no reason given"}), so no row can say whether it was fetched`);
+  if (bBuild && !chunkFile) {
+    refuse(`${profileName}: the three.js chunk was not pinned (${pin?.error ?? "no reason given"}), so no row can say whether it was fetched`);
+    break;
+  }
+
+  /*
+   * THE OFFSETS COME FROM THIS PROFILE'S OWN PIN RUN.
+   *
+   * One table for both profiles was the phone's. On the unthrottled desktop the
+   * same phases run five to ten times shorter, so `scene`, `compile`, `layout`
+   * and `swap` would each have sampled a LATER phase, or an idle page, while
+   * the cell id still named the phase they missed. The pin run already reads
+   * every mark's page time and the chunk's Resource Timing, so it already knows
+   * each phase's length here; each family is probed at 0 and at about half of
+   * it. `--offsets family=a,b` still wins, on every profile.
+   */
+  const derived = derivedOffsets(pin, DEFAULT_OFFSETS);
+  const profileOffsets = {};
+  for (const family of INP_WINDOW_FAMILIES) profileOffsets[family] = OFFSET_OVERRIDES.has(family) ? [...OFFSETS[family]] : derived.offsets[family];
+  offsetsByProfile[profileName] = { offsets: profileOffsets, phases: derived.phases, fellBack: derived.fellBack, overridden: [...OFFSET_OVERRIDES] };
+  console.log(`offsets ${profileName}: ${JSON.stringify(profileOffsets)} (phases ${JSON.stringify(derived.phases)}${derived.fellBack.length ? `; fell back to the table for ${derived.fellBack.join(", ")}` : ""})`);
 
   if (wantControl) {
     for (let run = 0; run < RUNS; run++) {
@@ -1554,15 +1972,26 @@ for (const profileName of profiles) {
      * table, the every-trial table, the console or the JSON.
      */
     console.log(`window families ${profileName}: NOT RUN — calibration failed, so CDP input is not shown to record queueing delay here`);
-  } else if (wantWindow && pin?.missingAnchors?.length) {
-    console.log(`window families ${profileName}: NOT RUN — ${pin.missingAnchors.join(", ")}`);
   } else if (wantWindow) {
     let flip = 0;
     for (const family of families) {
-      for (const offset of OFFSETS[family]) {
+      for (const offset of profileOffsets[family]) {
+        /*
+         * THE TRACED TRIALS FIRST, THEN THE FIGURES. Tracing inflates the
+         * figure, so the trials of record are untraced and the trace is taken
+         * for the classification only, on a few trials whose rows are written
+         * as `na`. `--trace-trials 0` turns it off entirely.
+         */
+        for (let t = 0; t < TRACED; t++) {
+          for (const build of armOrder(flip++)) {
+            const r = await windowTrial(browser, profileName, build, family, offset, pin, { traced: true });
+            rows.push(r);
+            log(r);
+          }
+        }
         for (let t = 0; t < TRIALS; t++) {
           for (const build of armOrder(flip++)) {
-            const r = await windowTrial(browser, profileName, build, family, offset, pin);
+            const r = await windowTrial(browser, profileName, build, family, offset, pin, { traced: false });
             rows.push(r);
             log(r);
           }
@@ -1581,7 +2010,15 @@ const median = (xs) => {
 };
 const fmt = (n) => (n === null || n === undefined ? "—" : `${Math.round(n)} ms`);
 const splitText = (w) => (w ? `${w.split.inputDelay} / ${w.split.processing} / ${w.split.presentation}` : "—");
-const cellsMeasured = [...new Set(rows.map((r) => cellIdFor(r)))];
+/*
+ * THE CELLS ONE PROFILE MEASURED, which is not the same list for both any more:
+ * each profile's window offsets come from its own pin run, so `window:scene:21`
+ * exists on the phone and `window:scene:10` on the desktop. Crossing every
+ * profile with every cell any profile measured reported each of them as missing
+ * the other's cells — and on arm B that would have forced `smoke: true` on
+ * every complete run there will ever be.
+ */
+const cellsMeasuredIn = (p) => [...new Set(rows.filter((r) => r.profile === p).map((r) => cellIdFor(r)))];
 
 /*
  * SMOKE IS DECIDED BY THE VALID TRIALS THAT CAME BACK, not by what was
@@ -1591,53 +2028,51 @@ const cellsMeasured = [...new Set(rows.map((r) => cellIdFor(r)))];
  * gate refuses to read.
  */
 const shortfalls = [];
-for (const planned of plannedCells(OFFSETS)) {
-  const id = cellIdFor(planned);
-  if (!cellsMeasured.includes(id)) {
-    shortfalls.push(`${id}: not measured`);
-    continue;
+/** Arm A's own shortfalls: reported, but they do not make the record a smoke run (see below). */
+const armANotes = [];
+for (const p of profiles) {
+  for (const planned of plannedCells(offsetsByProfile[p]?.offsets ?? OFFSETS)) {
+    const id = cellIdFor(planned);
+    if (!rows.some((r) => r.profile === p && cellIdFor(r) === id)) shortfalls.push(`${p} ${id}: not measured`);
   }
 }
 for (const p of profiles) {
-  for (const id of cellsMeasured) {
+  for (const id of cellsMeasuredIn(p)) {
     for (const b of builds) {
       const set = rows.filter((r) => r.profile === p && r.build === b.label && cellIdFor(r) === id);
+      const where = b.label === "B" ? shortfalls : armANotes;
       if (!set.length) {
-        shortfalls.push(`${p} ${id} ${b.label}: no trial`);
+        where.push(`${p} ${id} ${b.label}: no trial`);
         continue;
       }
       if (set.every((r) => r.status === "n/a")) continue;
       const need = INP_MIN_OK_TRIALS[set[0].kind];
       const ok = set.filter((r) => r.status === "ok").length;
-      if (ok < need) shortfalls.push(`${p} ${id} ${b.label}: ${ok} valid trial(s) of ${set.length}, needs ${need}`);
+      if (ok < need) where.push(`${p} ${id} ${b.label}: ${ok} valid trial(s) of ${set.length}, needs ${need}`);
     }
   }
 }
+/*
+ * SMOKE IS ARM B's, BECAUSE THE GATE READS ONLY ARM B.
+ *
+ * `smoke: true` makes the gate reject the record outright ("smoke run"), and
+ * D-033 requires nothing whatever of arm A. While a shortfall on EITHER arm set
+ * it, one transient invalid anywhere in the roughly 780 arm-A trials of a full
+ * run — a Visit tap that did not open the card, a list link that did not
+ * arrive — was enough to hand back a dead record. Arm A's shortfalls are still
+ * reported, in the run's own notes, where they belong.
+ */
 const smoke = shortfalls.length > 0;
 
-/*
- * THE BUILD ID EACH ARM SERVED. The App Router's HTML does not carry it (its
- * script URLs are content-hashed chunk names, not `/_next/static/<id>/...`), so
- * it is read from the distDir this harness's own two builds write: `.next` for
- * the public arm, `.next-estate3d` for the review arm, which is what
- * `scripts/estate3d-preview.mjs` builds. An arm served from anywhere but this
- * working tree is recorded as "unknown" rather than guessed at.
- */
-function buildIdOf(build) {
-  if (!/^https?:\/\/(localhost|127\.0\.0\.1)(:|$|\/)/.test(build.base)) return "unknown";
-  const file = path.join(ROOT, build.expect3d ? ".next-estate3d" : ".next", "BUILD_ID");
-  try {
-    return fs.readFileSync(file, "utf8").trim() || "unknown";
-  } catch {
-    return "unknown";
-  }
-}
+/* Read and PROVEN SERVED by the pre-flight at the top of this file: the arm answered for /_next/static/<id>/_buildManifest.js, which only that dist dir can serve. */
 const buildIds = Object.fromEntries(builds.map((b) => [b.label, buildIdOf(b)]));
 
 let md = `# INP on \`${ROUTE}\`, with the 3D map active\n\n`;
 md += smoke
-  ? `**SMOKE — NOT A MEASUREMENT OF RECORD.** A measurement of record needs ${INP_MIN_OK_TRIALS.control} valid trials per control, trigger and fixed cell, per profile and build, and ${INP_MIN_OK_TRIALS.window} per window cell. Short: ${shortfalls.join("; ")}. Other work may have been running on the machine. These figures show that the harness works; they measure nothing.\n\n`
-  : `Trials: ${RUNS} per control, trigger and fixed cell per profile; ${TRIALS} per window cell; every cell, profile and build has at least the minimum valid trials. Lab only (see Limits).\n\n`;
+  ? `**SMOKE — NOT A MEASUREMENT OF RECORD.** A measurement of record needs ${INP_MIN_OK_TRIALS.control} valid review-build (B) trials per control, trigger and fixed cell, per profile, and ${INP_MIN_OK_TRIALS.window} per window cell. Short on arm B: ${shortfalls.join("; ")}. Other work may have been running on the machine. These figures show that the harness works; they measure nothing.\n\n`
+  : `Trials: ${RUNS} per control, trigger and fixed cell per profile; ${TRIALS} untraced per window cell plus ${TRACED} traced for the classification; every cell and profile has at least the minimum valid review-build trials. Lab only (see Limits).\n\n`;
+if (refusals.length) md += `**REFUSED, and the run stopped here:** ${refusals.join("; ")}\n\n`;
+if (armANotes.length) md += `Arm A fell short in ${armANotes.length} place(s), which the gate reads nothing of and which therefore does not make this a smoke run: ${armANotes.slice(0, 10).join("; ")}${armANotes.length > 10 ? `, and ${armANotes.length - 10} more` : ""}.\n\n`;
 md += `Generated ${started.toISOString()} by \`node scripts/estate-inp.mjs\`. Builds: ${builds.map((b) => `**${b.label}** ${b.base} (${b.expect3d ? "review build, 3D" : "public build, gate closed, 2D"}, build id \`${buildIds[b.label]}\`)`).join("; ")}. Order ABBA, a fresh context per trial. Tree \`${FINGERPRINT}\` at \`${COMMIT.slice(0, 7) || "(no commit)"}\`.\n\n`;
 
 md += `## Calibration (CDP input behind a 300 ms busy loop)\n\n| profile | input into the loop | expected input delay | measured input delay | result |\n|---|---|---|---|---|\n`;
@@ -1651,7 +2086,7 @@ for (const c of calibration) {
 /** One summary row per cell, per profile, per arm: the same grouping the gate counts by. */
 const summary = [];
 for (const profileName of profiles) {
-  for (const id of cellsMeasured) {
+  for (const id of cellsMeasuredIn(profileName)) {
     for (const build of builds) {
       const set = rows.filter((r) => r.profile === profileName && r.build === build.label && cellIdFor(r) === id);
       if (!set.length) continue;
@@ -1691,17 +2126,18 @@ if (wantWindow) {
       md += `\n**${p}: not measurable.** Calibration failed, so CDP input is not shown to record queueing delay on this machine. No window trial was run on this profile, so there are no figures to report.\n`;
       continue;
     }
-    md += `\n### ${p}\n\nThe class covers each interaction from its first entry's start to its worst entry's dispatch (see the every-trial table for which entries those were). "achieved" is the offset the trial actually landed at, measured in the page's own clock from the anchor. Invalid trials (an input the page never registered) are counted in the every-trial table only.\n\n| family | offset | build | class (from the trace) | n | median achieved | median INP | worst INP | <16 ms |\n|---|---|---|---|---|---|---|---|---|\n`;
+    const po = offsetsByProfile[p];
+    md += `\n### ${p}\n\nOffsets derived from this profile's own pin run: each family at 0 and at about half its measured phase${po?.fellBack?.length ? `; ${po.fellBack.join(", ")} fell back to the table in \`scripts/estate-inp-record.mjs\`` : ""}${po?.overridden?.length ? `; ${po.overridden.join(", ")} came from \`--offsets\`` : ""}. Measured phases, ms: ${INP_WINDOW_FAMILIES.map((f) => `${f} ${po?.phases?.[f] ?? "—"}`).join(", ")}.\n\n"achieved" is the offset the trial actually landed at, measured in the page's own clock from the anchor; a trial further than ${OFFSET_TOLERANCE_MS} ms from its declared offset, or outside its phase, is recorded invalid and appears in the every-trial table only. "in phase" counts the valid B trials whose input landed inside the phase the family is named for. The class comes from the traced trials, which are recorded \`na\` because tracing inflates the figure.\n\n| family | offset | build | n (of record) | in phase | median achieved | median INP | worst INP | <16 ms | class (traced trials) |\n|---|---|---|---|---|---|---|---|---|---|\n`;
     for (const family of families) {
-      for (const offset of OFFSETS[family]) {
+      for (const offset of po?.offsets?.[family] ?? []) {
         for (const build of builds) {
-          const set = rows.filter((r) => r.kind === "window" && r.profile === p && r.family === family && r.offset === offset && r.build === build.label && r.status === "ok");
-          for (const cls of [...new Set(set.map((r) => r.class))]) {
-            const c = set.filter((r) => r.class === cls);
-            const nums = c.filter((r) => r.inp !== null).map((r) => r.inp);
-            const achieved = c.map((r) => r.offsetAchieved).filter((v) => typeof v === "number");
-            md += `| ${family} | +${offset} ms | ${build.label} | ${cls} | ${c.length} | ${fmt(median(achieved))} | ${fmt(median(nums))} | ${fmt(nums.length ? Math.max(...nums) : null)} | ${c.length - nums.length} |\n`;
-          }
+          const here = (status) => rows.filter((r) => r.kind === "window" && r.profile === p && r.family === family && r.offset === offset && r.build === build.label && r.status === status);
+          const set = here("ok").filter((r) => !r.traced);
+          const tracedRows = rows.filter((r) => r.kind === "window" && r.profile === p && r.family === family && r.offset === offset && r.build === build.label && r.traced);
+          const nums = set.filter((r) => r.inp !== null).map((r) => r.inp);
+          const achieved = set.map((r) => r.offsetAchieved).filter((v) => typeof v === "number");
+          const classes = [...new Set(tracedRows.map((r) => r.class).filter(Boolean))];
+          md += `| ${family} | +${offset} ms | ${build.label} | ${set.length} | ${set.filter((r) => r.inPhase === true).length} | ${fmt(median(achieved))} | ${fmt(median(nums))} | ${fmt(nums.length ? Math.max(...nums) : null)} | ${set.length - nums.length} | ${classes.join(" / ") || "—"} |\n`;
         }
       }
     }
@@ -1726,11 +2162,18 @@ rows.forEach((r, i) => {
   md += `| ${i + 1} | ${r.profile} | \`${cellIdFor(r)}\` | ${r.build} | ${r.status} | ${inp} | ${r.worst ? `${r.worst.types.join("+")} on \`${r.worst.target}\`` : "—"} | ${splitText(r.worst)} | ${r.dispatched ?? "—"} / ${r.recorded ?? "—"} | ${r.interactionCountDelta ?? "—"} | ${r.fetched ?? "—"} | ${notes.replace(/\|/g, "\\|")} |\n`;
 });
 
-md += `\n## Limits\n\n- Lab only: Chromium through Playwright, synthetic CDP input, throttled CPU and network. Not field INP, and not Safari or Firefox.\n- Event Timing's floor is 16 ms and its durations are rounded to 8 ms; an interaction under the floor leaves no entry and is printed as "<16 ms".\n- The GPU path above decides the first frame's cost; software WebGL overstates it against a phone's GPU.\n- Traces use hotel-cwv's categories without the CPU sampler, and are taken for the window trials only.\n- A window trial replaces \`performance.mark\` with a wrapper that logs each \`estate3d:*\` mark synchronously, on both builds alike: that is how the harness learns where the page is while the page's main thread is blocked, and it costs the page one console call per mark.\n- Arm A's window anchors are B's measured delays from the trigger, not A's own events: A has no three.js chunk and emits no marks, so nothing else is available to compare it on.\n- ${smoke ? "The machine was not isolated. This is a smoke run: no figure here is a measurement of record." : "Figures of record need an otherwise idle machine. The harness cannot check that, so the record that cites these figures states the conditions they were taken under."}\n`;
+md += `\n## Limits\n\n- Lab only: Chromium through Playwright, synthetic CDP input, throttled CPU and network. Not field INP, and not Safari or Firefox.\n- Event Timing's floor is 16 ms and its durations are rounded to 8 ms; an interaction under the floor leaves no entry and is printed as "<16 ms".\n- The GPU path above decides the first frame's cost; software WebGL overstates it against a phone's GPU.\n- Traces use hotel-cwv's categories without the CPU sampler. Tracing INFLATES the figure (+18.7 % on this machine's comparable workload, traced slower in all five interleaved pairs), and Event Timing's \`duration\` runs to the next paint, so the figures of record above are measured UNTRACED; ${TRACED} trial(s) per window cell and arm are traced for the classification alone and are recorded \`na\`.\n- Every window trial's anchor is corrected for the latency of the signal that announced it (a mark's console message, or a CDP network event), and a trial that lands further than ${OFFSET_TOLERANCE_MS} ms from its declared offset, or outside its family's phase, is recorded invalid rather than counted. Arm A's anchors are estimates by construction, so that check is applied to arm B.\n- Each profile's offsets come from its own pin run, so the same family's cell id carries a different offsetMs on phone and desktop.\n- A window trial replaces \`performance.mark\` with a wrapper that logs each \`estate3d:*\` mark synchronously, on both builds alike: that is how the harness learns where the page is while the page's main thread is blocked, and it costs the page one console call per mark.\n- Arm A's window anchors are B's measured delays from the trigger, not A's own events: A has no three.js chunk and emits no marks, so nothing else is available to compare it on.\n- ${smoke ? "The machine was not isolated. This is a smoke run: no figure here is a measurement of record." : "Figures of record need an otherwise idle machine. The harness cannot check that, so the record that cites these figures states the conditions they were taken under."}\n`;
 
 fs.mkdirSync(path.dirname(OUT), { recursive: true });
 fs.writeFileSync(OUT, md);
-fs.writeFileSync(JSON_OUT, JSON.stringify({ started, smoke, runs: RUNS, trials: TRIALS, offsets: OFFSETS, fingerprint: FINGERPRINT, commit: COMMIT, builds, buildIds, calibration, chunks, rows }, null, 2) + "\n");
+fs.writeFileSync(
+  JSON_OUT,
+  JSON.stringify(
+    { started, smoke, refusals, armANotes, runs: RUNS, trials: TRIALS, tracedTrials: TRACED, offsetToleranceMs: OFFSET_TOLERANCE_MS, offsets: offsetsByProfile, offsetsFallback: OFFSETS, fingerprint: FINGERPRINT, commit: COMMIT, builds, buildIds, calibration, chunks, rows },
+    null,
+    2
+  ) + "\n"
+);
 console.log(`-> ${OUT}\n-> ${JSON_OUT}`);
 
 /* ---- the gate's record --------------------------------------------------- */
@@ -1774,24 +2217,46 @@ const gateRecord = buildGateRecord({
 const verdict = checkGateRecord(gateRecord, FINGERPRINT);
 
 for (const r of refusals) console.log(`REFUSED: ${r}`);
-if (!verdict.shape.pass) {
+for (const n of armANotes) console.log(`arm A short (the gate reads none of it): ${n}`);
+if (fatal) {
+  /* A refusal stopped the run: the rows in hand are written above, but a record built from a run that was cut short is not evidence of anything. */
+  console.log(`\nNOT WRITTEN: ${GATE_JSON ?? "(no gate record requested)"} — the run was refused before it finished. Everything measured is in ${OUT} and ${JSON_OUT}.`);
+  process.exitCode = 2;
+} else if (!verdict.shape.pass) {
   console.log(`\nThe gate's own reader cannot read this record as ${gateRecord.schema}:`);
   for (const reason of verdict.shape.reasons) console.log(`  - ${reason}`);
   console.log(`NOT WRITTEN: ${GATE_JSON ?? "(no gate record requested)"} — a record the reader rejects is not evidence. Everything measured is in ${OUT} and ${JSON_OUT}.`);
   process.exitCode = 2;
-} else if (GATE_JSON === null) {
-  console.log("\nThe gate's reader accepts this record's shape; --no-gate-json, so it was not written.");
-  if (!verdict.substance.pass) process.exitCode = 1;
 } else {
-  fs.mkdirSync(path.dirname(GATE_JSON), { recursive: true });
-  fs.writeFileSync(GATE_JSON, JSON.stringify(gateRecord, null, 2) + "\n");
-  console.log(`-> ${GATE_JSON}${smoke ? " (smoke: true — the gate closes on it, by design)" : ""}`);
-  if (verdict.substance.pass) {
-    console.log("The gate's own reader accepts this record on the measurement as well as the shape.");
+  if (GATE_JSON === null) {
+    console.log("\nThe gate's reader accepts this record's shape; --no-gate-json, so it was not written.");
   } else {
-    console.log("\nThe gate's own reader would reject this record on the MEASUREMENT (the record is written; the shortfall is in this exit code):");
+    fs.mkdirSync(path.dirname(GATE_JSON), { recursive: true });
+    fs.writeFileSync(GATE_JSON, JSON.stringify(gateRecord, null, 2) + "\n");
+    console.log(`-> ${GATE_JSON}${verdict.smoke ? " (smoke: true — the gate closes on it, by design)" : ""}`);
+  }
+  /*
+   * THE CLAIM AND THE EXIT CODE COME FROM THE RECORD AS WRITTEN.
+   *
+   * `substance` is computed with `smoke` forced false, so that a smoke run
+   * still prints WHAT is short instead of hiding behind "smoke run" — and
+   * while the acceptance claim came from that same copy, a run that wrote
+   * `smoke: true` announced "the gate's own reader accepts this record" and
+   * exited 0 over a record the gate rejects outright.
+   */
+  if (verdict.asWritten.pass) {
+    console.log("The gate's own reader accepts this record as written, on the measurement as well as the shape.");
+  } else {
+    console.log("\nThe gate's own reader would reject this record (it is written; the shortfall is in this exit code):");
     for (const reason of verdict.substance.reasons) console.log(`  - ${reason}`);
+    if (verdict.smoke) console.log(`  - and the record carries smoke: true, which the gate rejects on its own`);
     process.exitCode = 1;
+  }
+  /* The harness's own rule, which is NOT the gate's: a window cell that did not catch the phase it is named for measured something else. */
+  if (!verdict.harness.pass) {
+    console.log("\nThe HARNESS's own rule (not the gate's): a window cell must have caught the phase its id names —");
+    for (const reason of verdict.harness.reasons) console.log(`  - ${reason}`);
+    if (!process.exitCode) process.exitCode = 1;
   }
 }
 if (smoke) console.log("SMOKE: not a measurement of record.");

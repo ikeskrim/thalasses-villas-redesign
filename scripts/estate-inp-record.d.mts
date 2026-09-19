@@ -21,6 +21,11 @@ export interface InpRow {
 
 export const FIXED_SCENARIOS: string[];
 export const DEFAULT_OFFSETS: Record<InpWindowFamily, number[]>;
+export const DEFAULT_OFFSET_PHASE_MS: Record<InpWindowFamily, [number, number]>;
+export const OFFSET_TOLERANCE_MS: number;
+export const INP_MIN_IN_PHASE_TRIALS: number;
+export const INP_TRIGGER_TARGET: string;
+export const CONTROL_CLASSES: string[];
 export const WINDOW_ANCHOR: Record<InpWindowFamily, Estate3DMarkName | null>;
 export const INP_MIN_OK_TRIALS: Readonly<Record<InpCellKind, number>>;
 export const INP_MIN_WINDOW_OFFSETS: number;
@@ -32,7 +37,13 @@ export const INP_FIXED_CELLS: readonly string[];
 export const INP_GATE_SCHEMA: string;
 export const INP_ARMS: readonly InpArm[];
 
-export function cellKindOf(row: InpRow): InpCellKind;
+export function isTriggerTarget(target: unknown): boolean;
+export function hitAControl(target: unknown): boolean;
+export function phaseEndMarkOf(family: string): Estate3DMarkName | null;
+export function derivedOffsets(
+  pin: unknown,
+  fallback?: Record<string, number[]>
+): { offsets: Record<InpWindowFamily, number[]>; phases: Record<InpWindowFamily, number | null>; fellBack: InpWindowFamily[] };
 export function cellIdFor(row: Partial<InpRow>): string;
 export function recordStatus(status: string): InpTrial["status"];
 export function under16Of(row: Partial<InpRow>): { under16: boolean; invalid: string | null };
@@ -47,8 +58,16 @@ export function buildGateRecord(input: {
   profiles: Record<string, { calibration: unknown; features: unknown; rows: InpRow[] }>;
 }): InpGateRecord;
 export function shapeProbe(record: InpGateRecord): unknown;
+export function harnessRules(record: InpGateRecord): { pass: boolean; reasons: string[] };
 export function checkGateRecord(
   record: InpGateRecord,
   fingerprint: string
-): { write: boolean; shape: { pass: boolean; reasons: string[] }; substance: { pass: boolean; reasons: string[] } };
+): {
+  write: boolean;
+  smoke: boolean;
+  shape: { pass: boolean; reasons: string[] };
+  substance: { pass: boolean; reasons: string[] };
+  asWritten: { pass: boolean; reasons: string[] };
+  harness: { pass: boolean; reasons: string[] };
+};
 export function plannedCells(offsets: Record<string, number[]>): Partial<InpRow>[];

@@ -26,11 +26,20 @@ import {
 import { estate3dFingerprint } from "../src/lib/estate-3d-fingerprint";
 import {
   DEFAULT_OFFSETS,
+  DEFAULT_OFFSET_PHASE_MS,
   FIXED_SCENARIOS,
+  INP_MIN_IN_PHASE_TRIALS,
+  INP_TRIGGER_TARGET,
+  OFFSET_TOLERANCE_MS,
   buildGateRecord,
   cellIdFor,
   cellsOf,
   checkGateRecord,
+  derivedOffsets,
+  harnessRules,
+  hitAControl,
+  isTriggerTarget,
+  phaseEndMarkOf,
   plannedCells,
   recordStatus,
   trialOf,
@@ -90,6 +99,23 @@ test.describe("the estate3d:* mark names live in one place", () => {
     expect(offenders, `these files spell "${ESTATE3D_MARK_PREFIX}" in code instead of importing ${MARKS_FILE}`).toEqual([]);
   });
 
+  /*
+   * THE PHASE EACH FAMILY IS NAMED FOR, derived from the mark ORDER rather than
+   * declared a second time - so "where the renderer phase ends" cannot drift
+   * away from "which mark follows estate3d:renderer".
+   */
+  test("every mark-keyed family's phase ends at the mark that follows its anchor", () => {
+    expect(phaseEndMarkOf("renderer")).toBe(ESTATE3D_MARK.scene);
+    expect(phaseEndMarkOf("scene")).toBe(ESTATE3D_MARK.compile);
+    expect(phaseEndMarkOf("compile")).toBe(ESTATE3D_MARK.compiled);
+    expect(phaseEndMarkOf("layout")).toBe(ESTATE3D_MARK.swap);
+    expect(phaseEndMarkOf("swap")).toBe(ESTATE3D_MARK.shown);
+    expect(phaseEndMarkOf("trigger")).toBe(ESTATE3D_MARK.idle);
+    /* The chunk's evaluation is what `arrival` exists to sample, and it ends at import-end. `request` ends at a byte count, not a mark. */
+    expect(phaseEndMarkOf("arrival")).toBe(ESTATE3D_MARK.importEnd);
+    expect(phaseEndMarkOf("request")).toBeNull();
+  });
+
   test("the window anchor map covers exactly the gate's eight window families", () => {
     expect(Object.keys(WINDOW_ANCHOR).sort()).toEqual([...INP_WINDOW_FAMILIES].sort());
   });
@@ -138,6 +164,115 @@ test.describe("the cells the harness declares are the cells the gate reads", () 
 
   test("a kind the gate does not know is refused, not spelled", () => {
     expect(() => cellIdFor({ kind: "resize" as InpRow["kind"] })).toThrow(/unknown trial kind/);
+  });
+});
+
+/* -------------------------------------------------------------------------- *
+ * WHICH OF A WINDOW TRIAL'S TWO INPUTS IS THE FIGURE
+ * -------------------------------------------------------------------------- */
+test.describe("the trigger is told apart from the measured input", () => {
+  /*
+   * THE TEST THE OLD MATCHER WOULD HAVE FAILED. The recorder used to keep a
+   * target's first TWO classes, and `<span className="tabular estate-map-list-index">`
+   * was recognised only because it happens to carry exactly two. One more class
+   * on that span and the trigger would have looked like the measured
+   * interaction; in a trial whose measured tap left no entry, the TRIGGER's
+   * latency would then have become the window cell's figure, with status ok.
+   */
+  test("a trigger target is recognised however many classes the element gains", () => {
+    expect(isTriggerTarget("span.tabular.estate-map-list-index")).toBe(true);
+    expect(isTriggerTarget("span.tabular.estate-map-list-index.is-new.and-another")).toBe(true);
+    expect(isTriggerTarget("span.estate-map-list-index")).toBe(true);
+    expect(isTriggerTarget("canvas.estate-map-3d-canvas")).toBe(false);
+    expect(isTriggerTarget("span.estate-map-list-index-wrapper"), "a longer class that merely starts the same is not it").toBe(false);
+    expect(isTriggerTarget(null)).toBe(false);
+  });
+
+  test("the component still spells the class the harness triggers on", () => {
+    const source = fs.readFileSync(path.join(SECTIONS, "EstateMap.tsx"), "utf-8");
+    const cls = INP_TRIGGER_TARGET.slice(1);
+    const classLists = [...source.matchAll(/className="([^"]*)"/g)].map((m) => m[1]!.trim().split(/\s+/));
+    const carrying = classLists.filter((list) => list.includes(cls));
+    expect(carrying.length, `no element in EstateMap.tsx carries ${cls}, so the harness has nothing to trigger the load with`).toBeGreaterThan(0);
+    for (const list of carrying) expect(isTriggerTarget(`span.${list.join(".")}`), `${list.join(" ")} would not be recognised`).toBe(true);
+  });
+
+  /*
+   * WHAT THE TAP ACTUALLY HIT. A window trial checks its point before the
+   * trigger, on the 2D photograph; by the swap the same coordinates can be over
+   * a label button, and the cell would be measuring a tap that opens a card.
+   */
+  test("a measured interaction on a link, a button or a label is not an empty part of the frame", () => {
+    expect(hitAControl("button.estate-map-3d-button")).toBe(true);
+    expect(hitAControl("a.estate-map-list-link")).toBe(true);
+    expect(hitAControl("span.estate-map-3d-button")).toBe(true);
+    expect(hitAControl("canvas.estate-map-3d-canvas")).toBe(false);
+    expect(hitAControl("img.estate-map-photo")).toBe(false);
+    expect(hitAControl(null)).toBe(false);
+  });
+});
+
+/* -------------------------------------------------------------------------- *
+ * THE OFFSETS: WHAT THEY MEAN, NOT ONLY HOW MANY THERE ARE
+ * -------------------------------------------------------------------------- */
+test.describe("the offsets a window family is probed at", () => {
+  /*
+   * MUTATION M5 CAUGHT A FAMILY DROPPED TO ONE OFFSET, and nothing caught
+   * `arrival: [0, 50]` becoming `[0, 1]` - which removes the deliberate
+   * straddle of the chunk's 83-168 ms evaluation that D-033 names as the
+   * leading risk, while the family still "has two offsets".
+   */
+  test("every fallback pair is 0 and a second offset inside the phase, above Event Timing's floor", () => {
+    for (const family of INP_WINDOW_FAMILIES) {
+      const pair = DEFAULT_OFFSETS[family];
+      const [phaseMin] = DEFAULT_OFFSET_PHASE_MS[family];
+      expect(pair.length, `${family} has ${pair.length} offsets`).toBeGreaterThanOrEqual(INP_MIN_WINDOW_OFFSETS);
+      expect(pair[0], `${family} does not sample the start of its phase`).toBe(0);
+      expect(pair[1], `${family}'s second offset is under Event Timing's 16 ms floor, so it samples the same instant as 0`).toBeGreaterThan(16);
+      expect(pair[1], `${family}'s second offset is past the ${phaseMin} ms phase it is named for`).toBeLessThan(phaseMin);
+    }
+  });
+
+  /*
+   * ONE TABLE FOR BOTH PROFILES WAS THE PHONE'S. Each profile now takes its own
+   * offsets from its own pin run, so a desktop phase of 14 ms is not sampled at
+   * an offset of 20.
+   */
+  test("offsets are derived from the pin run's own measured phases", () => {
+    const pin = {
+      marks: {
+        [ESTATE3D_MARK.trigger]: 1000,
+        [ESTATE3D_MARK.idle]: 2000,
+        [ESTATE3D_MARK.importEnd]: 2400,
+        [ESTATE3D_MARK.renderer]: 2500,
+        [ESTATE3D_MARK.scene]: 2514,
+        [ESTATE3D_MARK.compile]: 2528,
+        [ESTATE3D_MARK.compiled]: 2535,
+        [ESTATE3D_MARK.layout]: 2540,
+        [ESTATE3D_MARK.swap]: 2584,
+        [ESTATE3D_MARK.shown]: 2604,
+      },
+      resource: { startMs: 2100, responseEndMs: 2275 },
+    };
+    const { offsets, phases, fellBack } = derivedOffsets(pin, DEFAULT_OFFSETS);
+    expect(fellBack).toEqual([]);
+    expect(phases.renderer).toBe(14);
+    expect(offsets.renderer, "a 14 ms phase must not be probed at the phone's 20 ms").toEqual([0, 7]);
+    expect(offsets.layout).toEqual([0, 22]);
+    expect(offsets.swap).toEqual([0, 10]);
+    expect(offsets.request).toEqual([0, 88]);
+    expect(offsets.arrival).toEqual([0, 63]);
+    for (const family of INP_WINDOW_FAMILIES) {
+      expect(offsets[family]![0]).toBe(0);
+      expect(Number.isInteger(offsets[family]![1]), `${family}'s derived offset is not a whole number of milliseconds`).toBe(true);
+      expect(offsets[family]![1]).toBeLessThan(phases[family]!);
+    }
+  });
+
+  test("a family whose phase the pin could not measure keeps the table's pair, and says so", () => {
+    const { offsets, fellBack } = derivedOffsets({ marks: {}, resource: null }, DEFAULT_OFFSETS);
+    expect([...fellBack].sort()).toEqual([...INP_WINDOW_FAMILIES].sort());
+    expect(offsets.arrival).toEqual(DEFAULT_OFFSETS.arrival);
   });
 });
 
@@ -192,6 +327,49 @@ test.describe("a trial row", () => {
     const t = trialOf(row({ kind: "window", family: "layout", offset: 60, inp: 88, offsetAchieved: 63, class: "other-task", anchor: "the page's estate3d:layout mark" }));
     expect(t).toMatchObject({ cell: "window:layout:60", offsetRequestedMs: 60, offsetAchievedMs: 63, class: "other-task" });
   });
+
+  /*
+   * THE FIELDS THAT LET THE STRICTER READING BE APPLIED WITHOUT RE-MEASURING.
+   * The gate's own comment on `inpMs` says "the WORST interaction in that page
+   * view", which the harness reads as the measured input's and not the
+   * trigger's. That is a build default, and it is only reversible on a
+   * committed record while BOTH figures travel with the row. Dropping either
+   * from `extras` used to leave all 28 tests green.
+   */
+  test("a window row carries the page's worst interaction and the trigger's, so the stricter reading needs no second run", () => {
+    const t = trialOf(row({ kind: "window", family: "arrival", offset: 0, inp: 88, pageWorst: 141, triggerInp: 141, inPhase: true }));
+    expect(t.pageWorstMs, "without pageWorstMs the stricter reading of inpMs cannot be applied to a committed record").toBe(141);
+    expect(t.triggerInpMs, "without triggerInpMs nothing says how much of the page's worst was the trigger").toBe(141);
+  });
+
+  /*
+   * A ROW THAT DISPATCHED NOTHING IS NOT A FAST ROW. Without the guard, a
+   * non-control row with `dispatched: 0` is rescued as under-16 on an
+   * interactionCountDelta of 0 - a pass invented out of a missing measurement,
+   * which is exactly what mutation M3 exists to prevent.
+   */
+  test("a non-control row that dispatched nothing is invalid, not under 16 ms", () => {
+    const r = under16Of(row({ inp: null, dispatched: 0, interactionCountDelta: 0 }));
+    expect(r.under16).toBe(false);
+    expect(r.invalid).toMatch(/no interaction was dispatched/);
+    const t = trialOf(row({ inp: null, dispatched: 0, interactionCountDelta: 0 }));
+    expect(t.status).toBe("invalid");
+  });
+
+  /*
+   * D-033 requirement 4, enforced where the record is built and not only in
+   * controlTrial's untested browser code: "every control trial reports no
+   * interaction". The control branch used to return under16 unconditionally,
+   * ignoring `inp` altogether.
+   */
+  test("a control row that recorded an interaction is not written as a passing control", () => {
+    const r = under16Of(row({ kind: "control", scenario: undefined, inp: 42, dispatched: 0 }));
+    expect(r.under16).toBe(false);
+    expect(r.invalid).toMatch(/control trial recorded an interaction/);
+    const t = trialOf(row({ kind: "control", scenario: undefined, inp: 42, dispatched: 0, fetched: false }));
+    expect(t.status).toBe("invalid");
+    expect(t.inpMs).toBe(42);
+  });
 });
 
 /* -------------------------------------------------------------------------- *
@@ -225,7 +403,8 @@ function rowsForProfile(profile: InpProfileName, opts: { arms?: InpArm[] } = {})
   add({ kind: "trigger" }, INP_MIN_OK_TRIALS.trigger, (i) => 40 + i);
   for (const scenario of FIXED_SCENARIOS) add({ kind: "fixed", scenario }, INP_MIN_OK_TRIALS.fixed, (i) => 24 + i);
   for (const family of INP_WINDOW_FAMILIES) {
-    for (const offset of DEFAULT_OFFSETS[family]) add({ kind: "window", family, offset }, INP_MIN_OK_TRIALS.window, (i) => (i % 5 === 0 ? null : 150 + i));
+    /* `inPhase` is what says the cell caught the phase its id names; a fixture without it is a cell that measured nothing. */
+    for (const offset of DEFAULT_OFFSETS[family]) add({ kind: "window", family, offset, inPhase: true, offsetAchieved: offset, phaseMs: 120 }, INP_MIN_OK_TRIALS.window, (i) => (i % 5 === 0 ? null : 150 + i));
   }
   return out;
 }
@@ -356,6 +535,81 @@ test.describe("the record the harness writes", () => {
    * `smoke` forced false, so "smoke run" never stands in for the substantive
    * reasons a landing session needs to see.
    */
+  /*
+   * THE ONE REGRESSION THE CONTROL CELL EXISTS TO CATCH (D-035: nothing is
+   * fetched until the reader's first completed interaction). It is a
+   * MEASUREMENT failure: the record is written, the exit code is 1, and every
+   * reason is printed. While `shapeProbe` normalised only `fetched: null`, this
+   * came out as a SHAPE failure - record NOT WRITTEN, exit code 2 ("the harness
+   * is buggy"), and the substance reasons never printed at all.
+   */
+  test("a control row that fetched three.js is a measurement failure, and the record is written", () => {
+    /* Exactly what `controlTrial` produces when the review build requests three.js on a page nobody touched: invalid, with fetched recorded truthfully. */
+    const asMeasured = rowsForProfile("phone").map((r) => (r.kind === "control" && r.build === "B" ? { ...r, status: "invalid" as const, fetched: true, reason: "three.js was requested with no interaction" } : r));
+    const verdict = checkGateRecord(recordFrom({ phone: asMeasured, desktop: rowsForProfile("desktop") }), FINGERPRINT);
+    expect(verdict.write, "three.js fetched with no interaction is a figure, and a figure is never withheld").toBe(true);
+    expect(verdict.shape.reasons.join("; "), "it is not a shape failure: `true` is a value the schema accepts, so the probe normalises it").toEqual("");
+    expect(verdict.substance.pass).toBe(false);
+    expect(verdict.substance.reasons.join("; ")).toMatch(/control:no-interaction has 10 B trials not ok \(invalid\)/);
+
+    /* And the gate's own rule about it, on a record that calls such a row ok: the reason names the fetch, and it is still a measurement. */
+    const asOk = rowsForProfile("phone").map((r) => (r.kind === "control" && r.build === "B" ? { ...r, fetched: true } : r));
+    const second = checkGateRecord(recordFrom({ phone: asOk, desktop: rowsForProfile("desktop") }), FINGERPRINT);
+    expect(second.write).toBe(true);
+    expect(second.shape.reasons.join("; ")).toEqual("");
+    expect(second.substance.reasons.join("; ")).toMatch(/has 10 B trials that fetched three\.js/);
+  });
+
+  /*
+   * THE ACCEPTANCE CLAIM COMES FROM THE RECORD AS WRITTEN. `substance` is
+   * computed with `smoke` forced false so that a short run still prints WHAT is
+   * short; if the acceptance claim comes from that same copy, a run that wrote
+   * `smoke: true` announces that the gate accepts a record the gate rejects
+   * outright, and exits 0.
+   */
+  test("a smoke record is never reported as accepted, however complete its rows", () => {
+    const record = recordFrom({ phone: rowsForProfile("phone"), desktop: rowsForProfile("desktop") }, FINGERPRINT, true);
+    const verdict = checkGateRecord(record, FINGERPRINT);
+    expect(verdict.write).toBe(true);
+    expect(verdict.smoke).toBe(true);
+    expect(verdict.substance.pass, "with smoke cleared there is nothing else wrong with it").toBe(true);
+    expect(verdict.asWritten.pass, "the gate rejects smoke: true outright, so the harness may not claim acceptance").toBe(false);
+    expect(verdict.asWritten.reasons.join("; ")).toMatch(/smoke run/);
+  });
+
+  /*
+   * THE HARNESS'S OWN RULE, WHICH IS NOT THE GATE'S. The gate counts a window
+   * cell's ok trials and checks each against 200 ms; it never asks whether the
+   * cell caught the phase it is named for, and twenty fast taps on an idle page
+   * read exactly like twenty fast taps on a busy one.
+   */
+  test("a window cell whose trials all missed their phase is reported, though the gate's reader is content", () => {
+    const rows = rowsForProfile("phone").map((r) => (r.kind === "window" && r.family === "arrival" && r.offset === 0 ? { ...r, inPhase: false } : r));
+    const record = recordFrom({ phone: rows, desktop: rowsForProfile("desktop") });
+    const verdict = checkGateRecord(record, FINGERPRINT);
+    expect(verdict.substance.pass, "the gate's own reader has no rule about this").toBe(true);
+    expect(verdict.harness.pass).toBe(false);
+    expect(verdict.harness.reasons.join("; ")).toMatch(new RegExp(`phone window:arrival:0: 0 of ${INP_MIN_OK_TRIALS.window} valid B trials landed inside the arrival phase \\(needs ${INP_MIN_IN_PHASE_TRIALS}\\)`));
+    expect(harnessRules(record).reasons.length).toBe(1);
+  });
+
+  test("a complete record satisfies the harness's own rule as well as the gate's", () => {
+    expect(harnessRules(complete()).reasons).toEqual([]);
+  });
+
+  /*
+   * A WINDOW CELL STATES WHAT IT SAMPLED, not only what it intended: without
+   * the tolerance and the achieved offset in the record, a cell that landed
+   * 20 ms into a 37 ms phase cannot be told from one that landed at its start.
+   */
+  test("a window cell carries the tolerance its trials were held to, and the offset they achieved", () => {
+    const cells = cellsOf(rowsForProfile("phone"));
+    const cell = cells.find((c) => c.id === "window:layout:60")!;
+    expect((cell as unknown as Record<string, unknown>).offsetToleranceMs).toBe(OFFSET_TOLERANCE_MS);
+    expect((cell as unknown as Record<string, unknown>).offsetAchievedMedianMs).toBe(60);
+    expect((cell as unknown as Record<string, unknown>).inPhaseTrials).toBe(INP_MIN_OK_TRIALS.window);
+  });
+
   test("the self-check reports what is short, not just that the run was a smoke", () => {
     const thin = rowsForProfile("phone").filter((r, i, all) => all.findIndex((o) => cellIdFor(o) === cellIdFor(r) && o.build === r.build) === i);
     const verdict = checkGateRecord(recordFrom({ phone: thin, desktop: rowsForProfile("desktop") }, FINGERPRINT, true), FINGERPRINT);
