@@ -5,8 +5,67 @@
  * decision carries its full cost"), designed in step B (B9).
  *
  *   node scripts/estate-inp.mjs --a http://localhost:3005 --b http://localhost:3035
- *        [--profiles phone,desktop] [--scenarios all | place-open,keyboard,visit,list-link,canvas,load-window]
- *        [--runs 10] [--trials 20] [--out qa/perf/INP-estate3d.md] [--json <file>]
+ *        [--profiles phone,desktop]
+ *        [--cells all | control,trigger,place-open,keyboard,visit,list-link,canvas-tap,window]
+ *        [--families all | trigger,request,arrival,renderer,scene,compile,layout,swap]
+ *        [--offsets arrival=0,50 --offsets layout=0,60 ...]
+ *        [--runs 10] [--trials 20] [--control-wait 12000]
+ *        [--out qa/perf/INP-estate3d.md] [--json <file>]
+ *        [--gate-json qa/perf/INP-estate3d-gate.json] [--no-gate-json]
+ *
+ * IT WRITES THE GATE'S RECORD (D-033). `qa/perf/INP-estate3d-gate.json`,
+ * schema `estate3d-inp-gate/1`, is the file `decideInpCondition` in
+ * `src/lib/estate-plan-gate.ts` reads to decide the map's second condition.
+ * The rules for building it, and the harness's refusal to write one its own
+ * reader would reject, are in `scripts/estate-inp-record.mjs`. The
+ * fingerprint is computed by `src/lib/estate-3d-fingerprint.ts` — imported,
+ * never re-implemented, because a second implementation of a fingerprint is a
+ * fingerprint that can disagree with itself.
+ *
+ * THE CELLS D-033 REQUIRES, all of which this measures:
+ *  - the NO-INTERACTION CONTROL: a page view that dispatches nothing at all,
+ *    scrolled into range and left for at least ten seconds, which must record
+ *    no Event Timing entry, no counted interaction and no three.js request.
+ *    It is the cell that proves the deferred loader defers: with it, a record
+ *    full of fast taps cannot be a record of a page that loaded three.js
+ *    without being asked.
+ *  - the TRIGGER: since 25f4e51 the reader's first completed interaction is
+ *    what starts the load, so its own latency is a cell of its own.
+ *  - the five FIXED scenarios, on a page whose diagram is already shown.
+ *  - EIGHT WINDOW FAMILIES, each at two or more offsets. A window trial
+ *    triggers the load, waits for that family's anchor, and fires ONE
+ *    non-awaited input a fixed number of milliseconds after it.
+ *
+ * WHERE A WINDOW FAMILY'S ANCHOR COMES FROM, and why not from timing. Six of
+ * the eight are the page's own `estate3d:*` marks
+ * (`src/components/sections/estate-map-3d-marks.ts`, the one place those names
+ * are spelled). The other two are the chunk's `Network.requestWillBeSent` and
+ * `Network.loadingFinished`. Nothing is anchored on "so many milliseconds
+ * after the trigger", because the phases move by tens of milliseconds from run
+ * to run: an offset chosen to land inside the chunk's evaluation would land
+ * somewhere else on the next trial, and the record would say it measured a
+ * window it did not.
+ *
+ * HOW A MARK IS LEARNED WHILE THE MAIN THREAD IS BLOCKED, which is the whole
+ * difficulty. Each of `renderer`, `scene`, `compile`, `layout` and `swap` is
+ * written at the START of the task that does that step's work. A
+ * PerformanceObserver callback for it cannot run until that task ENDS, which is
+ * exactly too late — the input would be fired after the step it was meant to
+ * land in. So a window trial replaces `performance.mark` (before any page
+ * script) with a wrapper that calls the original and then `console.log`s the
+ * name SYNCHRONOUSLY, in the same task: the DevTools protocol carries that
+ * message out of the renderer while the renderer is still busy, which is the
+ * mechanism the calibration below already depends on. The wrapper is installed
+ * on window trials only, and on both builds alike.
+ *
+ * WHAT EACH TRIAL'S FIGURE IS. `inpMs` is the worst interaction of the trial's
+ * OWN measurement window — from the measured dispatch onward, grouped by
+ * interactionId so an interaction is never split. The trigger that started the
+ * load is an interaction too, and it is measured in its own cell; counting it
+ * again inside every other cell would make every cell a trigger measurement.
+ * Each row also carries `pageWorstMs`, the worst interaction anywhere in that
+ * page view, so a stricter reading is available to the record's reader without
+ * measuring again.
  *
  *   A = the public build (`npm run build`, `next start` on :3005): the gate is
  *       closed, so the page is the 2D map.
@@ -28,7 +87,7 @@
  *     fired WITHOUT awaiting it. If the browser stamps the event when the
  *     input arrives, Event Timing shows processingStart − startTime ≈ 250 ms. If
  *     it reads near 0, CDP input does not record queueing delay on this machine,
- *     and the load-window scenario cannot be measured this way: its figures are
+ *     and the window families cannot be measured this way: their figures are
  *     withheld and the report says so.
  *
  *  2. THE GPU PATH, per profile: WEBGL_debug_renderer_info's unmasked renderer.
@@ -51,17 +110,18 @@
  *     pages"; a list link; an empty part of the frame. A 2D marker hidden below
  *     768 px is recorded as not applicable, not as a pass.
  *
- *  5. THE LOAD WINDOW. On B the three.js chunk arrives while the reader scrolls
- *     towards the map, then two long tasks follow: evaluating it, then building
- *     the renderer and drawing the first frame (qa/perf/ESTATE3D-cost.md). The
- *     chunk is found once per profile by its body (it is the only script with
- *     `WebGLRenderer`), and each trial fires a non-awaited tap or click at a
- *     fixed offset (0–400 ms) after that request's Network.loadingFinished. A
- *     has no chunk, so its trials fire at the same offsets after the scroll plus
- *     B's measured scroll-to-chunk delay. Nothing is classified by timing
- *     alone: each interaction's input-delay window is looked up in a Chrome
- *     trace and marked "chunk-evaluate", "first-render", "other-task" or
- *     "outside" by the main-thread task that held it up.
+ *  5. THE WINDOW FAMILIES. On B the load starts at the trigger and then runs
+ *     through the phases above; the chunk is found once per profile by its body
+ *     (it is the only script with `WebGLRenderer`) in a PIN RUN that also reads
+ *     every `estate3d:*` mark and the chunk's own Resource Timing, and REFUSES
+ *     to measure a family whose anchor mark the page did not emit — naming the
+ *     mark, so a rename fails loudly instead of measuring nothing. A has no
+ *     chunk and no marks, so its trials fire at the same offsets after the
+ *     trigger plus the pin run's measured delay to that anchor, which is the
+ *     only thing A can be compared on. Nothing is classified by timing alone:
+ *     each interaction's input-delay window is looked up in a Chrome trace and
+ *     marked "chunk-evaluate", "first-render", "other-task" or "outside" by the
+ *     main-thread task that held it up.
  *      - chunk-evaluate: the task holds EvaluateScript (or its compile) for the
  *        three.js chunk's URL.
  *      - first-render: the task holds the performance mark a MutationObserver
@@ -72,13 +132,13 @@
  *        without the CPU sampler cannot say which script a nested call belongs
  *        to (a FunctionCall event names only the outermost script, here React's
  *        scheduler), which is why the mark is needed. The observer is installed
- *        for load-window trials only, on both builds alike, so the fixed
+ *        for window trials only, on both builds alike, so the fixed
  *        scenarios never pay for it.
  *
  *  6. BUILDS AND ORDER: A and B alternate, AB then BA (ABBA), a fresh browser
  *     context (cold cache) per trial. Tracing uses hotel-cwv's categories and no
  *     CPU sampler, which inflates task durations; traces are taken for the
- *     load-window trials only, where the classification needs them.
+ *     window trials only, where the classification needs them.
  *
  *  7. THE REPORT: every trial in the order measured, medians and worst per
  *     scenario, the input delay / processing / presentation split, pass or fail
@@ -95,28 +155,56 @@
  * opens the card, and counting it would confirm a Visit tap that registered
  * nothing).
  *
- * A MEASUREMENT OF RECORD needs at least 10 VALID runs per scenario per profile
- * and build, and at least 20 valid trials per load-window offset, on a machine
- * doing nothing else. Fewer valid ones than that, whatever was requested, and
- * the report's first line says SMOKE and lists the shortfall. It is lab data
- * from Chromium with synthetic CDP input: necessary, not sufficient, and no
- * substitute for field INP.
+ * A MEASUREMENT OF RECORD needs at least 10 VALID trials per control, trigger
+ * and fixed cell per profile and build, and at least 20 per window cell, on a
+ * machine doing nothing else. Fewer valid ones than that, whatever was
+ * requested, and the report's first line says SMOKE, the record carries
+ * `smoke: true`, and the exit code is non-zero. It is lab data from Chromium
+ * with synthetic CDP input: necessary, not sufficient, and no substitute for
+ * field INP.
+ *
+ * EXIT CODES. 0: the gate record was written and the gate's own reader accepts
+ * it. 1: the record was written and the reader would reject it on the
+ * MEASUREMENT — too few valid trials, or a trial at or over 200 ms — with every
+ * reason printed. 2: the record was REFUSED because the reader could not read
+ * it as the schema at all (a cell never measured, a calibration that failed, a
+ * malformed row): the markdown report and the raw JSON are still written, so
+ * nothing measured is lost, but a file the gate cannot parse is never put in
+ * `qa/perf/`.
  */
 import { chromium } from "@playwright/test";
+import { execFileSync } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
 
+import { ESTATE3D_MARK, ESTATE3D_MARK_PREFIX, WINDOW_ANCHOR } from "../src/components/sections/estate-map-3d-marks.ts";
+import { estate3dFingerprint } from "../src/lib/estate-3d-fingerprint.ts";
+import {
+  DEFAULT_OFFSETS,
+  FIXED_SCENARIOS,
+  INP_MIN_OK_TRIALS,
+  INP_WINDOW_FAMILIES,
+  buildGateRecord,
+  cellIdFor,
+  checkGateRecord,
+  plannedCells,
+} from "./estate-inp-record.mjs";
+
 const ROUTE = "/en/the-estate";
 const BUDGET_MS = 200;
-const MIN_RUNS = 10;
-const MIN_TRIALS = 20;
-const OFFSETS = [0, 25, 50, 75, 100, 150, 200, 250, 300, 400];
+const MIN_RUNS = INP_MIN_OK_TRIALS.fixed;
+const MIN_TRIALS = INP_MIN_OK_TRIALS.window;
 const TRACE_CATEGORIES = ["devtools.timeline", "disabled-by-default-devtools.timeline", "loading", "blink.user_timing"];
 const PROFILES = {
   phone: { width: 390, height: 844, mobile: true, cpu: 4, latency: 150, down: 1.6, up: 0.75 },
   desktop: { width: 1440, height: 900, mobile: false, cpu: 2, latency: 40, down: 10, up: 5 },
 };
-const FIXED = ["place-open", "keyboard", "visit", "list-link", "canvas"];
+const FIXED = FIXED_SCENARIOS;
+/** The trigger: a list number, which is not a link and not inside the frame, so the tap does nothing but start the load. */
+const TRIGGER_TARGET = ".estate-map-list-index";
+/** A control trial waits this long after the scroll before it is believed (D-033: "wait at least 10 s"). */
+const CONTROL_WAIT_MS = 12_000;
+const GATE_RECORD_DEFAULT = path.join("qa", "perf", "INP-estate3d-gate.json");
 
 /* ---- arguments -------------------------------------------------------- */
 const argv = process.argv.slice(2);
@@ -127,12 +215,61 @@ const opt = (name, fallback = null) => {
 const A = opt("a");
 const B = opt("b");
 if (!A && !B) {
-  console.error("usage: node scripts/estate-inp.mjs --a <public build origin> --b <review build origin> [--profiles phone,desktop] [--scenarios all] [--runs 10] [--trials 20] [--out file.md] [--json file.json]");
+  console.error("usage: node scripts/estate-inp.mjs --a <public build origin> --b <review build origin> [--profiles phone,desktop] [--cells all] [--families all] [--offsets family=a,b] [--runs 10] [--trials 20] [--control-wait 12000] [--out file.md] [--json file.json] [--gate-json file.json | --no-gate-json]");
   process.exit(2);
 }
 const profiles = (opt("profiles", "phone,desktop") ?? "").split(",").filter((p) => PROFILES[p]);
-const scenarioArg = opt("scenarios", "all");
-const scenarios = scenarioArg === "all" ? [...FIXED, "load-window"] : scenarioArg.split(",");
+const die = (message) => {
+  console.error(message);
+  process.exit(2);
+};
+
+/*
+ * WHICH CELLS TO MEASURE. `--cells all` is the grid D-033 requires and is the
+ * default; anything narrower is for debugging the instrument, and the record it
+ * produces will be REFUSED (a record missing a cell is one the gate cannot
+ * read). `--scenarios` is kept as an alias for the fixed names only, so an
+ * older command line still means what it meant.
+ */
+const ALL_CELLS = ["control", "trigger", ...FIXED, "window"];
+const cellArg = opt("cells", opt("scenarios", "all"));
+const cellNames =
+  cellArg === "all"
+    ? ALL_CELLS
+    : cellArg
+        .split(",")
+        .map((s) => s.trim())
+        /* The load window's old name, and the fifth fixed scenario's. */
+        .map((s) => (s === "load-window" ? "window" : s === "canvas" ? "canvas-tap" : s));
+for (const name of cellNames) if (!ALL_CELLS.includes(name)) die(`--cells: ${JSON.stringify(name)} is not one of ${ALL_CELLS.join(", ")}`);
+const wantControl = cellNames.includes("control");
+const wantTrigger = cellNames.includes("trigger");
+const fixedWanted = FIXED.filter((s) => cellNames.includes(s));
+const wantWindow = cellNames.includes("window");
+
+const familyArg = opt("families", "all");
+const families = familyArg === "all" ? [...INP_WINDOW_FAMILIES] : familyArg.split(",").map((s) => s.trim());
+for (const f of families) if (!INP_WINDOW_FAMILIES.includes(f)) die(`--families: ${JSON.stringify(f)} is not one of ${INP_WINDOW_FAMILIES.join(", ")}`);
+
+/* `--offsets family=0,50`, repeatable; the defaults and their reasons are in scripts/estate-inp-record.mjs. */
+const OFFSETS = Object.fromEntries(Object.entries(DEFAULT_OFFSETS).map(([k, v]) => [k, [...v]]));
+for (let i = 0; i < argv.length; i++) {
+  if (argv[i] !== "--offsets") continue;
+  const spec = argv[i + 1] ?? "";
+  const [family, list] = spec.split("=");
+  if (!INP_WINDOW_FAMILIES.includes(family)) die(`--offsets: ${JSON.stringify(spec)} must be <family>=<ms>[,<ms>...], the family one of ${INP_WINDOW_FAMILIES.join(", ")}`);
+  const values = (list ?? "").split(",").map((s) => s.trim());
+  /*
+   * A WHOLE NUMBER OF MILLISECONDS, 0 OR MORE. The gate spells a window cell's
+   * id "window:<family>:<offsetMs>" by template, so 50.0 would become
+   * "window:arrival:50" while offsetMs stayed 50 — a cell whose id and offset
+   * disagree is a cell the gate rejects, and it would be rejected an hour of
+   * measurement later.
+   */
+  if (!values.length || !values.every((v) => /^(0|[1-9]\d*)$/.test(v))) die(`--offsets ${family}: every offset must be a whole number of milliseconds, 0 or more`);
+  const offsets = [...new Set(values.map(Number))].sort((a, b) => a - b);
+  OFFSETS[family] = offsets;
+}
 /* A whole number of 1 or more, or the script stops: `Number("ten")` is NaN, which ran nothing and was not labelled SMOKE. */
 const intOpt = (name, fallback) => {
   const raw = opt(name, String(fallback));
@@ -144,12 +281,39 @@ const intOpt = (name, fallback) => {
 };
 const RUNS = intOpt("runs", MIN_RUNS);
 const TRIALS = intOpt("trials", MIN_TRIALS);
+const CONTROL_WAIT = intOpt("control-wait", CONTROL_WAIT_MS);
+if (CONTROL_WAIT < 10_000) die(`--control-wait must be at least 10000 ms (D-033: a control trial waits at least ten seconds), not ${CONTROL_WAIT}`);
 const OUT = opt("out", path.join("qa", "perf", "INP-estate3d.md"));
 const JSON_OUT = opt("json", OUT.replace(/\.md$/, "") + ".json");
+const GATE_JSON = argv.includes("--no-gate-json") ? null : opt("gate-json", GATE_RECORD_DEFAULT);
+const ROOT = process.cwd();
 const builds = [A && { label: "A", base: A.replace(/\/+$/, ""), expect3d: false }, B && { label: "B", base: B.replace(/\/+$/, ""), expect3d: true }].filter(Boolean);
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, Math.max(0, ms)));
 const round = (n) => (n === null || n === undefined || Number.isNaN(n) ? null : Math.round(n));
+
+/*
+ * THE FINGERPRINT AND THE COMMIT, read before anything is measured: a record
+ * whose fingerprint cannot be computed is a record the gate will refuse, and
+ * finding that out now costs nothing while finding it out afterwards costs the
+ * whole run. `estate3dFingerprint` is imported from the module that owns it
+ * (src/lib/estate-3d-fingerprint.ts), never re-implemented here.
+ */
+const plan = JSON.parse(fs.readFileSync(path.join(ROOT, "content", "estate-plan.json"), "utf8"));
+let FINGERPRINT;
+try {
+  FINGERPRINT = estate3dFingerprint(ROOT, plan).fingerprint;
+} catch (err) {
+  die(`the tree's fingerprint could not be computed (${String(err.message).split("\n")[0]}). Run from the repository root with node_modules installed.`);
+}
+const COMMIT = (() => {
+  try {
+    return execFileSync("git", ["rev-parse", "HEAD"], { cwd: ROOT, encoding: "utf8" }).trim();
+  } catch {
+    return "";
+  }
+})();
+console.log(`tree ${FINGERPRINT} at ${COMMIT.slice(0, 7) || "(no commit)"}; gate record ${GATE_JSON ?? "(not written: --no-gate-json)"}`);
 
 for (const b of builds) {
   try {
@@ -211,6 +375,88 @@ function canvasMark() {
   mo.observe(document, { childList: true, subtree: true });
 }
 
+/**
+ * WINDOW TRIALS ONLY: every `estate3d:*` mark, reported to the harness
+ * SYNCHRONOUSLY, in the task that wrote it.
+ *
+ * `performance.mark` is replaced before any page script with a wrapper that
+ * calls the original and then logs the name and the mark's own `startTime`.
+ * A PerformanceObserver cannot be used for this: each of the build's marks is
+ * written at the TOP of the task that does that step's work, so an observer
+ * callback would not run until the step was over, and an input fired "20 ms
+ * after the renderer mark" would land after the renderer was built. The
+ * DevTools protocol delivers a console message out of the renderer while the
+ * renderer's main thread is still busy — the same mechanism the calibration
+ * depends on — so the wrapper is how a blocked page can still say where it is.
+ *
+ * It costs the page one string concatenation and one console call per mark, on
+ * both builds alike, and only on window trials.
+ */
+function anchorSignal(prefix) {
+  const original = performance.mark.bind(performance);
+  performance.mark = function (name, options) {
+    const entry = original(name, options);
+    if (typeof name === "string" && name.indexOf(prefix) === 0) {
+      try {
+        const at = entry && typeof entry.startTime === "number" ? entry.startTime : performance.now();
+        console.log("estate-inp:mark " + name + " " + at);
+      } catch {
+        /* A console nothing is listening to is not a reason to break the page. */
+      }
+    }
+    return entry;
+  };
+}
+
+/**
+ * The anchors the page announced, and a promise per anchor for the harness to
+ * wait on. `at` is the harness's clock when the message arrived (what the
+ * offset is slept from) and `pageMs` is the mark's own `startTime` (what the
+ * ACHIEVED offset is computed from afterwards, in the page's own clock, so the
+ * record never has to trust the delivery latency of a console message).
+ */
+function markWatcher(page) {
+  const seen = new Map();
+  const waiting = new Map();
+  page.on("console", (message) => {
+    const text = message.text();
+    if (!text.startsWith("estate-inp:mark ")) return;
+    const [, name, pageMs] = text.split(" ");
+    if (!seen.has(name)) seen.set(name, { at: Date.now(), pageMs: Number(pageMs) });
+    const waiters = waiting.get(name);
+    if (waiters) {
+      waiting.delete(name);
+      for (const resolve of waiters) resolve(seen.get(name));
+    }
+  });
+  return {
+    seen,
+    /** Resolves with the anchor, or null when it has not arrived within `timeoutMs`. */
+    wait(name, timeoutMs) {
+      if (seen.has(name)) return Promise.resolve(seen.get(name));
+      return new Promise((resolve) => {
+        const list = waiting.get(name) ?? [];
+        list.push(resolve);
+        waiting.set(name, list);
+        setTimeout(() => resolve(seen.get(name) ?? null), timeoutMs);
+      });
+    },
+  };
+}
+
+/** Every `estate3d:*` mark the page has, by name, in page milliseconds. */
+const readMarks = (page, prefix) =>
+  page.evaluate(
+    (p) =>
+      Object.fromEntries(
+        performance
+          .getEntriesByType("mark")
+          .filter((m) => m.name.startsWith(p))
+          .map((m) => [m.name, m.startTime])
+      ),
+    prefix
+  );
+
 const readRecorder = (page) =>
   page.evaluate(() => ({
     doc: window.__inp?.doc ?? null,
@@ -271,6 +517,44 @@ function inpOf(list) {
   return sorted[Math.min(Math.floor(list.length / 50), sorted.length - 1)];
 }
 
+
+/**
+ * The interactions of a trial's OWN measurement window: grouped first, then
+ * filtered, so an interaction is never split.
+ *
+ * Filtering the ENTRIES by time (what this script did while the load needed no
+ * trigger) can cut an interaction in half: a tap's pointerdown may start before
+ * `since` while its click entry — the worst of the group, and the one that
+ * decides the figure — starts after it, and the two halves then read as one
+ * fast interaction and one phantom. Now every entry is grouped by
+ * interactionId and a group counts when the group's FIRST entry is at or after
+ * `since`; the 1 ms of slack is the page clock's own resolution.
+ */
+const interactionsSince = (entries, since) => interactionsOf(entries).filter((i) => i.startTime >= since - 1);
+
+/**
+ * Whether the three.js chunk was requested in this page view.
+ *
+ * Every trial watches, not only the control: `fetched` is what makes a control
+ * trial evidence (the gate refuses a control row that does not say), and on the
+ * other cells it is the cheapest possible confirmation that the trial measured
+ * the page it claims to have measured. The chunk is identified by the file name
+ * the pin run found on B, and arm A is watched for that same name: A's build
+ * contains no chunk carrying `WebGLRenderer` at all, so "not requested" there
+ * is a fact and not an absence of evidence. With no pinned name — a pin that
+ * failed — `fetched()` returns null, and a control trial that cannot say
+ * whether the chunk was fetched is recorded invalid rather than guessed at.
+ */
+function watchChunk(cdp, chunkFile) {
+  const urls = [];
+  cdp.on("Network.requestWillBeSent", (e) => {
+    if (chunkFile && e.request.url.includes(chunkFile)) urls.push(e.request.url);
+  });
+  return {
+    urls,
+    fetched: () => (chunkFile ? urls.length > 0 : null),
+  };
+}
 /* ---- input, through CDP ----------------------------------------------- */
 const tap = (cdp, x, y) =>
   Promise.all([
@@ -335,23 +619,66 @@ const centre = async (locator) => {
   return b ? { x: b.x + b.width / 2, y: b.y + b.height / 2 } : null;
 };
 
-/** Load, settle as hotel-cwv does, bring the map into range, and wait for the diagram when this build should mount it. */
-async function loadAndSettle(page, build) {
+/**
+ * THE TRIGGER: the reader's first completed interaction, which is what starts
+ * the load since 25f4e51 (a tap or click on a list number — not a link, not
+ * inside the frame, so it does nothing else). Dispatched through CDP like every
+ * other measured input, because it IS a measured input in the trigger cell.
+ *
+ * Returns the harness-clock moment the input was sent, or an `invalid` reason
+ * when the target was not there to be tapped.
+ */
+async function sendTrigger(page, cdp, input) {
+  const target = page.locator(TRIGGER_TARGET).first();
+  if (!(await target.isVisible().catch(() => false))) return { invalid: `no ${TRIGGER_TARGET} to trigger the load with` };
+  const at = await centre(target);
+  if (!at) return { invalid: `${TRIGGER_TARGET} has no box to tap` };
+  const url = page.url();
+  const m = await mark(page);
+  const sentAt = Date.now();
+  const pending = input(cdp, at.x, at.y);
+  pending.catch(() => {});
+  return { sentAt, since: m.since, countBefore: m.countBefore, pending, url, at };
+}
+
+/**
+ * Load, settle as hotel-cwv does, bring the map into range, trigger the load,
+ * and wait for the diagram when this build should mount it.
+ *
+ * THE TRIGGER IS NOT OPTIONAL ON B ANY MORE. Before 25f4e51 the diagram loaded
+ * on visibility alone and this function only scrolled; now a page that is never
+ * interacted with never requests three.js, which is what the control cell
+ * exists to prove. `trigger: false` is that cell, and nothing else.
+ */
+async function loadAndSettle(page, cdp, input, build, { trigger = true } = {}) {
   await page.goto(build.base + ROUTE, { waitUntil: "load", timeout: 120_000 });
   await page.waitForTimeout(2500);
   await page.evaluate(() => document.querySelector(".estate-map-frame")?.scrollIntoView({ block: "center" }));
-  let mode = "2d";
-  if (build.expect3d) {
-    mode = await page
+  const out = { mode: "2d", triggered: null };
+  if (trigger) {
+    const t = await sendTrigger(page, cdp, input);
+    if (t.invalid) return { ...out, invalid: t.invalid };
+    out.triggered = t;
+    await t.pending.catch(() => {});
+    if (page.url() !== t.url) return { ...out, invalid: `the trigger navigated to ${pathOf(page)}` };
+  }
+  /*
+   * ONLY A TRIGGERED PAGE IS WAITED FOR. A control trial never triggers, so the
+   * diagram never mounts, and waiting for it spent sixty seconds per control
+   * trial waiting for something that must not happen — ten minutes per profile
+   * in a measurement of record, and a `waitedMs` in the record that understated
+   * how long the page had actually been watched.
+   */
+  if (build.expect3d && trigger) {
+    out.mode = await page
       .locator(".estate-map-frame--3d[data-placed]")
       .waitFor({ state: "visible", timeout: 60_000 })
       .then(() => "3d")
       .catch(() => "2d");
   }
   await page.waitForTimeout(1500);
-  return mode;
+  return out;
 }
-
 /* ---- fixed scenarios ---------------------------------------------------- */
 const placeControl = (page, mode) => page.locator(mode === "3d" ? ".estate-map-3d-button" : ".estate-map-marker").first();
 /** Just before a measured dispatch: the page's clock, and the browser's interaction count at that moment. */
@@ -441,7 +768,7 @@ const SCENARIOS = {
       return { dispatched: 1, ...m, navigatedTo: at2, invalid: at2 === href ? null : `the list link did not arrive at ${href} (the page is at ${at2})`, notes: `list → ${href}` };
     },
   },
-  canvas: {
+  "canvas-tap": {
     title: "an empty part of the frame (the canvas on B, the photograph on A)",
     async run({ page, cdp, input, mode }) {
       const frame = page.locator(mode === "3d" ? ".estate-map-frame--3d" : ".estate-map-frame").first();
@@ -464,11 +791,19 @@ const SCENARIOS = {
   },
 };
 
-async function fixedTrial(browser, profileName, build, scenario) {
+async function fixedTrial(browser, profileName, build, scenario, chunkFile) {
   const { context, page, cdp, input } = await openContext(browser, profileName);
+  const chunk = watchChunk(cdp, chunkFile);
   const rec = { kind: "fixed", profile: profileName, build: build.label, scenario, status: "ok" };
   try {
-    rec.mode = await loadAndSettle(page, build);
+    const loaded = await loadAndSettle(page, cdp, input, build);
+    rec.mode = loaded.mode;
+    rec.fetched = chunk.fetched();
+    if (loaded.invalid) {
+      rec.status = "invalid";
+      rec.reason = loaded.invalid;
+      return rec;
+    }
     if (build.expect3d && rec.mode !== "3d") {
       rec.status = "invalid";
       rec.reason = "the 3D diagram did not mount on the review build";
@@ -488,8 +823,10 @@ async function fixedTrial(browser, profileName, build, scenario) {
       rec.reason = after ? "the document changed (a hard navigation or a reload)" : "the recorder could not be read";
       return rec;
     }
-    const list = interactionsOf(after.entries.filter((e) => e.startTime >= r.since - 1));
+    rec.fetched = chunk.fetched();
+    const list = interactionsSince(after.entries, r.since);
     const worst = inpOf(list);
+    const pageWorst = inpOf(interactionsOf(after.entries));
     const countDelta = after.interactionCount !== null && r.countBefore !== null ? after.interactionCount - r.countBefore : null;
     Object.assign(rec, {
       dispatched: r.dispatched,
@@ -497,6 +834,7 @@ async function fixedTrial(browser, profileName, build, scenario) {
       under16: Math.max(0, r.dispatched - list.length),
       interactionCountDelta: countDelta,
       inp: worst ? round(worst.latency) : null,
+      pageWorst: pageWorst ? round(pageWorst.latency) : null,
       worst: worst ? { types: worst.types, target: worst.target, split: mapSplit(worst.split) } : null,
       interactions: list.map((i) => ({ latency: round(i.latency), types: i.types, target: i.target, split: mapSplit(i.split) })),
       navigatedTo: r.navigatedTo ?? null,
@@ -516,6 +854,146 @@ async function fixedTrial(browser, profileName, build, scenario) {
   return rec;
 }
 
+/**
+ * THE NO-INTERACTION CONTROL (D-033). A page view that dispatches nothing at
+ * all: loaded, settled, scrolled so the map section is well inside the
+ * observer's 600 px range, and then left alone for at least ten seconds.
+ *
+ * WHAT IT PROVES, AND WHY THE RECORD IS WEAKER WITHOUT IT. Every other cell
+ * measures a tap on a page that is loading or has loaded three.js. None of them
+ * can tell the difference between "the load waits for the reader" and "the load
+ * happens anyway and the taps are simply fast". This cell can: a programmatic
+ * scroll is `scroll`, which the loader counts as ACTIVITY but never as a
+ * TRIGGER, so a correct page requests nothing, records no Event Timing entry
+ * and never raises `performance.interactionCount`.
+ *
+ * It is checked three ways rather than one, because each catches something the
+ * others do not: no chunk request (the network), no `estate3d:import-start`
+ * mark and a stage still in phase `2d` (the page's own account of itself), and
+ * no interaction (Event Timing, plus the browser's interaction count).
+ */
+async function controlTrial(browser, profileName, build, chunkFile) {
+  const { context, page, cdp, input } = await openContext(browser, profileName);
+  const chunk = watchChunk(cdp, chunkFile);
+  const rec = { kind: "control", profile: profileName, build: build.label, status: "ok", dispatched: 0 };
+  try {
+    const loaded = await loadAndSettle(page, cdp, input, build, { trigger: false });
+    rec.mode = loaded.mode;
+    await page.waitForTimeout(CONTROL_WAIT);
+    const after = await readRecorder(page).catch(() => null);
+    if (!after) {
+      rec.status = "lost";
+      rec.reason = "the recorder could not be read";
+      return rec;
+    }
+    const marks = await readMarks(page, ESTATE3D_MARK_PREFIX).catch(() => ({}));
+    rec.fetched = chunk.fetched();
+    rec.waitedMs = CONTROL_WAIT;
+    rec.phase = await page
+      .locator(".estate-map-stage")
+      .first()
+      .getAttribute("data-state")
+      .catch(() => null);
+    rec.marks = Object.keys(marks);
+    const list = interactionsOf(after.entries);
+    Object.assign(rec, {
+      recorded: list.length,
+      interactionCountDelta: after.interactionCount,
+      inp: null,
+      pageWorst: list.length ? round(inpOf(list).latency) : null,
+    });
+    const problems = [];
+    if (list.length) problems.push(`${list.length} Event Timing interaction(s) on a page that was never touched`);
+    if (after.interactionCount) problems.push(`the browser counted ${after.interactionCount} interaction(s)`);
+    if (rec.fetched === null) problems.push("the three.js chunk was not pinned, so this trial cannot say whether it was fetched");
+    else if (rec.fetched) problems.push("three.js was requested with no interaction");
+    if (marks[ESTATE3D_MARK.importStart] !== undefined) problems.push(`the page reached ${ESTATE3D_MARK.importStart} with no interaction`);
+    if (marks[ESTATE3D_MARK.trigger] !== undefined) problems.push(`the page reached ${ESTATE3D_MARK.trigger} with no interaction`);
+    if (rec.phase !== null && rec.phase !== "2d") problems.push(`the stage left phase 2d (data-state=${rec.phase})`);
+    if (problems.length) {
+      rec.status = "invalid";
+      rec.reason = problems.join("; ");
+    }
+  } catch (err) {
+    rec.status = "error";
+    rec.reason = String(err.message).split("\n")[0];
+  } finally {
+    await context.close();
+  }
+  return rec;
+}
+
+/**
+ * THE TRIGGER CELL (D-033). The first interaction on the page is now the one
+ * that starts the load, so its own latency is a measured cell: 10 valid trials
+ * per profile.
+ *
+ * Nothing of the load has begun when it is dispatched — the quiet second and
+ * the idle callback come after it — so this is the cheapest interaction on the
+ * page and the cell that says what a tap costs on the 2D page the public is
+ * served. It is still a cell the gate can fail: it is an interaction on a page
+ * whose hydration may not be finished.
+ *
+ * The wait is deliberately short. The chunk arrives about a second later, and
+ * the point here is the trigger's own figure, not the phases that follow.
+ */
+async function triggerTrial(browser, profileName, build, chunkFile) {
+  const { context, page, cdp, input } = await openContext(browser, profileName);
+  const chunk = watchChunk(cdp, chunkFile);
+  const rec = { kind: "trigger", profile: profileName, build: build.label, status: "ok" };
+  try {
+    await page.goto(build.base + ROUTE, { waitUntil: "load", timeout: 120_000 });
+    await page.waitForTimeout(2500);
+    await page.evaluate(() => document.querySelector(".estate-map-frame")?.scrollIntoView({ block: "center" }));
+    const before = await readRecorder(page);
+    const t = await sendTrigger(page, cdp, input);
+    if (t.invalid) {
+      rec.status = "invalid";
+      rec.reason = t.invalid;
+      return rec;
+    }
+    await page.waitForTimeout(2500);
+    await t.pending.catch(() => {});
+    const after = await readRecorder(page).catch(() => null);
+    if (!after || after.doc !== before.doc) {
+      rec.status = "lost";
+      rec.reason = after ? "the trigger changed the document" : "the recorder could not be read";
+      return rec;
+    }
+    const marks = await readMarks(page, ESTATE3D_MARK_PREFIX).catch(() => ({}));
+    rec.fetched = chunk.fetched();
+    rec.marks = Object.keys(marks);
+    const list = interactionsSince(after.entries, t.since);
+    const worst = inpOf(list);
+    const countDelta = after.interactionCount !== null && t.countBefore !== null ? after.interactionCount - t.countBefore : null;
+    Object.assign(rec, {
+      dispatched: 1,
+      recorded: list.length,
+      interactionCountDelta: countDelta,
+      inp: worst ? round(worst.latency) : null,
+      pageWorst: worst ? round(worst.latency) : null,
+      worst: worst ? { types: worst.types, target: worst.target, split: mapSplit(worst.split) } : null,
+    });
+    const problems = [];
+    if (countDelta !== null && countDelta < 1) problems.push("the browser counted no interaction for the trigger");
+    /*
+     * ON B THE TRIGGER MUST HAVE BEEN THE TRIGGER. Without `estate3d:trigger`
+     * the tap reached the page but did not start the load, so whatever was
+     * measured is not this cell. On A there is no loader to mark anything.
+     */
+    if (build.expect3d && marks[ESTATE3D_MARK.trigger] === undefined) problems.push(`the tap left no ${ESTATE3D_MARK.trigger} mark: it did not start the load`);
+    if (problems.length) {
+      rec.status = "invalid";
+      rec.reason = problems.join("; ");
+    }
+  } catch (err) {
+    rec.status = "error";
+    rec.reason = String(err.message).split("\n")[0];
+  } finally {
+    await context.close();
+  }
+  return rec;
+}
 /*
  * Presentation is derived, startTime + duration − processingEnd, and Event
  * Timing rounds `duration` to 8 ms while the other two are precise, so a fast
@@ -588,16 +1066,29 @@ async function calibrate(browser, profileName, build) {
         pass: measured >= 150 && measured >= expected - 15 && first.startTime >= busy.start && first.startTime <= busy.end,
       });
     }
+    /*
+     * THE FEATURES THE RECORD DECLARES (D-033's `features` block). Probed in
+     * the calibration's own page view rather than guessed from a mark's detail,
+     * so a profile whose window cells never ran still carries them: the GPU
+     * path decides what the first frame costs, and the three scheduling
+     * features decide the shape of the load the record measured.
+     */
     rec.gpu = await page.evaluate(() => {
       const c = document.createElement("canvas");
       const gl = c.getContext("webgl2");
-      if (!gl) return { webgl2: false };
+      const scheduling = {
+        requestIdleCallback: typeof window.requestIdleCallback === "function",
+        schedulerYield: typeof globalThis.scheduler?.yield === "function",
+      };
+      if (!gl) return { webgl2: false, khrParallelShaderCompile: false, ...scheduling };
       const ext = gl.getExtension("WEBGL_debug_renderer_info");
       const out = {
         webgl2: true,
         vendor: ext ? gl.getParameter(ext.UNMASKED_VENDOR_WEBGL) : gl.getParameter(gl.VENDOR),
         renderer: ext ? gl.getParameter(ext.UNMASKED_RENDERER_WEBGL) : gl.getParameter(gl.RENDERER),
         unmasked: !!ext,
+        khrParallelShaderCompile: !!gl.getExtension("KHR_parallel_shader_compile"),
+        ...scheduling,
       };
       gl.getExtension("WEBGL_lose_context")?.loseContext();
       return out;
@@ -611,11 +1102,27 @@ async function calibrate(browser, profileName, build) {
   return rec;
 }
 
-/* ---- the load window ---------------------------------------------------- */
+/* ---- the window families ------------------------------------------------ */
 
-/** Find the three.js chunk on B: the only script whose body carries WebGLRenderer. Also B's scroll-to-arrival delay. */
-async function pinChunk(browser, profileName, build) {
-  const { context, page, cdp } = await openContext(browser, profileName);
+/**
+ * ONE PIN RUN PER PROFILE, ON B, before any window trial: it finds the three.js
+ * chunk, reads every `estate3d:*` mark the load emits and the chunk's own
+ * Resource Timing, and turns them into the delay from the trigger to each
+ * family's anchor.
+ *
+ * IT IS ALSO THE TEST THAT A RENAMED MARK CANNOT BE MEASURED SILENTLY. Six of
+ * the eight families anchor on a mark named in
+ * `src/components/sections/estate-map-3d-marks.ts`. If the page does not emit
+ * one of them, `missingAnchors` names it, the harness refuses to run that
+ * profile's window cells and exits non-zero. The alternative — waiting for an
+ * anchor that never comes — would produce twenty invalid trials per cell and a
+ * record that says nothing about why.
+ *
+ * The chunk is found by its body: it is the only script that contains
+ * `WebGLRenderer`.
+ */
+async function pinRun(browser, profileName, build) {
+  const { context, page, cdp, input } = await openContext(browser, profileName);
   try {
     const scripts = new Map();
     cdp.on("Network.responseReceived", (e) => {
@@ -625,21 +1132,57 @@ async function pinChunk(browser, profileName, build) {
     cdp.on("Network.loadingFinished", (e) => {
       if (scripts.has(e.requestId)) finished.push({ requestId: e.requestId, at: Date.now(), bytes: e.encodedDataLength });
     });
-    await page.goto(build.base + ROUTE, { waitUntil: "load", timeout: 120_000 });
-    await page.waitForTimeout(2500);
-    const before = finished.length;
-    const scrolledAt = Date.now();
-    await page.evaluate(() => document.querySelector(".estate-map-frame")?.scrollIntoView({ block: "center" }));
-    await page.locator(".estate-map-frame--3d[data-placed]").waitFor({ state: "visible", timeout: 60_000 });
-    for (const f of finished.slice(before)) {
+    const loaded = await loadAndSettle(page, cdp, input, build);
+    const pin = { profile: profileName, mode: loaded.mode, missingAnchors: [] };
+    if (loaded.invalid) return { ...pin, error: loaded.invalid };
+    if (loaded.mode !== "3d") return { ...pin, error: "the 3D diagram did not mount, so nothing can be pinned" };
+
+    const marks = await readMarks(page, ESTATE3D_MARK_PREFIX);
+    pin.marks = marks;
+    const triggerMs = marks[ESTATE3D_MARK.trigger];
+    if (typeof triggerMs !== "number") return { ...pin, error: `the page emitted no ${ESTATE3D_MARK.trigger} mark` };
+
+    for (const f of INP_WINDOW_FAMILIES) {
+      const name = WINDOW_ANCHOR[f];
+      if (name !== null && marks[name] === undefined) pin.missingAnchors.push(`${f} (${name})`);
+    }
+
+    for (const f of finished) {
       const { body, base64Encoded } = await cdp.send("Network.getResponseBody", { requestId: f.requestId }).catch(() => ({ body: "" }));
       const text = base64Encoded ? Buffer.from(body, "base64").toString("utf8") : body;
-      if (text.includes("WebGLRenderer")) {
-        const url = scripts.get(f.requestId).url;
-        return { file: new URL(url).pathname.split("/").pop(), transferBytes: f.bytes, decodedBytes: Buffer.byteLength(text), scrollToArrivalMs: f.at - scrolledAt };
-      }
+      if (!text.includes("WebGLRenderer")) continue;
+      const url = scripts.get(f.requestId).url;
+      pin.file = new URL(url).pathname.split("/").pop();
+      pin.transferBytes = f.bytes;
+      pin.decodedBytes = Buffer.byteLength(text);
+      break;
     }
-    return null;
+    if (!pin.file) return { ...pin, error: "no script in this page view carried WebGLRenderer" };
+
+    /* The chunk in the page's own clock: `startTime` is when the request went out, `responseEnd` when the last byte arrived. */
+    pin.resource = await page.evaluate((file) => {
+      const e = performance.getEntriesByType("resource").find((r) => r.name.includes(file));
+      return e ? { startMs: e.startTime, responseEndMs: e.responseEnd, transferSize: e.transferSize, decodedBodySize: e.decodedBodySize } : null;
+    }, pin.file);
+    if (!pin.resource) return { ...pin, error: `the page has no Resource Timing entry for ${pin.file}` };
+
+    /*
+     * THE DELAY FROM THE TRIGGER TO EACH ANCHOR, which is the only thing arm A
+     * can be measured against: A has no chunk and emits no marks, so its
+     * trials fire at these delays after their own trigger. Measured from B's
+     * `estate3d:trigger` MARK, while A adds them to the moment its trigger
+     * input was SENT — the difference is that input's own delay, a few
+     * milliseconds on a settled page, and the record names the anchor so the
+     * approximation is visible rather than implied.
+     */
+    pin.triggerMs = triggerMs;
+    pin.anchorDelays = {};
+    for (const f of INP_WINDOW_FAMILIES) {
+      const name = WINDOW_ANCHOR[f];
+      const at = name === null ? (f === "request" ? pin.resource.startMs : pin.resource.responseEndMs) : marks[name];
+      pin.anchorDelays[f] = typeof at === "number" ? Math.max(0, round(at - triggerMs)) : null;
+    }
+    return pin;
   } finally {
     await context.close();
   }
@@ -685,148 +1228,350 @@ function classify(model, interaction, chunkFile) {
   return labels.size ? [...labels].join("+") : "outside";
 }
 
-async function loadWindowTrial(browser, profileName, build, offset, chunk) {
+/**
+ * ONE WINDOW TRIAL: trigger the load, wait for this family's anchor, and fire
+ * ONE non-awaited input `offset` milliseconds after it.
+ *
+ * NOTHING IS EVALUATED IN THE PAGE BETWEEN THE ANCHOR AND THE INPUT. A
+ * `page.evaluate` needs the main thread, and the main thread is precisely what
+ * this cell exists to catch being busy: asking the page what time it is would
+ * wait for the task the input is supposed to land in. So the tap point and the
+ * page's clock are read while the page is still idle, before the trigger, and
+ * the measured interaction is picked out afterwards by the page time the input
+ * was sent at (mapped from the harness's clock, with 2 ms of slack).
+ *
+ * THE FIGURE IS THE MEASURED INPUT'S, NOT THE TRIGGER'S. Both are real inputs
+ * in this page view; the trigger has a cell of its own, and counting it inside
+ * every window cell would make all eight families a measurement of the trigger.
+ * `pageWorstMs` and `triggerInpMs` carry it for the record's reader anyway.
+ */
+async function windowTrial(browser, profileName, build, family, offset, pin) {
   const { context, page, cdp, input } = await openContext(browser, profileName);
-  const rec = { kind: "load-window", profile: profileName, build: build.label, offset, status: "ok" };
+  const chunkFile = pin?.file ?? null;
+  const chunk = watchChunk(cdp, chunkFile);
+  const rec = { kind: "window", profile: profileName, build: build.label, family, offset, status: "ok" };
+  let tracing = false;
   try {
+    await context.addInitScript(anchorSignal, ESTATE3D_MARK_PREFIX);
     await context.addInitScript(canvasMark);
-    await cdp.send("Tracing.start", { transferMode: "ReturnAsStream", traceConfig: { recordMode: "recordAsMuchAsPossible", includedCategories: TRACE_CATEGORIES } });
-    const ids = new Set();
-    let arrived = null;
-    const arrival = new Promise((resolve) => {
+    const anchors = markWatcher(page);
+    /* The two network anchors, watched in the browser process so a blocked renderer cannot delay them. */
+    const requestIds = new Set();
+    let requestSentAt = null;
+    let arrivedAt = null;
+    const requestSeen = new Promise((resolve) => {
       cdp.on("Network.requestWillBeSent", (e) => {
-        if (chunk && e.request.url.includes(chunk.file)) ids.add(e.requestId);
-      });
-      cdp.on("Network.loadingFinished", (e) => {
-        if (ids.has(e.requestId)) {
-          arrived = Date.now();
-          resolve(arrived);
-        }
+        if (!chunkFile || !e.request.url.includes(chunkFile) || requestIds.size) return;
+        requestIds.add(e.requestId);
+        requestSentAt = Date.now();
+        resolve({ at: requestSentAt });
       });
     });
+    const arrivalSeen = new Promise((resolve) => {
+      cdp.on("Network.loadingFinished", (e) => {
+        if (!requestIds.has(e.requestId) || arrivedAt !== null) return;
+        arrivedAt = Date.now();
+        resolve({ at: arrivedAt });
+      });
+    });
+
+    await cdp.send("Tracing.start", { transferMode: "ReturnAsStream", traceConfig: { recordMode: "recordAsMuchAsPossible", includedCategories: TRACE_CATEGORIES } });
+    tracing = true;
     await page.goto(build.base + ROUTE, { waitUntil: "load", timeout: 120_000 });
     await page.waitForTimeout(2500);
     const before = await readRecorder(page);
+
+    /* The tap point, and the page clock against the harness clock: both read while the page is idle. */
     const point = await page.evaluate(() => {
       const f = document.querySelector(".estate-map-frame");
       f.scrollIntoView({ block: "center" });
       const r = f.getBoundingClientRect();
-      return { x: r.left + r.width * 0.5, y: r.top + r.height * 0.92 };
+      const x = r.left + r.width * 0.5;
+      const y = r.top + r.height * 0.92;
+      const hit = document.elementFromPoint(x, y);
+      return { x, y, at: hit ? hit.tagName.toLowerCase() : null, inControl: !!(hit && hit.closest("a, button")) };
     });
-    const scrolledAt = Date.now();
-    let anchor;
+    rec.target = point.at;
+    if (point.inControl) {
+      rec.status = "invalid";
+      rec.reason = "the point at the bottom of the frame is inside a link or a button";
+      return rec;
+    }
+    /*
+     * The page's clock against the harness's, read while the page is idle. It
+     * is used for ONE thing: arm A's anchor has no page time of its own (A
+     * emits no marks), so its `anchorPageMs` is this estimate. It is NOT used
+     * to decide which interaction was measured - see the note further down for
+     * what that cost on the phone profile.
+     */
+    const clockSentAt = Date.now();
+    const pageClock = await page.evaluate(() => performance.now());
+    const clockAt = (clockSentAt + Date.now()) / 2;
+    const toPage = (wall) => pageClock + (wall - clockAt);
+
+    const t = await sendTrigger(page, cdp, input);
+    if (t.invalid) {
+      rec.status = "invalid";
+      rec.reason = t.invalid;
+      return rec;
+    }
+    await t.pending.catch(() => {});
+    rec.triggerSentAt = t.sentAt;
+
+    /* ---- the anchor ------------------------------------------------------ */
+    let anchorAt = null;
+    let anchorPageMs = null;
+    let anchorEstimated = false;
     if (build.expect3d) {
-      anchor = await Promise.race([arrival, sleep(60_000).then(() => null)]);
-      if (anchor === null) {
+      if (family === "request" || family === "arrival") {
+        const got = await Promise.race([family === "request" ? requestSeen : arrivalSeen, sleep(90_000).then(() => null)]);
+        if (got === null) {
+          rec.status = "invalid";
+          rec.reason = `the three.js chunk's ${family === "request" ? "request" : "arrival"} never happened`;
+          return rec;
+        }
+        anchorAt = got.at;
+        rec.anchor = `three.js ${family === "request" ? "Network.requestWillBeSent" : "Network.loadingFinished"}`;
+      } else {
+        const name = WINDOW_ANCHOR[family];
+        const got = await anchors.wait(name, 90_000);
+        if (!got) {
+          rec.status = "invalid";
+          rec.reason = `the page never emitted ${name}`;
+          return rec;
+        }
+        anchorAt = got.at;
+        anchorPageMs = got.pageMs;
+        rec.anchor = `the page's ${name} mark`;
+      }
+    } else {
+      const delay = pin?.anchorDelays?.[family];
+      if (typeof delay !== "number") {
         rec.status = "invalid";
-        rec.reason = "the three.js chunk never arrived";
+        rec.reason = `arm A has no ${family} anchor: the pin run on B measured none`;
         return rec;
       }
-      rec.anchor = "three.js loadingFinished";
-    } else {
-      anchor = scrolledAt + (chunk?.scrollToArrivalMs ?? 0);
-      rec.anchor = `scroll + ${chunk?.scrollToArrivalMs ?? 0} ms (B's measured scroll-to-chunk delay)`;
+      anchorAt = t.sentAt + delay;
+      anchorPageMs = toPage(anchorAt);
+      anchorEstimated = true;
+      rec.anchor = `the trigger + ${delay} ms (B's pin run measured that delay to ${WINDOW_ANCHOR[family] ?? `the chunk's ${family}`}; A has neither the chunk nor the marks)`;
     }
-    await sleep(anchor + offset - Date.now());
-    rec.firedAfterAnchorMs = Date.now() - anchor;
+
+    /* ---- the measured input --------------------------------------------- */
+    await sleep(anchorAt + offset - Date.now());
+    const firedAt = Date.now();
+    rec.firedAfterAnchorMs = firedAt - anchorAt;
     const pending = input(cdp, point.x, point.y);
     pending.catch(() => {});
     await page.waitForTimeout(4000);
     await pending.catch(() => {});
+
     const after = await readRecorder(page).catch(() => null);
     const events = await readTrace(cdp);
+    tracing = false;
     if (!after || after.doc !== before.doc) {
       rec.status = "lost";
       rec.reason = after ? "the document changed" : "the recorder could not be read";
       return rec;
     }
-    const list = interactionsOf(after.entries);
-    const worst = inpOf(list);
-    const model = traceModel(events, build.base, after.origin);
+    const marks = await readMarks(page, ESTATE3D_MARK_PREFIX).catch(() => ({}));
+    rec.fetched = chunk.fetched();
+    /* On B the anchor's page time is the mark's own; for the two network families it comes from the page's Resource Timing afterwards. */
+    if (build.expect3d && (family === "request" || family === "arrival")) {
+      const resource = await page
+        .evaluate((file) => {
+          const e = performance.getEntriesByType("resource").find((r) => r.name.includes(file));
+          return e ? { startMs: e.startTime, responseEndMs: e.responseEnd } : null;
+        }, chunkFile)
+        .catch(() => null);
+      if (resource) anchorPageMs = family === "request" ? resource.startMs : resource.responseEndMs;
+      rec.resource = resource;
+    }
+
     /*
-     * No setup interaction happens between `before` (read before the scroll, which
-     * is not an interaction) and the one input, so the count's change is that
-     * input's. With no entry AND no count, the page never registered it: it was
-     * dropped, or landed off target while the page moved. That is not a fast
-     * interaction, and it is not counted as one.
+     * WHICH INTERACTION IS THE MEASURED ONE — by its TARGET, not by a clock.
+     *
+     * The first version mapped the harness's clock onto the page's with one
+     * `performance.now()` read before the trigger, and asked which interactions
+     * started after the moment the input was sent. On the desktop profile that
+     * worked; on the phone profile it put EVERY window trial's measured
+     * interaction on the wrong side of the line, so all sixteen came back "no
+     * Event Timing entry, the input was counted" — an under-16 pass invented out
+     * of a bad clock, with the real figure (72 to 264 ms) sitting in
+     * `pageWorstMs` where nothing read it. The cause is that a `page.evaluate`
+     * on a throttled renderer is answered LATE inside its round trip, so the
+     * midpoint of "sent" and "returned" is later than the instant the page
+     * actually read its clock, and every page time derived from it is
+     * overestimated by as much as the renderer was behind.
+     *
+     * The two inputs of a window trial land on different elements and always
+     * will: the trigger on a list number (`.estate-map-list-index`), the
+     * measured input inside the frame. Event Timing carries each entry's target,
+     * so the split needs no clocks at all. If the trigger's group has no target
+     * to recognise (its node can be replaced at the swap), the groups are
+     * ordered in time and the first is the trigger.
      */
-    const countDelta = after.interactionCount !== null && before.interactionCount !== null ? after.interactionCount - before.interactionCount : null;
+    const all = interactionsOf(after.entries);
+    const isTrigger = (i) => typeof i.target === "string" && i.target.includes(TRIGGER_TARGET.slice(1));
+    let measured = all.filter((i) => !isTrigger(i));
+    let triggerOne = all.find(isTrigger) ?? null;
+    if (!triggerOne && all.length > 1) {
+      /* No target to recognise: the inputs are ordered, so the first group is the trigger's. */
+      triggerOne = all[0];
+      measured = all.slice(1);
+      rec.triggerByOrder = true;
+    }
+    const worst = inpOf(measured);
+    const pageWorst = inpOf(all);
+    const countDelta = after.interactionCount !== null && t.countBefore !== null ? after.interactionCount - t.countBefore : null;
+    /*
+     * WHERE THE INPUT WAS SENT, in the page's clock, for a trial that left no
+     * entry to measure the achieved offset from. Both `firedAt` and `anchorAt`
+     * are the harness's clock, so the difference cancels every clock question
+     * except the anchor signal's own delivery latency (1 to 15 ms, measured).
+     */
+    const sentOffset = anchorPageMs === null ? null : round(firedAt - anchorAt);
     Object.assign(rec, {
-      dispatched: 1,
-      recorded: list.length,
-      under16: list.length ? 0 : countDelta ? 1 : 0,
+      /* The trigger and the measured input: both were dispatched in this page view, and the under-16 rule asks the browser to have counted both. */
+      dispatched: 2,
+      measuredDispatched: 1,
+      recorded: measured.length,
       interactionCountDelta: countDelta,
       inp: worst ? round(worst.latency) : null,
+      pageWorst: pageWorst ? round(pageWorst.latency) : null,
+      triggerInp: triggerOne ? round(triggerOne.latency) : null,
+      anchorPageMs: anchorPageMs === null ? null : round(anchorPageMs),
+      anchorEstimated,
+      offsetAchieved: worst && anchorPageMs !== null ? round(worst.startTime - anchorPageMs) : null,
+      /* Where the input was SENT relative to the anchor: recorded on every row, so a trial with no entry still says where it landed. */
+      offsetSent: sentOffset,
       worst: worst ? { types: worst.types, target: worst.target, split: mapSplit(worst.split) } : null,
-      class: worst ? classify(model, worst, build.expect3d ? chunk?.file : null) : "under 16 ms (no entry; the input was counted)",
+      class: worst ? classify(traceModel(events, build.base, after.origin), worst, build.expect3d ? chunkFile : null) : "under 16 ms (no entry; the input was counted)",
       classWindow: worst ? worst.window : null,
-      mounted3d: await page.locator(".estate-map-frame--3d").count().then((n) => n > 0).catch(() => null),
+      marks: Object.keys(marks).length,
+      mounted3d: await page
+        .locator(".estate-map-frame--3d")
+        .count()
+        .then((n) => n > 0)
+        .catch(() => null),
     });
-    if (!worst && !countDelta) {
+    if (!worst && !(countDelta >= 2)) {
       rec.status = "invalid";
-      rec.reason = countDelta === 0 ? "input not registered: no Event Timing entry and no interaction counted" : "no Event Timing entry, and this browser has no interaction count to confirm the input landed";
+      rec.reason =
+        countDelta === null
+          ? "no Event Timing entry, and this browser has no interaction count to confirm the input landed"
+          : `no Event Timing entry, and the browser counted ${countDelta} of the 2 inputs dispatched (the trigger and the measured one)`;
       delete rec.class;
     }
   } catch (err) {
     rec.status = "error";
     rec.reason = String(err.message).split("\n")[0];
   } finally {
+    if (tracing) await readTrace(cdp).catch(() => {});
     await context.close();
   }
   return rec;
 }
-
 /* ---- run ---------------------------------------------------------------- */
 const browser = await chromium.launch();
 const started = new Date();
 const calibration = [];
 const chunks = {};
 const rows = [];
+const refusals = [];
+const cellName = (r) => (r.kind === "window" ? `window:${r.family}+${r.offset}ms` : r.kind === "fixed" ? r.scenario : r.kind);
 const log = (r) => {
-  const figure = r.status !== "ok" ? `${r.status.toUpperCase()}${r.reason ? ` (${r.reason})` : ""}` : r.inp === null ? `<16 ms ×${r.under16}` : `${r.inp} ms`;
-  console.log(`[${rows.length}] ${r.profile} ${r.kind === "load-window" ? `load-window +${r.offset}ms` : r.scenario} ${r.build}${r.mode ? `/${r.mode}` : ""}: ${figure}${r.class ? ` [${r.class}]` : ""}${r.notes ? ` — ${r.notes}` : ""}`);
+  const figure = r.status !== "ok" ? `${r.status.toUpperCase()}${r.reason ? ` (${r.reason})` : ""}` : r.inp === null ? "<16 ms" : `${r.inp} ms`;
+  const achieved = r.offsetAchieved === null || r.offsetAchieved === undefined ? "" : ` @+${r.offsetAchieved}ms`;
+  console.log(
+    `[${rows.length}] ${r.profile} ${cellName(r)} ${r.build}${r.mode ? `/${r.mode}` : ""}: ${figure}${achieved}${r.class ? ` [${r.class}]` : ""}${r.notes ? ` — ${r.notes}` : ""}`
+  );
 };
+/* ABBA: the arms alternate, and the order flips each time, so a machine that slows down over the run does not favour one arm. */
+const armOrder = (i) => (i % 2 === 0 ? builds : [...builds].reverse());
 
 for (const profileName of profiles) {
   const cal = await calibrate(browser, profileName, builds[0]);
   calibration.push(cal);
   console.log(`calibration ${profileName}: ${JSON.stringify(cal)}`);
 
-  for (const scenario of scenarios.filter((s) => FIXED.includes(s))) {
+  /*
+   * THE PIN RUN COMES FIRST, AND EVERY CELL NEEDS IT. It names the three.js
+   * chunk, which is how `fetched` is decided on every row — the control cell's
+   * whole evidence — and it measures the delay from the trigger to each
+   * anchor, which is the only thing arm A's window trials can fire against.
+   */
+  const bBuild = builds.find((b) => b.expect3d);
+  const pin = bBuild ? await pinRun(browser, profileName, bBuild).catch((err) => ({ profile: profileName, error: String(err.message).split("\n")[0], missingAnchors: [] })) : null;
+  chunks[profileName] = pin;
+  console.log(`pin ${profileName}: ${JSON.stringify(pin && { file: pin.file, error: pin.error, missingAnchors: pin.missingAnchors, anchorDelays: pin.anchorDelays })}`);
+  if (pin?.missingAnchors?.length) {
+    /*
+     * A RENAMED MARK FAILS HERE, LOUDLY. The harness will not measure a family
+     * whose anchor the page does not emit: twenty invalid trials per cell and a
+     * silently short record is not a measurement, it is an hour lost and a
+     * mystery. The name it looked for is in the message.
+     */
+    refusals.push(`${profileName}: the page emits no mark for ${pin.missingAnchors.join(", ")} — the names come from src/components/sections/estate-map-3d-marks.ts and the page must emit every one of them`);
+  }
+  const chunkFile = pin?.file ?? null;
+  if (bBuild && !chunkFile) refusals.push(`${profileName}: the three.js chunk was not pinned (${pin?.error ?? "no reason given"}), so no row can say whether it was fetched`);
+
+  if (wantControl) {
     for (let run = 0; run < RUNS; run++) {
-      for (const build of run % 2 === 0 ? builds : [...builds].reverse()) {
-        const r = await fixedTrial(browser, profileName, build, scenario);
+      for (const build of armOrder(run)) {
+        const r = await controlTrial(browser, profileName, build, chunkFile);
         rows.push(r);
         log(r);
       }
     }
   }
 
-  if (scenarios.includes("load-window") && !cal.pass) {
+  if (wantTrigger) {
+    for (let run = 0; run < RUNS; run++) {
+      for (const build of armOrder(run)) {
+        const r = await triggerTrial(browser, profileName, build, chunkFile);
+        rows.push(r);
+        log(r);
+      }
+    }
+  }
+
+  for (const scenario of fixedWanted) {
+    for (let run = 0; run < RUNS; run++) {
+      for (const build of armOrder(run)) {
+        const r = await fixedTrial(browser, profileName, build, scenario, chunkFile);
+        rows.push(r);
+        log(r);
+      }
+    }
+  }
+
+  if (wantWindow && !cal.pass) {
     /*
      * Not run at all, rather than run and hidden. The figures a failed
      * calibration makes meaningless then exist nowhere: not in the per-offset
      * table, the every-trial table, the console or the JSON.
      */
-    console.log(`load window ${profileName}: NOT RUN — calibration failed, so CDP input is not shown to record queueing delay here`);
-  } else if (scenarios.includes("load-window")) {
-    const bBuild = builds.find((b) => b.expect3d);
-    chunks[profileName] = bBuild ? await pinChunk(browser, profileName, bBuild).catch((err) => ({ error: String(err.message).split("\n")[0] })) : null;
-    console.log(`three.js chunk ${profileName}: ${JSON.stringify(chunks[profileName])}`);
+    console.log(`window families ${profileName}: NOT RUN — calibration failed, so CDP input is not shown to record queueing delay here`);
+  } else if (wantWindow && pin?.missingAnchors?.length) {
+    console.log(`window families ${profileName}: NOT RUN — ${pin.missingAnchors.join(", ")}`);
+  } else if (wantWindow) {
     let flip = 0;
-    for (const offset of OFFSETS) {
-      for (let t = 0; t < TRIALS; t++) {
-        for (const build of flip++ % 2 === 0 ? builds : [...builds].reverse()) {
-          const r = await loadWindowTrial(browser, profileName, build, offset, chunks[profileName]?.file ? chunks[profileName] : null);
-          rows.push(r);
-          log(r);
+    for (const family of families) {
+      for (const offset of OFFSETS[family]) {
+        for (let t = 0; t < TRIALS; t++) {
+          for (const build of armOrder(flip++)) {
+            const r = await windowTrial(browser, profileName, build, family, offset, pin);
+            rows.push(r);
+            log(r);
+          }
         }
       }
     }
   }
 }
 await browser.close();
-
 /* ---- report -------------------------------------------------------------- */
 const median = (xs) => {
   if (!xs.length) return null;
@@ -834,112 +1579,219 @@ const median = (xs) => {
   const m = Math.floor(s.length / 2);
   return s.length % 2 ? s[m] : (s[m - 1] + s[m]) / 2;
 };
-const fmt = (n) => (n === null ? "—" : `${Math.round(n)} ms`);
+const fmt = (n) => (n === null || n === undefined ? "—" : `${Math.round(n)} ms`);
 const splitText = (w) => (w ? `${w.split.inputDelay} / ${w.split.processing} / ${w.split.presentation}` : "—");
+const cellsMeasured = [...new Set(rows.map((r) => cellIdFor(r)))];
 
-/* SMOKE is decided by the VALID runs and trials that came back, not by what was requested (see the header). */
+/*
+ * SMOKE IS DECIDED BY THE VALID TRIALS THAT CAME BACK, not by what was
+ * requested, and against the gate's OWN minimums (`INP_MIN_OK_TRIALS`), so the
+ * report and the record cannot disagree about what "enough" means. A cell that
+ * was never measured is a shortfall too: the record it would produce is one the
+ * gate refuses to read.
+ */
 const shortfalls = [];
-if (RUNS < MIN_RUNS) shortfalls.push(`${RUNS} run(s) requested per scenario per profile, against ${MIN_RUNS}`);
-if (scenarios.includes("load-window") && TRIALS < MIN_TRIALS) shortfalls.push(`${TRIALS} trial(s) requested per load-window offset, against ${MIN_TRIALS}`);
-if (!shortfalls.length) {
-  for (const p of profiles) {
-    for (const scenario of scenarios.filter((s) => FIXED.includes(s))) {
-      for (const b of builds) {
-        const set = rows.filter((r) => r.kind === "fixed" && r.profile === p && r.scenario === scenario && r.build === b.label);
-        if (set.length && set.every((r) => r.status === "n/a")) continue;
-        const ok = set.filter((r) => r.status === "ok").length;
-        if (ok < MIN_RUNS) shortfalls.push(`${p} ${scenario} ${b.label}: ${ok} valid run(s) of ${set.length}`);
+for (const planned of plannedCells(OFFSETS)) {
+  const id = cellIdFor(planned);
+  if (!cellsMeasured.includes(id)) {
+    shortfalls.push(`${id}: not measured`);
+    continue;
+  }
+}
+for (const p of profiles) {
+  for (const id of cellsMeasured) {
+    for (const b of builds) {
+      const set = rows.filter((r) => r.profile === p && r.build === b.label && cellIdFor(r) === id);
+      if (!set.length) {
+        shortfalls.push(`${p} ${id} ${b.label}: no trial`);
+        continue;
       }
-    }
-    if (scenarios.includes("load-window") && calibration.find((c) => c.profile === p)?.pass) {
-      for (const offset of OFFSETS) {
-        for (const b of builds) {
-          const ok = rows.filter((r) => r.kind === "load-window" && r.profile === p && r.offset === offset && r.build === b.label && r.status === "ok").length;
-          if (ok < MIN_TRIALS) shortfalls.push(`${p} load-window +${offset} ms ${b.label}: ${ok} valid trial(s)`);
-        }
-      }
+      if (set.every((r) => r.status === "n/a")) continue;
+      const need = INP_MIN_OK_TRIALS[set[0].kind];
+      const ok = set.filter((r) => r.status === "ok").length;
+      if (ok < need) shortfalls.push(`${p} ${id} ${b.label}: ${ok} valid trial(s) of ${set.length}, needs ${need}`);
     }
   }
 }
 const smoke = shortfalls.length > 0;
 
+/*
+ * THE BUILD ID EACH ARM SERVED. The App Router's HTML does not carry it (its
+ * script URLs are content-hashed chunk names, not `/_next/static/<id>/...`), so
+ * it is read from the distDir this harness's own two builds write: `.next` for
+ * the public arm, `.next-estate3d` for the review arm, which is what
+ * `scripts/estate3d-preview.mjs` builds. An arm served from anywhere but this
+ * working tree is recorded as "unknown" rather than guessed at.
+ */
+function buildIdOf(build) {
+  if (!/^https?:\/\/(localhost|127\.0\.0\.1)(:|$|\/)/.test(build.base)) return "unknown";
+  const file = path.join(ROOT, build.expect3d ? ".next-estate3d" : ".next", "BUILD_ID");
+  try {
+    return fs.readFileSync(file, "utf8").trim() || "unknown";
+  } catch {
+    return "unknown";
+  }
+}
+const buildIds = Object.fromEntries(builds.map((b) => [b.label, buildIdOf(b)]));
+
 let md = `# INP on \`${ROUTE}\`, with the 3D map active\n\n`;
 md += smoke
-  ? `**SMOKE — NOT A MEASUREMENT OF RECORD.** A measurement of record needs ${MIN_RUNS} valid runs per scenario, profile and build, and ${MIN_TRIALS} valid trials per load-window offset. Short: ${shortfalls.join("; ")}. Other work may have been running on the machine. These figures show that the harness works; they measure nothing.\n\n`
-  : `Runs: ${RUNS} per scenario per profile; ${TRIALS} trials per load-window offset; every scenario, profile and build has at least ${MIN_RUNS} valid runs. Lab only (see Limits).\n\n`;
-md += `Generated ${started.toISOString()} by \`node scripts/estate-inp.mjs\`. Builds: ${builds.map((b) => `**${b.label}** ${b.base} (${b.expect3d ? "review build, 3D" : "public build, gate closed, 2D"})`).join("; ")}. Order ABBA, a fresh context per trial.\n\n`;
+  ? `**SMOKE — NOT A MEASUREMENT OF RECORD.** A measurement of record needs ${INP_MIN_OK_TRIALS.control} valid trials per control, trigger and fixed cell, per profile and build, and ${INP_MIN_OK_TRIALS.window} per window cell. Short: ${shortfalls.join("; ")}. Other work may have been running on the machine. These figures show that the harness works; they measure nothing.\n\n`
+  : `Trials: ${RUNS} per control, trigger and fixed cell per profile; ${TRIALS} per window cell; every cell, profile and build has at least the minimum valid trials. Lab only (see Limits).\n\n`;
+md += `Generated ${started.toISOString()} by \`node scripts/estate-inp.mjs\`. Builds: ${builds.map((b) => `**${b.label}** ${b.base} (${b.expect3d ? "review build, 3D" : "public build, gate closed, 2D"}, build id \`${buildIds[b.label]}\`)`).join("; ")}. Order ABBA, a fresh context per trial. Tree \`${FINGERPRINT}\` at \`${COMMIT.slice(0, 7) || "(no commit)"}\`.\n\n`;
 
 md += `## Calibration (CDP input behind a 300 ms busy loop)\n\n| profile | input into the loop | expected input delay | measured input delay | result |\n|---|---|---|---|---|\n`;
-for (const c of calibration) md += `| ${c.profile} | ${fmt(c.inputIntoLoopMs ?? null)} | ${fmt(c.expectedInputDelayMs ?? null)} | ${fmt(c.measuredInputDelayMs ?? null)} | ${c.pass ? "PASS: CDP input records queueing delay" : `FAIL${c.reason ? ` (${c.reason})` : ""}: the load window is not measurable this way`} |\n`;
+for (const c of calibration) md += `| ${c.profile} | ${fmt(c.inputIntoLoopMs ?? null)} | ${fmt(c.expectedInputDelayMs ?? null)} | ${fmt(c.measuredInputDelayMs ?? null)} | ${c.pass ? "PASS: CDP input records queueing delay" : `FAIL${c.reason ? ` (${c.reason})` : ""}: the window families are not measurable this way`} |\n`;
 
-md += `\n## GPU path\n\n| profile | WebGL2 | vendor | renderer | software |\n|---|---|---|---|---|\n`;
-for (const c of calibration) md += `| ${c.profile} | ${c.gpu?.webgl2 ?? "—"} | ${c.gpu?.vendor ?? "—"} | ${c.gpu?.renderer ?? "—"} | ${c.gpu?.software ?? "—"} |\n`;
+md += `\n## GPU path and the features the record declares\n\n| profile | WebGL2 | vendor | renderer | software | KHR_parallel_shader_compile | requestIdleCallback | scheduler.yield |\n|---|---|---|---|---|---|---|---|\n`;
+for (const c of calibration) {
+  md += `| ${c.profile} | ${c.gpu?.webgl2 ?? "—"} | ${c.gpu?.vendor ?? "—"} | ${c.gpu?.renderer ?? "—"} | ${c.gpu?.software ?? "—"} | ${c.gpu?.khrParallelShaderCompile ?? "—"} | ${c.gpu?.requestIdleCallback ?? "—"} | ${c.gpu?.schedulerYield ?? "—"} |\n`;
+}
 
-const scenarioRows = [];
+/** One summary row per cell, per profile, per arm: the same grouping the gate counts by. */
+const summary = [];
 for (const profileName of profiles) {
-  for (const scenario of scenarios.filter((s) => FIXED.includes(s))) {
+  for (const id of cellsMeasured) {
     for (const build of builds) {
-      const set = rows.filter((r) => r.kind === "fixed" && r.profile === profileName && r.scenario === scenario && r.build === build.label);
+      const set = rows.filter((r) => r.profile === profileName && r.build === build.label && cellIdFor(r) === id);
+      if (!set.length) continue;
       const ok = set.filter((r) => r.status === "ok");
-      const numeric = ok.filter((r) => r.inp !== null);
+      const numeric = ok.filter((r) => r.inp !== null && r.inp !== undefined);
       const worstRun = numeric.reduce((a, b) => (!a || b.inp > a.inp ? b : a), null);
       const medianRun = numeric.length ? [...numeric].sort((a, b) => a.inp - b.inp)[Math.floor((numeric.length - 1) / 2)] : null;
-      const under = ok.filter((r) => r.inp === null).length;
-      const confirmed = ok.filter((r) => r.inp === null).every((r) => (r.interactionCountDelta ?? 0) >= r.dispatched);
+      const under = ok.length - numeric.length;
+      const confirmed = ok.filter((r) => r.inp === null || r.inp === undefined).every((r) => r.kind === "control" || (r.interactionCountDelta ?? 0) >= (r.dispatched ?? 1));
       let verdict;
-      if (!ok.length) verdict = set.some((r) => r.status === "n/a") ? "not applicable" : "no valid run";
-      else if (worstRun) verdict = worstRun.inp <= BUDGET_MS ? "pass" : "FAIL";
+      if (!ok.length) verdict = set.some((r) => r.status === "n/a") ? "not applicable" : "no valid trial";
+      else if (worstRun) verdict = worstRun.inp < BUDGET_MS ? "pass" : "FAIL";
+      else if (set[0].kind === "control") verdict = "pass (no interaction, as a control must report)";
       else verdict = confirmed ? "pass (every interaction under 16 ms)" : "not established (no entry, interaction count unconfirmed)";
-      scenarioRows.push({ profileName, scenario, build: build.label, set, ok, numeric, worstRun, medianRun, under, verdict });
+      summary.push({ profileName, id, kind: set[0].kind, build: build.label, set, ok, numeric, worstRun, medianRun, under, verdict });
     }
   }
 }
-md += `\n## Fixed scenarios\n\nINP per run is the worst interaction in that run. "<16 ms" counts runs whose interactions all stayed under Event Timing's 16 ms floor. Split = input delay / processing / presentation, in ms. The verdict is on the WORST run against ${BUDGET_MS} ms.\n\n`;
-md += `| profile | scenario | build | ok / lost / n/a / invalid / error | median INP | worst INP | runs <16 ms | median split | worst split | verdict |\n|---|---|---|---|---|---|---|---|---|---|\n`;
-for (const s of scenarioRows) {
+
+md += `\n## Every cell\n\nINP per trial is the worst interaction of that trial's own measurement window — for a window cell, the measured input and not the trigger that started the load (the trigger has a cell of its own). "<16 ms" counts trials whose interactions all stayed under Event Timing's 16 ms floor, confirmed by the browser's interaction count. Split = input delay / processing / presentation, in ms. The verdict is on the WORST trial against ${BUDGET_MS} ms, strictly.\n\n`;
+md += `| profile | cell | build | ok / lost / n/a / invalid / error | median INP | worst INP | trials <16 ms | median split | worst split | verdict |\n|---|---|---|---|---|---|---|---|---|---|\n`;
+for (const s of summary) {
   const count = (st) => s.set.filter((r) => r.status === st).length;
-  md += `| ${s.profileName} | ${s.scenario} | ${s.build} | ${count("ok")} / ${count("lost")} / ${count("n/a")} / ${count("invalid")} / ${count("error")} | ${fmt(median(s.numeric.map((r) => r.inp)))} | ${fmt(s.worstRun?.inp ?? null)} | ${s.under} | ${splitText(s.medianRun?.worst)} | ${splitText(s.worstRun?.worst)} | ${s.verdict} |\n`;
+  md += `| ${s.profileName} | \`${s.id}\` | ${s.build} | ${count("ok")} / ${count("lost")} / ${count("n/a")} / ${count("invalid")} / ${count("error")} | ${fmt(median(s.numeric.map((r) => r.inp)))} | ${fmt(s.worstRun?.inp ?? null)} | ${s.under} | ${splitText(s.medianRun?.worst)} | ${splitText(s.worstRun?.worst)} | ${s.verdict} |\n`;
 }
 
-if (scenarios.includes("load-window")) {
-  md += `\n## The load window\n\n`;
-  md += `| profile | three.js chunk | transfer | decoded | scroll → loadingFinished (pin run) |\n|---|---|---|---|---|\n`;
+if (wantWindow) {
+  md += `\n## The window families\n\nThe anchor of each family, and the delay the pin run measured from the trigger to it. Arm A has neither the chunk nor the marks, so its trials fire at these delays after their own trigger; the record names that for every A row.\n\n`;
+  md += `| profile | three.js chunk | transfer | decoded | ${INP_WINDOW_FAMILIES.map((f) => `→${f}`).join(" | ")} |\n|---|---|---|---|${INP_WINDOW_FAMILIES.map(() => "---").join("|")}|\n`;
   for (const p of profiles) {
     const c = chunks[p];
-    md += `| ${p} | ${c?.file ?? c?.error ?? "—"} | ${c?.transferBytes ?? "—"} B | ${c?.decodedBytes ?? "—"} B | ${fmt(c?.scrollToArrivalMs ?? null)} |\n`;
+    md += `| ${p} | ${c?.file ?? c?.error ?? "—"} | ${c?.transferBytes ?? "—"} B | ${c?.decodedBytes ?? "—"} B | ${INP_WINDOW_FAMILIES.map((f) => fmt(c?.anchorDelays?.[f] ?? null)).join(" | ")} |\n`;
   }
   for (const p of profiles) {
     const cal = calibration.find((c) => c.profile === p);
     if (!cal?.pass) {
-      md += `\n**${p}: not measurable.** Calibration failed, so CDP input is not shown to record queueing delay on this machine. No load-window trial was run on this profile, so there are no figures to report.\n`;
+      md += `\n**${p}: not measurable.** Calibration failed, so CDP input is not shown to record queueing delay on this machine. No window trial was run on this profile, so there are no figures to report.\n`;
       continue;
     }
-    md += `\n### ${p}\n\nThe class covers each interaction from its first entry's start to its worst entry's dispatch (see the every-trial table for which entries those were). Invalid trials (an input the page never registered) are counted in the every-trial table only.\n\n| offset | build | class (from the trace) | n | median INP | worst INP | <16 ms |\n|---|---|---|---|---|---|---|\n`;
-    for (const offset of OFFSETS) {
-      for (const build of builds) {
-        const set = rows.filter((r) => r.kind === "load-window" && r.profile === p && r.offset === offset && r.build === build.label && r.status === "ok");
-        const classes = [...new Set(set.map((r) => r.class))];
-        for (const cls of classes) {
-          const c = set.filter((r) => r.class === cls);
-          const nums = c.filter((r) => r.inp !== null).map((r) => r.inp);
-          md += `| +${offset} ms | ${build.label} | ${cls} | ${c.length} | ${fmt(median(nums))} | ${fmt(nums.length ? Math.max(...nums) : null)} | ${c.length - nums.length} |\n`;
+    md += `\n### ${p}\n\nThe class covers each interaction from its first entry's start to its worst entry's dispatch (see the every-trial table for which entries those were). "achieved" is the offset the trial actually landed at, measured in the page's own clock from the anchor. Invalid trials (an input the page never registered) are counted in the every-trial table only.\n\n| family | offset | build | class (from the trace) | n | median achieved | median INP | worst INP | <16 ms |\n|---|---|---|---|---|---|---|---|---|\n`;
+    for (const family of families) {
+      for (const offset of OFFSETS[family]) {
+        for (const build of builds) {
+          const set = rows.filter((r) => r.kind === "window" && r.profile === p && r.family === family && r.offset === offset && r.build === build.label && r.status === "ok");
+          for (const cls of [...new Set(set.map((r) => r.class))]) {
+            const c = set.filter((r) => r.class === cls);
+            const nums = c.filter((r) => r.inp !== null).map((r) => r.inp);
+            const achieved = c.map((r) => r.offsetAchieved).filter((v) => typeof v === "number");
+            md += `| ${family} | +${offset} ms | ${build.label} | ${cls} | ${c.length} | ${fmt(median(achieved))} | ${fmt(median(nums))} | ${fmt(nums.length ? Math.max(...nums) : null)} | ${c.length - nums.length} |\n`;
+          }
         }
       }
     }
   }
 }
 
-md += `\n## Every trial, in the order measured\n\n| # | profile | scenario | build | status | INP | worst interaction | split | dispatched / recorded / <16 | interactionCount Δ | notes |\n|---|---|---|---|---|---|---|---|---|---|---|\n`;
+md += `\n## Every trial, in the order measured\n\n| # | profile | cell | build | status | INP | worst interaction | split | dispatched / recorded | interactionCount Δ | fetched | notes |\n|---|---|---|---|---|---|---|---|---|---|---|---|\n`;
 rows.forEach((r, i) => {
-  const name = r.kind === "load-window" ? `load-window +${r.offset} ms` : r.scenario;
-  const inp = r.status !== "ok" ? "—" : r.inp === null ? "<16 ms" : `${r.inp} ms`;
-  const notes = [r.mode, r.class, r.classWindow && `class over ${r.classWindow}`, r.notes, r.navigatedTo && `→ ${r.navigatedTo}`, r.reason, r.anchor].filter(Boolean).join("; ");
-  md += `| ${i + 1} | ${r.profile} | ${name} | ${r.build} | ${r.status} | ${inp} | ${r.worst ? `${r.worst.types.join("+")} on \`${r.worst.target}\`` : "—"} | ${splitText(r.worst)} | ${r.dispatched ?? "—"} / ${r.recorded ?? "—"} / ${r.under16 ?? "—"} | ${r.interactionCountDelta ?? "—"} | ${notes.replace(/\|/g, "\\|")} |\n`;
+  const inp = r.status !== "ok" ? "—" : r.inp === null || r.inp === undefined ? "<16 ms" : `${r.inp} ms`;
+  const notes = [
+    r.mode,
+    r.class,
+    r.classWindow && `class over ${r.classWindow}`,
+    r.offsetAchieved !== null && r.offsetAchieved !== undefined && `achieved +${r.offsetAchieved} ms`,
+    r.notes,
+    r.navigatedTo && `→ ${r.navigatedTo}`,
+    r.reason,
+    r.anchor,
+  ]
+    .filter(Boolean)
+    .join("; ");
+  md += `| ${i + 1} | ${r.profile} | \`${cellIdFor(r)}\` | ${r.build} | ${r.status} | ${inp} | ${r.worst ? `${r.worst.types.join("+")} on \`${r.worst.target}\`` : "—"} | ${splitText(r.worst)} | ${r.dispatched ?? "—"} / ${r.recorded ?? "—"} | ${r.interactionCountDelta ?? "—"} | ${r.fetched ?? "—"} | ${notes.replace(/\|/g, "\\|")} |\n`;
 });
 
-md += `\n## Limits\n\n- Lab only: Chromium through Playwright, synthetic CDP input, throttled CPU and network. Not field INP, and not Safari or Firefox.\n- Event Timing's floor is 16 ms and its durations are rounded to 8 ms; an interaction under the floor leaves no entry and is printed as "<16 ms".\n- The GPU path above decides the first frame's cost; software WebGL overstates it against a phone's GPU.\n- Traces use hotel-cwv's categories without the CPU sampler, and are taken for the load-window trials only.\n- ${smoke ? "The machine was not isolated. This is a smoke run: no figure here is a measurement of record." : "Figures of record need an otherwise idle machine. The harness cannot check that, so the record that cites these figures states the conditions they were taken under."}\n`;
+md += `\n## Limits\n\n- Lab only: Chromium through Playwright, synthetic CDP input, throttled CPU and network. Not field INP, and not Safari or Firefox.\n- Event Timing's floor is 16 ms and its durations are rounded to 8 ms; an interaction under the floor leaves no entry and is printed as "<16 ms".\n- The GPU path above decides the first frame's cost; software WebGL overstates it against a phone's GPU.\n- Traces use hotel-cwv's categories without the CPU sampler, and are taken for the window trials only.\n- A window trial replaces \`performance.mark\` with a wrapper that logs each \`estate3d:*\` mark synchronously, on both builds alike: that is how the harness learns where the page is while the page's main thread is blocked, and it costs the page one console call per mark.\n- Arm A's window anchors are B's measured delays from the trigger, not A's own events: A has no three.js chunk and emits no marks, so nothing else is available to compare it on.\n- ${smoke ? "The machine was not isolated. This is a smoke run: no figure here is a measurement of record." : "Figures of record need an otherwise idle machine. The harness cannot check that, so the record that cites these figures states the conditions they were taken under."}\n`;
 
 fs.mkdirSync(path.dirname(OUT), { recursive: true });
 fs.writeFileSync(OUT, md);
-fs.writeFileSync(JSON_OUT, JSON.stringify({ started, smoke, runs: RUNS, trials: TRIALS, builds, calibration, chunks, rows }, null, 2) + "\n");
-console.log(`-> ${OUT}\n-> ${JSON_OUT}${smoke ? "\nSMOKE: not a measurement of record." : ""}`);
+fs.writeFileSync(JSON_OUT, JSON.stringify({ started, smoke, runs: RUNS, trials: TRIALS, offsets: OFFSETS, fingerprint: FINGERPRINT, commit: COMMIT, builds, buildIds, calibration, chunks, rows }, null, 2) + "\n");
+console.log(`-> ${OUT}\n-> ${JSON_OUT}`);
+
+/* ---- the gate's record --------------------------------------------------- */
+/*
+ * BUILT LAST AND CHECKED BEFORE IT IS WRITTEN (D-033). The rules are in
+ * scripts/estate-inp-record.mjs; the checker is the gate's own
+ * `decideInpCondition`, so "a record the gate would reject" is not a second
+ * opinion. A SHAPE failure means the reader could not read this as the schema
+ * at all, and the file is not written — the markdown report and the raw JSON
+ * above already hold everything measured, so nothing is lost by refusing.
+ */
+const profileRecords = {};
+for (const p of profiles) {
+  const cal = calibration.find((c) => c.profile === p) ?? {};
+  profileRecords[p] = {
+    calibration: {
+      pass: cal.pass === true,
+      measuredMs: cal.measuredInputDelayMs ?? -1,
+      expectedMs: cal.expectedInputDelayMs ?? -1,
+      /* What it was, in the calibration's own words, when it did not pass. */
+      ...(cal.reason ? { reason: cal.reason } : {}),
+    },
+    features: {
+      gpu: String(cal.gpu?.renderer ?? "unknown"),
+      software: cal.gpu?.software === true,
+      khrParallelShaderCompile: cal.gpu?.khrParallelShaderCompile === true,
+      requestIdleCallback: cal.gpu?.requestIdleCallback === true,
+      schedulerYield: cal.gpu?.schedulerYield === true,
+    },
+    rows: rows.filter((r) => r.profile === p),
+  };
+}
+const gateRecord = buildGateRecord({
+  generatedAt: started.toISOString(),
+  commit: COMMIT,
+  smoke,
+  fingerprint: FINGERPRINT,
+  builds: Object.fromEntries(builds.map((b) => [b.label, { origin: b.base, buildId: buildIds[b.label] }])),
+  profiles: profileRecords,
+});
+const verdict = checkGateRecord(gateRecord, FINGERPRINT);
+
+for (const r of refusals) console.log(`REFUSED: ${r}`);
+if (!verdict.shape.pass) {
+  console.log(`\nThe gate's own reader cannot read this record as ${gateRecord.schema}:`);
+  for (const reason of verdict.shape.reasons) console.log(`  - ${reason}`);
+  console.log(`NOT WRITTEN: ${GATE_JSON ?? "(no gate record requested)"} — a record the reader rejects is not evidence. Everything measured is in ${OUT} and ${JSON_OUT}.`);
+  process.exitCode = 2;
+} else if (GATE_JSON === null) {
+  console.log("\nThe gate's reader accepts this record's shape; --no-gate-json, so it was not written.");
+  if (!verdict.substance.pass) process.exitCode = 1;
+} else {
+  fs.mkdirSync(path.dirname(GATE_JSON), { recursive: true });
+  fs.writeFileSync(GATE_JSON, JSON.stringify(gateRecord, null, 2) + "\n");
+  console.log(`-> ${GATE_JSON}${smoke ? " (smoke: true — the gate closes on it, by design)" : ""}`);
+  if (verdict.substance.pass) {
+    console.log("The gate's own reader accepts this record on the measurement as well as the shape.");
+  } else {
+    console.log("\nThe gate's own reader would reject this record on the MEASUREMENT (the record is written; the shortfall is in this exit code):");
+    for (const reason of verdict.substance.reasons) console.log(`  - ${reason}`);
+    process.exitCode = 1;
+  }
+}
+if (smoke) console.log("SMOKE: not a measurement of record.");

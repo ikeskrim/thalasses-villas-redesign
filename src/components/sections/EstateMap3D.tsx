@@ -28,6 +28,7 @@ import {
 import type { RenderElement } from "@/lib/estate-plan-gate";
 import { delay, mark, yieldToMain } from "@/lib/schedule";
 import type { Map3DProps, ShowDiagram } from "./estate-map-3d-gate";
+import { ESTATE3D_MARK } from "./estate-map-3d-marks";
 import { EstateMapCardContent } from "./EstateMapCard";
 import {
   STOREY,
@@ -258,7 +259,7 @@ export function EstateMap3D({ plan, hotspots, onFail, onReady, staged }: Map3DPr
       if (await step()) return;
 
       /* ---- 1. The renderer ---------------------------------------------- */
-      mark("estate3d:renderer");
+      mark(ESTATE3D_MARK.renderer);
       try {
         renderer = new WebGLRenderer({ antialias: true, alpha: false, powerPreference: "low-power" });
       } catch {
@@ -281,7 +282,7 @@ export function EstateMap3D({ plan, hotspots, onFail, onReady, staged }: Map3DPr
       if (await step()) return;
 
       /* ---- 2. Tokens, then the scene ------------------------------------- */
-      mark("estate3d:scene");
+      mark(ESTATE3D_MARK.scene);
       /* The site's own tokens (globals.css), read live so a palette change reaches the diagram. One style read for all five. */
       const rootStyle = getComputedStyle(document.documentElement);
       const cssColor = (name: string, fallback: string) => new Color(rootStyle.getPropertyValue(name).trim() || fallback);
@@ -564,7 +565,7 @@ export function EstateMap3D({ plan, hotspots, onFail, onReady, staged }: Map3DPr
       if (await step()) return;
 
       /* ---- 3. The shader programs ----------------------------------------- */
-      mark("estate3d:compile");
+      mark(ESTATE3D_MARK.compile);
       const parallel = r.extensions.has("KHR_parallel_shader_compile");
       const programs = r.info.programs ?? [];
       const drawables: Object3D[] = [];
@@ -589,7 +590,7 @@ export function EstateMap3D({ plan, hotspots, onFail, onReady, staged }: Map3DPr
         await delay(POLL_MS);
         if (stopped()) return;
       }
-      mark("estate3d:compiled", { khrParallelShaderCompile: parallel, programs: programs.length });
+      mark(ESTATE3D_MARK.compiled, { khrParallelShaderCompile: parallel, programs: programs.length });
       /* Each program's first use, in a task of its own: without the extension, this is where its link is waited for. */
       const gl = r.getContext();
       for (const p of [...programs]) {
@@ -605,7 +606,7 @@ export function EstateMap3D({ plan, hotspots, onFail, onReady, staged }: Map3DPr
       /* Before the first layout: the buttons are measured once, in the font they are drawn in. */
       await document.fonts?.ready;
       if (stopped()) return;
-      mark("estate3d:layout");
+      mark(ESTATE3D_MARK.layout);
 
       const probe = new Vector3();
       let size = { w: 0, h: 0 };
@@ -795,7 +796,7 @@ export function EstateMap3D({ plan, hotspots, onFail, onReady, staged }: Map3DPr
         if (await step()) return false;
 
         /* ONE TASK: the writes, and nothing in it that the search did. */
-        if (first) mark("estate3d:swap");
+        if (first) mark(ESTATE3D_MARK.swap);
         size = { w: m.w, h: m.h };
         noteBox = m.note;
         laidOutSizes = JSON.stringify(m.sizes);
@@ -938,7 +939,7 @@ export function EstateMap3D({ plan, hotspots, onFail, onReady, staged }: Map3DPr
         el.removeAttribute("inert");
         el.removeAttribute("aria-hidden");
         if (!fresh) r.render(scene, camera);
-        mark("estate3d:shown");
+        mark(ESTATE3D_MARK.shown);
       };
       onReady(show);
     };

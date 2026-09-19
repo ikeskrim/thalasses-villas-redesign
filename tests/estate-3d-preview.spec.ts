@@ -5,6 +5,7 @@ import { test, expect, type CDPSession, type Locator, type Page } from "@playwri
 
 import { HOTSPOTS } from "../src/app/home-data";
 import type { EstatePlan } from "../src/lib/estate-plan-gate";
+import { ESTATE3D_MARK, ESTATE3D_MARK_ORDER, ESTATE3D_MARK_PREFIX, WINDOW_ANCHOR } from "../src/components/sections/estate-map-3d-marks";
 
 /**
  * THE 3D ESTATE MAP ITSELF — against the local review build only.
@@ -933,10 +934,22 @@ test.describe("3D estate map — when it loads, and how it is swapped in (D-028)
     expect(m.idle! - lastBefore, "the loader went idle less than a quiet period after the last activity").toBeGreaterThanOrEqual(QUIET_MS);
     expect(m.idle!, "the loader went idle while the reader was still busy").toBeGreaterThan(busyEnded);
 
-    const order = ["trigger", "idle", "probe", "import-start", "import-end", "renderer", "scene", "compile", "compiled", "layout", "swap", "shown"];
-    for (const name of order) expect(m[name], `no estate3d:${name} mark`).toBeDefined();
+    /*
+     * THE ORDER COMES FROM THE ONE PLACE THE NAMES DO
+     * (src/components/sections/estate-map-3d-marks.ts), and this is the test
+     * that keeps the page and the INP harness agreeing about them: the harness
+     * anchors its eight window families on six of these marks, so a name the
+     * page stops emitting must turn something red here rather than leave the
+     * harness waiting for an anchor that never comes.
+     */
+    const order = ESTATE3D_MARK_ORDER.map((phase) => ESTATE3D_MARK[phase].slice(ESTATE3D_MARK_PREFIX.length));
+    for (const name of order) expect(m[name], `no ${ESTATE3D_MARK_PREFIX}${name} mark`).toBeDefined();
+    for (const [family, anchor] of Object.entries(WINDOW_ANCHOR)) {
+      if (anchor === null) continue;
+      expect(m[anchor.slice(ESTATE3D_MARK_PREFIX.length)], `the INP harness anchors its ${family} window family on ${anchor}, which this page did not emit`).toBeDefined();
+    }
     for (let i = 1; i < order.length; i++) {
-      expect(m[order[i]!]!, `estate3d:${order[i]} came before estate3d:${order[i - 1]}`).toBeGreaterThanOrEqual(m[order[i - 1]!]!);
+      expect(m[order[i]!]!, `${ESTATE3D_MARK_PREFIX}${order[i]} came before ${ESTATE3D_MARK_PREFIX}${order[i - 1]}`).toBeGreaterThanOrEqual(m[order[i - 1]!]!);
     }
     expect(errors).toEqual([]);
   });

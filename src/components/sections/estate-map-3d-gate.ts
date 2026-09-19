@@ -5,6 +5,7 @@ import { startTransition, useCallback, useEffect, useRef, useState, type Compone
 import type { RenderPlan } from "@/lib/estate-plan-gate";
 import { hasIdleCallback, hasSchedulerYield, idle, mark } from "@/lib/schedule";
 import type { Hotspot } from "./EstateMap";
+import { ESTATE3D_MARK } from "./estate-map-3d-marks";
 
 /**
  * What the diagram hands back once it is drawn and placed while hidden: a
@@ -110,9 +111,11 @@ const LISTEN: AddEventListenerOptions = { capture: true, passive: true };
  * else the section itself (named "The estate"), made focusable only for that
  * moment.
  *
- * Marks for the INP harness (`performance.mark`): `estate3d:trigger`,
- * `estate3d:idle`, `estate3d:probe`, `estate3d:import-start` and
- * `estate3d:import-end` here; the build's own marks are in `EstateMap3D`.
+ * Marks for the INP harness (`performance.mark`), spelled in ONE place,
+ * `estate-map-3d-marks.ts`: `trigger`, `idle`, `probe`, `importStart` and
+ * `importEnd` here; the build's own marks are in `EstateMap3D`. The harness's
+ * window families are keyed to those names, so a rename that reached only one
+ * of the three would have left it measuring nothing; tests hold them together.
  */
 export function useEstateMap3D(section: RefObject<HTMLElement | null>, stage: RefObject<HTMLElement | null>, plan: RenderPlan | null) {
   const [Map3D, setMap3D] = useState<Map3D | null>(null);
@@ -249,10 +252,10 @@ export function useEstateMap3D(section: RefObject<HTMLElement | null>, stage: Re
     const load = async () => {
       const { timedOut } = await idle(IDLE_TIMEOUT_MS, IDLE_FALLBACK_MS);
       if (stopped) return;
-      mark("estate3d:idle", { timedOut, requestIdleCallback: hasIdleCallback(), schedulerYield: hasSchedulerYield() });
+      mark(ESTATE3D_MARK.idle, { timedOut, requestIdleCallback: hasIdleCallback(), schedulerYield: hasSchedulerYield() });
       if ((navigator as WithConnection).connection?.saveData === true) return;
 
-      mark("estate3d:probe");
+      mark(ESTATE3D_MARK.probe);
       const probe = document.createElement("canvas");
       const gl = probe.getContext("webgl2");
       gl?.getExtension("WEBGL_lose_context")?.loseContext();
@@ -261,7 +264,7 @@ export function useEstateMap3D(section: RefObject<HTMLElement | null>, stage: Re
         return;
       }
       startTransition(() => setPhase("preparing"));
-      mark("estate3d:import-start");
+      mark(ESTATE3D_MARK.importStart);
       let m: typeof import("./EstateMap3D");
       try {
         m = await import("./EstateMap3D");
@@ -270,7 +273,7 @@ export function useEstateMap3D(section: RefObject<HTMLElement | null>, stage: Re
         onFail();
         return;
       }
-      mark("estate3d:import-end");
+      mark(ESTATE3D_MARK.importEnd);
       if (stopped) return;
       startTransition(() => setMap3D(() => m.EstateMap3D));
     };
@@ -300,7 +303,7 @@ export function useEstateMap3D(section: RefObject<HTMLElement | null>, stage: Re
       if (interacted) return;
       interacted = true;
       unlisten(window, TRIGGERS, trigger);
-      mark("estate3d:trigger");
+      mark(ESTATE3D_MARK.trigger);
       maybeStart();
     };
     for (const t of TRIGGERS) listen(window, t, trigger);
