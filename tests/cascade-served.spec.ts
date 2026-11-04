@@ -58,8 +58,18 @@ const NESTING_AT_RULES = /^@(media|supports|container|scope|starting-style|layer
  * descriptors, and the `--font-*` custom property. The declaration check below
  * is the actual guard. If one of these ever carried a colour or a size, it
  * would outrank every layer on the site and this test would say so.
+ *
+ * Two spellings of the same class. Next 16.3 emitted
+ * `.inter_c2c77540-module__eeHO2q__className`; Next 16.4 emits only the
+ * six-character module hash, `.eeHO2q_className`. A hash that starts with a
+ * digit gets a `_` in front (`5FWb6W` -> `._5FWb6W_className`), and `-` before
+ * a digit is written as a CSS escape (`-25LuW` -> `.-\32 5LuW_className`).
+ * Same hashes, same rules; only the name changed. The new shapes are pinned to
+ * exactly six hash characters so that an ordinary class like `.hero_className`
+ * stays outside the exemption.
  */
-const NEXT_FONT_CLASS = /^\.[A-Za-z0-9]+_[A-Za-z0-9]+-module__[A-Za-z0-9_-]+__(className|variable)$/;
+const NEXT_FONT_CLASS =
+  /^\.(?:[A-Za-z0-9]+_[A-Za-z0-9]+-module__[A-Za-z0-9_-]+__|(?:[A-Za-z_-][A-Za-z0-9_-]{5}|_[0-9][A-Za-z0-9_-]{5}|-\\3[0-9] [A-Za-z0-9_-]{4})_)(className|variable)$/;
 const FONT_SAFE_PROPERTY = /^(font-family|font-style|font-weight|font-display|font-stretch|font-feature-settings|font-variation-settings|src|ascent-override|descent-override|line-gap-override|size-adjust|unicode-range|--font-[a-z0-9-]+)$/i;
 
 type Stray = { selector: string; declarations: string; source: string };
@@ -346,12 +356,25 @@ test.describe("cascade layers, as served", () => {
           `and an unlayered rule setting it would beat every layer on the site`
       ).toBe(false);
     }
-    for (const sel of [".ho-book", ".nav", "body", ":root", ".skip-link"]) {
+    for (const sel of [
+      ".ho-book",
+      ".nav",
+      "body",
+      ":root",
+      ".skip-link",
+      ".hero_className",
+      ".card_variable",
+      "._variable",
+      ".-\\32 5LuW_color",
+    ]) {
       expect(
         NEXT_FONT_CLASS.test(sel),
         `"${sel}" matches the next/font exemption — the pattern is too loose`
       ).toBe(false);
     }
     expect(NEXT_FONT_CLASS.test(".literata_13ce4cb4-module__-25LuW__variable")).toBe(true);
+    /* The same classes as Next 16.4 names them. */
+    expect(NEXT_FONT_CLASS.test("._5FWb6W_className")).toBe(true);
+    expect(NEXT_FONT_CLASS.test(".-\\32 5LuW_variable")).toBe(true);
   });
 });
